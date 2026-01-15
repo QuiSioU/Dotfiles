@@ -1,0 +1,109 @@
+* {
+    border: none;   
+    font-family: "Hack Nerd Font","Font Awesome","Fira Code", sans-serif;
+    font-size: 17.5px;
+}
+
+window#waybar {
+    background: rgba(17, 17, 27,0);
+    color: #abb7cf;
+}
+
+
+
+/* ----- DEFAULT WIDGET STYLE ----- */
+
+#custom-arch, #custom-poweroff, #custom-reboot, #custom-logout, #custom-hardware, #cpu, #memory, #temperature,
+#custom-browser, #custom-screen-recorder, #custom-spotify, #custom-editor, #custom-discord, #custom-steam,
+#clock, #tray, #pulseaudio, #network, #backlight, #battery, #custom-media, #custom-waybartheme, #custom-menu, #workspaces {
+    margin-top: 10px;
+    /* margin-bottom: 10px; */
+    color: #abb2bf;
+    background-color: rgba(17, 17, 27, 0.85);
+    transition: all 0.3s ease;
+    padding: 0 10px;
+}
+
+
+
+/* ----- DEFAULT HOVER STYLE ----- */
+
+#custom-arch:hover, #custom-poweroff:hover, #custom-reboot:hover, #custom-logout:hover, #custom-hardware:hover, #cpu:hover,
+#memory:hover, #temperature:hover, #custom-browser:hover, #custom-spotify:hover,
+#custom-screen-recorder:hover, #custom-editor:hover, #custom-discord:hover, #custom-steam:hover, #clock:hover, #tray:hover,
+#pulseaudio:hover, #network:hover, #backlight:hover, #battery:hover, #custom-media:hover, #custom-waybartheme:hover,
+#custom-menu:hover, #workspaces button:hover {
+    color: #ffffff;
+}
+
+
+
+/* ----- WORKSPACES ----- */
+
+#workspaces {
+    padding: 0 5px;
+    border-right: none;
+    /* background-color: aqua; */
+}
+
+#workspaces button {
+    padding: 0 2px;
+    background: transparent;
+    border: none;
+}
+
+#workspaces button:hover {
+    background: rgba(17, 17, 27, 0.2);
+    border-radius: 6px;
+}
+
+#workspaces button.active {
+    background-color: #dce0e8;
+    color: #212121;
+    border-radius: 6px;
+}
+
+/* ----- SPECIAL/INDIVIDUAL STYLES ----- */
+
+/* Decrease Arch click hitbox (on the rigth) so not to click by mistake*/
+#custom-arch {
+    padding: 0px 0px 0px 10px;
+}
+
+
+/* Round corner of left-most widgets */
+#custom-arch, #clock, #pulseaudio {
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+}
+
+
+/* Round corner of right-most widgets */
+#custom-steam, #clock, #custom-menu {
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+
+/* Margin of left-extreme widget */
+#custom-arch {
+    margin-left: 10px;
+}
+
+
+/* Margin of right-extreme widget */
+#custom-menu {
+    margin-right: 10px;
+}
+
+
+/* Smaller slide-discover widgets */
+#custom-poweroff, #custom-reboot, #custom-logout {
+    font-size: 12px;
+}
+
+
+/* Battery status color */
+#battery.charging { color: #98c379; }
+#battery.warning:not(.charging) { color: #e5c07b; }
+#battery.critical:not(.charging) { color: #e06c75; }

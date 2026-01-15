@@ -1,0 +1,74 @@
+/* Main Bar Setup */
+window#waybar {
+    background-color: rgba(0, 0, 0, 0);
+    border-bottom: none;
+    font-family: "FiraCode Nerd Font", monospace;
+}
+
+/* Base style for ALL bubbles */
+#custom-arch,
+#workspaces,
+#clock,
+#tray,
+#custom-hostname,
+#network,
+#battery {
+    background-color: #1e1e2e; 
+    color: #cdd6f4;
+    border-radius: 10px;      
+    
+    /* THE THINNESS TRICK: 
+       Set vertical padding to 0 and use min-height 0. 
+       The font size will now dictate the total height. */
+    padding: 0px 10px;        
+    margin: 2px 0px;          
+    font-size: 13px;          
+    font-weight: bold;
+    min-height: 0;            
+}
+
+/* Blue "Arch" Bubble */
+#custom-arch {
+    background-color: #89b4fa;
+    color: #11111b;
+    margin-left: 8px;
+}
+
+/* Purple "Clock" Bubble */
+#clock {
+    background-color: #cba6f7;
+    color: #11111b;
+}
+
+/* Dark Grey "Hostname" Bubble (Chirimbolo) */
+#custom-hostname {
+    background-color: #313244;
+    color: #89b4fa;
+}
+
+/* Remove internal padding from workspace buttons to keep them small */
+#workspaces button {
+    padding: 0px 2px;
+    color: #cdd6f4;
+    min-height: 0;
+}
+
+#workspaces button.active {
+    color: #89b4fa;
+}
+
+/* Ensure Tray icons don't stretch the bar */
+#tray {
+    padding: 0px 8px;
+}
+
+#battery {
+    margin-right: 8px;
+}
+
+#battery.warning { color: #fab387; }
+#battery.critical { color: #f38ba8; animation: blink 0.5s infinite; }
+
+@keyframes blink {
+    to { background-color: #f38ba8; color: #11111b; }
+}

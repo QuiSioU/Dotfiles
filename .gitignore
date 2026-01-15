@@ -1,0 +1,11 @@
+*
+!.gitignore
+
+!configs
+!configs/**
+
+!themes
+!themes/**
+
+!scripts
+!scripts/**

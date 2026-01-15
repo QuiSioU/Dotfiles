@@ -1,0 +1,38 @@
+{
+    "layer": "top",
+    "position": "top",
+    "height": 25,
+    "spacing": 8, // This controls the gap between your "chirimbolo" bubbles
+
+    "modules-left": ["custom/arch", "hyprland/workspaces"],
+    "modules-center": ["clock"],
+    "modules-right": ["tray", "network", "battery"],
+
+    "custom/arch": {
+        "format": "   ",
+        "tooltip": false
+    },
+    "hyprland/workspaces": {
+        "format": "{name}",
+        "on-click": "activate"
+    },
+    "clock": {
+        "format": "{:%H:%M}  ",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{0}</small></tt>"
+    },
+    "network": {
+        "format-wifi": "  {essid}",
+        "format-ethernet": "󰈀 ",
+        "format-disconnected": "⚠ "
+    },
+    "battery": {
+        "states": { "warning": 30, "critical": 15 },
+        "format": "{capacity}% {icon}",
+        "format-charging": "{capacity}%  ",
+        "format-icons": [" ", " ", " ", " ", " "]
+    },
+    "tray": {
+        "icon-size": 18,
+        "spacing": 10
+    }
+}
