@@ -47,9 +47,10 @@ window#waybar {
 }
 
 #workspaces button {
+    color: transparent;
+    background: transparent;
     padding: 0px 5px;
     border-radius: 12px;
-    background: transparent;
     margin-left: 6px;
     margin-right: 6px;
 }
