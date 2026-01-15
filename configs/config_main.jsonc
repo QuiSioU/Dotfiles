@@ -6,7 +6,7 @@
     // ---------- MODULOS
 
     "modules-left": [
-		"group/arch",
+		"custom/arch",
 		"hyprland/workspaces",
 		"group/hardware",
 		"custom/browser",
@@ -25,29 +25,12 @@
 		"network",
 		"backlight",
 		"battery",
-		"custom/media",
+		// "custom/media",
 		"custom/waybartheme",
-		"custom/menu"
+        "group/menu"
     ],
 
     // MODULOS LEFT
-
-    "group/arch": {
-		"orientation": "horizontal",
-		"drawer": {
-			"transition-duration": 500,
-			"children-class": "not-power",
-			"transition-left-to-right": true
-		},
-		"modules": [
-			"custom/arch",
-			"custom/logout",
-			"custom/reboot",
-			"custom/poweroff"
-		]
-    },
-
-    // PRIMER GRUPO
 
     "custom/arch": {
         "format": " ",
@@ -55,32 +38,24 @@
         "on-click": "kitty --hold fastfetch",
         "on-click-right": "wofi --show drun"
     },
-    "custom/poweroff": {
-		"format": " ",
-		"tooltip": false,
-		"on-click": "shutdown now"
-		},
-    "custom/reboot": {
-		"format": "󰜉 ",
-		"tooltip": false,
-		"on-click": "reboot"
-    },
-    "custom/logout": {
-		"format": "󰗼 ",
-		"tooltip": false,
-		"on-click": "hyprctl dispatch exit"
+
+    "hyprland/workspaces": {
+        "on-click": "activate",
+        "format": "{name}",
+        "on-scroll-up": "hyprctl dispatch workspace e+1",
+        "on-scroll-down": "hyprctl dispatch workspace e-1"
     },
 
 
-    // SEGUNDO GRUPO
+    // GRUPO HARDWARE
 
     "group/hardware": {
 		"orientation": "horizontal",
 		"drawer": {
+			// "click-to-reveal": true,
 			"transition-duration": 500,
 			"children-class": "not-power",
-			"transition-left-to-right": true,
-			"click-to-reveal": true 	
+			"transition-left-to-right": true
 		},
 		"modules": [
 			"custom/hardware",
@@ -92,7 +67,6 @@
 
     "custom/hardware": {
 		"format": " ",
-		"cursor": "pointer",
 		"tooltip": false
     },
     "cpu": { 
@@ -214,10 +188,7 @@
     },
     "tray": {
         "icon-size": 15,
-        "spacing": 10,
-		"icons": {
-			"blueman": "/home/Maximus/.config/waybar/img/bluetooth.png"
-		}
+        "spacing": 10
     },
     "custom/media": {
         "format": "{}",
@@ -235,11 +206,45 @@
 		"on-click-right": "~/.config/waybar/scripts/toggle_theme.sh",
 		"tooltip": false
     },
+
+
+    "group/menu": {
+		"orientation": "horizontal",
+		"drawer": {
+            "click-to-reveal": true,
+			"transition-duration": 500,
+			"children-class": "not-power",
+			"transition-left-to-right": false
+		},
+		"modules": [
+			"custom/menu",
+			"custom/logout",
+			"custom/reboot",
+			"custom/poweroff"
+		]
+    },
     "custom/menu": {
         "format": " ",
         "tooltip": false,
-        "on-click": "/home/Maximus/eww/target/release/eww update Userctl=true"
+        "cursor": true
     },
+    "custom/poweroff": {
+		"format": " ",
+		"tooltip": false,
+		"on-click": "shutdown now"
+		},
+    "custom/reboot": {
+		"format": "󰜉 ",
+		"tooltip": false,
+		"on-click": "reboot"
+    },
+    "custom/logout": {
+		"format": "󰗼 ",
+		"tooltip": false,
+		"on-click": "hyprctl dispatch exit"
+    },
+
+
     "hyprland/window": {
         "tooltip": false,
         "max-length": 40
