@@ -1,55 +1,127 @@
 * {
     border: none;   
-    font-family: "Hack Nerd Font","Font Awesome","Fira Code", sans-serif;
-    font-size: 17.5px;
+    font-family: "FiraCode Nerd Font", sans-serif;
+    font-size: 15px;
 }
 
 window#waybar {
-    background: rgba(17, 17, 27,0);
+    background: rgba(17, 17, 27, 0);
     color: #abb7cf;
 }
 
 
+/* ----- UNIFIED PILL STYLE FOR MODULES ----- */
 
-/* ----- DEFAULT WIDGET STYLE ----- */
+/* Mini breathing room between text and border */
+label {
+    padding: 0 5px;
+}
 
-#custom-arch, #custom-poweroff, #custom-reboot, #custom-logout, #custom-hardware, #cpu, #memory, #temperature,
-#custom-browser, #custom-screen-recorder, #custom-spotify, #custom-editor, #custom-discord, #custom-steam,
-#clock, #tray, #pulseaudio, #network, #backlight, #battery, #custom-media, #custom-waybartheme, #custom-menu, #workspaces {
+
+/* Pill style */
+.modules-left,
+.modules-center,
+.modules-right
+{
     margin-top: 10px;
-    /* margin-bottom: 10px; */
+}
+
+
+/* The center and right modules will represent their children */
+.modules-center,
+.modules-right
+{
+    background-color: rgba(17, 17, 27, 0.75);
+    border-radius: 12px;
+    padding: 0 10px;
+}
+
+
+/* Left module will be represented by its children */
+.modules-left { background: transparent; margin-left: 20px; }
+
+
+/* Minimal separation between visual pills */
+.modules-right { margin-right: 20px; }
+
+
+
+/* ----- UNIFIED WIDGET STYLE ----- */
+.modules-left widget > *,
+.modules-center widget > *,
+.modules-right widget > *
+{
     color: #abb2bf;
-    background-color: rgba(17, 17, 27, 0.85);
+    border: none;
+    padding: 0px 12px;
     transition: all 0.3s ease;
-    padding: 0px 10px;
 }
 
 
 
-/* ----- DEFAULT HOVER STYLE ----- */
-
-#custom-arch:hover, #custom-poweroff:hover, #custom-reboot:hover, #custom-logout:hover, #custom-hardware:hover, #cpu:hover,
-#memory:hover, #temperature:hover, #custom-browser:hover, #custom-spotify:hover,
-#custom-screen-recorder:hover, #custom-editor:hover, #custom-discord:hover, #custom-steam:hover, #clock:hover, #tray:hover,
-#pulseaudio:hover, #network:hover, #backlight:hover, #battery:hover, #custom-media:hover, #custom-waybartheme:hover,
-#custom-menu:hover {
+/* ----- UNIFIED HOVER EFFECT (EXCEPT WS) ----- */
+.modules-left > widget > *:hover,
+.modules-center > widget > *:hover,
+.modules-right > widget > *:hover {
     color: #ffffff;
 }
 
 
 
-/* ----- WORKSPACES ----- */
+/* ----- INDEPENDENT WIDGET STYLE ----- */
 
-#workspaces {
-    padding: 0px 5px;
+/* --- Fix hardware drawer double background --- */
+#cpu, #memory, #temperature, #custom-hardware
+{
+    /* min-width: 30px; */
+    background: transparent;
+}
+
+/* --- Battery status color --- */
+#battery.charging { color: #98c379; }
+#battery.warning:not(.charging) { color: #e5c07b; }
+#battery.critical:not(.charging) { color: #e06c75; }
+
+
+/* --- Make power option stand out when hovering --- */
+#custom-poweroff:hover { color: #e06c75; }
+#custom-reboot:hover { color: #e5c07b; }
+#custom-logout:hover { color: #98c379; }
+
+
+/* --- Distance between tray icons --- */
+#tray {
+    margin-right: 8px;
+    margin-left: 8px;
+}
+
+
+/* --- Left module widgets --- */
+.modules-left widget > * { background-color: rgba(17, 17, 27, 0.75); }
+
+
+/* --- Rounded borders --- */
+#custom-arch { border-top-left-radius: 12px; border-bottom-left-radius: 12px; }
+#custom-steam { border-top-right-radius: 12px; border-bottom-right-radius: 12px; }
+
+
+/* --- Workspaces --- */
+
+#workspaces
+{
     border-radius: 12px;
     margin-left: 20px;
+    margin-right: 20px;
+}
+
+#workspaces:hover {
+    background-color: rgba(17, 17, 27, 0.75);
 }
 
 #workspaces button {
     color: transparent;
-    background: transparent;
-    padding: 0px 5px;
+    background-color: rgba(220,224,232, 0.5);
+    padding: 0px 2px;
     border-radius: 12px;
     margin-left: 6px;
     margin-right: 6px;
@@ -61,52 +133,8 @@ window#waybar {
 }
 
 #workspaces button.active {
-    padding: 0px 20px;
+    padding-left: 20px;
+    padding-right: 20px;
     background-color: #dce0e8;
     color: #212121;
 }
-
-/* ----- SPECIAL/INDIVIDUAL STYLES ----- */
-
-/* Round corner of left-most widgets */
-#custom-arch, #clock, #pulseaudio {
-    border-top-left-radius: 12px;
-    border-bottom-left-radius: 12px;
-}
-
-
-/* Round corner of right-most widgets */
-#custom-steam, #clock, #custom-menu {
-    border-top-right-radius: 12px;
-    border-bottom-right-radius: 12px;
-}
-
-
-/* Margin right from last left-modules one */
-#custom-steam {
-    margin-right: 20px;
-}
-
-
-/* Margin of left-extreme widget */
-#custom-arch {
-    margin-left: 10px;
-}
-
-
-/* Margin of right-extreme widget */
-#custom-menu {
-    margin-right: 10px;
-}
-
-
-/* Smaller slide-discover widgets */
-#custom-poweroff, #custom-reboot, #custom-logout {
-    font-size: 12px;
-}
-
-
-/* Battery status color */
-#battery.charging { color: #98c379; }
-#battery.warning:not(.charging) { color: #e5c07b; }
-#battery.critical:not(.charging) { color: #e06c75; }
