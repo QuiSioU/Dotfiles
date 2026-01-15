@@ -7,14 +7,14 @@
 
     "modules-left": [
 		"custom/arch",
-		"hyprland/workspaces",
 		"group/hardware",
 		"custom/browser",
 		"custom/screen-recorder",
         "custom/spotify",
 		"custom/editor",
 		"custom/discord",
-		"custom/steam"
+		"custom/steam",
+		"hyprland/workspaces"
     ],
     "modules-center": [
 		"clock"

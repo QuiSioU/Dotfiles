@@ -21,7 +21,7 @@ window#waybar {
     color: #abb2bf;
     background-color: rgba(17, 17, 27, 0.85);
     transition: all 0.3s ease;
-    padding: 0 10px;
+    padding: 0px 10px;
 }
 
 
@@ -32,7 +32,7 @@ window#waybar {
 #memory:hover, #temperature:hover, #custom-browser:hover, #custom-spotify:hover,
 #custom-screen-recorder:hover, #custom-editor:hover, #custom-discord:hover, #custom-steam:hover, #clock:hover, #tray:hover,
 #pulseaudio:hover, #network:hover, #backlight:hover, #battery:hover, #custom-media:hover, #custom-waybartheme:hover,
-#custom-menu:hover, #workspaces button:hover {
+#custom-menu:hover {
     color: #ffffff;
 }
 
@@ -41,35 +41,31 @@ window#waybar {
 /* ----- WORKSPACES ----- */
 
 #workspaces {
-    padding: 0 5px;
-    border-right: none;
-    /* background-color: aqua; */
+    padding: 0px 5px;
+    border-radius: 12px;
+    margin-left: 20px;
 }
 
 #workspaces button {
-    padding: 0 2px;
+    padding: 0px 5px;
+    border-radius: 12px;
     background: transparent;
-    border: none;
+    margin-left: 6px;
+    margin-right: 6px;
 }
 
 #workspaces button:hover {
     background: rgba(17, 17, 27, 0.2);
-    border-radius: 6px;
+    color: #ffffff;
 }
 
 #workspaces button.active {
+    padding: 0px 20px;
     background-color: #dce0e8;
     color: #212121;
-    border-radius: 6px;
 }
 
 /* ----- SPECIAL/INDIVIDUAL STYLES ----- */
-
-/* Decrease Arch click hitbox (on the rigth) so not to click by mistake*/
-#custom-arch {
-    padding: 0px 0px 0px 10px;
-}
-
 
 /* Round corner of left-most widgets */
 #custom-arch, #clock, #pulseaudio {
@@ -82,6 +78,12 @@ window#waybar {
 #custom-steam, #clock, #custom-menu {
     border-top-right-radius: 12px;
     border-bottom-right-radius: 12px;
+}
+
+
+/* Margin right from last left-modules one */
+#custom-steam {
+    margin-right: 20px;
 }
 
 
