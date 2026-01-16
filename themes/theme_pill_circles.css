@@ -38,11 +38,11 @@ label {
 
 
 /* Left module will be represented by its children */
-.modules-left { background: transparent; margin-left: 20px; }
+.modules-left { background: transparent; margin-left: 10px; }
 
 
 /* Minimal separation between visual pills */
-.modules-right { margin-right: 20px; }
+.modules-right { margin-right: 10px; }
 
 
 
@@ -54,7 +54,6 @@ label {
     color: #abb2bf;
     border: none;
     padding: 0px 12px;
-    transition: all 0.3s ease;
 }
 
 
@@ -110,10 +109,10 @@ label {
 #workspaces
 {
     border-radius: 12px;
-    margin-left: 20px;
-    margin-right: 20px;
+    margin-left: 30px;
+    margin-right: 30px;
 
-    padding: 3px 3px;
+    padding: 3px 5px;
 }
 
 #workspaces:hover {
@@ -122,14 +121,16 @@ label {
 
 #workspaces button {
     color: transparent;
-    background-color: rgba(220,224,232, 0.5);
+    background-color: rgba(255, 255, 255, 0.5);
     border-radius: 12px;
 
-    margin: 0 4px;
+    margin: 0 5px;
 
     min-height: 0;
 
     padding: 0;
+
+    transition: all 0.25s cubic-bezier(.55,-0.68,.48,1.68);
 }
 
 #workspaces button:first-child {
@@ -146,8 +147,7 @@ label {
 }
 
 #workspaces button.active {
-    padding-left: 20px;
-    padding-right: 20px;
+    min-width: 60px;
     background-color: #dce0e8;
     color: #212121;
 }
