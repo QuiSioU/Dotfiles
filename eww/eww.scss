@@ -13,7 +13,7 @@ $font-main: "FiraCode Nerd Font", sans-serif;
     font-family: $font-main;
 }
 
-.clock-module {
+%pill {
     background-color: $bg-color;
     color: $fg-color;
     border-radius: 15px;
@@ -23,6 +23,10 @@ $font-main: "FiraCode Nerd Font", sans-serif;
         color: $hover-color;
         background-color: rgba(30, 30, 46, 0.85);
     }
+}
+
+.clock-module {
+    @extend %pill;
 
     .clock-day {
         font-size: 15px;
@@ -37,6 +41,20 @@ $font-main: "FiraCode Nerd Font", sans-serif;
     .clock-time {
         font-size: 15px;
         font-weight: bold;
+        padding: 4px 15px 4px 4px;
+    }
+}
+
+.battery-module {
+    @extend %pill;
+
+    .battery-percentage {
+        font-size: 15px;
+        padding: 4px 4px 4px 15px;
+    }
+
+    .battery-status {
+        font-size: 15px;
         padding: 4px 15px 4px 4px;
     }
 }

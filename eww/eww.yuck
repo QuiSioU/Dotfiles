@@ -1,27 +1,73 @@
-;; Data source: Runs the C binary every second
-(defpoll clock_data :interval "1s" 
-  :initial-value "{\"time\":\"--:--:--\",\"weekday\":\"--\",\"day\":\"--\"}"
-  "./bin/clock")
+;; ----- CLOCK WIDGET ----- ;;
 
-;; The Clock Widget
+;; Datetime data gather every 1 second
+(defpoll clock_data
+    :interval "1s" 
+    :initial-value "{\"time\":\"--:--:--\",\"weekday\":\"--\",\"day\":\"--\"}"
+    "./bin/clock"
+)
+
 (defwidget clock_module []
     (eventbox
         :class "clock-module"
-        :onhover ""
         :cursor "pointer"
+
         (box
             :space-evenly false 
             :spacing 0 
+
             :valign "center"
             :halign "center"
+
             (label :class "clock-day"
-                   :text "${clock_data['weekday']}, ${clock_data['day']}")
-            (label :class "clock-divider" :text "|")
+                :text "${clock_data['weekday']}, ${clock_data['day']}"
+            )
+            (label :class "clock-divider"
+                :text "|"
+            )
             (label :class "clock-time"
-                   :text "${clock_data['time']}")
+                :text "${clock_data['time']}"
+            )
         )
     )
 )
+
+
+
+;; ----- BATTERY WIDGET ----- ;;
+
+;; Battery data gather every 5 seconds
+(defpoll battery_data
+    :interval "5s" 
+    :initial-value "{\"capacity\":\"--%\",\"status\":\"Unknown\","
+    "./bin/battery"
+)
+
+(defwidget battery_module []
+    (eventbox
+        :class "battery-module"
+        :cursor "pointer"
+
+        (box
+            :space-evenly false 
+            :spacing 0 
+
+            :valign "center"
+            :halign "center"
+
+            (label :class "battery-percentage"
+                :text "${battery_data['capacity']}%"
+            )
+            (label :class "battery-status"
+                :text "(${battery_data['status']})"
+            )
+        )
+    )
+)
+
+
+
+;; ----- BAR ITSELF ----- ;;
 
 ;; The Bar Window
 (defwindow bar
@@ -42,6 +88,9 @@
     (box :class "bar-container"
         (box :halign "center" :valign "end"
             (clock_module)
+        )
+        (box :halign "center" :valign "end"
+            (battery_module)
         )
     )
 )
