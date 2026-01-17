@@ -1,11 +1,8 @@
 *
 !.gitignore
 
-!configs
-!configs/**
+!waybar
+!waybar/**
 
-!themes
-!themes/**
-
-!scripts
-!scripts/**
+!eww
+!eww/**
