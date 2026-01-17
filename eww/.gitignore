@@ -4,8 +4,8 @@
 !include
 !include/**
 
-!scr
-!scr/**
+!src
+!src/**
 
 !scripts
 !scripts/**
