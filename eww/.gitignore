@@ -1,0 +1,13 @@
+*
+!.gitignore
+
+!include
+!include/**
+
+!scr
+!scr/**
+
+!scripts
+!scripts/**
+
+!Makefile
