@@ -1,5 +1,5 @@
 CC = gcc
-FLAGS = -Wall -Wextra -std=c17
+FLAGS = -Wall -Wextra -std=c17 -O3 -march=native -s
 INCLUDES = ./include
 SRC = ./src
 BUILD = ./bin
