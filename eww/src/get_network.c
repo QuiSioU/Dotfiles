@@ -1,5 +1,16 @@
 #include <stdio.h>
+#include <string.h>
+#include <ctype.h>
 #include <NetworkManager.h>
+
+
+/* Helper to uppercase the SSID string in-place */
+void format_ssid(char *str) {
+    for (int i = 0; str[i]; i++) {
+        str[i] = toupper((unsigned char)str[i]);
+    }
+}
+
 
 int main() {
     /***********************
@@ -12,12 +23,13 @@ int main() {
     const GPtrArray *device_list    = NULL;             // List of available network devices
     GError          *error          = NULL;             // Contains most recent error info (if any)
     NMIPConfig      *ip4_config     = NULL;             // Contains a network device's IPv4 configuration
-    const char      *ssid           = "Disconnected";   // WiFi network's name
+    char             ssid[256]      = "Disconnected";   // WiFi network's name
     const char      *ip             = "0.0.0.0";        // Local IP address inside network
     const char      *gateway        = "0.0.0.0";        // Gateway's IP address
     const char      *icon           = "󰤮";              // Status icon
     guint            index;                             // Device index in list of devices
     int              mask           = 0;                // CIDR mask
+    int             strength        = 0;                // Access point strength
 
 
     /***********************
@@ -55,7 +67,7 @@ int main() {
     /****************************************************
     *   Get the info about the active device (if any)   *
     ****************************************************/
-    if (index < device_list->len) {
+    if (device != NULL) {
 
         // Get IPv4 local address and gateway address
         if ((ip4_config = nm_device_get_ip4_config(device)) != NULL) {
@@ -65,17 +77,22 @@ int main() {
                 ip = nm_ip_address_get_address(addr);
                 mask = nm_ip_address_get_prefix(addr);
             }
-            gateway = nm_ip_config_get_gateway(ip4_config);
+            const char *gw_tmp = nm_ip_config_get_gateway(ip4_config);
+            if (gw_tmp) gateway = gw_tmp;
         }
 
         if (NM_IS_DEVICE_WIFI(device)) {  // 2. Handle WiFi specific details
             NMAccessPoint *ap = nm_device_wifi_get_active_access_point(NM_DEVICE_WIFI(device));
             if (ap) {
                 GBytes *ssid_bytes = nm_access_point_get_ssid(ap);
-                if (ssid_bytes) ssid = (const char *)g_bytes_get_data(ssid_bytes, NULL);
+                if (ssid_bytes) {
+                    const char *raw_ssid = (const char *)g_bytes_get_data(ssid_bytes, NULL);
+                    strncpy(ssid, raw_ssid, sizeof(ssid) - 1);
+                    format_ssid(ssid);
+                }
                 
                 // Get status icon based on signal strength
-                int strength = nm_access_point_get_strength(ap);
+                strength = nm_access_point_get_strength(ap);
                 
                 if      (strength > 80) icon = "󰤨";
                 else if (strength > 50) icon = "󰤥";
@@ -84,8 +101,9 @@ int main() {
             }
         }
         else if (NM_IS_DEVICE_ETHERNET(device)) {  // 3. Handle Ethernet specific details
-            ssid = "Wired Connection";
+            strcpy(ssid, "WIRED CONNECTION");
             icon = "";
+            strength = 100;
         }
     }
 
@@ -94,12 +112,13 @@ int main() {
     *   Send final JSON-like string to .yuck via stdout   *
     ******************************************************/
     printf(
-        "{\"ssid\": \"%s\", \"icon\": \"%s\", \"ip\": \"%s\", \"gateway\": \"%s\", \"mask\": %d}\n",
+        "{\"ssid\": \"%s\", \"icon\": \"%s\", \"ip\": \"%s\", \"gateway\": \"%s\", \"mask\": %d, \"strength\": %d}\n",
         ssid,
         icon,
         ip ? ip : "0.0.0.0", 
         gateway ? gateway : "0.0.0.0",
-        mask
+        mask,
+        strength
     );
 
 
