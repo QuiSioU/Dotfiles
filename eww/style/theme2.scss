@@ -758,3 +758,18 @@ tooltip{
   border-radius: 10px;
 }
 
+.app-item {
+  padding: 10px 0;
+  margin: 2px 10px;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: rgba(177, 175, 175, 0.1);
+  }
+}
+
+.app-label {
+  font-size: 18px; 
+  font-weight: 500;
+}

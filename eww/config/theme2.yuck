@@ -1,3 +1,5 @@
+(defvar terminal_cmd "kitty")
+
 (defwidget bar []
      (box :class "bar"
           :orientation "h"
@@ -126,7 +128,7 @@
 
 (defpoll wifistatus
      :interval "1s"
-     :initial "{\"icon\": \"󰤮\", \"ssid\": \"Disconnected\", \"strength\": 0}"
+     :initial "{\"icon\": \"󰤮 \", \"ssid\": \"Disconnected\", \"strength\": 0}"
      "./bin/get_netinfo"
 )
 
@@ -145,12 +147,12 @@
           (eventbox :cursor "pointer"
                :onhover "${EWW_CONFIG_DIR}/scripts/wifi-delay.sh"
                :onhoverlost "eww update wifirev=false wifihov=false"
-               :onclick "eww open --toggle wifictl" 
+               :onclick "./scripts/wifictl.sh"
                (box
                     :orientation "h"
                     :space-evenly false
                     (label
-                         :text "${wifistatus.icon}"
+                         :text "${wifistatus.icon} "
                     )
                     (label
                          :class "space-wifi"
@@ -312,108 +314,131 @@
 )
 
 (defwindow wifictl
-    :monitor 0
-    :stacking "overlay"
-    :focusable "ondemand"
-    :geometry (geometry :anchor "top right"
-                        :x "5px"
-                        :y "-14px"
-                        :width "425px"
-                        :height "440px"
-    )
-    (expander :expanded true
-              (revealer :transition "slidedown"
-                        :reveal wifictlrev
-                        :duration "350ms"
-                        (wifi_event)
-              )
-    )
+     :monitor 0
+     :stacking "overlay"
+     :focusable false
+     :geometry (geometry
+          :anchor "top right"
+          :x "5px"
+          :y "50px"
+          :width "425px"
+          :height "440px"
+     )
+     (revealer
+          :transition "slidedown"
+          :reveal wifictlrev
+          :duration "350ms"
+          (wifi_event)
+     )
 )
 
 (defwidget button-module [icon cmd ?class ?subclass]
-    (box :class "${class}"
-         :orientation "h"
-         (eventbox :onclick "${cmd}"
-                   :cursor "pointer"
-                   :class "${subclass}"
-                   (label :text "${icon}")
-         )
-    )
-)
-
-(defwidget menu []
-    (button-module :class "menu"
-                   :subclass "menu-eventbox"
-                   :icon " "
-                   :cmd "~/.config/eww/scripts/menuctl.sh"
-    )
+     (box :class "${class}"
+          :orientation "h"
+          (eventbox
+               :onclick "${cmd}"
+               :cursor "pointer"
+               :class "${subclass}"
+               (label
+                    :text "${icon}"
+               )
+          )
+     )
 )
 
 (defvar menurev false)
-
-(defwindow menuctl
-    :monitor 0
-    :stacking "overlay"
-    :focusable "ondemand"
-    :geometry (geometry :anchor "top left"
-                        :x "5px"
-                        :y "-4px"
-                        :width "425px"
-                        :height "993px")
-    (box :space-evenly false
-         (revealer :transition "slideright"
-                   :reveal menurev
-                   :duration "350ms"
-                   (menu_event)))
+(defpoll apps
+     :interval "60s"
+     :initial "[]"
+     "./bin/get_apps"
 )
 
-(defpoll apps :interval "60s"
-    "./scripts/menu.sh"
+(defwidget menu []
+     (button-module :class "menu"
+          :subclass "menu-eventbox"
+          :icon " "
+          :cmd "./scripts/menuctl.sh"
+     )
+)
+
+(defwindow menuctl
+     :monitor 0
+     :stacking "overlay"
+     :ondemand true
+     :geometry (geometry
+          :anchor "top left"
+          :x "5px"
+          :y "-4px"
+          :width "425px"
+          :height "993px"
+     )
+     (box
+          :space-evenly false
+          (revealer
+               :transition "slideright"
+               :reveal menurev
+               :duration "350ms"
+               (menu_event)
+          )
+     )
 )
 
 (defwidget menu_event []
-    (eventbox :class "shadow-container"
-              :onhoverlost "./scripts/menuctl.sh"
-              (box :orientation "v"
-                   :space-evenly false
-                   (box :class "menuctl-container"
-                        :space-evenly false
-                        :orientation "v"
-                        (box :class "menu-header"
-                             :space-evenly false
-                             (label :text "Program Launcher"))
-                        (box :class "menu-subheader"
-                             :space-evenly false
-                             (label :text ">> Executable List")
-                        )
-                        (scroll :vscroll true
-                                :class "app-container"
-                                (box :orientation "v" 
-                                     :space-evenly false
-                                     (for i in {apps}
-                                        (application :name "${i.name}"
-                                                     :exec "${i.exec}"
-                                                     :icon "${i.icon}"
-                                                     :term "${i.terminal}"
-                                        )
-                                     )
-                                     ))))))
+     (eventbox :class "shadow-container"
+          :onhoverlost "./scripts/menuctl.sh"
+          (box :orientation "v"
+               :space-evenly false
+               (box :class "menuctl-container"
+                    :space-evenly false
+                    :orientation "v"
+                    (box :class "menu-header"
+                         :space-evenly false
+                         (label
+                              :text "Program Launcher"
+                         )
+                    )
+                    (box :class "menu-subheader"
+                         :space-evenly false
+                         (label
+                              :text ">> Executable List"
+                         )
+                    )
+                    (scroll
+                         :vscroll true
+                         :class "app-container"
+                         :height 800
+                         (box
+                              :orientation "v" 
+                              :space-evenly false
+                              (for i in apps
+                                   (application
+                                        :name {i.name}
+                                        :exec {i.exec}
+                                        :icon {i.icon}
+                                        :term "false"
+                                   )
+                              )
+                         )
+                    )
+               )
+          )
+     )
+)
 
 (defwidget application [name exec icon term]
-    (eventbox :cursor "pointer"
-              :onclick "sh -c './scripts/menuctl.sh && cd ~ && ([[ ${term} == true ]] && kitty -e ${exec} || ${exec}) & disown'"
-              (box :class "app-option-box"
-                   :orientation "v"
-                   (box :class "app-display"
-                        :space-evenly false
-                        :orientation "h"
-                        (box :class "app-ico"
-                             :style "background-image:url('${icon}');"
-                        )
-                        (label :class "app-name" :text "${name}")
-                   )
+     (eventbox
+          :cursor "pointer"
+          :onclick "eww close menuctl && ${term == 'true' ? '${terminal_cmd} -e ' : ''} ${exec} &"
+          (box :class "app-item"
+               :orientation "h"
+               :space-evenly false
+               (label :class "app-label" 
+                    :text name
+                    :halign "start"
+                    :valign "center"
                )
-    )
+          )
+     )
 )
 
 (defwidget power []
