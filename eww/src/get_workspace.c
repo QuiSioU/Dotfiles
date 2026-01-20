@@ -8,84 +8,102 @@
 #include <unistd.h>
 
 #define MIN_WS 5
+#define MAX_WS_TRACK 20
 
+// Helper to find a JSON key and return its integer value
+int get_json_int(const char *buffer, const char *key) {
+    char *ptr = strstr(buffer, key);
+    if (ptr) {
+        char *colon = strchr(ptr, ':');
+        if (colon) return atoi(colon + 1);
+    }
+    return -1;
+}
 
 void redraw() {
-    // 1. Get Active Workspace and the occupied workspaces' IDs
     int active_id = 1;
-    FILE *fp1 = popen("hyprctl activeworkspace -j | jq '.id'", "r");
-    if (fp1) { fscanf(fp1, "%d", &active_id); pclose(fp1); }
-
-    int occupied[20] = {0};
+    int occupied[MAX_WS_TRACK] = {0};
     int actual_max = 0;
-    FILE *fp2 = popen("hyprctl workspaces -j | jq -r '.[].id'", "r");
+    char line[1024];
+
+    // 1. Get Active Workspace ID
+    FILE *fp1 = popen("hyprctl activeworkspace -j", "r");
+    if (fp1) {
+        while (fgets(line, sizeof(line), fp1)) {
+            int id = get_json_int(line, "\"id\"");
+            if (id != -1) { active_id = id; break; }
+        }
+        pclose(fp1);
+    }
+
+    // 2. Get Occupied Workspaces
+    FILE *fp2 = popen("hyprctl workspaces -j", "r");
     if (fp2) {
-        int id;
-        while (fscanf(fp2, "%d", &id) != EOF) {
-            if (id > 0 && id < 20) {
-                occupied[id] = 1;
-                if (id > actual_max) actual_max = id;
+        while (fgets(line, sizeof(line), fp2)) {
+            char *ptr = line;
+            while ((ptr = strstr(ptr, "\"id\""))) {
+                int id = get_json_int(ptr, "\"id\"");
+                if (id > 0 && id < MAX_WS_TRACK) {
+                    occupied[id] = 1;
+                    if (id > actual_max) actual_max = id;
+                }
+                ptr++; // Move past current match
             }
         }
         pclose(fp2);
     }
+
     int max_ws = (actual_max < MIN_WS) ? MIN_WS : actual_max;
 
-    // 2. Output the Yuck String
-    // Outer Eventbox for Scrolling
-    printf("(eventbox :onscroll \"if [ '{}' = 'up' ] && [ %d -lt %d ]; then hyprctl dispatch workspace $(( %d + 1 )); elif [ '{}' = 'down' ] && [ %d -gt 1 ]; then hyprctl dispatch workspace $(( %d - 1 )); fi\" ", 
-            active_id, max_ws, active_id, active_id, active_id);
-
+    // 3. Output Yuck String
+    // Outer eventbox handles the mouse scroll for workspace switching
+    printf("(eventbox :onscroll \"echo {} | sed 's/up/-1/g; s/down/1/g' | xargs -I {} hyprctl dispatch workspace m{}\" ");
     printf("(box :class \"ws-container\" :spacing 10 :space-evenly false");
     
     for (int i = 1; i <= max_ws; i++) {
         if (i == active_id) {
-            // THE PILL: An empty box with a specific CSS class
-            printf(" (eventbox :onclick \"hyprctl dispatch workspace %d\" (box :class \"ws-pill\"))", i);
+            // Active workspace represented as a "pill"
+            printf(" (eventbox :onclick \"hyprctl dispatch workspace %d\" :cursor \"pointer\" (box :class \"ws-pill\"))", i);
         } else {
-            // THE DOT: Standard icon for inactive/occupied
+            // Inactive/Occupied represented as dots
             const char *class = occupied[i] ? "ws-occupied" : "ws-free";
-            printf(" (eventbox :onclick \"hyprctl dispatch workspace %d\" (label :class \"%s\" :text \"\"))", i, class);
+            printf(" (eventbox :onclick \"hyprctl dispatch workspace %d\" :cursor \"pointer\" (label :class \"%s\" :text \"\"))", i, class);
         }
     }
-    printf(")) \n");
+    printf("))\n");
     fflush(stdout);
 }
 
-
 int main() {
+    // Ensure line-buffered output so Eww receives updates instantly
+    setvbuf(stdout, NULL, _IOLBF, 0);
+
     char *inst = getenv("HYPRLAND_INSTANCE_SIGNATURE");
     char *xdg = getenv("XDG_RUNTIME_DIR");
-    if (!inst || !xdg) return 1;
-
-    struct sockaddr_un addr = { .sun_family = AF_UNIX };
-    
-    // Combine path generation and copying into one safe step
-    // sizeof(addr.sun_path) is usually 108. snprintf guarantees null-termination.
-    int res = snprintf(addr.sun_path, sizeof(addr.sun_path), "%s/hypr/%s/.socket2.sock", xdg, inst);
-
-    // If the path was too long for the buffer, exit gracefully
-    if ((unsigned long)res >= sizeof(addr.sun_path)) {
-        fprintf(stderr, "Socket path too long\n");
+    if (!inst || !xdg) {
+        fprintf(stderr, "Hyprland environment not found\n");
         return 1;
     }
+
+    struct sockaddr_un addr = { .sun_family = AF_UNIX };
+    snprintf(addr.sun_path, sizeof(addr.sun_path), "%s/hypr/%s/.socket2.sock", xdg, inst);
 
     int sock = socket(AF_UNIX, SOCK_STREAM, 0);
     if (connect(sock, (struct sockaddr *)&addr, sizeof(addr)) == -1) {
-        perror("Socket connect failed");
+        perror("Failed to connect to Hyprland socket");
         return 1;
     }
 
-    // Draw once at startup
+    // Initial draw
     redraw();
 
     char buffer[1024];
     while (1) {
         ssize_t n = read(sock, buffer, sizeof(buffer) - 1);
-        if (n <= 0) break; // Socket closed or error
+        if (n <= 0) break; 
         buffer[n] = '\0';
 
-        // We only redraw if the event actually affects workspace appearance
+        // Redraw only on relevant events
         if (strstr(buffer, "workspace>>") || 
             strstr(buffer, "focusedmon>>") || 
             strstr(buffer, "openwindow>>") || 
