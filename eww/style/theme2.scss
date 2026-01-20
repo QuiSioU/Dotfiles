@@ -44,6 +44,34 @@
   color: #cdd6f4;
 }
 
+.ws-container {
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 4px 8px;
+    border-radius: 12px;
+}
+
+.ws-pill {
+    background-color: #89b4fa; /* Blue accent */
+    min-width: 30px;           /* Makes the box a wide pill */
+    min-height: 8px;
+    border-radius: 4px;
+    margin: 4px 0;
+}
+
+/* Inactive but occupied workspace */
+.ws-occupied {
+    color: #fab387; /* Peach/Orange */
+    font-size: 14px;
+    margin: 0 4px;
+}
+
+/* Empty workspace */
+.ws-free {
+    color: #585b70; /* Dim grey */
+    font-size: 14px;
+    margin: 0 4px;
+}
+
 .div{
   font-size:25px;
   font-weight:100;
