@@ -13,10 +13,11 @@ LDFLAGS =
 # For get_volume.c, link these libs
 $(BUILD)/get_volume: LDFLAGS += -lasound -lm
 
-# For get_network.c, link libnm
-# Using pkg-config is recommended to ensure paths are correct
-$(BUILD)/get_network: LDFLAGS += $(shell pkg-config --libs libnm)
-$(OBJDIR)/get_network.o: FLAGS += $(shell pkg-config --cflags libnm)
+# For network-related binaries, link libnm
+$(BUILD)/get_netinfo: LDFLAGS += $(shell pkg-config --libs libnm)
+$(OBJDIR)/get_netinfo.o: FLAGS += $(shell pkg-config --cflags libnm)
+$(BUILD)/get_netlist: LDFLAGS += $(shell pkg-config --libs libnm)
+$(OBJDIR)/get_netlist.o: FLAGS += $(shell pkg-config --cflags libnm)
 
 
 all: $(TARGETS)

@@ -27,7 +27,6 @@ int main() {
     const char      *ip             = "0.0.0.0";        // Local IP address inside network
     const char      *gateway        = "0.0.0.0";        // Gateway's IP address
     const char      *icon           = "󰤮";              // Status icon
-    guint            index;                             // Device index in list of devices
     int              mask           = 0;                // CIDR mask
     int             strength        = 0;                // Access point strength
 
@@ -50,8 +49,8 @@ int main() {
     /************************************
     *   Get active (connected) device   *
     ************************************/
-    for (index = 0; index < device_list->len; index++) {
-        aux_device = g_ptr_array_index(device_list, index);
+    for (guint i = 0; i < device_list->len; i++) {
+        aux_device = g_ptr_array_index(device_list, i);
         state = nm_device_get_state(aux_device);
 
         const char *interface = nm_device_get_iface(aux_device);
