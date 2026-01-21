@@ -10,8 +10,9 @@ TARGETS = $(patsubst $(SRC)/%.c,$(BUILD)/%,$(SOURCES))
 LDFLAGS =
 
 
-# For get_volume.c, link these libs
+# For volume-related, link these libs
 $(BUILD)/get_volume: LDFLAGS += -lasound -lm
+$(BUILD)/set_volume: LDFLAGS += -lasound -lm
 
 # For network-related binaries, link libnm
 $(BUILD)/get_netinfo: LDFLAGS += $(shell pkg-config --libs libnm)

@@ -740,7 +740,7 @@
                                          :max 101 
                                          :min 0
                                          :round-digits 0
-                                         :onchange "pamixer --set-volume {}"
+                                         :onchange "./bin/set_volume {} && eww update volume_data=\"$(./bin/get_volume)\""
                                   )
                              )
                              (box :class "light-slider"
