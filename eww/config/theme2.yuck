@@ -637,17 +637,19 @@
                         (box :class "bats"
                              :space-evenly false
                              (box :class "batico-main"
-                                  (literal :content batico)
+                                  (box :class "${battery_data.class}"
+                                        (label :text "${battery_data.icon}")
+                                   )
                              )
                              (box :class "bat-detail"
                                   :orientation "v"
                                   (box :class "bat-percent"
                                        :space-evenly false
-                                       (label :text "Battery ${EWW_BATTERY.BAT0.capacity}%")
+                                       (label :text "Battery ${battery_data.capacity}%")
                                   )
                                   (box :class "bat-status"
                                        :space-evenly false
-                                       (label :limit-width 26 :text "${batest}")
+                                       (label :limit-width 26 :text "${battery_data.status}: ${battery_data.time_left}")
                                   )
                              )
                         )
@@ -763,8 +765,6 @@
     ))
 )
 
-(deflisten batico "./scripts/batico.sh")
-(deflisten batest "./scripts/batest.sh")
 (deflisten music :initial "{}" "./scripts/music.sh")
 (deflisten pmusic :initial "{}" "./scripts/pmusic.sh")
 

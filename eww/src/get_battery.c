@@ -124,11 +124,12 @@ int main() {
     /******************************************************
     *   Send final JSON-like string to .yuck via stdout   *
     ******************************************************/
-    printf("{\"capacity\": %ld, \"status\": \"%s\", \"icon\": \"%s\", \"time_left\": \"%s\"}\n",
+    printf("{\"capacity\": %ld, \"status\": \"%s\", \"icon\": \"%s\", \"time_left\": \"%s\", \"class\": \"BAT%ld\"}\n",
         capacity,
         status,
         icon,
-        time_left
+        time_left,
+        capacity / 10
     );
     return 0;
 }
