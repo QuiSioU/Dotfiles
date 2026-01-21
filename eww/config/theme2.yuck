@@ -1,5 +1,10 @@
 (defvar terminal_cmd "kitty")
 
+(defpoll brightness_data
+     :interval "1s"
+     "./bin/get_brightness"
+)
+
 (defwidget bar []
      (box :class "bar"
           :orientation "h"
@@ -740,19 +745,19 @@
                                          :max 101 
                                          :min 0
                                          :round-digits 0
-                                         :onchange "./bin/set_volume {} && eww update volume_data=\"$(./bin/get_volume)\""
+                                         :onchange "eww update volume_data=\"$(./bin/set_volume {})\""
                                   )
                              )
                              (box :class "light-slider"
                                   :space-evenly false
                                   :halign "center"
-                                  (label :text "")
+                                  (label :text "󰃟")
                                   (scale :value get_light
                                          :class "lig"
                                          :max 101 
                                          :min 1
                                          :round-digits 0
-                                         :onchange "brightnessctl set {}%"
+                                         :onchange "eww update brightness_data=\"$(./bin/set_brightness {})\""
                                   )
                              )
                         )
