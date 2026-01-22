@@ -688,7 +688,7 @@
                                  :orientation "v" 
                                  :space-evenly false
                                  (eventbox :class "ram-hover"
-                                           :tooltip " ${round(EWW_RAM.used_mem/1073741824,1)}GB used "
+                                           :tooltip "Used: ${ram_data.used}GB / ${ram_data.total}GB"
                                            (circular-progress :class "ram"
                                                     :value {round(EWW_RAM.used_mem_perc,10)}
                                                     :thickness 5
@@ -751,7 +751,7 @@
                              (box :class "light-slider"
                                   :space-evenly false
                                   :halign "center"
-                                  (label :text "󰃟")
+                                  (label :text "")
                                   (scale :value get_light
                                          :class "lig"
                                          :max 101 
@@ -788,7 +788,7 @@
          (box :orientation "h"
               :class "cpu-header"
               :space-evenly false
-              (label :text "Core Temperature" :style "color:#cdd6f4;font-size:20px;")
+              (label :text "Temperature Monitor" :style "color:#cdd6f4;font-size:20px;")
          )
          (box :class "graph-container"
               :orientation "v"

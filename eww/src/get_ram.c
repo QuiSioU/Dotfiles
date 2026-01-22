@@ -14,7 +14,8 @@ int main() {
     int used_percentage = 100 - (int)((double)avail / total * 100);
     
     printf(
-        "{\"used_percentage\": %d, \"total\": %.2f, \"available\": %.2f}\n",
+        "{\"used\": %.2f,\"used_percentage\": %d, \"total\": %.2f, \"available\": %.2f}\n",
+        (double)(total - avail) / (1024 * 1024),
         used_percentage,
         (double)total / (1024 * 1024),
         (double)avail / (1024 * 1024)
