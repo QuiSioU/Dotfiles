@@ -554,12 +554,12 @@ tooltip{
   background-color:rgba(45,52,66,0.3);
 }
 
-.cpu, .brightness, .disk{
+.cpu, .brightness, .ram, .disk{
   border-radius:100px;
   margin-top:20px;
 }
 .cpu, .cpu01{ color: #FF6B6B;}
-.brightness, .ram01{ color: #4D9FEC; }
+.brightness, .ram, .ram01{ color: #4D9FEC; }
 .disk, .disk01{ color: #43E97B; }
 .cpu02, .ram02, .disk02{ color: rgb(205,212,246); }
 
@@ -578,7 +578,7 @@ tooltip{
   margin-left:25px;
 }
 
-.cpu, .brightness, .disk{
+.cpu, .brightness, .ram, .disk{
   background-color:rgb(0,0,0);
 }
 
