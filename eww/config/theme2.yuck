@@ -89,7 +89,12 @@
 
 (defpoll ram_data
      :interval "1s"
-     "./bin/get_ram"
+     "./bin/get_ram_usage"
+)
+
+(defpoll disk_data
+     :interval "1s"
+     "./bin/get_disk_usage"
 )
 
 (defwidget ram []
@@ -150,7 +155,7 @@
 (defwidget wifi []
      (box :class "wifi"
           (eventbox :cursor "pointer"
-               :onhover "${EWW_CONFIG_DIR}/scripts/wifi-delay.sh"
+               :onhover "./scripts/wifi-delay.sh"
                :onhoverlost "eww update wifirev=false wifihov=false"
                :onclick "./scripts/wifictl.sh"
                (box
@@ -690,7 +695,7 @@
                                  (eventbox :class "ram-hover"
                                            :tooltip "Used: ${ram_data.used}GB / ${ram_data.total}GB"
                                            (circular-progress :class "ram"
-                                                    :value {round(EWW_RAM.used_mem_perc,10)}
+                                                    :value "${ram_data.used_percentage}"
                                                     :thickness 5
                                                     (box :class "ramico"
                                                          (label :text " ")
@@ -704,7 +709,7 @@
                                         "RAM "
                                       )
                                       (box :class "ram02"
-                                        "${round(EWW_RAM.used_mem_perc,0)}%"
+                                        "${ram_data.used_percentage}%"
                                       )
                                  )
                             )
@@ -712,9 +717,9 @@
                                  :orientation "v" 
                                  :space-evenly false 
                                  (eventbox :class "disk-hover"
-                                           :tooltip " ${round(EWW_DISK["/"].used/1073741824,1)}GB used "
+                                           :tooltip "Used: ${disk_data.used}GB / ${disk_data.total}GB"
                                            (circular-progress :class "disk"
-                                                    :value {round(EWW_DISK["/"].used_perc,10)}
+                                                    :value "${disk_data.used_percentage}"
                                                     :thickness 5
                                                     (box :class "diskico"
                                                          (label :text " ")
@@ -728,7 +733,7 @@
                                         "DISK "
                                       )
                                       (box :class "disk02"
-                                        "${round(EWW_DISK["/"].used_perc,0)}%"
+                                        "${disk_data.used_percentage}%"
                                       )
                                  )
                             )
