@@ -5,6 +5,11 @@
      "./bin/get_brightness"
 )
 
+(defpoll cpu_data
+     :interval "1s"
+     "./bin/get_cpu_usage"
+)
+
 (defwidget bar []
      (box :class "bar"
           :orientation "h"
@@ -669,9 +674,9 @@
                                  :orientation "v" 
                                  :space-evenly false
                                  (eventbox :class "cpu-hover"
-                                           :tooltip " ${round(EWW_CPU.avg,1)}% used "
+                                           :tooltip "Used: ${cpu_data.used_decimals}%"
                                            (circular-progress :class "cpu"
-                                                    :value {round(EWW_CPU.avg,10)}
+                                                    :value "${cpu_data.used_decimals}"
                                                     :thickness 5
                                                     (box :class "cpuico"
                                                         (label :text " ")
@@ -685,7 +690,7 @@
                                         "CPU "
                                       )
                                       (box :class "cpu02"
-                                        "${round(EWW_CPU.avg,0)}%"
+                                        "${cpu_data.used_percentage}%"
                                       )
                                  )
                             )
