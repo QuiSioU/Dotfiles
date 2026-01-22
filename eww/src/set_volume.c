@@ -3,10 +3,36 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <alloca.h>
+#include <getopt.h>
+#include <string.h>
+
+#define SCROLL_DISTANCE 2
 
 int main(int argc, char *argv[]) {
-    if (argc < 2) return 1;
-    long volume = atol(argv[1]);
+    if (argc < 3) return 1;
+
+    int opt;
+    long volume = 0;
+    while ((opt = getopt(argc, argv, "v:i:o:")) != -1) {
+        switch (opt) {
+            case 'v':
+                volume = atoi(optarg);
+                break;
+
+            case 'o':
+                volume += atoi(optarg);
+                break;
+
+            case 'i':
+                if (!strcmp(optarg, "up")) volume += SCROLL_DISTANCE;
+                else volume -= SCROLL_DISTANCE;
+                break;
+
+            default:
+                exit(EXIT_FAILURE);
+        }
+    }
+
     if (volume < 0) volume = 0;
     if (volume > 100) volume = 100;
 

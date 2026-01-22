@@ -31,7 +31,7 @@
                          :spacing 10
                          (tray)
                          (volume)
-                         (ram)
+                         (brightness)
                          (battery)
                          (wifi)
                     )
@@ -77,16 +77,19 @@
 )
 
 (defwidget volume []
-     (box :class "volume-short"
-          (box :orientation "h"
-               :space-evenly false
-               (label
-                    :text "${volume_data.icon}"
-                    :style "margin-right:3px;"
-               )
-               (label
-                    :class "bsht"
-                    :text "${volume_data.volume}%"
+     (eventbox :onscroll "eww update volume_data=\"$(./bin/set_volume -i {} -o ${volume_data.volume})\""
+          :cursor "pointer"
+          (box :class "volume-short"
+               (box :orientation "h"
+                    :space-evenly false
+                    (label
+                         :text "${volume_data.icon}"
+                         :style "margin-right:3px;"
+                    )
+                    (label
+                         :class "bsht"
+                         :text "${volume_data.volume}%"
+                    )
                )
           )
      )
@@ -102,18 +105,20 @@
      "./bin/get_disk_usage"
 )
 
-(defwidget ram []
-     (box :class "ram-short"
-          :tooltip "Available: ${ram_data.available}GB / ${ram_data.total}GB"
-          (box
-               :orientation "h"
-               :space-evenly false
-               (label
-                    :text " "
-                    :style "margin-right: 3px;"
-               )
-               (label :class "bsht" 
-                    :text "${ram_data.used_percentage}%"
+(defwidget brightness []
+     (eventbox :onscroll "eww update brightness_data=\"$(./bin/set_brightness -i {} -o ${brightness_data.brightness})\""
+          :cursor "pointer"
+          (box :class "brightness-short"
+               (box
+                    :orientation "h"
+                    :space-evenly false
+                    (label
+                         :text " "
+                         :style "margin-right: 3px;"
+                    )
+                    (label :class "bsht" 
+                         :text "${brightness_data.brightness}%"
+                    )
                )
           )
      )
@@ -755,19 +760,19 @@
                                          :max 101 
                                          :min 0
                                          :round-digits 0
-                                         :onchange "eww update volume_data=\"$(./bin/set_volume {})\""
+                                         :onchange "eww update volume_data=\"$(./bin/set_volume -v {})\""
                                   )
                              )
                              (box :class "light-slider"
                                   :space-evenly false
                                   :halign "center"
                                   (label :text "")
-                                  (scale :value get_light
+                                  (scale :value "${brightness_data.brightness}"
                                          :class "lig"
                                          :max 101 
                                          :min 1
                                          :round-digits 0
-                                         :onchange "eww update brightness_data=\"$(./bin/set_brightness {})\""
+                                         :onchange "eww update brightness_data=\"$(./bin/set_brightness -v {})\""
                                   )
                              )
                         )
@@ -785,10 +790,6 @@
 
 (defpoll cmusic :interval "1s"
     "playerctl -l"
-)
-
-(defpoll get_light :interval "1s"
-  "brightnessctl -m | awk -F, '{gsub(/%/, \"\", \$4); print \$4}'"
 )
 
 (defwidget cpu-panel []
