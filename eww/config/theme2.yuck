@@ -1,4 +1,5 @@
 (defvar terminal_cmd "kitty")
+(defvar active_ws "1")
 
 (defpoll brightness_data
      :interval "1s"
@@ -476,9 +477,11 @@
     "./bin/get_workspace")
 
 (defwidget workspaces []
-    (box :class "workspaces-widget"
-         (literal :content workspaces-output)
-    )
+     (eventbox :onscroll "./bin/set_workspace -i {} -o ${active_ws} && eww update active_ws=$(hyprctl activeworkspace -j | jq '.id')"
+          (box :class "workspaces-widget"
+               (literal :content workspaces-output)
+          )
+     )
 )
 
 (defwidget divider []

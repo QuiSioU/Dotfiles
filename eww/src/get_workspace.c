@@ -57,7 +57,6 @@ void redraw() {
 
     // 3. Output Yuck String
     // Outer eventbox handles the mouse scroll for workspace switching
-    printf("(eventbox :onscroll \"echo {} | sed 's/up/-1/g; s/down/1/g' | xargs -I {} hyprctl dispatch workspace m{}\" ");
     printf("(box :class \"ws-container\" :spacing 10 :space-evenly false");
     
     for (int i = 1; i <= max_ws; i++) {
@@ -70,7 +69,7 @@ void redraw() {
             printf(" (eventbox :onclick \"hyprctl dispatch workspace %d\" :cursor \"pointer\" (label :class \"%s\" :text \"\"))", i, class);
         }
     }
-    printf("))\n");
+    printf(")\n");
     fflush(stdout);
 }
 
