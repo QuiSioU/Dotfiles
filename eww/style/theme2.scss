@@ -40,30 +40,35 @@
 
 .ws-container {
     background-color: rgba(0, 0, 0, 0.2);
-    padding: 4px 8px;
+    padding: 6px 8px;
     border-radius: 12px;
 }
 
-.ws-active {
-    background-color: #89b4fa; /* Blue accent */
-    min-width: 36px;
-    min-height: 10px;
-    border-radius: 12px;
-    margin: 4px 0;
+.ws-pill {
+  border-radius: 12px;
+  min-height: 12px; /* This keeps the height constant for all */
+  min-width: 12px;
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1); /* Snappy animation */
 }
 
-/* Inactive but occupied workspace */
-.ws-occupied {
-    color: #fab387; /* Peach/Orange */
-    font-size: 14px;
-    margin: 0 4px;
+/* Inactive/Free Workspaces (The Dot) */
+.ws-pill.free {
+  background-color: #585b70; /* Dim grey */
+  min-width: 12px;
+  margin: 0 4px;
 }
 
-/* Empty workspace */
-.ws-free {
-    color: #585b70; /* Dim grey */
-    font-size: 14px;
-    margin: 0 4px;
+/* Occupied but not focused (The Dot) */
+.ws-pill.occupied {
+  background-color: #fab387; /* Peach/Orange */
+  min-width: 12px;
+  margin: 0 4px;
+}
+
+/* The Active "Pill" (The Stretch) */
+.ws-pill.active {
+  background-color: #89b4fa; /* Blue accent */
+  min-width: 40px;           /* Increased width creates the stretch */
 }
 
 .div{

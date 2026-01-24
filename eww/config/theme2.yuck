@@ -490,9 +490,7 @@
                     (eventbox
                          :cursor "pointer"
                          :onclick "hyprctl dispatch workspace ${ws.id}"
-                         (literal
-                              :content {ws.state == "active" ? "(box :class \"ws-active\")" : "(label :class \"ws-${ws.state}\" :text \"\")"}
-                         )
+                         (box :class "ws-pill ${ws.state}")
                     )
                )
           )
