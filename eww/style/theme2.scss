@@ -46,29 +46,37 @@
 
 .ws-pill {
   border-radius: 12px;
-  min-height: 12px; /* This keeps the height constant for all */
-  min-width: 12px;
+  min-height: 10px; /* This keeps the height constant for all */
+  min-width: 10px;
   transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1); /* Snappy animation */
+
+  border: 2px solid;
+  background-color: transparent;
 }
 
 /* Inactive/Free Workspaces (The Dot) */
 .ws-pill.free {
-  background-color: #585b70; /* Dim grey */
-  min-width: 12px;
+  border-style: dotted;
+  border-width: 2px;
+  border-color: #ffffff;
+  min-width: 10px;
   margin: 0 4px;
 }
 
 /* Occupied but not focused (The Dot) */
 .ws-pill.occupied {
-  background-color: #fab387; /* Peach/Orange */
-  min-width: 12px;
+  border-color: #fab387; /* Peach/Orange */
+  min-width: 10px;
   margin: 0 4px;
 }
 
 /* The Active "Pill" (The Stretch) */
 .ws-pill.active {
   background-color: #89b4fa; /* Blue accent */
+  border: none;
   min-width: 40px;           /* Increased width creates the stretch */
+  min-height: 8px;
+  margin: 2px 4px;
 }
 
 .div{
