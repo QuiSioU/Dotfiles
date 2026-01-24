@@ -38,23 +38,17 @@
   }
 }
 
-.ws{
-  font-family: "FiraCode Nerd Font";
-  font-size: 16px;
-  color: #cdd6f4;
-}
-
 .ws-container {
     background-color: rgba(0, 0, 0, 0.2);
     padding: 4px 8px;
     border-radius: 12px;
 }
 
-.ws-pill {
+.ws-active {
     background-color: #89b4fa; /* Blue accent */
-    min-width: 30px;           /* Makes the box a wide pill */
-    min-height: 8px;
-    border-radius: 4px;
+    min-width: 36px;
+    min-height: 10px;
+    border-radius: 12px;
     margin: 4px 0;
 }
 

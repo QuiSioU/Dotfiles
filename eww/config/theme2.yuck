@@ -473,13 +473,28 @@
     )
 )
 
-(deflisten workspaces-output
-    "./bin/get_workspace")
+(deflisten ws_data
+     "./bin/daemon_workspace"
+)
 
 (defwidget workspaces []
-     (eventbox :onscroll "./bin/set_workspace -i {} -o ${active_ws} && eww update active_ws=$(hyprctl activeworkspace -j | jq '.id')"
-          (box :class "workspaces-widget"
-               (literal :content workspaces-output)
+     (eventbox
+          :onscroll "./bin/set_workspace -i {} -o ${active_ws} && eww update active_ws=$(hyprctl activeworkspace -j | jq '.id')"
+          :valign "center"
+          (box :class "ws-container"
+               :spacing 10
+               :space-evenly false
+               :valign "center"
+
+               (for ws in ws_data
+                    (eventbox
+                         :cursor "pointer"
+                         :onclick "hyprctl dispatch workspace ${ws.id}"
+                         (literal
+                              :content {ws.state == "active" ? "(box :class \"ws-active\")" : "(label :class \"ws-${ws.state}\" :text \"\")"}
+                         )
+                    )
+               )
           )
      )
 )
