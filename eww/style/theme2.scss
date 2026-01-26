@@ -4,33 +4,44 @@
 }
 
 .bar {
-  box-shadow: 0 2px 3px 1px rgba(6, 6, 11, 0.9);
+  background: none;
+  // box-shadow: 0 2px 3px 1px rgba(6, 6, 11, 0.9);
+  // background-color: rgba(24, 24, 37, 0.94);
+  background: none;
   border-radius: 10px;
-  background-color: rgba(24, 24, 37, 0.94);
   padding: 5px 10px; /* Added horizontal padding */
   margin: 6.5px;
 }
 
 .menu{
+  font-size: 18px;
   margin-left:12px;
+  background-color: #06060b; /* Slight highlight */
+  padding: 0 12px 0 15px;
+  border-radius: 12px;
+  margin: 3px 2px;
 }
 
 .menu-eventbox{
   color:#1793d1;
   transition: color 0.3s;
+
   &:hover{
     color:#cdd6f4;
   }
 }
 
-.power{
-  margin-right:10px;
+.power {
+  background-color: #06060b; /* Slight highlight */
+  border-radius: 12px;
+  margin: 3px 2px;
+  padding: 0 0 0 6px;
 }
 
 .power-eventbox{
   color:rgb(230,100,100);
   font-weight:bold;
-  font-size:20px;
+  font-size:15px;
   font-family: "FiraCode Nerd Font";
   transition: color 0.3s;
   &:hover{
@@ -39,7 +50,7 @@
 }
 
 .ws-container {
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: #06060b;
     padding: 6px 8px;
     border-radius: 12px;
 }
@@ -108,10 +119,10 @@
 .volume-short, 
 .brightness-short, 
 .battery {
-  background-color: rgba(255, 255, 255, 0.05); /* Slight highlight */
+  background-color: #06060b; /* Slight highlight */
   padding: 0 8px;
-  border-radius: 6px;
-  margin: 0 2px;
+  border-radius: 12px;
+  margin: 3px 2px;
 }
 
 .brightness-short{
@@ -131,9 +142,11 @@
 }
 
 .tray-container {
-  background-color: rgba(0, 0, 0, 0.2);
-  border-radius: 8px;
+  background-color: #06060b;
+  border-radius: 12px;
   padding: 0 4px;
+  margin-top: 3px;
+  margin-bottom: 3px;
 }
 
 .systray-shadow {
@@ -174,12 +187,12 @@ menu {
 }
 
 .wifi{
-  background-color:rgba(0,0,0,0.38);
+  background-color:#06060b;
   padding-left: 13px;
   padding-right: 13px;
   color:rgb(245,162,96);
   border-radius:20px;
-  font-size:11px;
+  font-size:14px;
   margin:3px 0px;
 }
 
@@ -223,7 +236,7 @@ menu {
   margin-top:17px;
   border-radius:15px;
   box-shadow: 0 2px 3px 2px rgba(6,6,11,0.9);
-  background-color:rgba(0,0,0,0.28);
+  background-color:#06060b;
 }
 
 .app-container{
