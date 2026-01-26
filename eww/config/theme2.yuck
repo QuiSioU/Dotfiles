@@ -795,7 +795,7 @@
                    )
               )
          )
-         (cpu-panel)
+     ;     (cpu-panel)
          (music-player) 
          )
     ))
