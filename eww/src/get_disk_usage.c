@@ -10,27 +10,38 @@ int main() {
         return 1;
     }
 
-    // Block size * total blocks = total bytes
-    double total = (double)ds.f_blocks * ds.f_frsize;
-    // Block size * available blocks = free bytes
-    double free = (double)ds.f_bavail * ds.f_frsize;
-    double used = total - free;
+    // f_frsize is the fundamental block size
+    double block_size = (double)ds.f_frsize;
 
-    // Convert to Gigabytes (1024^3)
-    double total_gb = total / (1024 * 1024 * 1024);
-    double used_gb = used / (1024 * 1024 * 1024);
+    // Total capacity
+    double total_bytes = (double)ds.f_blocks * block_size;
     
-    // Percentage
-    double percentage = (used / total) * 100 + 0.5;
+    // Total physically free blocks (includes root-reserved space)
+    double free_bytes = (double)ds.f_bfree * block_size;
+    
+    // Blocks available to non-privileged users
+    double avail_bytes = (double)ds.f_bavail * block_size;
+
+    // Calculation used by 'df' for "Used": Total - All Free
+    double used_bytes = total_bytes - free_bytes;
+
+    // Calculation used by 'df' for "Use %": Used / (Used + Available to user)
+    // This accounts for the reserved space overhead.
+    double percentage = (used_bytes / (used_bytes + avail_bytes)) * 100;
+
+    // Convert to Gibibytes (1024^3)
+    double gib_div = 1024.0 * 1024.0 * 1024.0;
+    double total_gb = total_bytes / gib_div;
+    double used_gb = used_bytes / gib_div;
 
     // Output JSON
-    // used: GB used, total: Total GB capacity, percentage: % used
     printf(
         "{\"used\": %.2f, \"used_percentage\": %d, \"total\": %.2f}\n", 
         used_gb,
-        (int)percentage,
+        (int)percentage, // Truncates like df, or use round() for accuracy
         total_gb
     );
 
     return 0;
 }
+

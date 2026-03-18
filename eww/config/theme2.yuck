@@ -699,6 +699,7 @@
                                            (circular-progress :class "cpu"
                                                     :value "${cpu_data.used_decimals}"
                                                     :thickness 5
+													:start-at 75
                                                     (box :class "cpuico"
                                                         (label :text " ")
                                                     )
@@ -723,6 +724,7 @@
                                            (circular-progress :class "ram"
                                                     :value "${ram_data.used_percentage}"
                                                     :thickness 5
+													:start-at 75
                                                     (box :class "ramico"
                                                          (label :text " ")
                                                     )
@@ -747,6 +749,7 @@
                                            (circular-progress :class "disk"
                                                     :value "${disk_data.used_percentage}"
                                                     :thickness 5
+													:start-at 75
                                                     (box :class "diskico"
                                                          (label :text " ")
                                                     )
