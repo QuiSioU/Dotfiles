@@ -1,0 +1,75 @@
+# add_newline = false
+
+format = """
+[](fg:#c1cdee)\
+[ ](bg:#c1cdee fg:#090c0c)\
+[](bg:#a3aed2 fg:#c1cdee)\
+[ $hostname#$username ](bold bg:#a3aed2 fg:#090c0c)\
+[](bg:#769ff0 fg:#a3aed2)\
+$directory\
+[](fg:#769ff0 bg:#394260)\
+$git_branch\
+$git_status\
+[ ](fg:#394260)"""
+# $python\
+# [ ](fg:#212736)"""
+
+[hostname]
+ssh_only = false
+trim_at = "."
+style = "bold fg:#090c0c bg:#a3aed2"
+format = "[$hostname]($style)"
+
+[username]
+show_always = true
+format = "[$user](bold fg:#090c0c bg:#a3aed2)"
+
+[directory]
+style = "bold fg:#e3e5e5 bg:#769ff0"
+format = "[ $path ]($style)"
+truncation_length = 2
+truncation_symbol = "../"
+home_symbol = "~"
+truncate_to_repo = false
+
+[directory.substitutions]
+"Documents" = "󰈙 "
+"Downloads" = " "
+"Music" = " "
+"Pictures" = " "
+"~" = " "
+
+[git_branch]
+symbol = " "
+style = "bg:#394260"
+format = '[[ $symbol$branch ](bold fg:#769ff0 bg:#394260)]($style)'
+
+[git_status]
+style = "bg:#212736"
+format = '[[($all_status$ahead_behind )](bold fg:#769ff0 bg:#394260)]($style)'
+
+[nodejs]
+symbol = " "
+style = "bg:#212736"
+format = '[[ $symbol ($version) ](fg:#769ff0 bg:#212736)]($style)'
+
+[rust]
+symbol = " "
+style = "bg:#212736"
+format = '[[ $symbol ($version) ](fg:#769ff0 bg:#212736)]($style)'
+
+[golang]
+symbol = " "
+style = "bg:#212736"
+format = '[[ $symbol ($version) ](fg:#769ff0 bg:#212736)]($style)'
+
+[php]
+symbol = " "
+style = "bg:#212736"
+format = '[[ $symbol ($version) ](fg:#769ff0 bg:#212736)]($style)'
+
+[python]
+symbol = " "
+style = "bg:#212736"
+format = '[[ $symbol($version) ](bold fg:#769ff0 bg:#212736)]($style)'
+
