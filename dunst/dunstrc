@@ -1,0 +1,13 @@
+[global]
+    # Show icons/images in notifications
+    icon_position = left
+    max_icon_size = 128
+    
+    # Optional: Make the notification look better
+    width = 300
+    height = (0, 200)
+    offset = (30, 30)
+
+    origin = top-right
+    transparency = 10
+    frame_color = "#89b4fa" # A nice blue border (Catppuccin style)
