@@ -1,40 +1,67 @@
 import Quickshell
 import Quickshell.Hyprland
 import QtQuick
+import QtQuick.Layouts
 
 
 PanelWindow {
-    id: win
-    implicitWidth: 600
-    implicitHeight: 60
+    id: panwin
+    implicitWidth: 750
+    implicitHeight: 500
+    color: "transparent"
     focusable: true
 
     HyprlandFocusGrab {
-        windows: [ win ]
+        windows: [ panwin ]
         active: true
-        onCleared: win.visible = false
+        onCleared: panwin.visible = false
     }
 
+    // Main Geometry root
     Rectangle {
+        id: root
         anchors.fill: parent
         color: "#1e1e2e"
         radius: 12
-        
+        clip: true
 
-        TextInput {
-            id: searchInput
+        ColumnLayout {
             anchors.fill: parent
-            anchors.margins: 16
-            focus: true
-            color: "#cdd6f4"
-            font.pixelSize: 22
-            selectionColor: "#89b4fa"
+            anchors.margins: 20  // "padding" between borders
+            spacing: 20  // "padding" between children
 
-            // Special keys — handled BEFORE TextInput consumes them
-            Keys.priority: Keys.BeforeItem
-            Keys.onReturnPressed: console.log(text)
-            Keys.onTabPressed: win.visible = false
-            Keys.onEscapePressed: Qt.quit()
+            // Top rectangle: text entry
+            Rectangle {
+                Layout.fillWidth: true
+                Layout.preferredHeight: 50
+                color: "#181825"
+                radius: 12
+                
+
+                TextInput {
+                    id: searchInput
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.verticalCenter: parent.verticalCenter  // Center text vertically inside text input
+                    anchors.margins: 16
+                    focus: true
+                    color: "#cdd6f4"
+                    font.pixelSize: 16
+                    
+                    Keys.priority: Keys.BeforeItem
+                    Keys.onReturnPressed: console.log(text)
+                    Keys.onEscapePressed: Qt.quit()
+                }
+            }
+
+            // Search results
+            Rectangle {
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                color: "#181825"
+                
+                // Content goes here
+            }
         }
     }
 }
