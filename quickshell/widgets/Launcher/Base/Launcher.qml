@@ -31,7 +31,10 @@ PanelWindow {
     }
 
     onVisibleChanged: {
-        if (visible) searchInput.forceActiveFocus()
+        if (visible) {
+            searchInput.forceActiveFocus()
+            appList.currentIndex = 0
+        }
         else searchInput.text = ""
     }
 
@@ -62,13 +65,24 @@ PanelWindow {
                     focus: true
                     color: "#cdd6f4"
                     font.pixelSize: 16
+
+                    onTextChanged: appList.currentIndex = 0
+
                     Keys.priority: Keys.BeforeItem
                     Keys.onEscapePressed: panwin.visible = false
                     Keys.onReturnPressed: {
                         if (filteredEntries.length > 0) {
-                            filteredEntries[0].action()
+                            filteredEntries[appList.currentIndex].action()
                             panwin.visible = false
                         }
+                    }
+                    Keys.onUpPressed: {
+                        appList.currentIndex = Math.max(0, appList.currentIndex - 1)
+                        appList.positionViewAtIndex(appList.currentIndex, ListView.Contain)
+                    }
+                    Keys.onDownPressed: {
+                        appList.currentIndex = Math.min(filteredEntries.length - 1, appList.currentIndex + 1)
+                        appList.positionViewAtIndex(appList.currentIndex, ListView.Contain)
                     }
                 }
             }
@@ -87,15 +101,19 @@ PanelWindow {
                     spacing: 8
                     clip: true
                     model: filteredEntries
+                    currentIndex: 0
 
                     delegate: Item {
                         required property var modelData
+                        required property int index
                         height: 52
                         width: ListView.view.width
 
                         Rectangle {
                             anchors.fill: parent
-                            color: mouseArea.containsMouse ? "#313244" : "transparent"
+                            color: index === appList.currentIndex ? "#45475a"
+                                : mouseArea.containsMouse ? "#313244"
+                                : "transparent"
                             radius: 8
 
                             RowLayout {
