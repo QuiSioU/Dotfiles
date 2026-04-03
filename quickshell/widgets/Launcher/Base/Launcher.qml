@@ -142,7 +142,7 @@ PanelWindow {
 
                                         Text {
                                             anchors.centerIn: parent
-                                            text: modelData.name.charAt(0).toUpperCase()
+                                            text: (modelData.name ?? "").charAt(0).toUpperCase()
                                             color: "#cdd6f4"
                                             font.pixelSize: 14
                                             font.weight: Font.Medium

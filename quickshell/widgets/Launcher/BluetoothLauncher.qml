@@ -1,34 +1,28 @@
-import Quickshell.Io
 import QtQuick
+import ElyseanShell.Services
 import "Base"
 
 Launcher {
     id: root
 
-    Process {
-        id: headsetProc
-        command: ["/bin/sh", Qt.resolvedUrl("../../scripts/bluetooth/headset.sh").toString().replace("file://", "")]
-        running: false
+    function rebuildEntries() {
+        const devices = BluetoothDeviceModel.deviceList()
+        console.log("Devices:", JSON.stringify(devices))
+        entries = BluetoothDeviceModel.deviceList().map(dev => ({
+            name:    dev.alias || dev.name,
+            icon:    dev.icon || "",
+            comment: dev.address + " · " + (dev.connected ? "Connected" : "Disconnected"),
+            action:  (function(p) {
+                return () => BluetoothDeviceModel.toggle(p)
+            })(dev.path)
+        }))
     }
 
-    Process {
-        id: dualsenseProc
-        command: ["/bin/sh", Qt.resolvedUrl("../../scripts/bluetooth/dualsense.sh").toString().replace("file://", "")]
-        running: false
-    }
+    Component.onCompleted: rebuildEntries()
 
-    entries: [
-        {
-            name: "Headset",
-            icon: "audio-headset",
-            comment: "Toggle headset bluetooth connection",
-            action: () => headsetProc.running = true
-        },
-        {
-            name: "DualSense",
-            icon: "input-gaming",
-            comment: "Toggle DualSense bluetooth connection",
-            action: () => dualsenseProc.running = true
-        }
-    ]
+    Connections {
+        target: BluetoothDeviceModel
+        function onDataChanged() { root.rebuildEntries() }
+        function onModelReset()  { root.rebuildEntries() }
+    }
 }
