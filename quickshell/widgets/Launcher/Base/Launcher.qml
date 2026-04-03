@@ -26,7 +26,7 @@ PanelWindow {
 
     HyprlandFocusGrab {
         windows: [ panwin ]
-        active: true
+        active: panwin.visible
         onCleared: panwin.visible = false
     }
 

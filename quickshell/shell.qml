@@ -7,16 +7,31 @@ import QtQuick
 
 ShellRoot {
     Loader {
-        id: launcherLoader
+        id: appLauncherLoader
         active: true
         source: "widgets/Launcher/AppLauncher.qml"
     }
 
+    Loader {
+        id: bluetoothLauncherLoader
+        active: true
+        source: "widgets/Launcher/BluetoothLauncher.qml"
+    }
+
     GlobalShortcut {
-        name: "toggleLauncher"
-        description: "Toggle app launcher"
+        name: "toggleAppLauncher"
+        description: "Toggle App launcher"
         onPressed: {
-            var launcher = launcherLoader.item
+            var launcher = appLauncherLoader.item
+            if (launcher) launcher.visible = !launcher.visible
+        }
+    }
+
+    GlobalShortcut {
+        name: "toggleBluetoothLauncher"
+        description: "Toggle Bluetooth launcher"
+        onPressed: {
+            var launcher = bluetoothLauncherLoader.item
             if (launcher) launcher.visible = !launcher.visible
         }
     }
