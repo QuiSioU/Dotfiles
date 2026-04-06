@@ -1,6 +1,8 @@
+/* widgets/AppLauncher.qml */
+
 import Quickshell
 import QtQuick
-import "Base"
+import "base/launcher"
 
 Launcher {
     id: root

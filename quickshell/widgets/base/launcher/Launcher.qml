@@ -1,4 +1,4 @@
-// widgets/Launcher/Base/Launcher.qml
+/* widgets/base/launcher/Launcher.qml */
 
 import Quickshell
 import Quickshell.Hyprland
@@ -6,7 +6,7 @@ import QtQuick
 import QtQuick.Layouts
 
 PanelWindow {
-    id: panwin
+    id: launcher_panwin
     implicitWidth: 750
     implicitHeight: 500
     color: "transparent"
@@ -25,9 +25,9 @@ PanelWindow {
     }
 
     HyprlandFocusGrab {
-        windows: [ panwin ]
-        active: panwin.visible
-        onCleared: panwin.visible = false
+        windows: [ launcher_panwin ]
+        active: launcher_panwin.visible
+        onCleared: launcher_panwin.visible = false
     }
 
     onVisibleChanged: {
@@ -69,11 +69,11 @@ PanelWindow {
                     onTextChanged: appList.currentIndex = 0
 
                     Keys.priority: Keys.BeforeItem
-                    Keys.onEscapePressed: panwin.visible = false
+                    Keys.onEscapePressed: launcher_panwin.visible = false
                     Keys.onReturnPressed: {
                         if (filteredEntries.length > 0) {
                             filteredEntries[appList.currentIndex].action()
-                            panwin.visible = false
+                            launcher_panwin.visible = false
                         }
                     }
                     Keys.onUpPressed: {
@@ -180,7 +180,7 @@ PanelWindow {
                                 hoverEnabled: true
                                 onClicked: {
                                     modelData.action()
-                                    panwin.visible = false
+                                    launcher_panwin.visible = false
                                 }
                             }
                         }

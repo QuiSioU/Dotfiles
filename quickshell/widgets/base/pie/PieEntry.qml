@@ -1,10 +1,9 @@
-// widgets/Launcher/Base/Entry.qml
+/* widgets/base/pie/PieEntry.qml */
 
 import QtQuick
 
 QtObject {
     property string name: ""
     property string icon: ""
-    property string comment: ""
     property var action: () => {}
 }

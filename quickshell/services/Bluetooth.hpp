@@ -1,3 +1,5 @@
+/* services/Bluetooth.hpp */
+
 #ifndef BLUETOOTH_SERVICE_H
 #define BLUETOOTH_SERVICE_H
 
@@ -65,4 +67,4 @@ private:
     QList<BluetoothDevice> m_devices;
 };
 
-#endif
+#endif /* BLUETOOTH_SERVICE_H */

@@ -1,13 +1,13 @@
+/* widgets/BluetoothLauncher.qml */
+
 import QtQuick
 import ElyseanShell.Services
-import "Base"
+import "base/launcher"
 
 Launcher {
     id: root
 
     function rebuildEntries() {
-        const devices = BluetoothDeviceModel.deviceList()
-        console.log("Devices:", JSON.stringify(devices))
         entries = BluetoothDeviceModel.deviceList().map(dev => ({
             name:    dev.alias || dev.name,
             icon:    dev.icon || "",

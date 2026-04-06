@@ -13,8 +13,10 @@ qt_add_qml_module(elyseanshell-services
     VERSION 1.0
     OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/ElyseanShell/Services
     SOURCES
-        services/Bluetooth.cpp
         services/Bluetooth.hpp
+        services/Bluetooth.cpp
+        services/CursorPosition.hpp
+        services/CursorPosition.cpp
 )
 
 target_include_directories(elyseanshell-services PRIVATE
