@@ -1,12 +1,11 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include <dirent.h>
 
 #define BASE_PATH "/sys/class/hwmon"
 
 double read_val(const char* folder, const char* file) {
-    char path[512];
+    char path[600];
     snprintf(path, sizeof(path), "%s/%s", folder, file);
     FILE* f = fopen(path, "r");
     if (!f) return 0;
@@ -26,7 +25,7 @@ int main() {
     while ((entry = readdir(dir)) != NULL) {
         if (entry->d_name[0] == '.') continue;
 
-        char folder[512], name_path[512], name[64];
+        char folder[512], name_path[517], name[64];
         snprintf(folder, sizeof(folder), "%s/%s", BASE_PATH, entry->d_name);
         snprintf(name_path, sizeof(name_path), "%s/name", folder);
         
@@ -39,7 +38,7 @@ int main() {
         if (strstr(name, "coretemp") || strstr(name, "k10temp")) {
             // Check labels for "Package" or "Tdie"
             for (int i = 1; i <= 3; i++) {
-                char lbl_p[512], lbl[64], inp[64];
+                char lbl_p[524], lbl[64], inp[64];
                 snprintf(lbl_p, sizeof(lbl_p), "%s/temp%d_label", folder, i);
                 snprintf(inp, sizeof(inp), "temp%d_input", i);
                 

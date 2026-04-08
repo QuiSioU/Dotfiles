@@ -7,6 +7,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define MAX_PATH_LEN 256
+#define BATTERY "BAT1"
+
 
 void get_battery_info(const char *file_path, long *output) {
     FILE *file;
@@ -64,44 +67,50 @@ void get_icon(long *percentage, const char *status, char *icon) {
 
 
 int main() {
-    long    capacity = 0;           // Battery percentage
-    long    charge_now = 0;         // Battery remaining charge value
-    long    charge_full = 0;        // Battery maximum charge value
-    long    current_now = 0;        // Battery maximum charge value
-    char    status[32] = "Unknown"; // Battery status
-    char    time_left[32];          // Charge/discharge time left
-    char    icon[32];               // Icon based on status and percentage
-    FILE    *status_file;           // Charging status file
+    long    capacity = 0;               // Battery percentage
+    long    charge_now = 0;             // Battery remaining charge value
+    long    charge_full = 0;            // Battery maximum charge value
+    long    current_now = 0;            // Battery maximum charge value
+    char    path_buffer[MAX_PATH_LEN];  // Buffer for file paths
+    char    status[32] = "Unknown";     // Battery status
+    char    time_left[32];              // Charge/discharge time left
+    char    icon[32];                   // Icon based on status and percentage
+    FILE    *status_file;               // Charging status file
     
 
     /***************************************
     *   Get remaining battery percentage   *
     ***************************************/
-    get_battery_info("/sys/class/power_supply/BAT1/capacity", &capacity);
-
+    snprintf(path_buffer, MAX_PATH_LEN, "/sys/class/power_supply/%s/capacity", BATTERY);
+    get_battery_info(path_buffer, &capacity);
+    
 
     /********************************************
     *   Get remaining actual int charge value   *
     ********************************************/
-    get_battery_info("/sys/class/power_supply/BAT1/charge_now", &charge_now);
+    snprintf(path_buffer, MAX_PATH_LEN, "/sys/class/power_supply/%s/charge_now", BATTERY);
+    get_battery_info(path_buffer, &charge_now);
 
 
     /***********************************
     *   Get maximum int charge value   *
     ***********************************/
-    get_battery_info("/sys/class/power_supply/BAT1/charge_full", &charge_full);
+    snprintf(path_buffer, MAX_PATH_LEN, "/sys/class/power_supply/%s/charge_full", BATTERY);
+    get_battery_info(path_buffer, &charge_full);
 
 
     /**************************************
     *   Get actual charge/discharge rate  *
     **************************************/
-    get_battery_info("/sys/class/power_supply/BAT1/current_now", &current_now);
+    snprintf(path_buffer, MAX_PATH_LEN, "/sys/class/power_supply/%s/current_now", BATTERY);
+    get_battery_info(path_buffer, &current_now);
 
 
     /**********************************************************
     *   Get battery status: "Charging", "Not charging", ...   *
     **********************************************************/
-    if ((status_file = fopen("/sys/class/power_supply/BAT1/status", "r")) != NULL) {
+    snprintf(path_buffer, MAX_PATH_LEN, "/sys/class/power_supply/%s/status", BATTERY);
+    if ((status_file = fopen(path_buffer, "r")) != NULL) {
         if (fgets(status, sizeof(status), status_file)) {
             status[strcspn(status, "\n")] = 0;
         }
