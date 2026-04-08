@@ -1,0 +1,12 @@
+{
+  "clangd.path": "clangd",
+  "clangd.arguments": ["--background-index"],
+  "clangd.inlayHints.enable": false,
+  "inlayHint.enable": false,
+  "python.pythonPath": "/usr/bin/python3.13",
+  "python.linting.enabled": true,
+  "python.linting.pylintEnabled": true,
+  "python.linting.pylintPath": "pylint",
+  "python.formatting.provider": "black",
+  "python.formatting.blackPath": "black"
+}
