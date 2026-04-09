@@ -4,8 +4,11 @@ import Quickshell
 import Quickshell.Hyprland
 import QtQuick
 import ElyseanShell.Services
+import "./themes"
 
 ShellRoot {
+    WitcherTokyoNight {}
+
     Loader {
         id: appLauncherLoader
         active: true
