@@ -1,12 +1,11 @@
 #!/bin/sh
 
-# setup.sh
+# hypr/setup.sh
 
 # Generates the user/ directory with empty override files
 # Run this once after cloning the dotfiles repo
 
-HYPR_DIR="$HOME/.config/hypr"
-USER_DIR="$HYPR_DIR/user"
+USER_DIR="$HOME/.config/hypr/user"
 
 mkdir -p "$USER_DIR"
 
@@ -36,7 +35,7 @@ echo "Setting up user/ overrides in $USER_DIR..."
 echo ""
 
 create_file "env.conf"              "ENVIRONMENT VARIABLES CONFIGURATION"
-create_file "variables.conf"         "GENERAL SETTINGS"
+create_file "variables.conf"        "GENERAL SETTINGS"
 create_file "monitors.conf"         "MONITORS CONFIGURATION"
 create_file "look-and-feel.conf"    "LOOK AND FEEL CONFIGURATION"
 create_file "input.conf"            "INPUT CONFIGURATION"
