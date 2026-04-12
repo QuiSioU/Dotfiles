@@ -1,0 +1,5 @@
+# themes/user/qmldir
+
+Foo 1.0 Foo.qml # Remove when created at least one custom theme
+# Rest of custom themes...
+

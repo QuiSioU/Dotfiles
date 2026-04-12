@@ -1,23 +1,28 @@
 import QtQuick
 import Quickshell
 import Quickshell.Wayland
+import "default"
+import "user"
 
 PanelWindow {
-    id: wallpaperWindow
-    
     WlrLayershell.layer: WlrLayer.Background
     WlrLayershell.exclusionMode: ExclusionMode.Ignore
-    
+
     anchors {
-        top: true
-        bottom: true
-        left: true
+        top: true;
+        bottom: true;
+        left: true;
         right: true
+    }
+
+    // to change theme, swap "WitcherTokyoNight" → "MyTheme" (located in themes/user, imported above)
+    WitcherTokyoNight {
+        id: theme
     }
 
     Image {
         anchors.fill: parent
-        source: "../assets/wallpapers/Witcher_wallpaper2.jpg"
+        source: theme.wallpaper
         fillMode: Image.PreserveAspectCrop
     }
 }

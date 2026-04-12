@@ -7,7 +7,7 @@ import ElyseanShell.Services
 import "./themes"
 
 ShellRoot {
-    WitcherTokyoNight {}
+    ActiveTheme {}
 
     Loader {
         id: appLauncherLoader
