@@ -35,4 +35,4 @@ $(OBJDIR)/%.o: $(SRC)/%.c
 
 
 clean:
-	rm -rf $(BUILD)
+	rm -rf $(BUILD) .cache

@@ -1,6 +1,8 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
-# setup.sh — generates the user/ directory with empty override files
+# setup.sh
+
+# Generates the user/ directory with empty override files
 # Run this once after cloning the dotfiles repo
 
 HYPR_DIR="$HOME/.config/hypr"
@@ -34,7 +36,7 @@ echo "Setting up user/ overrides in $USER_DIR..."
 echo ""
 
 create_file "env.conf"              "ENVIRONMENT VARIABLES CONFIGURATION"
-create_file "settings.conf"         "GENERAL SETTINGS"
+create_file "variables.conf"         "GENERAL SETTINGS"
 create_file "monitors.conf"         "MONITORS CONFIGURATION"
 create_file "look-and-feel.conf"    "LOOK AND FEEL CONFIGURATION"
 create_file "input.conf"            "INPUT CONFIGURATION"
