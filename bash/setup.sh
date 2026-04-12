@@ -17,8 +17,8 @@ for dir in bash*.sh; do
     elif [ -e "$target" ]; then
         echo ">>> $dir: $target already exists and is not a symlink, skipping"
     else
-        ln -s "$ROOT_DIR/$dir" "$target"
-        echo ">>> $dir: linked $ROOT_DIR/$dir -> $target"
+        ln -s "$HOME/.config/bash/$dir" "$target"
+        echo ">>> $dir: linked $HOME/.config/bash/$dir -> $target"
     fi
 done
 
