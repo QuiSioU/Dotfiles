@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # eww/setup.sh
 
