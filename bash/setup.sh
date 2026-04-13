@@ -1,25 +1,52 @@
 #!/bin/bash
 
 # bash/setup.sh
+echo "╔═══════════════════════════════╗"
+echo "║ Setting up bash configuration ║"
+echo "╚═══════════════════════════════╝"
+echo ""
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$ROOT_DIR"
 
-echo "Running setup scripts from $ROOT_DIR..."
-echo ""
+echo "Creating private scripts..."
 
-for dir in bash*.sh; do
-    target="$HOME/.$(basename "${dir%.sh}")"
-
-    # Create symlink in ~ (home)
-    if [ -L "$target" ]; then
-        echo ">>> $dir: symlink already exists, skipping"
-    elif [ -e "$target" ]; then
-        echo ">>> $dir: $target already exists and is not a symlink, skipping"
+for bash_file in bash*_priv.sh; do
+    if [ -L "$bash_file" ]; then
+        echo "    skipped    $ROOT_DIR/$bash_file: file already exists (symlink)"
+    elif [ -e "$bash_file" ]; then
+        echo "    skipped    $ROOT_DIR/$bash_file: file already exists (not symlink)"
     else
-        ln -s "$HOME/.config/bash/$dir" "$target"
-        echo ">>> $dir: linked $HOME/.config/bash/$dir -> $target"
+    cat > "$bash_file" <<EOF
+#!/bin/bash
+
+# bash/$bash_file
+
+
+# Place your private stuff here...
+
+EOF
+    echo "    created    $ROOT_DIR/$bash_file"
+fi
+done
+
+echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌"
+
+
+echo "Linking scripts..."
+
+for bash_file in bash*.sh; do
+    target="$HOME/.${bash_file%.sh}"
+    if [ -L "$target" ]; then
+        echo "    skipped    $target: file already exists (symlink)"
+    elif [ -e "$target" ]; then
+        echo "    skipped    $target: file already exists (not symlink)"
+    else
+        ln -s "$HOME/.config/bash/$bash_file" "$target"
+        echo "    linked     $HOME/.config/bash/$bash_file -> $target"
     fi
 done
 
-echo "All done!"
+echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌"
+
+echo "Bash configured successfully!"

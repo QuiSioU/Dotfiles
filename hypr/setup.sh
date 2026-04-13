@@ -2,9 +2,6 @@
 
 # hypr/setup.sh
 
-# Generates the user/ directory with empty override files
-# Run this once after cloning the dotfiles repo
-
 USER_DIR="$HOME/.config/hypr/user"
 
 mkdir -p "$USER_DIR"
@@ -15,7 +12,7 @@ create_file() {
     local filepath="$USER_DIR/$filename"
 
     if [ -f "$filepath" ]; then
-        echo "  skipped   $filepath (already exists)"
+        echo "    skipped    $filepath:  file already exists"
         return
     fi
 
@@ -29,10 +26,15 @@ create_file() {
 EOF
 
     echo "  created   $filepath"
+    echo "--------------------------------------------------------------------------------------"
 }
 
-echo "Setting up user/ overrides in $USER_DIR..."
+echo "╔═══════════════════════════════════╗"
+echo "║ Setting up hyprland configuration ║"
+echo "╚═══════════════════════════════════╝"
 echo ""
+
+echo "Creating override files in hypr/user/ directory..."
 
 create_file "env.conf"              "ENVIRONMENT VARIABLES CONFIGURATION"
 create_file "variables.conf"        "GENERAL SETTINGS"
@@ -43,5 +45,7 @@ create_file "keybinds.conf"         "KEYBINDS CONFIGURATION"
 create_file "windowrules.conf"      "WINDOW RULES CONFIGURATION"
 create_file "autostart.conf"        "AUTO START CONFIGURATION"
 
-echo ""
-echo "Done! Edit files in $USER_DIR to override defaults."
+echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌"
+
+echo "Hyprland configured successfully!"
+echo "Edit files in $USER_DIR to override defaults."

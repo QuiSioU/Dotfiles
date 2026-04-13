@@ -1,4 +1,6 @@
-# bashrc
+#!/bin/bash
+
+# bash/bashrc.sh
 
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
