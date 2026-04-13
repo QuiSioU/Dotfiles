@@ -49,3 +49,4 @@ echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌�
 
 echo "Hyprland configured successfully!"
 echo "Edit files in $USER_DIR to override defaults."
+
