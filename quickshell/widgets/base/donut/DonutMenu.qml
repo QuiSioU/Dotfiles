@@ -1,4 +1,4 @@
-/* widgets/base/pie/PieMenu.qml */
+/* widgets/base/donut/DonutMenu.qml */
 
 import Quickshell
 import Quickshell.Hyprland
@@ -6,7 +6,7 @@ import QtQuick
 import ElyseanShell.Services
 
 PanelWindow {
-    id: pie_panwin
+    id: donut_panwin
     color: "transparent"
     visible: false
     focusable: true
@@ -29,9 +29,9 @@ PanelWindow {
     }
 
     HyprlandFocusGrab {
-        windows: [ pie_panwin ]
-        active: pie_panwin.visible
-        onCleared: pie_panwin.visible = false
+        windows: [ donut_panwin ]
+        active: donut_panwin.visible
+        onCleared: donut_panwin.visible = false
     }
 
     onVisibleChanged: {
@@ -46,19 +46,19 @@ PanelWindow {
         focus: true
 
         // Keyboard cancel
-        Keys.onEscapePressed: pie_panwin.visible = false
+        Keys.onEscapePressed: donut_panwin.visible = false
 
         MouseArea {
             anchors.fill: parent
             hoverEnabled: true
 
             onPositionChanged: mouse => {
-                const dx = mouse.x - pie_panwin.centerX
-                const dy = mouse.y - pie_panwin.centerY
+                const dx = mouse.x - donut_panwin.centerX
+                const dy = mouse.y - donut_panwin.centerY
                 const dist = Math.sqrt(dx * dx + dy * dy)
 
-                if (dist < pie_panwin.innerRadius || entries.length === 0) {
-                    pie_panwin.hoveredIndex = -1
+                if (dist < donut_panwin.innerRadius || entries.length === 0) {
+                    donut_panwin.hoveredIndex = -1
                     return
                 }
 
@@ -67,32 +67,32 @@ PanelWindow {
                 if (angle < 0) angle += 360
 
                 const sliceAngle = 360 / entries.length
-                pie_panwin.hoveredIndex = Math.floor(angle / sliceAngle)
+                donut_panwin.hoveredIndex = Math.floor(angle / sliceAngle)
             }
 
             onClicked: mouse => {
-                const dx = mouse.x - pie_panwin.centerX
-                const dy = mouse.y - pie_panwin.centerY
+                const dx = mouse.x - donut_panwin.centerX
+                const dy = mouse.y - donut_panwin.centerY
                 const dist = Math.sqrt(dx * dx + dy * dy)
 
-                if (dist >= pie_panwin.innerRadius &&
-                    dist <= pie_panwin.radius &&
-                    pie_panwin.hoveredIndex >= 0 &&
-                    pie_panwin.hoveredIndex < entries.length) {
-                    entries[pie_panwin.hoveredIndex].action()
+                if (dist >= donut_panwin.innerRadius &&
+                    dist <= donut_panwin.radius &&
+                    donut_panwin.hoveredIndex >= 0 &&
+                    donut_panwin.hoveredIndex < entries.length) {
+                    entries[donut_panwin.hoveredIndex].action()
                 }
-                pie_panwin.visible = false
+                donut_panwin.visible = false
             }
         }
 
-        // Pie slices
+        // Donut slices
         Repeater {
             model: entries.length
 
             Canvas {
                 anchors.fill: parent
                 property int sliceIndex: index
-                property bool hovered: sliceIndex === pie_panwin.hoveredIndex
+                property bool hovered: sliceIndex === donut_panwin.hoveredIndex
 
                 onHoveredChanged: requestPaint()
 
@@ -109,8 +109,8 @@ PanelWindow {
                     if (width === 0 || height === 0) return
 
                     ctx.beginPath()
-                    ctx.arc(pie_panwin.centerX, pie_panwin.centerY, pie_panwin.innerRadius, startAngle, endAngle)
-                    ctx.arc(pie_panwin.centerX, pie_panwin.centerY, pie_panwin.radius, endAngle, startAngle, true)
+                    ctx.arc(donut_panwin.centerX, donut_panwin.centerY, donut_panwin.innerRadius, startAngle, endAngle)
+                    ctx.arc(donut_panwin.centerX, donut_panwin.centerY, donut_panwin.radius, endAngle, startAngle, true)
                     ctx.closePath()
 
                     ctx.fillStyle = hovered ? "#45475a" : '#c826263e'
@@ -136,16 +136,16 @@ PanelWindow {
                 z: 2
                 property real sliceAngle: (2 * Math.PI) / entries.length
                 property real midAngle: index * sliceAngle - Math.PI / 2 + sliceAngle / 2
-                property real labelRadius: (pie_panwin.radius + pie_panwin.innerRadius) / 2
+                property real labelRadius: (donut_panwin.radius + donut_panwin.innerRadius) / 2
 
-                x: pie_panwin.centerX + Math.cos(midAngle) * labelRadius - 40
-                y: pie_panwin.centerY + Math.sin(midAngle) * labelRadius - 12
+                x: donut_panwin.centerX + Math.cos(midAngle) * labelRadius - 40
+                y: donut_panwin.centerY + Math.sin(midAngle) * labelRadius - 12
 
                 Text {
                     width: 80
                     horizontalAlignment: Text.AlignHCenter
                     text: entries[index].name
-                    color: index === pie_panwin.hoveredIndex ? "#cdd6f4" : "#6c7086"
+                    color: index === donut_panwin.hoveredIndex ? "#cdd6f4" : "#6c7086"
                     font.pixelSize: 12
                     font.weight: Font.Medium
                 }

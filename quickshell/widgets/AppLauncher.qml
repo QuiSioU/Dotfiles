@@ -23,5 +23,6 @@ Launcher {
                 comment: app.comment ?? "",
                 action: (function(a) { return () => a.execute() })(app)
             }))
+            .sort((a, b) => a.name.localeCompare(b.name))
     }
 }

@@ -1,4 +1,0 @@
-# widgets/base/pie/qmldir
-
-PieMenu 1.0 PieMenu.qml
-PieEntry 1.0 PieEntry.qml

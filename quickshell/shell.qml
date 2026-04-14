@@ -47,15 +47,15 @@ ShellRoot {
 
     GlobalShortcut {
         name: "toggleSessionMenu"
-        description: "Session pie menu"
+        description: "Session donut menu"
         onPressed: {
-            var pie = sessionMenuLoader.item
-            if (!pie) return
+            var donut = sessionMenuLoader.item
+            if (!donut) return
 
-            if (!pie.visible) {
+            if (!donut.visible) {
                 CursorPosition.update()
             } else {
-                pie.visible = false
+                donut.visible = false
             }
         }
     }
@@ -63,9 +63,9 @@ ShellRoot {
     Connections {
         target: CursorPosition
         function onReady() {
-            var pie = sessionMenuLoader.item
-            if (!pie) return
-            if (!pie.visible) pie.visible = true
+            var donut = sessionMenuLoader.item
+            if (!donut) return
+            if (!donut.visible) donut.visible = true
         }
     }
 }

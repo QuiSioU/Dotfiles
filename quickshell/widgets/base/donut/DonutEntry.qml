@@ -1,4 +1,4 @@
-/* widgets/base/pie/PieEntry.qml */
+/* widgets/base/donut/DonutEntry.qml */
 
 import QtQuick
 

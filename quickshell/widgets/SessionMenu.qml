@@ -2,9 +2,9 @@
 
 import QtQuick
 import Quickshell.Io
-import "base/pie"
+import "base/donut"
 
-PieMenu {
+DonutMenu {
     entries: [
         {
             name: "Logout",
