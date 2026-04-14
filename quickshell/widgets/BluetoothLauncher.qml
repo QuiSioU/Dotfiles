@@ -5,7 +5,7 @@ import QtQuick
 import ElyseanShell.Services
 import "base/launcher"
 
-Launcher {
+LauncherMenu {
     id: root
 
     function rebuildEntries() {

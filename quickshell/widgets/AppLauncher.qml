@@ -5,7 +5,7 @@ import Quickshell
 import QtQuick
 import "base/launcher"
 
-Launcher {
+LauncherMenu {
     id: root
 
     Component.onCompleted: rebuildEntries()

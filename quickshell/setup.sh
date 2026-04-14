@@ -21,7 +21,8 @@ if [ -f "$USER_DIR/qmldir" ]; then
     echo "    skipped    $USER_DIR/qmldir: file already exists"
 else
     cat > "$USER_DIR/qmldir" <<EOF
-# themes/user/qmldir
+# quickshell/themes/user/qmldir
+
 
 # (Must have at least 1 theme so QML detects this as directory)
 
@@ -36,7 +37,8 @@ if [ -f "$USER_DIR/PlatypusTokyoNight.qml" ]; then
     echo "    skipped    $USER_DIR/PlatypusTokyoNight.qml: file already exists"
 else
     cat > "$USER_DIR/PlatypusTokyoNight.qml" <<EOF
-// themes/user/PlatypusTokyoNight.qml
+// quickshell/themes/user/PlatypusTokyoNight.qml
+
 
 import QtQuick
 
@@ -52,7 +54,8 @@ if [ -f "$THEME_DIR/ActiveTheme.qml" ]; then
     echo "    skipped    $THEME_DIR/ActiveTheme.qml: file already exists"
 else
     cat > "$THEME_DIR/ActiveTheme.qml" <<EOF
-// themes/ActiveTheme.qml
+// quickshell/themes/ActiveTheme.qml
+
 
 pragma Singleton
 

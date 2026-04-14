@@ -1,5 +1,5 @@
 # quickshell/widgets/base/launcher/qmldir
 
 
-Launcher 1.0 Launcher.qml
+LauncherMenu 1.0 LauncherMenu.qml
 LauncherEntry 1.0 LauncherEntry.qml

@@ -1,4 +1,4 @@
-/* quickshell/widgets/base/launcher/Launcher.qml */
+/* quickshell/widgets/base/launcher/LauncherMenu.qml */
 
 
 import Quickshell
