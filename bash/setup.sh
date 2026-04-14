@@ -9,47 +9,49 @@ echo ""
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$ROOT_DIR"
 
-echo "Creating private scripts..."
+echo "Creating user scripts directory structure..."
 
-priv_scripts=("bash_aliases_priv.sh" "bash_env_priv.sh")
-for bash_file in "${priv_scripts[@]}"; do
-    if [ -L "$bash_file" ]; then
-        echo "    skipped    $ROOT_DIR/$bash_file: file already exists (symlink)"
-    elif [ -e "$bash_file" ]; then
-        echo "    skipped    $ROOT_DIR/$bash_file: file already exists (not symlink)"
-    else
-    	cat > "$bash_file" <<EOF
+mkdir -p "$ROOT_DIR/user"
+private_script="$ROOT_DIR/user/bash_private.sh"
+
+if [ -L "$private_script" ]; then
+    echo "    skipped    $ROOT_DIR/$private_script: file already exists (symlink)"
+elif [ -e "$private_script" ]; then
+    echo "    skipped    $ROOT_DIR/$private_script: file already exists (not symlink)"
+else
+    cat > "$private_script" <<EOF
 #!/bin/bash
 
-# bash/$bash_file
+# bash/bash_private.sh
 
 
 # Place your private stuff here...
 
 EOF
-    echo "    created    $ROOT_DIR/$bash_file"
+    echo "    created    $private_script"
 fi
-done
 
 echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌"
 
 
-echo "Linking scripts..."
+echo "Linking main scripts..."
 
 shopt -s nullglob
-for bash_file in bash*.sh; do
-    target="$HOME/.${bash_file%.sh}"
+for bash_file in "$HOME"/.config/bash/bash*.sh; do
+    filename=$(basename "$bash_file")
+    target="$HOME/.${filename%.sh}"
+
     if [ -L "$target" ]; then
         echo "    skipped    $target: file already exists (symlink)"
     elif [ -e "$target" ]; then
         echo "    skipped    $target: file already exists (not symlink)"
     else
-        ln -s "$HOME/.config/bash/$bash_file" "$target"
-        echo "    linked     $HOME/.config/bash/$bash_file -> $target"
+        ln -s "$bash_file" "$target"
+        echo "    linked     $bash_file -> $target"
     fi
 done
+shopt -u nullglob
 
 echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌"
 
 echo "Bash configured successfully!"
-
