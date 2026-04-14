@@ -2,3 +2,5 @@
 .clangd
 build
 ElyseanShell
+themes/user
+themes/ActiveTheme.qml
