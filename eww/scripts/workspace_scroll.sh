@@ -1,4 +1,6 @@
 #!/bin/bash
+# eww/scripts/workspace_scroll.sh
+
 
 # Get the current workspace ID from Hyprland
 current=$(hyprctl activeworkspace -j | jq '.id')

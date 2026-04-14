@@ -1,4 +1,5 @@
-/* widgets/base/donut/DonutMenu.qml */
+/* quickshell/widgets/base/donut/DonutMenu.qml */
+
 
 import Quickshell
 import Quickshell.Hyprland

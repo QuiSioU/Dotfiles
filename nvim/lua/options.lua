@@ -1,4 +1,5 @@
--- options.lua
+-- nvim/lua/options.lua
+
 
 local opt = vim.opt
 

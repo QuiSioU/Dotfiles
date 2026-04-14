@@ -1,4 +1,5 @@
-// themes/default/WitcherTokyoNight.qml
+/* quickshell/themes/default/WitcherTokyoNight.qml */
+
 
 import QtQuick
 

@@ -1,3 +1,6 @@
+/* eww/src/get_netinfo.c */
+
+
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>

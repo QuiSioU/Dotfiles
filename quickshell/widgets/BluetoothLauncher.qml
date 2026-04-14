@@ -1,4 +1,5 @@
-/* widgets/BluetoothLauncher.qml */
+/* quickshell/widgets/BluetoothLauncher.qml */
+
 
 import QtQuick
 import ElyseanShell.Services

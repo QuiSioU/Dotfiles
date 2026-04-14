@@ -1,3 +1,6 @@
+/* eww/src/get_netlist.c */
+
+
 #include <stdio.h>
 #include <NetworkManager.h>
 

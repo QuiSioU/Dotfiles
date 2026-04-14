@@ -1,6 +1,6 @@
 #!/bin/bash
-
 # bash/bash_aliases.sh
+
 
 alias pubip='curl ipinfo.io/ip && echo'
 alias srcrst='source ~/.bashrc'

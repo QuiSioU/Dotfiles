@@ -1,3 +1,6 @@
+# eww/.gitignore
+
+
 bin
 compile_commands.json
 .cache

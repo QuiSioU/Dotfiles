@@ -1,4 +1,5 @@
--- keymaps.lua
+-- nvim/lua/keymaps.lua
+
 
 local map = vim.keymap.set
 

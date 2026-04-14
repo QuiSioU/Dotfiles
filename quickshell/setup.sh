@@ -1,6 +1,6 @@
 #!/bin/bash
-
 # quickshell/setup.sh
+
 
 echo "╔═════════════════════════════════════╗"
 echo "║ Setting up quickshell configuration ║"

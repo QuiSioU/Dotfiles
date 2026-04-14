@@ -1,6 +1,8 @@
+# eww/Makefile
+
+
 CC = gcc
 FLAGS = -Wall -Wextra -std=c17 -O3 -march=native -s
-INCLUDES = ./include
 SRC = ./src
 BUILD = ./bin
 OBJDIR = $(BUILD)/obj
@@ -29,7 +31,7 @@ $(BUILD)/%: $(OBJDIR)/%.o
 
 $(OBJDIR)/%.o: $(SRC)/%.c
 	@mkdir -p $(OBJDIR) $(DEPDIR)
-	$(CC) $(FLAGS) -I$(INCLUDES) -MMD -MP -c $< -o $@ -MF $(DEPDIR)/$*.d
+	$(CC) $(FLAGS) -MMD -MP -c $< -o $@ -MF $(DEPDIR)/$*.d
 
 -include $(wildcard $(DEPDIR)/*.d)
 

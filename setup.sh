@@ -1,6 +1,6 @@
 #!/bin/bash
-
 # setup.sh
+
 
 DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CONFIG_DIR="$HOME/.config"

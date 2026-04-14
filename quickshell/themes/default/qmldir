@@ -1,3 +1,4 @@
-# themes/default/qmldir
+# quickshell/themes/default/qmldir
+
 
 WitcherTokyoNight 1.0 WitcherTokyoNight.qml

@@ -1,3 +1,6 @@
+;; eww/config/theme2.yuck
+
+
 (defvar terminal_cmd "kitty")
 (defvar active_ws "1")
 

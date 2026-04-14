@@ -1,4 +1,5 @@
-/* widgets/AppLauncher.qml */
+/* quickshell/widgets/AppLauncher.qml */
+
 
 import Quickshell
 import QtQuick

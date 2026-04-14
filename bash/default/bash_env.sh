@@ -1,6 +1,6 @@
 #!/bin/bash
-
 # bash/bash_env.sh
+
 
 # Default terminal code editor
 export EDITOR="nvim"

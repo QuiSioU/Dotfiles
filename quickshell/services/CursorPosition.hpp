@@ -1,4 +1,5 @@
-/* services/CursorPosition.hpp */
+/* quickshell/services/CursorPosition.hpp */
+
 
 #ifndef CURSOR_POSITION_SERVICE_H
 #define CURSOR_POSITION_SERVICE_H

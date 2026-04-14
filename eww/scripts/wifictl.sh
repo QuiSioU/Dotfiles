@@ -1,4 +1,6 @@
 #!/bin/bash
+# eww/scripts/wifictl.sh
+
 
 NETLIST_BIN="./bin/get_netlist"
 

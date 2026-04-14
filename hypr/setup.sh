@@ -1,6 +1,6 @@
 #!/bin/bash
-
 # hypr/setup.sh
+
 
 USER_DIR="$HOME/.config/hypr/user"
 
@@ -15,8 +15,7 @@ create_file() {
     fi
 
     cat > "$filepath" <<EOF
-# user/$filename
-
+# hypr/user/$filename
 
 
 # --- USER'S CUSTOM $title --------------------------- #

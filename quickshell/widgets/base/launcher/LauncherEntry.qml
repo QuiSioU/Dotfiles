@@ -1,4 +1,5 @@
-/* widgets/base/launcher/LauncherEntry.qml */
+/* quickshell/widgets/base/launcher/LauncherEntry.qml */
+
 
 import QtQuick
 

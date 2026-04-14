@@ -1,3 +1,6 @@
+/* eww/src/set_brightness.c */
+
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <getopt.h>

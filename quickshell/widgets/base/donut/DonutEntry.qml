@@ -1,4 +1,5 @@
-/* widgets/base/donut/DonutEntry.qml */
+/* quickshell/widgets/base/donut/DonutEntry.qml */
+
 
 import QtQuick
 

@@ -1,3 +1,6 @@
+;; eww/config/theme1.yuck
+
+
 ;; ----- CLOCK WIDGET ----- ;;
 
 ;; Datetime data gather every 1 second

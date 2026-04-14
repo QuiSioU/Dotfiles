@@ -1,4 +1,5 @@
-/* shell.qml */
+/* quickshell/shell.qml */
+
 
 import Quickshell
 import Quickshell.Hyprland

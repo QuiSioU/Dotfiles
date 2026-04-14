@@ -1,3 +1,6 @@
+# starship/starship.toml
+
+
 # add_newline = false
 
 format = """

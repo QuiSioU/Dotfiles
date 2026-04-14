@@ -1,6 +1,6 @@
 #!/bin/bash
-
 # bash/bash_functions.sh
+
 
 # Import auto completions for personal functions
 [[ -f "$HOME/.bash_completions" ]] && . "$HOME/.bash_completions"

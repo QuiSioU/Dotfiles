@@ -1,4 +1,5 @@
-/* services/Bluetooth.hpp */
+/* quickshell/services/Bluetooth.hpp */
+
 
 #ifndef BLUETOOTH_SERVICE_H
 #define BLUETOOTH_SERVICE_H

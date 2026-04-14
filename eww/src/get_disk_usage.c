@@ -1,3 +1,6 @@
+/* eww/src/get_disk_usage.c */
+
+
 #include <stdio.h>
 #include <sys/statvfs.h>
 

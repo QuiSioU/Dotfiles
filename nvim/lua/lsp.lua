@@ -1,4 +1,5 @@
--- lsp.lua
+-- nvim/lua/lsp.lua
+
 
 -- Uses vim.lsp.config (nvim 0.11+) instead of the deprecated lspconfig framework
 

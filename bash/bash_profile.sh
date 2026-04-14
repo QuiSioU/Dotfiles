@@ -1,6 +1,6 @@
 #!/bin/bash
-
 # bash/bash_profile.sh
+
 
 [[ -f "$HOME/.bashrc" ]] && source "$HOME/.bashrc"
 

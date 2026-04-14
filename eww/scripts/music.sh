@@ -1,4 +1,7 @@
 #!/bin/bash
+# eww/scripts/music.sh
+
+
 base_dir="$HOME/.config/eww/"
 image_file="${base_dir}image.jpg"
 

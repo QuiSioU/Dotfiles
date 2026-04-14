@@ -1,6 +1,6 @@
 #!/bin/bash
-
 # bash/bash_completions.sh
+
 
 _bthdevs_auto_completions() {
     # Grab all MAC addresses of paired devices

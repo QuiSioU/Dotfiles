@@ -1,3 +1,6 @@
+/* eww/src/get_battery.c */
+
+
 /*
     Check in /sys/class/power_supply/ if you have BAT0 or BAT1,
     and adapt code to match your existing files

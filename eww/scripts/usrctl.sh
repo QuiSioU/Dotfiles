@@ -1,4 +1,6 @@
 #!/bin/bash
+# eww/scripts/userctl.sh
+
 
 if [[ -z $(eww active-windows | grep 'usrctl') ]]; then
     /usr/bin/eww open usrctl && /usr/bin/eww update ctlrev=true

@@ -1,4 +1,5 @@
-/* services/CursorPosition.cpp */
+/* quickshell/services/CursorPosition.cpp */
+
 
 #include "CursorPosition.hpp"
 #include <QByteArray>

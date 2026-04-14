@@ -1,3 +1,6 @@
+# swayosd/config.toml
+
+
 [server]
 ## style file for the OSD
 # style = /etc/xdg/swayosd/style.css

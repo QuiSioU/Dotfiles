@@ -1,4 +1,5 @@
-// themes/ThemeLoader.qml
+/* quickshell/themes/ThemeLoader.qml */
+
 
 import QtQuick
 import Quickshell

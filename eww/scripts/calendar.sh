@@ -1,4 +1,6 @@
 #!/bin/bash
+# eww/scripts/calendar.sh
+
 
 if [[ -z $(eww active-windows | grep 'calendar') ]]; then
     /usr/bin/eww open calendar && /usr/bin/eww update calrev=true

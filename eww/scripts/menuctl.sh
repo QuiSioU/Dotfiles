@@ -1,4 +1,6 @@
 #!/bin/bash
+# eww/scripts/menuctl.sh
+
 
 if [[ -z $(eww active-windows | grep 'menuctl') ]]; then
     /usr/bin/eww open menuctl && /usr/bin/eww update menurev=true

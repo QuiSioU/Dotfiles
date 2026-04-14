@@ -1,6 +1,6 @@
 #!/bin/bash
-
 # eww/setup.sh
+
 
 echo "╔══════════════════════════════╗"
 echo "║ Setting up eww configuration ║"

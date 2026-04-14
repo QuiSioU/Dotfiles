@@ -1,3 +1,6 @@
+/* eww/src/get_cpu_usage.c */
+
+
 #define _DEFAULT_SOURCE
 #include <stdio.h>
 #include <unistd.h>

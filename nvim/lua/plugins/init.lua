@@ -1,4 +1,5 @@
--- plugins/init.lua
+-- nvim/lua/plugins/init.lua
+
 
 return {
   --- LSP ------------------------------------------------------------------

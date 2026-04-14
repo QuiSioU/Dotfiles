@@ -1,4 +1,5 @@
-/* widgets/SessionMenu.qml */
+/* quickshell/widgets/SessionMenu.qml */
+
 
 import QtQuick
 import Quickshell.Io

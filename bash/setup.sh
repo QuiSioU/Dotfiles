@@ -1,6 +1,7 @@
 #!/bin/bash
-
 # bash/setup.sh
+
+
 echo "╔═══════════════════════════════╗"
 echo "║ Setting up bash configuration ║"
 echo "╚═══════════════════════════════╝"
@@ -21,7 +22,6 @@ elif [ -e "$private_script" ]; then
 else
     cat > "$private_script" <<EOF
 #!/bin/bash
-
 # bash/bash_private.sh
 
 
