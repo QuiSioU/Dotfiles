@@ -4,8 +4,6 @@
 
 USER_DIR="$HOME/.config/hypr/user"
 
-mkdir -p "$USER_DIR"
-
 create_file() {
     local filename="$1"
     local title="$2"
@@ -29,12 +27,17 @@ EOF
     echo "--------------------------------------------------------------------------------------"
 }
 
+
+
+
 echo "╔═══════════════════════════════════╗"
 echo "║ Setting up hyprland configuration ║"
 echo "╚═══════════════════════════════════╝"
 echo ""
 
 echo "Creating override files in hypr/user/ directory..."
+
+mkdir -p "$USER_DIR"
 
 create_file "env.conf"              "ENVIRONMENT VARIABLES CONFIGURATION"
 create_file "variables.conf"        "GENERAL SETTINGS"

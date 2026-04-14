@@ -7,7 +7,7 @@ import ElyseanShell.Services
 import "./themes"
 
 ShellRoot {
-    ActiveTheme {}
+    ThemeLoader {}
 
     Loader {
         id: appLauncherLoader

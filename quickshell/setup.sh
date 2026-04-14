@@ -54,33 +54,13 @@ else
     cat > "$THEME_DIR/ActiveTheme.qml" <<EOF
 // themes/ActiveTheme.qml
 
+pragma Singleton
+
 import QtQuick
-import Quickshell
-import Quickshell.Wayland
-import "default"
-import "user"
 
-PanelWindow {
-    WlrLayershell.layer: WlrLayer.Background
-    WlrLayershell.exclusionMode: ExclusionMode.Ignore
-
-    anchors {
-        top: true;
-        bottom: true;
-        left: true;
-        right: true
-    }
-
-    // to change theme, swap "WitcherTokyoNight" → "MyTheme" (located in themes/user, imported above)
-    WitcherTokyoNight {
-        id: theme
-    }
-
-    Image {
-        anchors.fill: parent
-        source: theme.wallpaper
-        fillMode: Image.PreserveAspectCrop
-    }
+QtObject {
+    // User just changes this string to "user/PlatypusTokyoNight" or whatever they want
+    readonly property string themePath: "default/WitcherTokyoNight.qml"
 }
 
 EOF

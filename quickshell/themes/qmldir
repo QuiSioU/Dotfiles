@@ -1,3 +1,4 @@
 # themes/qmldir
 
-ActiveTheme 1.0 ActiveTheme.qml
+singleton ActiveTheme 1.0 ActiveTheme.qml
+ThemeLoader 1.0 ThemeLoader.qml
