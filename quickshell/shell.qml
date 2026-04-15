@@ -28,6 +28,12 @@ ShellRoot {
         source: "widgets/SessionMenu.qml"
     }
 
+    Loader {
+        id: trayMenuLoader
+        active: true
+        source: "widgets/TrayMenu.qml"
+    }
+
     GlobalShortcut {
         name: "toggleAppLauncher"
         description: "Toggle App launcher"
@@ -54,9 +60,26 @@ ShellRoot {
             if (!donut) return
 
             if (!donut.visible) {
+                donut._pendingShow = true
                 CursorPosition.update()
             } else {
                 donut.visible = false
+            }
+        }
+    }
+
+    GlobalShortcut {
+        name: "toggleTrayMenu"
+        description: "Tray orbit menu"
+        onPressed: {
+            var orbit = trayMenuLoader.item
+            if (!orbit) return
+
+            if (!orbit.visible) {
+                orbit._pendingShow = true
+                CursorPosition.update()
+            } else {
+                orbit.visible = false
             }
         }
     }
@@ -65,8 +88,16 @@ ShellRoot {
         target: CursorPosition
         function onReady() {
             var donut = sessionMenuLoader.item
-            if (!donut) return
-            if (!donut.visible) donut.visible = true
+            var orbit = trayMenuLoader.item
+
+            // Only show whichever was just requested, not both
+            if (donut && donut._pendingShow) {
+                donut._pendingShow = false
+                donut.visible = true
+            } else if (orbit && orbit._pendingShow) {
+                orbit._pendingShow = false
+                orbit.visible = true
+            }
         }
     }
 }

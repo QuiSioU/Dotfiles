@@ -1,5 +1,5 @@
 # quickshell/widgets/base/donut/qmldir
 
 
-DonutMenu 1.0 DonutMenu.qml
 DonutEntry 1.0 DonutEntry.qml
+DonutMenu 1.0 DonutMenu.qml

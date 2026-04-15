@@ -13,6 +13,8 @@ PanelWindow {
     focusable: true
 
     property var entries: []
+    
+    property bool _pendingShow: false
 
     property real centerX: CursorPosition.x
     property real centerY: CursorPosition.y - 50 // Eww topbar messing things up; will remove in the future
