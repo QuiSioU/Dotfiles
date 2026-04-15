@@ -39,7 +39,11 @@ PanelWindow {
     }
 
     onVisibleChanged: {
-        if (visible) innerItem.forceActiveFocus()
+        if (visible) {
+            innerItem.forceActiveFocus()
+            // Trigger the big bang reset on every show
+            bubbleRepeater.triggerBang()
+        }
     }
 
     Item {
@@ -54,6 +58,16 @@ PanelWindow {
             id: bubbleRepeater
             model: entries.length
 
+            // Called by onVisibleChanged every time the menu opens.
+            // Resets every bubble to the cursor (no animation), then
+            // re-arms each stagger timer so the bang fires again.
+            function triggerBang() {
+                for (let i = 0; i < count; i++) {
+                    const item = itemAt(i)
+                    if (item) item.resetAndLaunch()
+                }
+            }
+
             Item {
                 id: bubbleItem
                 property real sliceAngle: (2 * Math.PI) / entries.length
@@ -61,22 +75,20 @@ PanelWindow {
                 property real targetX: orbit_panwin.centerX + Math.cos(targetAngle) * orbit_panwin.orbitRadius
                 property real targetY: orbit_panwin.centerY + Math.sin(targetAngle) * orbit_panwin.orbitRadius
                 property bool hovered: index === orbit_panwin.hoveredIndex
-                property bool spawned: false
+
+                // Controls whether Behaviors are active.
+                // Must be false during the instant cursor-snap so QML
+                // doesn't animate the "reset" move.
+                property bool animating: false
 
                 width: orbit_panwin.bubbleSize
                 height: orbit_panwin.bubbleSize
 
-                // Big bang: start from cursor, spring out to orbit
-                
-
-                x: spawned
-                    ? targetX - orbit_panwin.bubbleSize / 2
-                    : orbit_panwin.centerX - orbit_panwin.bubbleSize / 2
-                y: spawned
-                    ? targetY - orbit_panwin.bubbleSize / 2
-                    : orbit_panwin.centerY - orbit_panwin.bubbleSize / 2
+                x: orbit_panwin.centerX - orbit_panwin.bubbleSize / 2
+                y: orbit_panwin.centerY - orbit_panwin.bubbleSize / 2
 
                 Behavior on x {
+                    enabled: bubbleItem.animating
                     NumberAnimation {
                         duration: 450
                         easing.type: Easing.OutBack
@@ -84,6 +96,7 @@ PanelWindow {
                     }
                 }
                 Behavior on y {
+                    enabled: bubbleItem.animating
                     NumberAnimation {
                         duration: 450
                         easing.type: Easing.OutBack
@@ -91,11 +104,28 @@ PanelWindow {
                     }
                 }
 
-                // Stagger each bubble slightly for a more natural big bang
+                // Stagger timer — restarted on every bang via resetAndLaunch()
                 Timer {
+                    id: staggerTimer
                     interval: index * 30
-                    running: true
-                    onTriggered: bubbleItem.spawned = true
+                    repeat: false
+                    running: false
+                    onTriggered: {
+                        bubbleItem.animating = true
+                        bubbleItem.x = bubbleItem.targetX - orbit_panwin.bubbleSize / 2
+                        bubbleItem.y = bubbleItem.targetY - orbit_panwin.bubbleSize / 2
+                    }
+                }
+
+                // Called by Repeater.triggerBang() each time the menu opens
+                function resetAndLaunch() {
+                    // 1. Kill any in-flight animation and snap back to cursor instantly
+                    animating = false
+                    x = orbit_panwin.centerX - orbit_panwin.bubbleSize / 2
+                    y = orbit_panwin.centerY - orbit_panwin.bubbleSize / 2
+
+                    // 2. Re-arm the stagger timer so the bang fires again
+                    staggerTimer.restart()
                 }
 
                 // Bubble circle
