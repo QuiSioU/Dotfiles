@@ -142,7 +142,7 @@ PanelWindow {
                         anchors.centerIn: parent
                         width: 28
                         height: 28
-                        source: entries[index].icon ? "image://icon/" + entries[index].icon : ""
+                        source: entries[index].icon ?? ""
                         fillMode: Image.PreserveAspectFit
                         smooth: true
                         visible: status === Image.Ready

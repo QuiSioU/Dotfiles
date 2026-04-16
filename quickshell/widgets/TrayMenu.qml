@@ -1,44 +1,49 @@
 /* quickshell/widgets/TrayMenu.qml */
 
+
 import QtQuick
-import Quickshell.Services.Pipewire
-import Quickshell.Io
+import Quickshell
+import Quickshell.Services.SystemTray
 import "base/orbit"
 
 OrbitMenu {
-    entries: [
-        {
-            name: "Logout",
-            icon: "system-log-out",
-            action: () => logout.running = true
-        },
-        {
-            name: "Reboot",
-            icon: "system-reboot",
-            action: () => reboot.running = true
-        },
-        {
-            name: "Shutdown",
-            icon: "system-shutdown",
-            action: () => shutdown.running = true
+    id: trayMenu
+
+    function rebuildEntries() {
+        var list = []
+        // .values is the reactive list view of the ObjectModel
+        for (var i = 0; i < SystemTray.items.values.length; i++) {
+            var item = SystemTray.items.values[i]
+            list.push({
+                name:    item.title || item.id || "",
+                comment: item.tooltipDescription || "",
+                icon:    item.icon || "",
+                action: (function(captured) {
+                    return function() { captured.activate() }
+                })(item)
+            })
         }
-    ]
-
-    Process {
-        id: shutdown
-        command: ["systemctl", "poweroff"]
-        running: false
+        entries = list
     }
 
-    Process {
-        id: reboot
-        command: ["systemctl", "reboot"]
-        running: false
+    Component.onCompleted: rebuildEntries()
+
+    // ObjectModel signals: objectInsertedPost / objectRemovedPost
+    Connections {
+        target: SystemTray.items
+        function onObjectInsertedPost() { trayMenu.rebuildEntries() }
+        function onObjectRemovedPost()  { trayMenu.rebuildEntries() }
     }
 
-    Process {
-        id: logout
-        command: ["hyprctl", "dispatch", "exit"]
-        running: false
+    // Per-item property changes
+    Instantiator {
+        model: SystemTray.items
+        delegate: Connections {
+            target: modelData
+            function onTitleChanged()              { trayMenu.rebuildEntries() }
+            function onIconChanged()               { trayMenu.rebuildEntries() }
+            function onTooltipDescriptionChanged() { trayMenu.rebuildEntries() }
+            function onReady()                     { trayMenu.rebuildEntries() }
+        }
     }
 }
