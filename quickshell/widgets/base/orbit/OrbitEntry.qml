@@ -5,8 +5,9 @@
 import QtQuick
 
 QtObject {
-    property string name: ""
-    property string icon: ""
-    property string comment: ""
-    property var action: () => {}
+    property string name:       ""
+    property string icon:       ""
+    property string comment:    ""
+    property bool selected:     false
+    property var action:        function() {}
 }

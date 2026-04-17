@@ -12,28 +12,31 @@ PanelWindow {
     visible: false
     focusable: true
 
-    property var entries: []
+    default property list<QtObject> _children
+
+    // Only OrbitEntry children reach the Repeater.
+    readonly property var entries: _children.filter(c => c instanceof OrbitEntry)
 
     property bool _pendingShow: false
 
-    property real centerX: CursorPosition.x
-    property real centerY: CursorPosition.y - 50 // Eww topbar offset; remove when bar is built
+    property real centerX:    CursorPosition.x
+    property real centerY:    CursorPosition.y - 50
     property real orbitRadius: 110
-    property real bubbleSize: 52
-    property int hoveredIndex: -1
+    property real bubbleSize:  52
+    property int  hoveredIndex: -1
 
-    implicitWidth: Qt.application.screens[0].width
+    implicitWidth:  Qt.application.screens[0].width
     implicitHeight: Qt.application.screens[0].height
 
     anchors {
-        top: true
-        bottom: true
-        left: true
+        top: true;
+        bottom: true;
+        left: true;
         right: true
     }
 
     HyprlandFocusGrab {
-        windows: [ orbit_panwin ]
+        windows: [orbit_panwin]
         active: orbit_panwin.visible
         onCleared: orbit_panwin.visible = false
     }
@@ -41,7 +44,6 @@ PanelWindow {
     onVisibleChanged: {
         if (visible) {
             innerItem.forceActiveFocus()
-            // Trigger the big bang reset on every show
             bubbleRepeater.triggerBang()
         }
     }
@@ -53,14 +55,10 @@ PanelWindow {
 
         Keys.onEscapePressed: orbit_panwin.visible = false
 
-        // Bubbles
         Repeater {
             id: bubbleRepeater
-            model: entries.length
+            model: orbit_panwin.entries.length
 
-            // Called by onVisibleChanged every time the menu opens.
-            // Resets every bubble to the cursor (no animation), then
-            // re-arms each stagger timer so the bang fires again.
             function triggerBang() {
                 for (let i = 0; i < count; i++) {
                     const item = itemAt(i)
@@ -70,41 +68,31 @@ PanelWindow {
 
             Item {
                 id: bubbleItem
-                property real sliceAngle: (2 * Math.PI) / entries.length
-                property real targetAngle: index * sliceAngle - Math.PI / 2
-                property real targetX: orbit_panwin.centerX + Math.cos(targetAngle) * orbit_panwin.orbitRadius
-                property real targetY: orbit_panwin.centerY + Math.sin(targetAngle) * orbit_panwin.orbitRadius
-                property bool hovered: index === orbit_panwin.hoveredIndex
 
-                // Controls whether Behaviors are active.
-                // Must be false during the instant cursor-snap so QML
-                // doesn't animate the "reset" move.
+                readonly property var  entry:       orbit_panwin.entries[index]
+                readonly property real sliceAngle:  (2 * Math.PI) / orbit_panwin.entries.length
+                readonly property real targetAngle: index * sliceAngle - Math.PI / 2
+                readonly property real targetX:     orbit_panwin.centerX + Math.cos(targetAngle) * orbit_panwin.orbitRadius
+                readonly property real targetY:     orbit_panwin.centerY + Math.sin(targetAngle) * orbit_panwin.orbitRadius
+                readonly property bool hovered:     index === orbit_panwin.hoveredIndex
+                readonly property bool selected:    entry?.selected ?? false
+
                 property bool animating: false
 
-                width: orbit_panwin.bubbleSize
+                width:  orbit_panwin.bubbleSize
                 height: orbit_panwin.bubbleSize
-
                 x: orbit_panwin.centerX - orbit_panwin.bubbleSize / 2
                 y: orbit_panwin.centerY - orbit_panwin.bubbleSize / 2
 
                 Behavior on x {
                     enabled: bubbleItem.animating
-                    NumberAnimation {
-                        duration: 450
-                        easing.type: Easing.OutBack
-                        easing.overshoot: 1.5
-                    }
+                    NumberAnimation { duration: 450; easing.type: Easing.OutBack; easing.overshoot: 1.5 }
                 }
                 Behavior on y {
                     enabled: bubbleItem.animating
-                    NumberAnimation {
-                        duration: 450
-                        easing.type: Easing.OutBack
-                        easing.overshoot: 1.5
-                    }
+                    NumberAnimation { duration: 450; easing.type: Easing.OutBack; easing.overshoot: 1.5 }
                 }
 
-                // Stagger timer — restarted on every bang via resetAndLaunch()
                 Timer {
                     id: staggerTimer
                     interval: index * 30
@@ -117,55 +105,60 @@ PanelWindow {
                     }
                 }
 
-                // Called by Repeater.triggerBang() each time the menu opens
                 function resetAndLaunch() {
-                    // 1. Kill any in-flight animation and snap back to cursor instantly
                     animating = false
                     x = orbit_panwin.centerX - orbit_panwin.bubbleSize / 2
                     y = orbit_panwin.centerY - orbit_panwin.bubbleSize / 2
-
-                    // 2. Re-arm the stagger timer so the bang fires again
                     staggerTimer.restart()
                 }
 
-                // Bubble circle
                 Rectangle {
                     anchors.fill: parent
                     radius: orbit_panwin.bubbleSize / 2
-                    color: bubbleItem.hovered ? "#45475a" : "#1e1e2e"
-                    border.color: bubbleItem.hovered ? "#cdd6f4" : "#6c7086"
-                    border.width: bubbleItem.hovered ? 1.5 : 0.5
 
-                    // App icon
+                    color: {
+                        if (bubbleItem.hovered)   return "#45475a"
+                        if (bubbleItem.selected)  return "#313244"
+                        return "#1e1e2e"
+                    }
+
+                    border.color: {
+                        if (bubbleItem.selected)  return "#89b4fa"
+                        if (bubbleItem.hovered)   return "#cdd6f4"
+                        return "#6c7086"
+                    }
+                    border.width: bubbleItem.selected ? 1.5 : 0.5
+
                     Image {
                         id: bubbleIcon
                         anchors.centerIn: parent
-                        width: 28
-                        height: 28
-                        source: entries[index].icon ?? ""
+                        width: 28; height: 28
+                        source: bubbleItem.entry?.icon ?? ""
                         fillMode: Image.PreserveAspectFit
                         smooth: true
                         visible: status === Image.Ready
+                        opacity: bubbleItem.selected ? 1.0 : 0.75
                     }
 
-                    // Fallback letter
                     Text {
                         anchors.centerIn: parent
-                        text: (entries[index].name ?? "").charAt(0).toUpperCase()
-                        color: "#cdd6f4"
+                        text: (bubbleItem.entry?.name ?? "").charAt(0).toUpperCase()
+                        color: bubbleItem.selected ? "#cdd6f4" : "#6c7086"
                         font.pixelSize: 16
                         font.weight: Font.Medium
                         visible: bubbleIcon.status !== Image.Ready
                     }
                 }
 
-                // Tooltip on hover
+                // Tooltip
                 Rectangle {
-                    visible: bubbleItem.hovered && (entries[index].name !== "" || entries[index].comment !== "")
+                    visible: bubbleItem.hovered &&
+                             ((bubbleItem.entry?.name ?? "") !== "" ||
+                              (bubbleItem.entry?.comment ?? "") !== "")
                     anchors.horizontalCenter: parent.horizontalCenter
                     anchors.bottom: parent.top
                     anchors.bottomMargin: 6
-                    width: tooltipCol.implicitWidth + 16
+                    width:  tooltipCol.implicitWidth + 16
                     height: tooltipCol.implicitHeight + 10
                     color: "#1e1e2e"
                     border.color: "#45475a"
@@ -179,7 +172,7 @@ PanelWindow {
                         spacing: 2
 
                         Text {
-                            text: entries[index].name ?? ""
+                            text: bubbleItem.entry?.name ?? ""
                             color: "#cdd6f4"
                             font.pixelSize: 12
                             font.weight: Font.Medium
@@ -189,7 +182,7 @@ PanelWindow {
                         }
 
                         Text {
-                            text: entries[index].comment ?? ""
+                            text: bubbleItem.entry?.comment ?? ""
                             color: "#6c7086"
                             font.pixelSize: 11
                             visible: text !== ""
@@ -201,7 +194,6 @@ PanelWindow {
             }
         }
 
-        // Invisible mouse tracking overlay (on top of bubbles for hover detection)
         MouseArea {
             anchors.fill: parent
             hoverEnabled: true
@@ -209,16 +201,15 @@ PanelWindow {
 
             onPositionChanged: mouse => {
                 let closest = -1
-                let closestDist = orbit_panwin.bubbleSize / 2 + 8 // hit radius
+                let closestDist = orbit_panwin.bubbleSize / 2 + 8
 
-                for (let i = 0; i < entries.length; i++) {
-                    const sliceAngle = (2 * Math.PI) / entries.length
-                    const angle = i * sliceAngle - Math.PI / 2
+                for (let i = 0; i < orbit_panwin.entries.length; i++) {
+                    const angle = i * (2 * Math.PI / orbit_panwin.entries.length) - Math.PI / 2
                     const bx = orbit_panwin.centerX + Math.cos(angle) * orbit_panwin.orbitRadius
                     const by = orbit_panwin.centerY + Math.sin(angle) * orbit_panwin.orbitRadius
                     const dx = mouse.x - bx
                     const dy = mouse.y - by
-                    const dist = Math.sqrt(dx * dx + dy * dy)
+                    const dist = Math.sqrt(dx*dx + dy*dy)
                     if (dist < closestDist) {
                         closestDist = dist
                         closest = i
@@ -227,10 +218,10 @@ PanelWindow {
                 orbit_panwin.hoveredIndex = closest
             }
 
-            onClicked: mouse => {
+            onClicked: {
                 if (orbit_panwin.hoveredIndex >= 0 &&
-                    orbit_panwin.hoveredIndex < entries.length) {
-                    entries[orbit_panwin.hoveredIndex].action()
+                    orbit_panwin.hoveredIndex < orbit_panwin.entries.length) {
+                    orbit_panwin.entries[orbit_panwin.hoveredIndex].action()
                 }
                 orbit_panwin.visible = false
             }

@@ -20,6 +20,8 @@ qt_add_qml_module(elyseanshell-services
         services/Bluetooth.cpp
         services/CursorPosition.hpp
         services/CursorPosition.cpp
+        services/WiFi.hpp
+        services/WiFi.cpp
 )
 
 target_include_directories(elyseanshell-services PRIVATE

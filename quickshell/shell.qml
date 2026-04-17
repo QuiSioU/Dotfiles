@@ -29,9 +29,9 @@ ShellRoot {
     }
 
     Loader {
-        id: trayMenuLoader
+        id: systemMenuLoader
         active: true
-        source: "widgets/TrayMenu.qml"
+        source: "widgets/SystemMenu.qml"
     }
 
     GlobalShortcut {
@@ -69,10 +69,10 @@ ShellRoot {
     }
 
     GlobalShortcut {
-        name: "toggleTrayMenu"
-        description: "Tray orbit menu"
+        name: "toggleSystemMenu"
+        description: "System orbit menu"
         onPressed: {
-            var orbit = trayMenuLoader.item
+            var orbit = systemMenuLoader.item
             if (!orbit) return
 
             if (!orbit.visible) {
@@ -88,7 +88,7 @@ ShellRoot {
         target: CursorPosition
         function onReady() {
             var donut = sessionMenuLoader.item
-            var orbit = trayMenuLoader.item
+            var orbit = systemMenuLoader.item
 
             // Only show whichever was just requested, not both
             if (donut && donut._pendingShow) {
