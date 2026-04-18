@@ -219,11 +219,14 @@ PanelWindow {
             }
 
             onClicked: {
-                if (orbit_panwin.hoveredIndex >= 0 &&
-                    orbit_panwin.hoveredIndex < orbit_panwin.entries.length) {
+                var prev_state = false
+                var post_state = false
+                if (orbit_panwin.hoveredIndex >= 0 && orbit_panwin.hoveredIndex < orbit_panwin.entries.length) {
+                    prev_state = orbit_panwin.entries[orbit_panwin.hoveredIndex].selected
                     orbit_panwin.entries[orbit_panwin.hoveredIndex].action()
+                    post_state = orbit_panwin.entries[orbit_panwin.hoveredIndex].selected
                 }
-                orbit_panwin.visible = false
+                orbit_panwin.visible = prev_state !== post_state
             }
         }
     }
