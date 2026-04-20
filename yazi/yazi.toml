@@ -1,0 +1,19 @@
+[opener]
+vscodium = [
+    { run = 'codium "$@"', desc = "VSCodium", block = false }
+]
+nvim = [
+    { run = 'nvim "$@"', block = true }
+]
+
+[open]
+rules = [
+    # Must be first — ipynb is a superset of JSON
+    { name = "*.ipynb", use = "vscodium" },
+
+    # Catch JSON by name, not MIME (avoids ipynb being swallowed here)
+    { name = "*.json", use = "nvim" },
+
+    # Fallback
+    { mime = "*/*", use = ["vscodium", "nvim"] }
+]
