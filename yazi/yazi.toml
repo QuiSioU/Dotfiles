@@ -5,15 +5,34 @@ vscodium = [
 nvim = [
     { run = 'nvim "$@"', block = true }
 ]
+default = [
+    { run = 'xdg-open "$@"', block = false }
+]
+
 
 [open]
 rules = [
-    # Must be first — ipynb is a superset of JSON
-    { name = "*.ipynb", use = "vscodium" },
 
-    # Catch JSON by name, not MIME (avoids ipynb being swallowed here)
+    ######################
+    # JSON / IPYNB RULES #
+    ######################
+    { name = "*.ipynb", use = "vscodium" },
     { name = "*.json", use = "nvim" },
 
-    # Fallback
-    { mime = "*/*", use = ["vscodium", "nvim"] }
+    ##############
+    # PLAIN TEXT #
+    ##############
+    { mime = "text/plain", use = "nvim" },
+
+    ###########
+    # DEFAULT #
+    ###########
+    { mime = "*/*", use = "default" }
 ]
+
+
+[[bookmark]]
+name = "Dotfiles"
+path = "~/Dotfiles/"
+key = "d"
+
