@@ -2,7 +2,7 @@
 
 
 CC = gcc
-FLAGS = -Wall -Wextra -std=c17 -O3 -march=native -s
+FLAGS = -Wall -Wextra -std=c17 -O2 -march=native -s
 SRC = ./src
 BUILD = ./bin
 OBJDIR = $(BUILD)/obj

@@ -96,10 +96,10 @@ int main() {
                 // Get status icon based on signal strength
                 strength = nm_access_point_get_strength(ap);
                 
-                if      (strength > 80) icon = "󰤨";
-                else if (strength > 50) icon = "󰤥";
-                else if (strength > 20) icon = "󰤢";
-                else                    icon = "󰤟";
+                if      (strength >= 80)    icon = "󰤨";
+                else if (strength >= 60)    icon = "󰤥";
+                else if (strength >= 40)    icon = "󰤢";
+                else                        icon = "󰤟";
             }
         }
         else if (NM_IS_DEVICE_ETHERNET(device)) {  // 3. Handle Ethernet specific details

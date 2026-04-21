@@ -25,14 +25,12 @@ rules = [
     { mime = "text/plain", use = "nvim" },
 
     ###########
+    # SVG+XML #
+    ###########
+    { mime = "image/svg+xml", use = "nvim" },
+
+    ###########
     # DEFAULT #
     ###########
     { mime = "*/*", use = "default" }
 ]
-
-
-[[bookmark]]
-name = "Dotfiles"
-path = "~/Dotfiles/"
-key = "d"
-

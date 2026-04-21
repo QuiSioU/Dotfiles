@@ -8,6 +8,7 @@ QtObject {
     property string name:       ""
     property string icon:       ""
     property string comment:    ""
+    property bool stateful:     false
     property bool selected:     false
     property var action:        function() {}
 }
