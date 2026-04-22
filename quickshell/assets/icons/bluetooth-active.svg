@@ -1,23 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg
-   width="48"
-   height="48"
-   viewBox="0 0 48 48"
-   version="1.1"
-   id="svg1"
-   xml:space="preserve"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg"><defs
-     id="defs1"><style
-       id="current-color-scheme"
-       type="text/css">
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" version="1.1">
+ <defs>
+  <style id="current-color-scheme" type="text/css">
    .ColorScheme-Text { color:#dfdfdf; } .ColorScheme-Highlight { color:#4285f4; } .ColorScheme-NeutralText { color:#ff9800; } .ColorScheme-PositiveText { color:#4caf50; } .ColorScheme-NegativeText { color:#f44336; }
-  </style><style
-       id="current-color-scheme-5"
-       type="text/css">
-   .ColorScheme-Text { color:#dfdfdf; } .ColorScheme-Highlight { color:#4285f4; } .ColorScheme-NeutralText { color:#ff9800; } .ColorScheme-PositiveText { color:#4caf50; } .ColorScheme-NegativeText { color:#f44336; }
-  </style></defs><path
-     style="fill:#ffffff;fill-opacity:1;stroke-width:2.18182"
-     class="ColorScheme-Text"
-     d="m 21.962286,6.7619687 a 2.1820364,2.1820364 0 0 0 -1.235794,1.9644888 v 8.8721595 l -5.207386,-4.048296 a 2.1818182,2.1818182 0 0 0 -3.05966,0.383523 2.1818182,2.1818182 0 0 0 0.383523,3.059659 l 7.883523,6.132103 v 1.747158 l -7.883523,6.132103 a 2.1818182,2.1818182 0 0 0 -0.383523,3.059657 2.1818182,2.1818182 0 0 0 3.05966,0.383525 l 5.207386,-4.048296 v 8.87216 a 2.1820364,2.1820364 0 0 0 3.545454,1.704546 l 10.909093,-8.727275 a 2.1820364,2.1820364 0 0 0 -0.02557,-3.426135 l -6.200282,-4.823863 6.200284,-4.823865 a 2.1820364,2.1820364 0 0 0 0.02557,-3.426135 L 24.271948,7.021912 A 2.1820364,2.1820364 0 0 0 21.962286,6.7619687 Z m 3.127841,6.5071023 5.203128,4.163353 -4.892048,3.805398 -0.31108,-0.242899 z m 0.31108,13.491479 4.892048,3.805396 -5.203128,4.163354 v -7.725853 z"
-     id="path1" /></svg>
+  </style>
+ </defs>
+ <path style="fill:currentColor" class="ColorScheme-Text"
+   d="m 21.962286,6.7619687 a 2.1820364,2.1820364 0 0 0 -1.235794,1.9644888 v 8.8721595 l -5.207386,-4.048296 a 2.1818182,2.1818182 0 0 0 -3.05966,0.383523 2.1818182,2.1818182 0 0 0 0.383523,3.059659 l 7.883523,6.132103 v 1.747158 l -7.883523,6.132103 a 2.1818182,2.1818182 0 0 0 -0.383523,3.059657 2.1818182,2.1818182 0 0 0 3.05966,0.383525 l 5.207386,-4.048296 v 8.87216 a 2.1820364,2.1820364 0 0 0 3.545454,1.704546 l 10.909093,-8.727275 a 2.1820364,2.1820364 0 0 0 -0.02557,-3.426135 l -6.200282,-4.823863 6.200284,-4.823865 a 2.1820364,2.1820364 0 0 0 0.02557,-3.426135 L 24.271948,7.021912 A 2.1820364,2.1820364 0 0 0 21.962286,6.7619687 Z m 3.127841,6.5071023 5.203128,4.163353 -4.892048,3.805398 -0.31108,-0.242899 z m 0.31108,13.491479 4.892048,3.805396 -5.203128,4.163354 v -7.725853 z" />
+</svg>

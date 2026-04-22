@@ -51,12 +51,16 @@ OrbitMenu {
     }
 
     OrbitEntry {
-        readonly property bool muted: Pipewire.defaultAudioSink?.audio?.muted ?? false
+        readonly property bool  muted:  Pipewire.defaultAudioSink?.audio?.muted  ?? false
+        readonly property real  volume: Pipewire.defaultAudioSink?.audio?.volume ?? 0
+        readonly property int   pct:    Math.round(volume * 100)
 
         name:     "Sound"
-        icon:     muted ? Qt.resolvedUrl("../assets/icons/audio-volume-muted.svg")
-                        : Qt.resolvedUrl("../assets/icons/audio-volume-high.svg")
-        comment:  muted ? "Muted" : "Unmuted"
+        icon:     muted                 ?   Qt.resolvedUrl("../assets/icons/audio-volume-muted.svg")
+                : pct === 0             ?   Qt.resolvedUrl("../assets/icons/audio-volume-low.svg")
+                : pct < 60              ?   Qt.resolvedUrl("../assets/icons/audio-volume-medium.svg")
+                :                           Qt.resolvedUrl("../assets/icons/audio-volume-high.svg")
+        comment:  muted ? "Muted" : pct + "%"
         selected: !muted
         stateful: true
         action:   function() {

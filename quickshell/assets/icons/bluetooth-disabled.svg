@@ -1,67 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg
-   width="48"
-   height="48"
-   viewBox="0 0 48 48"
-   version="1.1"
-   id="svg1"
-   xml:space="preserve"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg"><defs
-     id="defs1"><style
-       id="current-color-scheme"
-       type="text/css">
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" version="1.1">
+ <defs>
+  <style id="current-color-scheme" type="text/css">
    .ColorScheme-Text { color:#dfdfdf; } .ColorScheme-Highlight { color:#4285f4; } .ColorScheme-NeutralText { color:#ff9800; } .ColorScheme-PositiveText { color:#4caf50; } .ColorScheme-NegativeText { color:#f44336; }
-  </style><style
-       id="current-color-scheme-5"
-       type="text/css">
-   .ColorScheme-Text { color:#dfdfdf; } .ColorScheme-Highlight { color:#4285f4; } .ColorScheme-NeutralText { color:#ff9800; } .ColorScheme-PositiveText { color:#4caf50; } .ColorScheme-NegativeText { color:#f44336; }
-  </style><style
-       id="current-color-scheme-7"
-       type="text/css">
-   .ColorScheme-Text { color:#dfdfdf; } .ColorScheme-Highlight { color:#4285f4; } .ColorScheme-NeutralText { color:#ff9800; } .ColorScheme-PositiveText { color:#4caf50; } .ColorScheme-NegativeText { color:#f44336; }
-  </style><style
-       id="current-color-scheme-6"
-       type="text/css">
-   .ColorScheme-Text { color:#dfdfdf; } .ColorScheme-Highlight { color:#4285f4; } .ColorScheme-NeutralText { color:#ff9800; } .ColorScheme-PositiveText { color:#4caf50; } .ColorScheme-NegativeText { color:#f44336; }
-  </style><style
-       id="current-color-scheme-61"
-       type="text/css">
-   .ColorScheme-Text { color:#dfdfdf; } .ColorScheme-Highlight { color:#4285f4; } .ColorScheme-NeutralText { color:#ff9800; } .ColorScheme-PositiveText { color:#4caf50; } .ColorScheme-NegativeText { color:#f44336; }
-  </style><style
-       id="current-color-scheme-2"
-       type="text/css">
-   .ColorScheme-Text { color:#dfdfdf; } .ColorScheme-Highlight { color:#4285f4; } .ColorScheme-NeutralText { color:#ff9800; } .ColorScheme-PositiveText { color:#4caf50; } .ColorScheme-NegativeText { color:#f44336; }
-  </style><style
-       id="current-color-scheme-75"
-       type="text/css">
-   .ColorScheme-Text { color:#dfdfdf; } .ColorScheme-Highlight { color:#4285f4; } .ColorScheme-NeutralText { color:#ff9800; } .ColorScheme-PositiveText { color:#4caf50; } .ColorScheme-NegativeText { color:#f44336; }
-  </style><style
-       id="current-color-scheme-8"
-       type="text/css">
-   .ColorScheme-Text { color:#dfdfdf; } .ColorScheme-Highlight { color:#4285f4; } .ColorScheme-NeutralText { color:#ff9800; } .ColorScheme-PositiveText { color:#4caf50; } .ColorScheme-NegativeText { color:#f44336; }
-  </style><style
-       id="current-color-scheme-73"
-       type="text/css">
-   .ColorScheme-Text { color:#dfdfdf; } .ColorScheme-Highlight { color:#4285f4; } .ColorScheme-NeutralText { color:#ff9800; } .ColorScheme-PositiveText { color:#4caf50; } .ColorScheme-NegativeText { color:#f44336; }
-  </style><style
-       id="current-color-scheme-9"
-       type="text/css">
-   .ColorScheme-Text { color:#dfdfdf; } .ColorScheme-Highlight { color:#4285f4; } .ColorScheme-NeutralText { color:#ff9800; } .ColorScheme-PositiveText { color:#4caf50; } .ColorScheme-NegativeText { color:#f44336; }
-  </style><style
-       id="current-color-scheme-4"
-       type="text/css">
-   .ColorScheme-Text { color:#dfdfdf; } .ColorScheme-Highlight { color:#4285f4; } .ColorScheme-NeutralText { color:#ff9800; } .ColorScheme-PositiveText { color:#4caf50; } .ColorScheme-NegativeText { color:#f44336; }
-  </style><style
-       id="current-color-scheme-50"
-       type="text/css">
-   .ColorScheme-Text { color:#dfdfdf; } .ColorScheme-Highlight { color:#4285f4; } .ColorScheme-NeutralText { color:#ff9800; } .ColorScheme-PositiveText { color:#4caf50; } .ColorScheme-NegativeText { color:#f44336; }
-  </style><style
-       id="current-color-scheme-63"
-       type="text/css">
-   .ColorScheme-Text { color:#dfdfdf; } .ColorScheme-Highlight { color:#4285f4; } .ColorScheme-NeutralText { color:#ff9800; } .ColorScheme-PositiveText { color:#4caf50; } .ColorScheme-NegativeText { color:#f44336; }
-  </style></defs><path
-     style="display:inline;opacity:0.35;fill:#ffffff;fill-opacity:1;stroke-width:2.18182"
-     class="ColorScheme-Text"
-     d="m 22.746382,6.5555492 c -0.27212,0.019964 -0.538082,0.088407 -0.78409,0.2064197 -0.754899,0.363298 -1.235143,1.1267212 -1.235798,1.9644885 v 4.4275566 l 4.363637,3.400568 v -3.28551 l 5.203126,4.163352 -2.041194,1.589489 3.549716,2.765625 3.353692,-2.612217 c 1.113888,-0.865344 1.126419,-2.544261 0.02557,-3.426135 L 24.271949,7.0219129 C 23.840863,6.678628 23.295852,6.5135527 22.746382,6.5555492 Z m -10.240058,4.6211938 -2.6889202,3.43892 10.9090902,8.509943 v 1.747158 l -7.883522,6.132105 c -0.95009,0.739403 -1.12172,2.108631 -0.383522,3.059657 0.739403,0.95009 2.108631,1.121721 3.05966,0.383522 l 5.207384,-4.048293 v 8.872158 c -7.63e-4,1.83026 2.116471,2.848161 3.545455,1.704546 l 9.558238,-7.644886 3.843751,2.995739 2.68892,-3.438921 z M 25.40121,26.76055 30.288994,30.570209 25.090131,34.7293 v -7.725853 z"
-     id="path1-2" /></svg>
+  </style>
+ </defs>
+ <path style="opacity:0.35;fill:currentColor" class="ColorScheme-Text"
+   d="m 22.746382,6.5555492 c -0.27212,0.019964 -0.538082,0.088407 -0.78409,0.2064197 -0.754899,0.363298 -1.235143,1.1267212 -1.235798,1.9644885 v 4.4275566 l 4.363637,3.400568 v -3.28551 l 5.203126,4.163352 -2.041194,1.589489 3.549716,2.765625 3.353692,-2.612217 c 1.113888,-0.865344 1.126419,-2.544261 0.02557,-3.426135 L 24.271949,7.0219129 C 23.840863,6.678628 23.295852,6.5135527 22.746382,6.5555492 Z m -10.240058,4.6211938 -2.6889202,3.43892 10.9090902,8.509943 v 1.747158 l -7.883522,6.132105 c -0.95009,0.739403 -1.12172,2.108631 -0.383522,3.059657 0.739403,0.95009 2.108631,1.121721 3.05966,0.383522 l 5.207384,-4.048293 v 8.872158 c -7.63e-4,1.83026 2.116471,2.848161 3.545455,1.704546 l 9.558238,-7.644886 3.843751,2.995739 2.68892,-3.438921 z M 25.40121,26.76055 30.288994,30.570209 25.090131,34.7293 v -7.725853 z" />
+</svg>

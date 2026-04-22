@@ -52,7 +52,7 @@ int main() {
     // Determine Icon
     if      (!unmuted)          icon = "󰝟"; // Muted
     else if (percentage == 0)   icon = "󰕿"; // Volume Off
-    else if (percentage <= 60)  icon = "󰖀"; // Volume Normal
+    else if (percentage < 60)   icon = "󰖀"; // Volume Normal
     else                        icon = "󰕾"; // Volume High
 
     printf("{\"volume\": %d, \"muted\": %s, \"icon\": \"%s\"}\n",
