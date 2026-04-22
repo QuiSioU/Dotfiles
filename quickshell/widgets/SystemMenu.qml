@@ -23,12 +23,12 @@ OrbitMenu {
 
     OrbitEntry {
         name:     "WiFi"
-        icon: !WiFiService.enabled          ? Qt.resolvedUrl("../assets/icons/48x48/network-wireless-offline.svg")
-            : WiFiService.strength === 0    ? Qt.resolvedUrl("../assets/icons/48x48/network-wireless-acquiring.svg")
-            : WiFiService.strength >= 80    ? Qt.resolvedUrl("../assets/icons/48x48/network-wireless-80.svg")
-            : WiFiService.strength >= 60    ? Qt.resolvedUrl("../assets/icons/48x48/network-wireless-60.svg")
-            : WiFiService.strength >= 40    ? Qt.resolvedUrl("../assets/icons/48x48/network-wireless-40.svg")
-            :                                 Qt.resolvedUrl("../assets/icons/48x48/network-wireless-20.svg")
+        icon: !WiFiService.enabled          ? Qt.resolvedUrl("../assets/icons/network-wireless-offline.svg")
+            : WiFiService.strength === 0    ? Qt.resolvedUrl("../assets/icons/network-wireless-acquiring.svg")
+            : WiFiService.strength >= 80    ? Qt.resolvedUrl("../assets/icons/network-wireless-80.svg")
+            : WiFiService.strength >= 60    ? Qt.resolvedUrl("../assets/icons/network-wireless-60.svg")
+            : WiFiService.strength >= 40    ? Qt.resolvedUrl("../assets/icons/network-wireless-40.svg")
+            :                                 Qt.resolvedUrl("../assets/icons/network-wireless-20.svg")
         
         comment:  WiFiService.enabled ? "On" : "Off"
         selected: WiFiService.enabled
@@ -40,8 +40,8 @@ OrbitMenu {
         readonly property var adapter: Bluetooth.adapters.values[0] ?? null
 
         name:     "Bluetooth"
-        icon:     (adapter?.enabled ?? false) ? Qt.resolvedUrl("../assets/icons/48x48/bluetooth-active.svg")
-                                              : Qt.resolvedUrl("../assets/icons/48x48/bluetooth-disabled.svg")
+        icon:     (adapter?.enabled ?? false) ? Qt.resolvedUrl("../assets/icons/bluetooth-active.svg")
+                                              : Qt.resolvedUrl("../assets/icons/bluetooth-disabled.svg")
         comment:  (adapter?.enabled ?? false) ? "On" : "Off"
         selected: adapter?.enabled ?? false
         stateful: true
@@ -54,8 +54,8 @@ OrbitMenu {
         readonly property bool muted: Pipewire.defaultAudioSink?.audio?.muted ?? false
 
         name:     "Sound"
-        icon:     muted ? "image://icon/audio-volume-muted"
-                        : "image://icon/audio-volume-high"
+        icon:     muted ? Qt.resolvedUrl("../assets/icons/audio-volume-muted.svg")
+                        : Qt.resolvedUrl("../assets/icons/audio-volume-high.svg")
         comment:  muted ? "Muted" : "Unmuted"
         selected: !muted
         stateful: true

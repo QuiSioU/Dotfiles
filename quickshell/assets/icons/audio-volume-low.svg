@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="48"
+   height="48"
+   version="1.1"
+   id="svg1"
+   viewBox="0 0 48 48"
+   xml:space="preserve"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><defs
+     id="defs1"><style
+       id="current-color-scheme"
+       type="text/css">
+   .ColorScheme-Text { color:#dfdfdf; } .ColorScheme-Highlight { color:#4285f4; } .ColorScheme-NeutralText { color:#ff9800; } .ColorScheme-PositiveText { color:#4caf50; } .ColorScheme-NegativeText { color:#f44336; }
+  </style><style
+       id="current-color-scheme-5"
+       type="text/css">
+   .ColorScheme-Text { color:#dfdfdf; } .ColorScheme-Highlight { color:#4285f4; } .ColorScheme-NeutralText { color:#ff9800; } .ColorScheme-PositiveText { color:#4caf50; } .ColorScheme-NegativeText { color:#f44336; }
+  </style><style
+       id="current-color-scheme-9"
+       type="text/css">
+   .ColorScheme-Text { color:#dfdfdf; } .ColorScheme-Highlight { color:#4285f4; } .ColorScheme-NeutralText { color:#ff9800; } .ColorScheme-PositiveText { color:#4caf50; } .ColorScheme-NegativeText { color:#f44336; }
+  </style><style
+       id="current-color-scheme-1"
+       type="text/css">
+   .ColorScheme-Text { color:#dfdfdf; } .ColorScheme-Highlight { color:#4285f4; } .ColorScheme-NeutralText { color:#ff9800; } .ColorScheme-PositiveText { color:#4caf50; } .ColorScheme-NegativeText { color:#f44336; }
+  </style><style
+       id="current-color-scheme-53"
+       type="text/css">
+   .ColorScheme-Text { color:#dfdfdf; } .ColorScheme-Highlight { color:#4285f4; } .ColorScheme-NeutralText { color:#ff9800; } .ColorScheme-PositiveText { color:#4caf50; } .ColorScheme-NegativeText { color:#f44336; }
+  </style><style
+       id="current-color-scheme-6"
+       type="text/css">
+   .ColorScheme-Text { color:#dfdfdf; } .ColorScheme-Highlight { color:#4285f4; } .ColorScheme-NeutralText { color:#ff9800; } .ColorScheme-PositiveText { color:#4caf50; } .ColorScheme-NegativeText { color:#f44336; }
+  </style></defs><path
+     style="fill:#ffffff;fill-opacity:1;stroke-width:1.90036"
+     class="ColorScheme-Text"
+     d="M 22.099486,8.7971466 12.597705,18.298928 H 6.8966358 v 11.402138 h 5.7010692 l 9.501781,9.501781 z"
+     id="path1-2" /><path
+     style="opacity:0.35;fill:#ffffff;fill-opacity:1;stroke-width:1.90036"
+     class="ColorScheme-Text"
+     d="m 25.900199,8.7971466 v 3.8007124 c 5.450944,1.607151 9.501781,5.820525 9.501781,11.402138 0,5.581613 -4.050856,9.794987 -9.501781,11.402138 v 3.800712 c 7.401032,-1.694034 13.302494,-7.818617 13.302494,-15.20285 0,-7.384233 -5.901462,-13.508816 -13.302494,-15.2028504 z m 0,7.6014254 v 15.20285 c 0,0 5.701449,-1.900356 5.701069,-7.601425 -3.8e-4,-5.701069 -5.701069,-7.601425 -5.701069,-7.601425 z"
+     id="path2" /></svg>
