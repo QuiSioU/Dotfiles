@@ -1,7 +1,7 @@
-/* quickshell/services/WiFi.cpp */
+/* quickshell/services/Network.cpp */
 
 
-#include "WiFi.hpp"
+#include "Network.hpp"
 
 #include <QDBusConnection>
 #include <QDBusInterface>
@@ -24,15 +24,37 @@ static QVariant getProp(const QString& path, const QString& iface, const QString
     QDBusInterface pi(NM_SERVICE, path, PROPS_IFACE, QDBusConnection::systemBus());
     QDBusReply<QVariant> r = pi.call("Get", iface, prop);
     if (!r.isValid()) {
-        qWarning() << "WiFiService: Get" << prop << "failed:" << r.error().message();
+        qWarning() << "NetworkService: Get" << prop << "failed:" << r.error().message();
         return {};
     }
     return r.value();
 }
 
+// ── Connection type ────────────────────────────────────────────────────────
+
+QString NetworkService::resolveConnectionType() const {
+    QDBusInterface nm(NM_SERVICE, NM_PATH, NM_IFACE, QDBusConnection::systemBus());
+    QDBusReply<QList<QDBusObjectPath>> reply = nm.call("GetDevices");
+    if (!reply.isValid()) return "none";
+
+    for (const QDBusObjectPath& p : reply.value()) {
+        const QString path = p.path();
+        QVariant state = getProp(path, "org.freedesktop.NetworkManager.Device", "State");
+        if (state.toUInt() != 100) continue; // 100 = ACTIVATED
+
+        QVariant type = getProp(path, "org.freedesktop.NetworkManager.Device", "DeviceType");
+        switch (type.toUInt()) {
+            case 1: return "ethernet";
+            case 2: return "wifi";
+            default: break;
+        }
+    }
+    return "none";
+}
+
 // ── Constructor ────────────────────────────────────────────────────────────
 
-WiFiService::WiFiService(QObject* parent) : QObject(parent) {
+NetworkService::NetworkService(QObject* parent) : QObject(parent) {
     fetchInitialState();
 
     QDBusConnection::systemBus().connect(
@@ -43,14 +65,17 @@ WiFiService::WiFiService(QObject* parent) : QObject(parent) {
 
 // ── Property readers ───────────────────────────────────────────────────────
 
-bool WiFiService::enabled() const { return m_enabled; }
-int  WiFiService::strength() const { return m_strength; }
-int  WiFiService::bitrate()  const { return m_bitrate;  }
+bool    NetworkService::enabled()           const { return m_enabled; }
+int     NetworkService::strength()          const { return m_strength; }
+int     NetworkService::bitrate()           const { return m_bitrate;  }
+QString NetworkService::ssid()              const { return m_ssid; }
+QString NetworkService::connectionType()    const { return m_connectionType; }
 
 // ── Setter ─────────────────────────────────────────────────────────────────
 
-void WiFiService::setEnabled(bool on) {
+void NetworkService::setEnabled(bool on) {
     if (m_enabled == on) return;
+    if (m_connectionType == "ethernet") return;
 
     QDBusInterface nm(NM_SERVICE, NM_PATH, PROPS_IFACE, QDBusConnection::systemBus());
     nm.asyncCall("Set", NM_IFACE, QString("WirelessEnabled"),
@@ -60,26 +85,29 @@ void WiFiService::setEnabled(bool on) {
 
 // ── Initial state ──────────────────────────────────────────────────────────
 
-void WiFiService::fetchInitialState() {
+void NetworkService::fetchInitialState() {
     // WirelessEnabled
     QVariant en = getProp(NM_PATH, NM_IFACE, "WirelessEnabled");
     if (en.isValid()) m_enabled = en.toBool();
 
-    // Find active wireless device and its current AP
-    const QString devPath = activeWirelessDevicePath();
-    if (!devPath.isEmpty()) {
-        connectToDevice(QDBusObjectPath(devPath));
+    m_connectionType = resolveConnectionType();
 
-        const QString apPath = activeAccessPointPath(devPath);
-        if (!apPath.isEmpty())
-            connectToAccessPoint(QDBusObjectPath(apPath));
+    if (m_connectionType == "wifi") {
+        // Find active wireless device and its current AP
+        const QString devPath = activeWirelessDevicePath();
+        if (!devPath.isEmpty()) {
+            connectToDevice(QDBusObjectPath(devPath));
+            const QString apPath = activeAccessPointPath(devPath);
+            if (!apPath.isEmpty())
+                connectToAccessPoint(QDBusObjectPath(apPath));
+        }
     }
 }
 
 // ── Device wiring ──────────────────────────────────────────────────────────
 
 // Returns the object path of the first active wireless device, or "".
-QString WiFiService::activeWirelessDevicePath() const {
+QString NetworkService::activeWirelessDevicePath() const {
     // NM exposes all devices; filter for wireless ones with an active AP.
     QDBusInterface nm(NM_SERVICE, NM_PATH, NM_IFACE, QDBusConnection::systemBus());
     QDBusReply<QList<QDBusObjectPath>> reply = nm.call("GetDevices");
@@ -95,7 +123,7 @@ QString WiFiService::activeWirelessDevicePath() const {
 }
 
 // Returns the ActiveAccessPoint path for a wireless device, or "".
-QString WiFiService::activeAccessPointPath(const QString& devicePath) const {
+QString NetworkService::activeAccessPointPath(const QString& devicePath) const {
     QVariant ap = getProp(devicePath, NM_WIRELESS_IFACE, "ActiveAccessPoint");
     if (!ap.isValid()) return {};
     const QString path = ap.value<QDBusObjectPath>().path();
@@ -104,30 +132,37 @@ QString WiFiService::activeAccessPointPath(const QString& devicePath) const {
 
 // Subscribe to property changes on the wireless device and read initial
 // Bitrate. ActiveAccessPoint changes here tell us when to re-wire the AP.
-void WiFiService::connectToDevice(const QDBusObjectPath& devicePath) {
+void NetworkService::connectToDevice(const QDBusObjectPath& devicePath) {
     const QString path = devicePath.path();
     if (path == m_devicePath) return;
 
-    // Disconnect old watcher if any
-    if (!m_devicePath.isEmpty())
+    if (!m_devicePath.isEmpty()) {
         QDBusConnection::systemBus().disconnect(
             NM_SERVICE, m_devicePath, PROPS_IFACE, "PropertiesChanged",
             this, SLOT(onDevicePropertiesChanged(QString, QVariantMap, QStringList)));
+        QDBusConnection::systemBus().disconnect(
+            NM_SERVICE, m_devicePath,
+            "org.freedesktop.NetworkManager.Device", "StateChanged",
+            this, SLOT(onDeviceStateChanged(uint, uint, uint)));
+    }
 
     m_devicePath = path;
 
     QDBusConnection::systemBus().connect(
         NM_SERVICE, path, PROPS_IFACE, "PropertiesChanged",
         this, SLOT(onDevicePropertiesChanged(QString, QVariantMap, QStringList)));
+    QDBusConnection::systemBus().connect(
+        NM_SERVICE, path,
+        "org.freedesktop.NetworkManager.Device", "StateChanged",
+        this, SLOT(onDeviceStateChanged(uint, uint, uint)));
 
-    // Initial bitrate (kbit/s)
     QVariant br = getProp(path, NM_WIRELESS_IFACE, "Bitrate");
     const int newBr = br.isValid() ? (int)br.toUInt() : 0;
     if (m_bitrate != newBr) { m_bitrate = newBr; emit bitrateChanged(); }
 }
 
 // Subscribe to property changes on the access point and read initial Strength.
-void WiFiService::connectToAccessPoint(const QDBusObjectPath& apPath) {
+void NetworkService::connectToAccessPoint(const QDBusObjectPath& apPath) {
     const QString path = apPath.path();
     if (path == m_apPath) return;
 
@@ -146,11 +181,38 @@ void WiFiService::connectToAccessPoint(const QDBusObjectPath& apPath) {
     QVariant st = getProp(path, NM_AP_IFACE, "Strength");
     const int newSt = st.isValid() ? (int)st.value<uchar>() : 0;
     if (m_strength != newSt) { m_strength = newSt; emit strengthChanged(); }
+
+    // Network's SSID
+    QVariant ss = getProp(path, NM_AP_IFACE, "Ssid");
+    const QString newSsid = ss.isValid()
+        ? QString::fromUtf8(ss.toByteArray())
+        : QString();
+    if (m_ssid != newSsid) { m_ssid = newSsid; emit ssidChanged(); }
+}
+
+// ── Slot: Network device's state changed ──────────────────────────────────
+
+void NetworkService::onDeviceStateChanged(uint newState, uint oldState, uint reason) {
+    Q_UNUSED(oldState); Q_UNUSED(reason);
+
+    const QString ct = resolveConnectionType();
+    if (m_connectionType != ct) { m_connectionType = ct; emit connectionTypeChanged(); }
+
+    if (newState == 100) {
+        const QString apPath = activeAccessPointPath(m_devicePath);
+        if (!apPath.isEmpty())
+            connectToAccessPoint(QDBusObjectPath(apPath));
+    } else {
+        m_apPath = "";
+        if (m_strength != 0) { m_strength = 0; emit strengthChanged(); }
+        if (!m_ssid.isEmpty()) { m_ssid = ""; emit ssidChanged(); }
+        if (m_bitrate != 0) { m_bitrate = 0; emit bitrateChanged(); }
+    }
 }
 
 // ── Slot: NM root PropertiesChanged ───────────────────────────────────────
 
-void WiFiService::onNmPropertiesChanged(const QString& interface,
+void NetworkService::onNmPropertiesChanged(const QString& interface,
                                          const QVariantMap& changed,
                                          const QStringList&)
 {
@@ -159,27 +221,21 @@ void WiFiService::onNmPropertiesChanged(const QString& interface,
     if (changed.contains("WirelessEnabled")) {
         const bool v = changed["WirelessEnabled"].toBool();
         if (m_enabled != v) { m_enabled = v; emit enabledChanged(); }
+
+        const QString ct = resolveConnectionType();
+        if (m_connectionType != ct) { m_connectionType = ct; emit connectionTypeChanged(); }
     }
 
-    // ActiveConnections or device state changed — re-resolve active AP
     if (changed.contains("ActiveConnections")) {
         const QString devPath = activeWirelessDevicePath();
-        if (!devPath.isEmpty()) {
+        if (!devPath.isEmpty())
             connectToDevice(QDBusObjectPath(devPath));
-            const QString apPath = activeAccessPointPath(devPath);
-            if (!apPath.isEmpty())
-                connectToAccessPoint(QDBusObjectPath(apPath));
-            else {
-                m_apPath = "";
-                if (m_strength != 0) { m_strength = 0; emit strengthChanged(); }
-            }
-        }
     }
 }
 
 // ── Slot: wireless device PropertiesChanged ────────────────────────────────
 
-void WiFiService::onDevicePropertiesChanged(const QString& interface,
+void NetworkService::onDevicePropertiesChanged(const QString& interface,
                                              const QVariantMap& changed,
                                              const QStringList&)
 {
@@ -199,13 +255,14 @@ void WiFiService::onDevicePropertiesChanged(const QString& interface,
         else {
             m_apPath = "";
             if (m_strength != 0) { m_strength = 0; emit strengthChanged(); }
+            if (!m_ssid.isEmpty()) { m_ssid = ""; emit ssidChanged(); }
         }
     }
 }
 
 // ── Slot: access point PropertiesChanged ──────────────────────────────────
 
-void WiFiService::onApPropertiesChanged(const QString& interface,
+void NetworkService::onApPropertiesChanged(const QString& interface,
                                          const QVariantMap& changed,
                                          const QStringList&)
 {
