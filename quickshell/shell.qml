@@ -34,6 +34,11 @@ ShellRoot {
         source: "widgets/SystemMenu.qml"
     }
 
+    Loader {
+        active: true
+        source: "widgets/NotificationPopup.qml"
+    }
+
     GlobalShortcut {
         name: "toggleAppLauncher"
         description: "Toggle App launcher"
