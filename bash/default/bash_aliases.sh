@@ -14,5 +14,4 @@ alias discord='__NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia vesk
 alias code='codium'
 alias rmhist='history -c && history -w && rm ~/.bash_history'
 alias list-wifi='nmcli -f IN-USE,BSSID,SSID,SIGNAL,RATE,BARS device wifi'
-alias cat='bat'
 

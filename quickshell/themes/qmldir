@@ -1,5 +1,4 @@
 # quickshell/themes/qmldir
 
 
-singleton ActiveTheme 1.0 ActiveTheme.qml
 ThemeLoader 1.0 ThemeLoader.qml

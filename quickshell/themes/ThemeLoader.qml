@@ -16,9 +16,17 @@ PanelWindow {
         right: true
     }
 
+    // Set ELYSEAN_THEME_PATH to a path relative to themes/, e.g.:
+    //   export ELYSEAN_THEME_PATH="user/PlatypusTokyoNight.qml"
+    // If not set, it will default to "default/WitcherTokyoNight.qml"
+    readonly property string activeTheme: {
+        const env = Quickshell.env("ELYSEAN_THEME_PATH")
+        return (env && env.length > 0) ? env : "default/WitcherTokyoNight.qml"
+    }
+
     Loader {
         id: themeLoader
-        source: ActiveTheme.themePath
+        source: Qt.resolvedUrl(activeTheme)
     }
 
     Image {

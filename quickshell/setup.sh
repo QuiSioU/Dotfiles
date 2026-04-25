@@ -50,36 +50,13 @@ EOF
     echo "    created    $USER_DIR/PlatypusTokyoNight.qml"
 fi
 
-if [ -f "$THEME_DIR/ActiveTheme.qml" ]; then
-    echo "    skipped    $THEME_DIR/ActiveTheme.qml: file already exists"
-else
-    cat > "$THEME_DIR/ActiveTheme.qml" <<EOF
-// quickshell/themes/ActiveTheme.qml
-
-
-pragma Singleton
-
-import QtQuick
-
-QtObject {
-    // User just changes this string to "user/PlatypusTokyoNight" or whatever they want
-    readonly property string themePath: "default/WitcherTokyoNight.qml"
-}
-
-EOF
-    echo "    created    $THEME_DIR/ActiveTheme.qml"
-fi
-
 echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌"
 
 echo "Building resources and dependencies..."
 
-if [ -d "build" ]; then
-    echo "    skipped    $ROOT_DIR/build: directory already exists"
-else
-    cmake -B build -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
-    cmake --build build
-fi
+rm -rf build ElyseanShell .cache
+cmake -B build -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+cmake --build build
 
 echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌"
 
