@@ -11,6 +11,7 @@ Item {
     id: card
 
     property var entry: null
+    property int timeoutMs: 4000   // total lifetime in milliseconds
 
     implicitHeight: inner.implicitHeight + 2   // 1px border top + bottom
     implicitWidth:  inner.implicitWidth  + 2   // 1px border left + right
@@ -45,16 +46,18 @@ Item {
         }
         radius:          8
         color:           "#1a3a5c"
-        implicitHeight:  content.implicitHeight + 24
+        implicitHeight:  content.implicitHeight + 24 + progressBar.height + 16
 
         ColumnLayout {
             id: content
             anchors {
-                fill:         parent
+                top:          parent.top
+                left:         parent.left
+                right:        parent.right
                 leftMargin:   14
                 rightMargin:  14
                 topMargin:    12
-                bottomMargin: 12
+                bottomMargin: 0
             }
             spacing: 4
 
@@ -106,6 +109,68 @@ Item {
                 maximumLineCount: 3
                 elide:            Text.ElideRight
                 Layout.fillWidth: true
+            }
+        }
+
+        // ── Reverse progress bar ───────────────────────────────────────────
+        Item {
+            id: progressBar
+            anchors {
+                left:         parent.left
+                right:        parent.right
+                bottom:       parent.bottom
+                leftMargin:   8
+                rightMargin:  8
+                bottomMargin: 8
+            }
+            height: 10
+
+            // Track (background)
+            Rectangle {
+                anchors.fill: parent
+                radius:       2
+                color:        "#0d2a45"
+            }
+
+            // Fill — anchored to the RIGHT so it shrinks leftward
+            Rectangle {
+                id: progressFill
+                anchors {
+                    top:    parent.top
+                    left:  parent.left
+                    bottom: parent.bottom
+                }
+                radius: 2
+                width:  0   // NO binding — animation must own this property
+
+                gradient: Gradient {
+                    orientation: Gradient.Horizontal
+                    GradientStop { position: 0.0; color: "#33ccff" }
+                    GradientStop { position: 1.0; color: "#00ff99" }
+                }
+
+                // interval:0 fires after the current event loop tick,
+                // by which point anchors/widths are fully resolved
+                Timer {
+                    interval: 0
+                    running:  true
+                    repeat:   false
+                    onTriggered: {
+                        progressFill.width = progressBar.width
+                        widthAnim.from     = progressBar.width
+                        widthAnim.to       = 0
+                        widthAnim.start()
+                    }
+                }
+
+                NumberAnimation {
+                    id:          widthAnim
+                    target:      progressFill
+                    property:    "width"
+                    duration:    card.timeoutMs
+                    running:     false
+                    easing.type: Easing.Linear
+                }
             }
         }
     }
