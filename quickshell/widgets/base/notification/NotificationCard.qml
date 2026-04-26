@@ -16,6 +16,9 @@ Item {
     implicitHeight: inner.implicitHeight + 2   // 1px border top + bottom
     implicitWidth:  inner.implicitWidth  + 2   // 1px border left + right
 
+    // Progress bar animation for each of the cards, even if they como from the same app/program
+    onEntryChanged: { if (entry !== null) startTimer.restart() }
+
     // Fade in
     opacity: 0
     NumberAnimation on opacity {
@@ -152,11 +155,13 @@ Item {
                 // interval:0 fires after the current event loop tick,
                 // by which point anchors/widths are fully resolved
                 Timer {
-                    interval: 0
+                    id: startTimer
+                    interval: 50
                     running:  true
                     repeat:   false
                     onTriggered: {
                         progressFill.width = progressBar.width
+                        widthAnim.stop()
                         widthAnim.from     = progressBar.width
                         widthAnim.to       = 0
                         widthAnim.start()
