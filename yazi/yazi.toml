@@ -16,13 +16,18 @@ rules = [
     ######################
     # JSON / IPYNB RULES #
     ######################
-    { name = "*.ipynb", use = "vscodium" },
-    { name = "*.json", use = "nvim" },
+    { url = "*.ipynb", use = "vscodium" },
+    { mime = "application/json", use = "nvim" },
 
     ##############
-    # PLAIN TEXT #
+    # TEXT FILES #
     ##############
-    { mime = "text/plain", use = "nvim" },
+    { mime = "text/*", use = "nvim" },
+    
+    #############################
+    # OTHER APPLICATION/* FILES #
+    #############################
+    { mime = "application/octet-stream", use = "nvim" },
 
     ###########
     # SVG+XML #

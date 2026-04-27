@@ -68,9 +68,9 @@
                :width 20
                :onclick "eww update trayrev=${!trayrev}"
                :cursor "pointer"
-               (label :class "tray-text" 
+               (label :class "tray-text"
                     :text {trayrev ? "›" : "‹"}
-               )         
+               )
           )
      )
 )
@@ -120,7 +120,7 @@
                          :text " "
                          :style "margin-right: 3px;"
                     )
-                    (label :class "bsht" 
+                    (label :class "bsht"
                          :text "${brightness_data.brightness}%"
                     )
                )
@@ -144,7 +144,7 @@
                     :text "${battery_data.icon}"
                )
           )
-          (label :class "bsht" 
+          (label :class "bsht"
                :text "${battery_data.capacity}%")
      )
      )
@@ -156,8 +156,8 @@
      "./bin/get_netinfo"
 )
 
-(defpoll network 
-     :interval "5s" 
+(defpoll network
+     :interval "5s"
      :initial "[]"
      "./bin/get_netlist"
 )
@@ -220,7 +220,7 @@
                     (box :class "wifi-stats"
                          :space-evenly false
                          (label :text "STATUS : ")
-                         (label :class {wifistatus.ssid == "Disconnected" ? "nocon" : "yescon"} 
+                         (label :class {wifistatus.ssid == "Disconnected" ? "nocon" : "yescon"}
                               :limit-width 27
                               :text  {wifistatus.ssid == "Disconnected" ? " Disconnected" : " Connected to ${wifistatus.ssid}"}
                          )
@@ -233,10 +233,10 @@
                               :space-evenly false
                               (for i in network
                                    (wifi-option
-                                        :ssid {i.ssid} 
-                                        :inuse {i.in_use} 
+                                        :ssid {i.ssid}
+                                        :inuse {i.in_use}
                                         :auto {i.autoconnect}
-                                   ) 
+                                   )
                               )
                          )
                     )
@@ -329,7 +329,7 @@
                     :space-evenly false
                     :orientation "h"
                     (label :class {auto == false ? "wifi-ssid-01" : inuse == false ? "wifi-ssid-02" : "wifi-ssid-03"}
-                         :limit-width 30 
+                         :limit-width 30
                          :text ssid
                     )
                )
@@ -370,98 +370,11 @@
      )
 )
 
-(defvar menurev false)
-(defpoll apps
-     :interval "60s"
-     :initial "[]"
-     "./bin/get_apps"
-)
-
 (defwidget menu []
      (button-module :class "menu"
           :subclass "menu-eventbox"
           :icon " "
-          :cmd "./scripts/menuctl.sh"
-     )
-)
-
-(defwindow menuctl
-     :monitor 0
-     :stacking "overlay"
-     :ondemand true
-     :geometry (geometry
-          :anchor "top left"
-          :x "5px"
-          :y "-4px"
-          :width "425px"
-          :height "993px"
-     )
-     (box
-          :space-evenly false
-          (revealer
-               :transition "slideright"
-               :reveal menurev
-               :duration "350ms"
-               (menu_event)
-          )
-     )
-)
-
-(defwidget menu_event []
-     (eventbox :class "shadow-container"
-          :onhoverlost "./scripts/menuctl.sh"
-          (box :orientation "v"
-               :space-evenly false
-               (box :class "menuctl-container"
-                    :space-evenly false
-                    :orientation "v"
-                    (box :class "menu-header"
-                         :space-evenly false
-                         (label
-                              :text "Program Launcher"
-                         )
-                    )
-                    (box :class "menu-subheader"
-                         :space-evenly false
-                         (label
-                              :text ">> Executable List"
-                         )
-                    )
-                    (scroll
-                         :vscroll true
-                         :class "app-container"
-                         :height 800
-                         (box
-                              :orientation "v" 
-                              :space-evenly false
-                              (for i in apps
-                                   (application
-                                        :name {i.name}
-                                        :exec {i.exec}
-                                        :icon {i.icon}
-                                        :term "false"
-                                   )
-                              )
-                         )
-                    )
-               )
-          )
-     )
-)
-
-(defwidget application [name exec icon term]
-     (eventbox
-          :cursor "pointer"
-          :onclick "eww close menuctl && ${term == 'true' ? '${terminal_cmd} -e ' : ''} ${exec} &"
-          (box :class "app-item"
-               :orientation "h"
-               :space-evenly false
-               (label :class "app-label" 
-                    :text name
-                    :halign "start"
-                    :valign "center"
-               )
-          )
+          :cmd "hyprctl dispatch global quickshell:toggleAppLauncher"
      )
 )
 
@@ -548,7 +461,7 @@
               )
          )
          (box :class "calendar-box"
-              :halign "center"    
+              :halign "center"
               (calendar :class "cal")
          )
     )
@@ -576,7 +489,7 @@
                   "uptime -p"
 )
 
-(defwindow usrctl 
+(defwindow usrctl
     :monitor 0
     :stacking "overlay"
     :geometry (geometry :anchor "top right"
@@ -694,8 +607,8 @@
                         )
                         (box :class "divider-h")
                         (box :class "sys"
-                            (box :class "cpu-box" 
-                                 :orientation "v" 
+                            (box :class "cpu-box"
+                                 :orientation "v"
                                  :space-evenly false
                                  (eventbox :class "cpu-hover"
                                            :tooltip "Used: ${cpu_data.used_decimals}%"
@@ -719,8 +632,8 @@
                                       )
                                  )
                             )
-                            (box :class "ram-box" 
-                                 :orientation "v" 
+                            (box :class "ram-box"
+                                 :orientation "v"
                                  :space-evenly false
                                  (eventbox :class "ram-hover"
                                            :tooltip "Used: ${ram_data.used}GB / ${ram_data.total}GB"
@@ -745,8 +658,8 @@
                                  )
                             )
                             (box :class "disk-box"
-                                 :orientation "v" 
-                                 :space-evenly false 
+                                 :orientation "v"
+                                 :space-evenly false
                                  (eventbox :class "disk-hover"
                                            :tooltip "Used: ${disk_data.used}GB / ${disk_data.total}GB"
                                            (circular-progress :class "disk"
@@ -779,7 +692,7 @@
                                   (label :text "${volume_data.icon}")
                                   (scale :class "vol"
                                          :value "${volume_data.volume}"
-                                         :max 101 
+                                         :max 101
                                          :min 0
                                          :round-digits 0
                                          :onchange "eww update volume_data=\"$(./bin/set_volume -v {})\""
@@ -791,7 +704,7 @@
                                   (label :text "")
                                   (scale :value "${brightness_data.brightness}"
                                          :class "lig"
-                                         :max 101 
+                                         :max 101
                                          :min 1
                                          :round-digits 0
                                          :onchange "eww update brightness_data=\"$(./bin/set_brightness -v {})\""
@@ -802,7 +715,7 @@
               )
          )
      ;     (cpu-panel)
-         (music-player) 
+         (music-player)
          )
     ))
 )
@@ -869,7 +782,7 @@
               (box :class "music-title"
                    :orientation "h"
                    :space-evenly false
-                   (box :class "music-thumbnail" 
+                   (box :class "music-thumbnail"
                         :style "background-image: url('${music.thumbnail}');"
                    )
                    (box :class "music-desc"
