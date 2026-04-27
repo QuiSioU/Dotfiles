@@ -16,9 +16,25 @@ Singleton {
 
     // ── JSON log ───────────────────────────────────────────────────────────
 
+    readonly property string _logPath: Quickshell.env("HOME") + "/.local/share/quickshell/notifications.json"
+
     FileView {
         id: logFile
-        path: Quickshell.env("HOME") + "/.local/share/quickshell/notifications.json"
+        path: ""
+    }
+
+    // Ensure log file exists
+    Process {
+    id: initProc
+        command: [Quickshell.shellDir + "/scripts/init_notif_log.sh", root._logPath]
+        running: true
+        onExited: function(exitCode) {
+            if (exitCode === 0) {
+                logFile.path = root._logPath;
+            } else {
+                console.warn("NotificationService: failed to initialise log file (exit", exitCode, ")");
+            }
+        }
     }
 
     function _appendLog(appName, summary, body) {

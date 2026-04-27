@@ -72,6 +72,7 @@ Item {
                     text:             entry?.appName || "Notification"
                     color:            "#93c5fd"
                     font.pixelSize:   11
+                    font.family: "FiraCode Nerd Font Mono"
                     Layout.fillWidth: true
                     elide:            Text.ElideRight
                 }
@@ -80,6 +81,7 @@ Item {
                     text:  "✕"
                     color: closeArea.containsMouse ? "#f87171" : "#60a5fa"
                     font.pixelSize: 11
+                    font.family: "FiraCode Nerd Font Mono"
 
                     MouseArea {
                         id:           closeArea
@@ -98,6 +100,9 @@ Item {
                 color:            "#eff6ff"
                 font.pixelSize:   13
                 font.bold:        true
+                font.family: "FiraCode Nerd Font Mono"
+                font.hintingPreference: Font.PreferNoHinting
+                renderType: Text.QtRendering
                 elide:            Text.ElideRight
                 Layout.fillWidth: true
             }
@@ -108,6 +113,7 @@ Item {
                 text:             entry?.body ?? ""
                 color:            "#bfdbfe"
                 font.pixelSize:   12
+                font.family: "FiraCode Nerd Font Mono"
                 wrapMode:         Text.Wrap
                 maximumLineCount: 3
                 elide:            Text.ElideRight

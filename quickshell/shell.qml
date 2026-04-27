@@ -36,7 +36,7 @@ ShellRoot {
 
     Loader {
         active: true
-        source: "widgets/NotificationPopup.qml"
+        source: "widgets/NotificationDisplay.qml"
     }
 
     GlobalShortcut {

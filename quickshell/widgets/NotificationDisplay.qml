@@ -1,4 +1,4 @@
-/* quickshell/widgets/NotificationPopup.qml */
+/* quickshell/widgets/NotificationDisplay.qml */
 
 
 import QtQuick
