@@ -54,6 +54,21 @@ Singleton {
         logFile.setText(JSON.stringify(arr, null, 2));
     }
 
+    // ── App icon retrieval ─────────────────────────────────────────────────
+
+    readonly property string _fallbackIcon: Quickshell.shellDir + "/assets/icons/notification-bell.svg"
+
+    function resolveIcon(notif) {
+        if (notif.image && notif.image !== "")
+            return notif.image;
+        if (notif.appIcon && notif.appIcon !== "") {
+            const resolved = Quickshell.iconPath(notif.appIcon, 32);
+            if (resolved && resolved !== "")
+                return resolved;
+        }
+        return root._fallbackIcon;
+    }
+
     // ── Notification daemon ────────────────────────────────────────────────
 
     NotificationServer {
@@ -61,7 +76,7 @@ Singleton {
         actionsSupported:    false
         bodySupported:       true
         bodyMarkupSupported: false
-        imageSupported:      false
+        imageSupported:      true
         keepOnReload:        false
 
         onNotification: function(notif) {
@@ -86,6 +101,7 @@ Singleton {
                 appName: notif.appName || "",
                 summary: notif.summary || "",
                 body:    notif.body    || "",
+                icon:   root.resolveIcon(notif),
                 _notif:  notif
             });
 
@@ -100,12 +116,13 @@ Singleton {
         id: _entryComp
 
         QtObject {
-            property int    seqId:   0
-            property string _pid:    ""
-            property string appName: ""
-            property string summary: ""
-            property string body:    ""
-            property var    _notif:  null
+            property int    seqId:      0
+            property string _pid:       ""
+            property string appName:    ""
+            property string summary:    ""
+            property string body:       ""
+            property string icon:       ""
+            property var    _notif:     null
 
             property var _timer: Timer {
                 interval: 4000
