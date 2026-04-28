@@ -1,14 +1,18 @@
 /* quickshell/shell.qml */
 
 
+import QtQuick
 import Quickshell
 import Quickshell.Hyprland
-import QtQuick
 import ElyseanShell.Services
-import "./themes"
 
 ShellRoot {
-    ThemeLoader {}
+
+    Loader {
+        id: themeLoader
+        active: true
+        source: "themes/ThemeLoader.qml"
+    }
 
     Loader {
         id: appLauncherLoader

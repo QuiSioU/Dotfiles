@@ -3,6 +3,7 @@
 
 import QtQuick
 import QtQuick.Layouts
+import ElyseanShell.Themes
 
 
 // Gradient border trick: outer rectangle filled with gradient,
@@ -34,9 +35,9 @@ Item {
         radius: 9
 
         gradient: Gradient {
-            orientation: Gradient.Vertical
-            GradientStop { position: 0.0; color: "#33ccff" }  // Cyan
-            GradientStop { position: 1.0; color: "#00ff99" }  // Green
+            orientation: Gradient.Horizontal
+            GradientStop { position: 0.0; color: ActiveTheme.color_1 }  // Cyan
+            GradientStop { position: 1.0; color: ActiveTheme.color_3 }  // Purple
         }
     }
 
@@ -124,7 +125,7 @@ Item {
                 Item {
                     id: progressBar
                     Layout.fillWidth: true
-                    height: 10
+                    height: 5
 
                     // Track (background)
                     Rectangle {
@@ -146,8 +147,8 @@ Item {
 
                         gradient: Gradient {
                             orientation: Gradient.Horizontal
-                            GradientStop { position: 0.0; color: "#33ccff" }
-                            GradientStop { position: 1.0; color: "#00ff99" }
+                            GradientStop { position: 0.0; color: ActiveTheme.color_1 }
+                            GradientStop { position: 1.0; color: ActiveTheme.color_3 }
                         }
 
                         // interval:0 fires after the current event loop tick,

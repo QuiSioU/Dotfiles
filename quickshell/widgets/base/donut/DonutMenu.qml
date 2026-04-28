@@ -5,6 +5,7 @@ import Quickshell
 import Quickshell.Hyprland
 import QtQuick
 import ElyseanShell.Services
+import ElyseanShell.Themes
 
 PanelWindow {
     id: donut_panwin
@@ -121,8 +122,8 @@ PanelWindow {
                     ctx.lineWidth = 2
                     
                     let grad = ctx.createLinearGradient(0, 0, width, height)
-                    grad.addColorStop(0, "#33ccff") // Cyan
-                    grad.addColorStop(1, "#00ff99") // Green
+                    grad.addColorStop(0, ActiveTheme.color_3) // Cyan
+                    grad.addColorStop(1, ActiveTheme.color_1) // Purple
                     
                     ctx.strokeStyle = grad
 

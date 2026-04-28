@@ -17,37 +17,25 @@ mkdir -p "$USER_DIR"
 
 echo "Creating directory structure for user's custom themes..."
 
-if [ -f "$USER_DIR/qmldir" ]; then
-    echo "    skipped    $USER_DIR/qmldir: file already exists"
+if [ -f "$USER_DIR/PlatypusTokyoNight.conf" ]; then
+    echo "    skipped    $USER_DIR/PlatypusTokyoNight.conf: file already exists"
 else
-    cat > "$USER_DIR/qmldir" <<EOF
-# quickshell/themes/user/qmldir
+    cat > "$USER_DIR/PlatypusTokyoNight.conf" <<EOF
+# quickshell/themes/default/WitcherTokyoNight.conf
 
 
-# (Must have at least 1 theme so QML detects this as directory)
+# Only works for images inside the quickshell/assets/wallpapers directory
+WALLPAPER_PATH=Platypus.jpg
 
-PlatypusTokyoNight 1.0 PlatypusTokyoNight.qml
-# Rest of custom themes...
-
+COLOR_1=7dcfff
+COLOR_2=7aa2f7
+COLOR_3=bb9af7
+COLOR_4=9ece6a
+COLOR_5=ff9e64
+COLOR_6=1a3a5c
+COLOR_7=1f2335
 EOF
-    echo "    created    $USER_DIR/qmldir"
-fi
-
-if [ -f "$USER_DIR/PlatypusTokyoNight.qml" ]; then
-    echo "    skipped    $USER_DIR/PlatypusTokyoNight.qml: file already exists"
-else
-    cat > "$USER_DIR/PlatypusTokyoNight.qml" <<EOF
-// quickshell/themes/user/PlatypusTokyoNight.qml
-
-
-import QtQuick
-
-QtObject {
-    readonly property string wallpaper: Qt.resolvedUrl("../../assets/wallpapers/Platypus.jpg")
-}
-
-EOF
-    echo "    created    $USER_DIR/PlatypusTokyoNight.qml"
+    echo "    created    $USER_DIR/PlatypusTokyoNight.conf"
 fi
 
 echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌"
@@ -57,16 +45,6 @@ echo "Building resources and dependencies..."
 rm -rf build ElyseanShell .cache
 cmake -B build -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 cmake --build build
-
-echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌"
-
-echo "Creating notification history logfile..."
-
-mkdir -p ~/.local/share/quickshell
-
-if [ ! -f "$HOME/.local/share/quickshell/notifications.json" ]; then
-    echo "[]" > "$HOME/.local/share/quickshell/notifications.json"
-fi
 
 echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌"
 
