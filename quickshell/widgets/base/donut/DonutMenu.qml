@@ -122,8 +122,8 @@ PanelWindow {
                     ctx.lineWidth = 2
                     
                     let grad = ctx.createLinearGradient(0, 0, width, height)
-                    grad.addColorStop(0, ActiveTheme.color_3) // Cyan
-                    grad.addColorStop(1, ActiveTheme.color_1) // Purple
+                    grad.addColorStop(0, ActiveTheme.color["MAGENTA"])
+                    grad.addColorStop(1, ActiveTheme.color["CYAN"])
                     
                     ctx.strokeStyle = grad
 

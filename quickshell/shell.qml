@@ -5,14 +5,12 @@ import QtQuick
 import Quickshell
 import Quickshell.Hyprland
 import ElyseanShell.Services
+import "./widgets"
 
 ShellRoot {
 
-    Loader {
-        id: themeLoader
-        active: true
-        source: "themes/ThemeLoader.qml"
-    }
+    Loader { source: "widgets/ThemeLoader.qml" }
+    Wallpaper {}
 
     Loader {
         id: appLauncherLoader

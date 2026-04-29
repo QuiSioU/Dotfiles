@@ -1,5 +1,0 @@
-# quickshell/themes/qmldir
-
-
-module ElyseanShell.Themes
-singleton ActiveTheme 1.0 ActiveTheme.qml

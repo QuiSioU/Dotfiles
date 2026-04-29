@@ -36,8 +36,8 @@ Item {
 
         gradient: Gradient {
             orientation: Gradient.Horizontal
-            GradientStop { position: 0.0; color: ActiveTheme.color_1 }  // Cyan
-            GradientStop { position: 1.0; color: ActiveTheme.color_3 }  // Purple
+            GradientStop { position: 0.0; color: ActiveTheme.color["CYAN"] }  // Cyan
+            GradientStop { position: 1.0; color: ActiveTheme.color["MAGENTA"] }  // Purple
         }
     }
 
@@ -147,8 +147,8 @@ Item {
 
                         gradient: Gradient {
                             orientation: Gradient.Horizontal
-                            GradientStop { position: 0.0; color: ActiveTheme.color_1 }
-                            GradientStop { position: 1.0; color: ActiveTheme.color_3 }
+                            GradientStop { position: 0.0; color: ActiveTheme.color["CYAN"] }
+                            GradientStop { position: 1.0; color: ActiveTheme.color["MAGENTA"] }
                         }
 
                         // interval:0 fires after the current event loop tick,

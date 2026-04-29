@@ -3,5 +3,5 @@
 
 .cache
 .clangd
-build
+.build
 ElyseanShell

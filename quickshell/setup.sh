@@ -21,19 +21,42 @@ if [ -f "$USER_DIR/PlatypusTokyoNight.conf" ]; then
     echo "    skipped    $USER_DIR/PlatypusTokyoNight.conf: file already exists"
 else
     cat > "$USER_DIR/PlatypusTokyoNight.conf" <<EOF
-# quickshell/themes/default/WitcherTokyoNight.conf
+# quickshell/themes/default/PlatypusTokyoNight.conf
 
 
-# Only works for images inside the quickshell/assets/wallpapers directory
-WALLPAPER_PATH=Platypus.jpg
+WALLPAPER_PATH=~/.config/quickshell/assets/wallpapers/Platypus.jpg
 
-COLOR_1=7dcfff
-COLOR_2=7aa2f7
-COLOR_3=bb9af7
-COLOR_4=9ece6a
-COLOR_5=ff9e64
-COLOR_6=1a3a5c
-COLOR_7=1f2335
+# Base UI
+BG=0x1a1b26
+BG_DARK=0x16161e
+BG_HIGHLIGHT=0x292e42
+TERMINAL_BLACK=0x414868
+FG=0xc0caf5
+FG_DARK=0xa9b1d6
+FG_GUTTER=0x3b4261
+DARK3=0x545c7e
+DARK5=0x737aa2
+COMMENT=0x565f89
+
+# Syntax / Accent
+BLUE=0x7aa2f7
+CYAN=0x7dcfff
+BLUE1=0x2ac3de
+BLUE2=0x0db9d7
+BLUE5=0x89ddff
+BLUE6=0xb4f9f8
+BLUE7=0x394b70
+MAGENTA=0xbb9af7
+MAGENTA2=0xff007c
+PURPLE=0x9d7cd8
+ORANGE=0xff9e64
+YELLOW=0xe0af68
+GREEN=0x9ece6a
+GREEN1=0x73daca
+GREEN2=0x41a6b5
+TEAL=0x1abc9c
+RED=0xf7768e
+RED1=0xdb4b4b
 EOF
     echo "    created    $USER_DIR/PlatypusTokyoNight.conf"
 fi
@@ -42,9 +65,8 @@ echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌�
 
 echo "Building resources and dependencies..."
 
-rm -rf build ElyseanShell .cache
-cmake -B build -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
-cmake --build build
+rm -rf .build ElyseanShell .cache
+bash "$ROOT_DIR/build.sh"
 
 echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌"
 
