@@ -11,8 +11,9 @@ import Quickshell.Services.Notifications
 Singleton {
     id: root
 
-    property list<var> notifications: []
+    property list<var> notifications:   []
     property int _seq: 0
+    property bool showNotifications:    true
 
     // ── JSON log ───────────────────────────────────────────────────────────
 
@@ -73,11 +74,11 @@ Singleton {
 
     NotificationServer {
         id: server
-        actionsSupported:    false
-        bodySupported:       true
-        bodyMarkupSupported: false
-        imageSupported:      true
-        keepOnReload:        false
+        actionsSupported:       false
+        bodySupported:          true
+        bodyMarkupSupported:    false
+        imageSupported:         true
+        keepOnReload:           false
 
         onNotification: function(notif) {
             if (!notif.appName && !notif.summary && !notif.body) return;
@@ -105,7 +106,9 @@ Singleton {
                 _notif:  notif
             });
 
-            root.notifications = [entry, ...root.notifications];
+            if (root.showNotifications) {
+                root.notifications = [entry, ...root.notifications];
+            }
             root._appendLog(notif.appName, notif.summary, notif.body);
         }
     }

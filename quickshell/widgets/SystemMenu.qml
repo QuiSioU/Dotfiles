@@ -6,6 +6,7 @@ import Quickshell.Bluetooth
 import Quickshell.Services.Pipewire
 import ElyseanShell.Services
 import "base/orbit"
+import "../services/Notification"
 
 OrbitMenu {
 
@@ -63,7 +64,7 @@ OrbitMenu {
 
         name:     "Airplane Mode"
         icon: !selected ?   Qt.resolvedUrl("../assets/icons/airplane-mode-disabled.svg")
-            :               Qt.resolvedUrl("../assets/icons/airplane-mode.svg")
+            :               Qt.resolvedUrl("../assets/icons/airplane-mode-active.svg")
 
         comment:  selected ? "On" : "Off"
         selected: false
@@ -108,6 +109,20 @@ OrbitMenu {
         action:   function() {
         if (NetworkService.connectionType !== "ethernet")
             NetworkService.enabled = !NetworkService.enabled
+        }
+    }
+
+    // Notifications
+    OrbitEntry {
+        name:       "Notifications"
+        icon:       (NotificationService.showNotifications)
+                        ? Qt.resolvedUrl("../assets/icons/notification-active.svg")
+                        : Qt.resolvedUrl("../assets/icons/notification-disabled.svg")
+        comment:  (NotificationService.showNotifications) ? "On" : "Off"
+        selected: NotificationService.showNotifications
+        stateful: true
+        action:   function() {
+            NotificationService.showNotifications = !NotificationService.showNotifications
         }
     }
 
