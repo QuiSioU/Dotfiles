@@ -1,7 +1,7 @@
-/* quickshell/services/CursorPosition.cpp */
+/* quickshell/services/CursorPositionService.cpp */
 
 
-#include "CursorPosition.hpp"
+#include "CursorPositionService.hpp"
 #include <QByteArray>
 
 CursorPosition::CursorPosition(QObject* parent)

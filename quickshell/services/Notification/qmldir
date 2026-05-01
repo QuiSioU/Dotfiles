@@ -1,4 +1,0 @@
-# quickshell/services/Notification/qmldir
-
-
-singleton NotificationService 1.0 NotificationService.qml

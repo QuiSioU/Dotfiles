@@ -1,4 +1,4 @@
-/* quickshell/services/Bluetooth.hpp */
+/* quickshell/services/BluetoothService.hpp */
 
 
 #ifndef BLUETOOTH_SERVICE_H

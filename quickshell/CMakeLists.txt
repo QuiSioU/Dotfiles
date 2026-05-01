@@ -12,24 +12,28 @@ find_package(Qt6 REQUIRED COMPONENTS Core Quick DBus)
 # ── Single shared library that backs the ElyseanShell.Services QML module ──
 #
 #   services/
-#     Bluetooth/          add_subdirectory → Bluetooth.hpp / .cpp
-#     CursorPosition/     add_subdirectory → CursorPosition.hpp / .cpp
-#     Network/            add_subdirectory → Network.hpp / .cpp
-#     Notification/       QML-only — no C++, no subdirectory needed
+#     Bluetooth/          add_subdirectory -> BluetoothService.hpp / .cpp
+#     CursorPosition/     add_subdirectory -> CursorPositionService.hpp / .cpp
+#     Network/            add_subdirectory -> NetworkService.hpp / .cpp
+#     Notification/       set as singleton -> NotificationService.qml
 #
+set_source_files_properties(services/Notification/NotificationService.qml
+    PROPERTIES
+        QT_QML_SINGLETON_TYPE TRUE
+)
 qt_add_library(elyseanshell-services SHARED)
 qt_add_qml_module(elyseanshell-services
     URI ElyseanShell.Services
     VERSION 1.0
+        QML_FILES
+        services/Notification/NotificationService.qml
     OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/ElyseanShell/Services
 )
 
 set_source_files_properties(ActiveTheme.qml
     PROPERTIES
-        QT_RESOURCE_ALIAS ActiveTheme.qml
         QT_QML_SINGLETON_TYPE TRUE
 )
-
 qt_add_library(elyseanshell-themes SHARED)
 qt_add_qml_module(elyseanshell-themes
     URI ElyseanShell.Themes

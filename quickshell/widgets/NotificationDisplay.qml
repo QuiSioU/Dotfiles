@@ -5,7 +5,7 @@ import QtQuick
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Wayland
-import "../services/Notification"
+import ElyseanShell.Services
 import "base/notification"
 
 Variants {

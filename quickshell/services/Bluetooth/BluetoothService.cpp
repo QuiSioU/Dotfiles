@@ -1,7 +1,7 @@
-/* quickshell/services/Bluetooth.cpp */
+/* quickshell/services/BluetoothService.cpp */
 
 
-#include "Bluetooth.hpp"
+#include "BluetoothService.hpp"
 
 #include <QDBusConnection>
 #include <QDBusInterface>

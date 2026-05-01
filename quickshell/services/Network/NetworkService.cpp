@@ -1,7 +1,7 @@
-/* quickshell/services/Network.cpp */
+/* quickshell/services/NetworkService.cpp */
 
 
-#include "Network.hpp"
+#include "NetworkService.hpp"
 
 #include <QDBusConnection>
 #include <QDBusInterface>

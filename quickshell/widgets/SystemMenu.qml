@@ -6,7 +6,6 @@ import Quickshell.Bluetooth
 import Quickshell.Services.Pipewire
 import ElyseanShell.Services
 import "base/orbit"
-import "../services/Notification"
 
 OrbitMenu {
 
