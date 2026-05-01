@@ -2,7 +2,7 @@
 # hypr/setup.sh
 
 
-USER_DIR="$HOME/.config/hypr/user"
+USER_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/user"
 
 create_file() {
     local filename="$1"
@@ -23,9 +23,7 @@ create_file() {
 EOF
 
     echo "  created   $filepath"
-    echo "--------------------------------------------------------------------------------------"
 }
-
 
 
 

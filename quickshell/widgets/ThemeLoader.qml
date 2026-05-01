@@ -8,14 +8,6 @@ import ElyseanShell.Themes
 
 
 QtObject {
-    // Set ELYSEAN_THEME_PATH to a path relative to themes/, e.g.:
-    //   export ELYSEAN_THEME_PATH="user/PlatypusTokyoNight.conf"
-    // If not set, it will default to "default/WitcherTokyoNight.conf"
-    readonly property string activeTheme: {
-        const env = Quickshell.env("ELYSEAN_THEME_PATH")
-        return (env && env.length > 0) ? env : "default/WitcherTokyoNight.conf"
-    }
-
     function expand_home(path) {
         if (path.startsWith("~/"))
             return Quickshell.env("HOME") + path.slice(1)
@@ -23,7 +15,7 @@ QtObject {
     }
 
     property var _file: FileView {
-        path: Quickshell.shellDir + "/themes/" + activeTheme
+        path: Quickshell.env("HOME") + "/.config/elysean_themes/active_theme.conf"
         onLoadedChanged: {
             if (!loaded) return
 
@@ -32,12 +24,12 @@ QtObject {
             const result = {}
             for (const line of text().split("\n")) {
                 const trimmed = line.trim()
-                if (!trimmed || trimmed.startsWith("#")) continue
+                if (!trimmed.startsWith("$")) continue
 
                 const eq = trimmed.indexOf("=")
                 if (eq === -1) continue
 
-                const key = trimmed.slice(0, eq).trim()
+                const key = trimmed.slice(0, eq).trim().replace(/^\$/, "")  // Hyprland's $VAR format
                 const val = trimmed.slice(eq + 1).trim()
 
                 if (key === "WALLPAPER_PATH") {
