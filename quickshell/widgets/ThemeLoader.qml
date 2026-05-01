@@ -8,14 +8,8 @@ import ElyseanShell.Themes
 
 
 QtObject {
-    function expand_home(path) {
-        if (path.startsWith("~/"))
-            return Quickshell.env("HOME") + path.slice(1)
-        return path
-    }
-
     property var _file: FileView {
-        path: Quickshell.env("HOME") + "/.config/elysean_themes/active_theme.conf"
+        path: Quickshell.env("HOME") + "/.config/elysean_themes/active_theme"
         onLoadedChanged: {
             if (!loaded) return
 
@@ -32,14 +26,9 @@ QtObject {
                 const key = trimmed.slice(0, eq).trim().replace(/^\$/, "")  // Hyprland's $VAR format
                 const val = trimmed.slice(eq + 1).trim()
 
-                if (key === "WALLPAPER_PATH") {
-                    const p = expand_home(val)
-                    ActiveTheme.wallpaper = p ? p : ""
-                } else {
-                    // input: RRGGBBAA || Quickshell expects: AARRGGBB
-                    const rgba = val.match(/^rgba\(([a-zA-Z0-9]{6})([a-zA-Z0-9]{2})\)$/)
-                    result[key] = rgba ? "#" + rgba[2] + rgba[1] : val
-                }
+                // input: RRGGBBAA || Quickshell expects: AARRGGBB
+                const rgba = val.match(/^rgba\(([a-zA-Z0-9]{6})([a-zA-Z0-9]{2})\)$/)
+                result[key] = rgba ? "#" + rgba[2] + rgba[1] : val
 
                 console.log(JSON.stringify(key), "=", JSON.stringify(val))
             }

@@ -4,7 +4,6 @@
 import QtQuick
 import Quickshell
 import Quickshell.Wayland
-import ElyseanShell.Themes
 
 PanelWindow {
     WlrLayershell.layer: WlrLayer.Background
@@ -18,7 +17,7 @@ PanelWindow {
 
     Image {
         anchors.fill: parent
-        source: ActiveTheme.wallpaper
+        source: Quickshell.shellDir + "/active_wallpaper"
         fillMode: Image.PreserveAspectCrop
     }
 }

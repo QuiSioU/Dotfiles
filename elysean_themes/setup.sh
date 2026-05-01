@@ -25,10 +25,10 @@ echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌�
 
 echo "Linking active theme configuration file..."
 
-if [ -f "$ROOT_DIR/active_theme.conf" ]; then
-    echo "  skipped    $ROOT_DIR/active_theme.conf:  file already exists"
+if [ -f "$ROOT_DIR/active_theme" ]; then
+    echo "  skipped    $ROOT_DIR/active_theme:  file already exists"
 else
-    ln -s "default/WitcherTokyoNight.conf" "active_theme.conf"
+    ln -s "default/WitcherTokyoNight.conf" "active_theme"
 fi
 
 echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌"
