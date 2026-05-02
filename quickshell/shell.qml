@@ -8,8 +8,11 @@ import ElyseanShell.Services
 import "./widgets"
 
 ShellRoot {
+    settings.watchFiles: true
 
     Loader { source: "widgets/ThemeLoader.qml" }
+
+    ScreenFrame {}
     Wallpaper {}
 
     Loader {
