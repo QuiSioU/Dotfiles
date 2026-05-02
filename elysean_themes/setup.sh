@@ -28,7 +28,7 @@ echo "Linking active theme configuration file..."
 if [ -f "$ROOT_DIR/active_theme" ]; then
     echo "  skipped    $ROOT_DIR/active_theme:  file already exists"
 else
-    ln -s "default/WitcherTokyoNight.conf" "active_theme"
+    ln -s "default/TokyoNight.conf" "active_theme"
 fi
 
 echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌"

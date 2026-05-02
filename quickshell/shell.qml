@@ -86,7 +86,7 @@ ShellRoot {
                 orbit._pendingShow = true
                 CursorPosition.update()
             } else {
-                orbit.visible = false
+                orbit.closeMenu()
             }
         }
     }

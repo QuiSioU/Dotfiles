@@ -12,17 +12,15 @@ PanelWindow {
     visible: false
     focusable: true
 
-    default property list<QtObject> _children
-
-    // Only OrbitEntry children reach the Repeater.
-    readonly property var entries: _children.filter(c => c instanceof OrbitEntry)
+    property list<OrbitEntry> entries: []
 
     property bool _pendingShow: false
+    property bool _pendingClose: false
 
-    property real centerX:    CursorPosition.x
-    property real centerY:    CursorPosition.y - 50
-    property real orbitRadius: 110
-    property real bubbleSize:  52
+    property real centerX:    0
+    property real centerY:    0
+    property real bubbleSize:  50
+    property real orbitRadius: bubbleSize * 2
     property int  hoveredIndex: -1
 
     implicitWidth:  Qt.application.screens[0].width
@@ -35,16 +33,24 @@ PanelWindow {
         right: true
     }
 
+    function closeMenu() {
+        if (_pendingClose || !visible) return
+        _pendingClose = true
+        bubbleRepeater.triggerCollapse()
+    }
+
     HyprlandFocusGrab {
         windows: [orbit_panwin]
         active: orbit_panwin.visible
-        onCleared: orbit_panwin.visible = false
+        onCleared: orbit_panwin.closeMenu()
     }
 
     onVisibleChanged: {
         if (visible) {
+            centerX = CursorPosition.x
+            centerY = CursorPosition.y - 50
             innerItem.forceActiveFocus()
-            bubbleRepeater.triggerBang()
+            bubbleRepeater.triggerExpand()
         }
     }
 
@@ -53,16 +59,23 @@ PanelWindow {
         anchors.fill: parent
         focus: true
 
-        Keys.onEscapePressed: orbit_panwin.visible = false
+        Keys.onEscapePressed: orbit_panwin.closeMenu()
 
         Repeater {
             id: bubbleRepeater
             model: orbit_panwin.entries.length
 
-            function triggerBang() {
+            function triggerExpand() {
                 for (let i = 0; i < count; i++) {
                     const item = itemAt(i)
-                    if (item) item.resetAndLaunch()
+                    if (item) item.expand()
+                }
+            }
+
+            function triggerCollapse() {
+                for (let i = 0; i < count; i++) {
+                    const item = itemAt(i)
+                    if (item) item.collapse()
                 }
             }
 
@@ -81,35 +94,50 @@ PanelWindow {
 
                 width:  orbit_panwin.bubbleSize
                 height: orbit_panwin.bubbleSize
-                x: orbit_panwin.centerX - orbit_panwin.bubbleSize / 2
-                y: orbit_panwin.centerY - orbit_panwin.bubbleSize / 2
+                x: 0
+                y: 0
 
                 Behavior on x {
                     enabled: bubbleItem.animating
-                    NumberAnimation { duration: 450; easing.type: Easing.OutBack; easing.overshoot: 1.5 }
+                    NumberAnimation {
+                        duration: 450;
+                        easing.type: orbit_panwin._pendingClose ? Easing.InBack : Easing.OutBack;
+                        easing.overshoot: 1.5
+                    }
                 }
                 Behavior on y {
                     enabled: bubbleItem.animating
-                    NumberAnimation { duration: 450; easing.type: Easing.OutBack; easing.overshoot: 1.5 }
-                }
-
-                Timer {
-                    id: staggerTimer
-                    interval: index * 30
-                    repeat: false
-                    running: false
-                    onTriggered: {
-                        bubbleItem.animating = true
-                        bubbleItem.x = bubbleItem.targetX - orbit_panwin.bubbleSize / 2
-                        bubbleItem.y = bubbleItem.targetY - orbit_panwin.bubbleSize / 2
+                    NumberAnimation {
+                        duration: 450;
+                        easing.type: orbit_panwin._pendingClose ? Easing.InBack : Easing.OutBack;
+                        easing.overshoot: 1.5
                     }
                 }
 
-                function resetAndLaunch() {
+                Timer {
+                    id: hideTimer
+                    interval: 450
+                    repeat: false
+                    running: index === 0 && orbit_panwin._pendingClose
+                    onTriggered: {
+                        orbit_panwin.visible = false
+                        orbit_panwin._pendingClose = false
+                    }
+                }
+
+                function expand() {
                     animating = false
                     x = orbit_panwin.centerX - orbit_panwin.bubbleSize / 2
                     y = orbit_panwin.centerY - orbit_panwin.bubbleSize / 2
-                    staggerTimer.restart()
+                    animating = true
+                    x = targetX - orbit_panwin.bubbleSize / 2
+                    y = targetY - orbit_panwin.bubbleSize / 2
+                }
+
+                function collapse() {
+                    animating = true
+                    x = orbit_panwin.centerX - orbit_panwin.bubbleSize / 2
+                    y = orbit_panwin.centerY - orbit_panwin.bubbleSize / 2
                 }
 
                 Rectangle {
@@ -224,7 +252,7 @@ PanelWindow {
                     const wasSelected = entry.selected
                     entry.action()
 
-                    if (!entry.stateful) orbit_panwin.visible = false
+                    if (!entry.stateful) orbit_panwin.closeMenu()
                 }
             }
         }
