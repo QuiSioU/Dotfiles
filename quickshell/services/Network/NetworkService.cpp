@@ -1,4 +1,4 @@
-/* quickshell/services/NetworkService.cpp */
+/* quickshell/services/Network/NetworkService.cpp */
 
 
 #include "NetworkService.hpp"

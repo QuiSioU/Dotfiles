@@ -2,64 +2,53 @@
 
 
 import QtQuick
-import QtQuick.Effects
 import Quickshell
 import Quickshell.Wayland
+import ElyseanShell.Services
 
 Variants {
     model: Quickshell.screens
 
-    PanelWindow {
-        id: framePanWin
-
+    Scope {
+        id: scope
         required property var modelData
-        screen: modelData
 
-        anchors {
-            top: true;
-            right: true;
-            bottom: true;
-            left: true
+        readonly property int    thickness: 10
+        readonly property int    rounding:  25
+        readonly property color  frameColor: "#1e1e2e"
+
+        // ── 1. Exclusion zones — push windows inward ──────────────────
+        component EdgeZone: PanelWindow {
+            screen: scope.modelData
+            exclusiveZone: scope.thickness
+            color: "transparent"
+            mask: Region {}
+            implicitWidth: 1
+            implicitHeight: 1
+            WlrLayershell.keyboardFocus: WlrKeyboardFocus.None
         }
-        color: "transparent"
 
-        readonly property int gapsOut: 10
-        readonly property int gapsOutTop: 25
-        readonly property int borderSize: 2
-        readonly property int rounding: 15 + borderSize
+        EdgeZone { anchors.top: true }
+        EdgeZone { anchors.bottom: true }
+        EdgeZone { anchors.left: true }
+        EdgeZone { anchors.right: true }
 
-        WlrLayershell.keyboardFocus: WlrKeyboardFocus.None
-        mask: Region {}
+        // ── 2. Full-screen overlay — SDF frame drawn by C++ item ──────
+        PanelWindow {
+            screen: scope.modelData
+            color: "transparent"
+            anchors.top: true; anchors.bottom: true
+            anchors.left: true; anchors.right: true
+            WlrLayershell.exclusionMode: ExclusionMode.Ignore
+            WlrLayershell.layer: WlrLayer.Top
+            WlrLayershell.keyboardFocus: WlrKeyboardFocus.None
+            mask: Region {}
 
-        Rectangle {
-            anchors.fill: parent
-            color: "#ffffff"
-
-            layer.enabled: true
-            layer.effect: MultiEffect {
-                maskSource: frameMask
-                maskEnabled: true
-                maskInverted: true
-                maskThresholdMin: 0.5
-                maskSpreadAtMin: 1
-            }
-
-            Item {
-                id: frameMask
+            ScreenFrameItem {
                 anchors.fill: parent
-                layer.enabled: true
-                visible: false
-
-                Rectangle {
-                    anchors {
-                        fill: parent;
-                        topMargin: framePanWin.gapsOutTop;
-                        leftMargin: framePanWin.gapsOut;
-                        rightMargin: framePanWin.gapsOut;
-                        bottomMargin: framePanWin.gapsOut
-                    }
-                    radius: framePanWin.rounding
-                }
+                color:     scope.frameColor
+                radius:    scope.rounding
+                thickness: scope.thickness
             }
         }
     }

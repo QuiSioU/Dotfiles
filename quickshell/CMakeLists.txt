@@ -47,6 +47,7 @@ qt_add_qml_module(elyseanshell-themes
 add_subdirectory(services/Bluetooth)
 add_subdirectory(services/CursorPosition)
 add_subdirectory(services/Network)
+add_subdirectory(services/ScreenFrame)
 
 
 # ── Link dependencies ──────────────────────────────────────────────────────

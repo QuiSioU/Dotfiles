@@ -1,4 +1,4 @@
-/* quickshell/services/NetworkService.hpp */
+/* quickshell/services/Network/NetworkService.hpp */
 
 
 #ifndef NETWORK_SERVICE_H

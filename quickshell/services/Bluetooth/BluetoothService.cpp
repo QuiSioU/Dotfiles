@@ -1,4 +1,4 @@
-/* quickshell/services/BluetoothService.cpp */
+/* quickshell/services/Bluetooth/BluetoothService.cpp */
 
 
 #include "BluetoothService.hpp"
