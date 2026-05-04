@@ -19,6 +19,12 @@ LauncherMenu {
         function onApplicationsChanged() { root.rebuildEntries() }
     }
 
+    Connections {
+        target: BluetoothDeviceModel
+        function onDataChanged() { root.refresh() }
+        function onModelReset()  { root.refresh() }
+    }
+
     // ----------------------------------------------------------------
     // App entries (normal mode)
     // ----------------------------------------------------------------
@@ -35,21 +41,14 @@ LauncherMenu {
     }
 
     // ----------------------------------------------------------------
-    // Command modes — each appears when you type ">" in the launcher.
-    //
-    // Structure:
-    //   prefix   — what you type after ">", e.g. "bt" → ">bt "
-    //   label    — human-readable name shown in the mode list
-    //   icon     — XDG icon name (falls back to a letter if not found)
-    //   entries  — array OR function returning array of LauncherEntry-like objects
-    //
-    // To add more modes, just push another object into this array.
+    // Command modes — each appears when you type "/" in the launcher.
     // ----------------------------------------------------------------
     function rebuildModes() {
         modes = [
             {
-                prefix: "bt",
+                prefix: "bluetooth",
                 label: "Bluetooth",
+                placeholder: "Select device to toggle connection",
                 icon: Quickshell.shellDir + "/assets/icons/bluetooth-active.svg",
                 entries: function() {
                     return BluetoothDeviceModel.deviceList().map(dev => ({
@@ -58,8 +57,7 @@ LauncherMenu {
                         comment: dev.address + " · " + (dev.connected ? "Connected ✓" : "Disconnected"),
                         action:  (function(p) {
                             return () => BluetoothDeviceModel.toggle(p)
-                        })(dev.path),
-                        stayOpen: true
+                        })(dev.path)
                     }))
                 }
             },

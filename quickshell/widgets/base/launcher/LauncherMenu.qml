@@ -36,6 +36,8 @@ PanelWindow {
         onTriggered: launcher_panwin.filteredEntries = launcher_panwin.computeFilteredEntries()
     }
 
+    function refresh() { filterDebounce.restart() }
+
     function computeFilteredEntries() {
         const text = searchInput.text
         const prefix = launcher_panwin.actionPrefix
@@ -108,7 +110,7 @@ PanelWindow {
         else searchInput.text = ""
     }
 
-    onEntriesChanged: filterDebounce.restart()
+    onEntriesChanged: refresh()
 
     Component.onCompleted: filteredEntries = computeFilteredEntries()
 
@@ -124,61 +126,103 @@ PanelWindow {
             anchors.margins: 20
             spacing: 20
 
-            // Active mode badge — shown when inside a specific mode
-            Rectangle {
-                Layout.fillWidth: true
-                Layout.preferredHeight: 28
-                visible: launcher_panwin.activeMode !== null
-                color: "#313244"
-                radius: 8
-
-                RowLayout {
-                    anchors.fill: parent
-                    anchors.margins: 8
-                    spacing: 6
-
-                    Text {
-                        text: launcher_panwin.activeMode?.icon ?? ""
-                        font.family: "Material Symbols Rounded"
-                        font.pixelSize: 14
-                        color: "#89b4fa"
-                        visible: false // flip to true if you use Material Icons font
-                    }
-
-                    Text {
-                        text: (launcher_panwin.activeMode?.label ?? "") + " mode"
-                        color: "#89b4fa"
-                        font.pixelSize: 12
-                        font.weight: Font.Medium
-                    }
-
-                    Item { Layout.fillWidth: true }
-
-                    Text {
-                        text: "Esc to go back"
-                        color: "#6c7086"
-                        font.pixelSize: 11
-                    }
-                }
-            }
-
             Rectangle {
                 Layout.fillWidth: true
                 Layout.preferredHeight: 50
                 color: "#181825"
                 radius: 12
 
+                // Chip + input row (shown when inside a mode)
+                Row {
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.margins: 10
+                    spacing: 6
+                    visible: launcher_panwin.activeMode !== null
+
+                    // Mode chip
+                    Rectangle {
+                        visible: launcher_panwin.activeMode !== null
+                        height: 26
+                        width: chipLabel.implicitWidth + 16
+                        radius: 6
+                        color: "#1e3a5f"
+                        anchors.verticalCenter: parent.verticalCenter
+
+                        Text {
+                            id: chipLabel
+                            anchors.centerIn: parent
+                            text: launcher_panwin.activeMode?.label ?? ""
+                            color: "#89b4fa"
+                            font.pixelSize: 12
+                            font.weight: Font.Medium
+                        }
+                    }
+
+                    TextInput {
+                        id: modeInput
+                        width: parent.width - chipLabel.implicitWidth - 32
+                        anchors.verticalCenter: parent.verticalCenter
+                        color: "#cdd6f4"
+                        font.pixelSize: 16
+                        focus: launcher_panwin.activeMode !== null
+
+                        // Keep modeInput text in sync with the sub-query portion
+                        property string modeRoot: launcher_panwin.activeMode
+                            ? (launcher_panwin.actionPrefix + launcher_panwin.activeMode.prefix + " ")
+                            : ""
+
+                        // When activated, seed with whatever's already typed after the mode prefix
+                        onModeRootChanged: {
+                            if (launcher_panwin.activeMode !== null) {
+                                const full = searchInput.text
+                                text = full.startsWith(modeRoot) ? full.slice(modeRoot.length) : ""
+                                forceActiveFocus()
+                            }
+                        }
+
+                        onTextChanged: {
+                            if (launcher_panwin.activeMode !== null)
+                                searchInput.text = modeRoot + text
+                        }
+
+                        Keys.priority: Keys.BeforeItem
+                        Keys.onReturnPressed: searchInput.Keys.returnPressed()
+                        Keys.onUpPressed:     searchInput.Keys.upPressed()
+                        Keys.onDownPressed:   searchInput.Keys.downPressed()
+                        Keys.onEscapePressed: launcher_panwin.visible = false
+                        Keys.onPressed: function(event) {
+                            if (event.key === Qt.Key_Backspace && text === "") {
+                                searchInput.text = launcher_panwin.actionPrefix
+                                event.accepted = true
+                            }
+                        }
+
+                        Text {
+                            visible: modeInput.text === ""
+                            text: launcher_panwin.activeMode?.placeholder ?? ("Search " + (launcher_panwin.activeMode?.label ?? "") + "...")
+                            color: "#45475a"
+                            font.pixelSize: 16
+                            font.italic: true
+                            anchors.verticalCenter: parent.verticalCenter
+                            // no left anchor needed — sits at modeInput's own origin
+                        }
+                    }
+                }
+
+                // Original TextInput — hidden when a mode chip is shown
                 TextInput {
                     id: searchInput
                     anchors.left: parent.left
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.margins: 16
-                    focus: true
+                    visible: launcher_panwin.activeMode === null
+                    focus: launcher_panwin.activeMode === null
                     color: "#cdd6f4"
                     font.pixelSize: 16
 
-                    // Tint the "/" prefix in command mode
                     Text {
                         visible: searchInput.text.startsWith(launcher_panwin.actionPrefix)
                         text: launcher_panwin.actionPrefix
@@ -191,34 +235,21 @@ PanelWindow {
                     onTextChanged: {
                         appList.currentIndex = 0
                         filterDebounce.restart()
+                        // If a mode just became active, hand focus to modeInput
+                        if (launcher_panwin.activeMode !== null)
+                            modeInput.forceActiveFocus()
                     }
 
                     Keys.priority: Keys.BeforeItem
-                    Keys.onEscapePressed: {
-                        const prefix = launcher_panwin.actionPrefix
-                        if (searchInput.text.length > prefix.length && searchInput.text.startsWith(prefix)) {
-                            // If inside a mode with extra text, back up to mode root
-                            const activeM = launcher_panwin.activeMode
-                            if (activeM) {
-                                searchInput.text = prefix + activeM.prefix + " "
-                                return
-                            }
-                            // Back to showing mode list
-                            searchInput.text = prefix
-                        } else {
-                            launcher_panwin.visible = false
-                        }
-                    }
+                    Keys.onEscapePressed: launcher_panwin.visible = false
                     Keys.onReturnPressed: {
                         if (filteredEntries.length > 0) {
                             const entry = filteredEntries[appList.currentIndex]
                             if (entry.isModeEntry) {
-                                // Navigate into the mode
                                 searchInput.text = entry.modePrefix
                             } else {
                                 entry.action()
-                                if (!entry.stayOpen)
-                                    launcher_panwin.visible = false
+                                if (!entry.stayOpen) launcher_panwin.visible = false
                             }
                         }
                     }
@@ -230,25 +261,26 @@ PanelWindow {
                         appList.currentIndex = Math.min(filteredEntries.length - 1, appList.currentIndex + 1)
                         appList.positionViewAtIndex(appList.currentIndex, ListView.Contain)
                     }
-
-                    // Tab completes the current mode
                     Keys.onTabPressed: {
                         if (filteredEntries.length > 0) {
                             const entry = filteredEntries[appList.currentIndex]
-                            if (entry.isModeEntry) {
-                                searchInput.text = entry.modePrefix
-                            }
+                            if (entry.isModeEntry) searchInput.text = entry.modePrefix
+                        }
+                    }
+                    Keys.onPressed: function(event) {
+                        if (event.key === Qt.Key_Backspace && text === launcher_panwin.actionPrefix) {
+                            searchInput.text = ""
+                            event.accepted = true
                         }
                     }
                 }
 
-                // Hint text overlay (shown when empty)
                 Text {
                     anchors.left: parent.left
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.margins: 16
-                    visible: searchInput.text === ""
+                    visible: searchInput.text === "" && launcher_panwin.activeMode === null
                     text: "Search apps  ·  type " + launcher_panwin.actionPrefix + " for commands"
                     color: "#45475a"
                     font.pixelSize: 15
