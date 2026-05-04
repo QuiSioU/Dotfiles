@@ -23,9 +23,6 @@ PanelWindow {
     property real orbitRadius: bubbleSize * 2
     property int  hoveredIndex: -1
 
-    implicitWidth:  Qt.application.screens[0].width
-    implicitHeight: Qt.application.screens[0].height
-
     anchors {
         top: true;
         bottom: true;
@@ -48,7 +45,7 @@ PanelWindow {
     onVisibleChanged: {
         if (visible) {
             centerX = CursorPosition.x
-            centerY = CursorPosition.y - 50
+            centerY = CursorPosition.y
             innerItem.forceActiveFocus()
             bubbleRepeater.triggerExpand()
         }

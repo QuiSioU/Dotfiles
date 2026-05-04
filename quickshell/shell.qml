@@ -8,8 +8,6 @@ import ElyseanShell.Services
 import "./widgets"
 
 ShellRoot {
-    settings.watchFiles: true
-
     Loader { source: "widgets/ThemeLoader.qml" }
 
     ScreenFrame {}
@@ -17,20 +15,23 @@ ShellRoot {
 
     Loader {
         id: globalLauncherLoader
-        active: true
+        active: false
         source: "widgets/GlobalLauncher.qml"
+        visible: false
     }
 
     Loader {
         id: sessionMenuLoader
-        active: true
+        active: false
         source: "widgets/SessionMenu.qml"
+        visible: false
     }
 
     Loader {
         id: systemMenuLoader
-        active: true
+        active: false
         source: "widgets/SystemMenu.qml"
+        visible: false
     }
 
     Loader {
@@ -38,10 +39,21 @@ ShellRoot {
         source: "widgets/NotificationDisplay.qml"
     }
 
+    Timer {
+        id: systemMenuDestroyTimer
+        interval: 500
+        repeat: false
+        onTriggered: systemMenuLoader.active = false
+    }
+
     GlobalShortcut {
         name: "toggleGlobalLauncher"
         description: "Toggle Global launcher"
         onPressed: {
+            if (!globalLauncherLoader.active) {
+                globalLauncherLoader.active = true
+            }
+
             var launcher = globalLauncherLoader.item
             if (launcher) launcher.visible = !launcher.visible
         }
@@ -51,6 +63,10 @@ ShellRoot {
         name: "toggleSessionMenu"
         description: "Session donut menu"
         onPressed: {
+            if (!sessionMenuLoader.active) {
+                sessionMenuLoader.active = true
+            }
+
             var donut = sessionMenuLoader.item
             if (!donut) return
 
@@ -67,6 +83,10 @@ ShellRoot {
         name: "toggleSystemMenu"
         description: "System orbit menu"
         onPressed: {
+            if (!systemMenuLoader.active) {
+                systemMenuLoader.active = true
+            }
+            
             var orbit = systemMenuLoader.item
             if (!orbit) return
 
@@ -75,6 +95,7 @@ ShellRoot {
                 CursorPosition.update()
             } else {
                 orbit.closeMenu()
+                systemMenuDestroyTimer.start()
             }
         }
     }

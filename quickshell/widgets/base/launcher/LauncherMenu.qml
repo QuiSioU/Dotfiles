@@ -27,10 +27,19 @@ PanelWindow {
     property var modes: []
 
     // Resolved entries shown in the list
-    property var filteredEntries: {
+    property var filteredEntries: []
+
+    Timer {
+        id: filterDebounce
+        interval: 50
+        repeat: false
+        onTriggered: launcher_panwin.filteredEntries = launcher_panwin.computeFilteredEntries()
+    }
+
+    function computeFilteredEntries() {
         const text = searchInput.text
         const prefix = launcher_panwin.actionPrefix
-
+        
         // Command mode: text starts with "/"
         if (text.startsWith(prefix)) {
             const rest = text.slice(prefix.length).toLowerCase()
@@ -98,6 +107,10 @@ PanelWindow {
         }
         else searchInput.text = ""
     }
+
+    onEntriesChanged: filterDebounce.restart()
+
+    Component.onCompleted: filteredEntries = computeFilteredEntries()
 
     Rectangle {
         id: root
@@ -175,7 +188,10 @@ PanelWindow {
                         anchors.verticalCenter: parent.verticalCenter
                     }
 
-                    onTextChanged: appList.currentIndex = 0
+                    onTextChanged: {
+                        appList.currentIndex = 0
+                        filterDebounce.restart()
+                    }
 
                     Keys.priority: Keys.BeforeItem
                     Keys.onEscapePressed: {

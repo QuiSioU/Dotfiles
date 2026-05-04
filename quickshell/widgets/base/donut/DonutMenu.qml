@@ -18,7 +18,7 @@ PanelWindow {
     property bool _pendingShow: false
 
     property real centerX: CursorPosition.x
-    property real centerY: CursorPosition.y - 50 // Eww topbar messing things up; will remove in the future
+    property real centerY: CursorPosition.y
     
     property real innerRadius: 45
     property real radius: innerRadius * 2.4
@@ -90,37 +90,31 @@ PanelWindow {
         }
 
         // Donut slices
-        Repeater {
-            model: entries.length
+        Canvas {
+            anchors.fill: parent
+            property int hoveredIndex: donut_panwin.hoveredIndex
 
-            Canvas {
-                anchors.fill: parent
-                property int sliceIndex: index
-                property bool hovered: sliceIndex === donut_panwin.hoveredIndex
+            onHoveredIndexChanged: requestPaint()
+            Component.onCompleted: requestPaint()
 
-                onHoveredChanged: requestPaint()
-
-                Component.onCompleted: requestPaint()
-
-                onPaint: {
-                    const ctx = getContext("2d")
-                    ctx.clearRect(0, 0, width, height)
-
+            onPaint: {
+                const ctx = getContext("2d")
+                ctx.clearRect(0, 0, width, height)
+                for (let i = 0; i < entries.length; i++) {
                     const sliceAngle = (2 * Math.PI) / entries.length
-                    const startAngle = sliceIndex * sliceAngle - Math.PI / 2
+                    const startAngle = i * sliceAngle - Math.PI / 2
                     const endAngle   = startAngle + sliceAngle
-
-                    if (width === 0 || height === 0) return
 
                     ctx.beginPath()
                     ctx.arc(donut_panwin.centerX, donut_panwin.centerY, donut_panwin.innerRadius, startAngle, endAngle)
                     ctx.arc(donut_panwin.centerX, donut_panwin.centerY, donut_panwin.radius, endAngle, startAngle, true)
                     ctx.closePath()
 
-                    ctx.fillStyle = hovered ? "#45475a" : '#c826263e'
+                    ctx.fillStyle = i === hoveredIndex ? "#45475a" : '#c826263e'
                     ctx.fill()
-                    ctx.lineWidth = 2
                     
+                    ctx.lineWidth = 2
+                
                     let grad = ctx.createLinearGradient(0, 0, width, height)
                     grad.addColorStop(0, ActiveTheme.color["MAGENTA"])
                     grad.addColorStop(1, ActiveTheme.color["CYAN"])

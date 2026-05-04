@@ -19,5 +19,8 @@ PanelWindow {
         anchors.fill: parent
         source: Quickshell.shellDir + "/active_wallpaper"
         fillMode: Image.PreserveAspectCrop
+        sourceSize.width: Screen.width
+        sourceSize.height: Screen.height
+        cache: false
     }
 }
