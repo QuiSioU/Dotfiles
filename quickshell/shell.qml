@@ -16,15 +16,9 @@ ShellRoot {
     Wallpaper {}
 
     Loader {
-        id: appLauncherLoader
+        id: globalLauncherLoader
         active: true
-        source: "widgets/AppLauncher.qml"
-    }
-
-    Loader {
-        id: bluetoothLauncherLoader
-        active: true
-        source: "widgets/BluetoothLauncher.qml"
+        source: "widgets/GlobalLauncher.qml"
     }
 
     Loader {
@@ -45,19 +39,10 @@ ShellRoot {
     }
 
     GlobalShortcut {
-        name: "toggleAppLauncher"
-        description: "Toggle App launcher"
+        name: "toggleGlobalLauncher"
+        description: "Toggle Global launcher"
         onPressed: {
-            var launcher = appLauncherLoader.item
-            if (launcher) launcher.visible = !launcher.visible
-        }
-    }
-
-    GlobalShortcut {
-        name: "toggleBluetoothLauncher"
-        description: "Toggle Bluetooth launcher"
-        onPressed: {
-            var launcher = bluetoothLauncherLoader.item
+            var launcher = globalLauncherLoader.item
             if (launcher) launcher.visible = !launcher.visible
         }
     }
