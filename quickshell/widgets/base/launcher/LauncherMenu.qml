@@ -87,6 +87,28 @@ PanelWindow {
         )
     }
 
+    function activateCurrentEntry() {
+        if (filteredEntries.length === 0) return
+
+        const entry = filteredEntries[appList.currentIndex]
+        if (entry.isModeEntry) {
+            searchInput.text = entry.modePrefix
+        } else {
+            entry.action()
+            if (!entry.stayOpen) launcher_panwin.visible = false
+        }
+    }
+
+    function navigateUp() {
+        appList.currentIndex = Math.max(0, appList.currentIndex - 1)
+        appList.positionViewAtIndex(appList.currentIndex, ListView.Contain)
+    }
+
+    function navigateDown() {
+        appList.currentIndex = Math.min(filteredEntries.length - 1, appList.currentIndex + 1)
+        appList.positionViewAtIndex(appList.currentIndex, ListView.Contain)
+    }
+
     // Which mode are we currently inside? (for placeholder / header text)
     readonly property var activeMode: {
         const text = searchInput.text
@@ -188,9 +210,9 @@ PanelWindow {
                         }
 
                         Keys.priority: Keys.BeforeItem
-                        Keys.onReturnPressed: searchInput.Keys.returnPressed()
-                        Keys.onUpPressed:     searchInput.Keys.upPressed()
-                        Keys.onDownPressed:   searchInput.Keys.downPressed()
+                        Keys.onReturnPressed: launcher_panwin.activateCurrentEntry()
+                        Keys.onUpPressed:     launcher_panwin.navigateUp()
+                        Keys.onDownPressed:   launcher_panwin.navigateDown()
                         Keys.onEscapePressed: launcher_panwin.visible = false
                         Keys.onPressed: function(event) {
                             if (event.key === Qt.Key_Backspace && text === "") {
@@ -242,25 +264,9 @@ PanelWindow {
 
                     Keys.priority: Keys.BeforeItem
                     Keys.onEscapePressed: launcher_panwin.visible = false
-                    Keys.onReturnPressed: {
-                        if (filteredEntries.length > 0) {
-                            const entry = filteredEntries[appList.currentIndex]
-                            if (entry.isModeEntry) {
-                                searchInput.text = entry.modePrefix
-                            } else {
-                                entry.action()
-                                if (!entry.stayOpen) launcher_panwin.visible = false
-                            }
-                        }
-                    }
-                    Keys.onUpPressed: {
-                        appList.currentIndex = Math.max(0, appList.currentIndex - 1)
-                        appList.positionViewAtIndex(appList.currentIndex, ListView.Contain)
-                    }
-                    Keys.onDownPressed: {
-                        appList.currentIndex = Math.min(filteredEntries.length - 1, appList.currentIndex + 1)
-                        appList.positionViewAtIndex(appList.currentIndex, ListView.Contain)
-                    }
+                    Keys.onReturnPressed: launcher_panwin.activateCurrentEntry()
+                    Keys.onUpPressed: launcher_panwin.navigateUp()
+                    Keys.onDownPressed: launcher_panwin.navigateDown()
                     Keys.onTabPressed: {
                         if (filteredEntries.length > 0) {
                             const entry = filteredEntries[appList.currentIndex]
