@@ -10,7 +10,6 @@ import "./widgets"
 ShellRoot {
     Loader { source: "widgets/ThemeLoader.qml" }
 
-    ScreenFrame {}
     Wallpaper {}
 
     Loader {
