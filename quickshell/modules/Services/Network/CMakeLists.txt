@@ -1,9 +1,9 @@
-# quickshell/services/CursorPosition/CMakeLists.txt
+# quickshell/modules/Services/Network/CMakeLists.txt
 
 
 target_sources(elyseanshell-services PRIVATE
-    CursorPositionService.hpp
-    CursorPositionService.cpp
+    NetworkService.hpp
+    NetworkService.cpp
 )
 
 target_include_directories(elyseanshell-services PRIVATE

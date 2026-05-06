@@ -1,4 +1,4 @@
-/* quickshell/themes/ActiveTheme.qml */
+/* quickshell/modules/Themes/ActiveTheme.qml */
 
 
 pragma Singleton
