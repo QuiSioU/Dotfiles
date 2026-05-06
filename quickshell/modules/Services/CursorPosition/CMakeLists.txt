@@ -1,4 +1,4 @@
-# quickshell/services/CursorPosition/CMakeLists.txt
+# quickshell/modules/Services/CursorPosition/CMakeLists.txt
 
 
 target_sources(elyseanshell-services PRIVATE

@@ -1,4 +1,4 @@
-/* quickshell/services/Notification/NotificationService.qml */
+/* quickshell/modules/Services/Notification/NotificationService.qml */
 
 
 pragma Singleton

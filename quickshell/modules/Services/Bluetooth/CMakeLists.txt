@@ -1,4 +1,4 @@
-# quickshell/services/Bluetooth/CMakeLists.txt
+# quickshell/modules/Services/Bluetooth/CMakeLists.txt
 
 
 target_sources(elyseanshell-services PRIVATE

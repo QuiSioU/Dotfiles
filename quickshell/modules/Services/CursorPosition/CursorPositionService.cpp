@@ -1,4 +1,4 @@
-/* quickshell/services/CursorPosition/CursorPositionService.cpp */
+/* quickshell/modules/Services/CursorPosition/CursorPositionService.cpp */
 
 
 #include "CursorPositionService.hpp"
