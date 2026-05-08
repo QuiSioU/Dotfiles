@@ -75,6 +75,7 @@ void BluetoothDeviceModel::loadDevices() {
     }
 
     endResetModel();
+    emit connectedNamesChanged();
 }
 
 void BluetoothDeviceModel::onPropertiesChanged(const QString& interface,
@@ -104,6 +105,7 @@ void BluetoothDeviceModel::onPropertiesChanged(const QString& interface,
     if (dirty) {
         const QModelIndex mi = index(idx);
         emit dataChanged(mi, mi);
+        emit connectedNamesChanged();
     }
 }
 
@@ -151,6 +153,18 @@ int BluetoothDeviceModel::connectedCount() const {
 
 bool BluetoothDeviceModel::anyConnected() const {
     return connectedCount() > 0;
+}
+
+QStringList BluetoothDeviceModel::connectedNames() const {
+    QStringList names;
+    for (const auto& dev : m_devices) {
+        if (dev.connected) {
+            const QString label = dev.alias.isEmpty() ? dev.name : dev.alias;
+            if (!label.isEmpty())
+                names.append(label);
+        }
+    }
+    return names;
 }
 
 int BluetoothDeviceModel::rowCount(const QModelIndex& parent) const {

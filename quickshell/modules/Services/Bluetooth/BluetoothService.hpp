@@ -29,6 +29,7 @@ class BluetoothDeviceModel : public QAbstractListModel, protected QDBusContext {
 
     Q_PROPERTY(int connectedCount READ connectedCount NOTIFY layoutChanged)
     Q_PROPERTY(bool anyConnected READ anyConnected NOTIFY layoutChanged)
+    Q_PROPERTY(QStringList connectedNames READ connectedNames NOTIFY connectedNamesChanged)
 
 public:
     enum Roles {
@@ -49,12 +50,17 @@ public:
 
     int connectedCount() const;
     bool anyConnected() const;
+    QStringList connectedNames() const;
 
     Q_INVOKABLE void toggle(const QString& path);
     Q_INVOKABLE void connectDevice(const QString& path);
     Q_INVOKABLE void disconnectDevice(const QString& path);
     Q_INVOKABLE void refresh();
     Q_INVOKABLE QVariantList deviceList() const;
+
+signals:
+    void connectedNamesChanged();
+
 
 private slots:
     void onPropertiesChanged(const QString& interface,
