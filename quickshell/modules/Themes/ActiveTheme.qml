@@ -10,4 +10,5 @@ QtObject {
     property bool ready: false
     property string wallpaper: ""
     property var color: ({})
+    property var token: ({})
 }

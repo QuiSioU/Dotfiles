@@ -18,7 +18,7 @@ PanelWindow {
 
     // --- Mode system ---
     // Typing "/" switches to command mode. The text after "/" determines
-    // which sub-mode is active (bluetooth, wallpaper, theme, ...).
+    // which sub-mode is active (bluetooth, theme, ...).
     // Sub-modes are registered via the modes list below.
     property string actionPrefix: "/"
 

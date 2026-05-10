@@ -4,6 +4,7 @@
 import QtQuick
 import Quickshell
 import Quickshell.Wayland
+import ElyseanShell.Themes
 
 PanelWindow {
     WlrLayershell.layer: WlrLayer.Background
@@ -14,10 +15,12 @@ PanelWindow {
         left: true;
         right: true
     }
+    
+    visible: ActiveTheme.ready && ActiveTheme.wallpaper !== ""
 
     Image {
         anchors.fill: parent
-        source: Quickshell.shellDir + "/active_wallpaper"
+        source: ActiveTheme.wallpaper
         fillMode: Image.PreserveAspectCrop
         sourceSize.width: Screen.width
         sourceSize.height: Screen.height

@@ -8,7 +8,9 @@ import ElyseanShell.Services
 import "./widgets"
 
 ShellRoot {
-    Loader { source: "widgets/ThemeLoader.qml" }
+    Loader {
+        source: "widgets/ThemeLoader.qml"
+    }
 
     Wallpaper {}
 
