@@ -11,7 +11,6 @@ set_source_files_properties(ActiveTheme.qml
 qt_add_qml_module(elyseanshell-themes
     URI ElyseanShell.Themes
     VERSION 1.0
-    OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/ElyseanShell/Themes
     QML_FILES
         ActiveTheme.qml
 )

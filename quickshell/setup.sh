@@ -12,7 +12,7 @@ cd "$ROOT_DIR"
 
 echo "Building resources and dependencies..."
 
-rm -rf .build ElyseanShell .cache
+rm -rf .build .cache
 bash "$ROOT_DIR/build.sh"
 
 echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌"

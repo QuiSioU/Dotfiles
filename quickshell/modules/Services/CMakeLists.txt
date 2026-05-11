@@ -6,7 +6,6 @@ qt_add_library(elyseanshell-services SHARED)
 qt_add_qml_module(elyseanshell-services
     URI ElyseanShell.Services
     VERSION 1.0
-    OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/ElyseanShell/Services
 )
 
 add_subdirectory(Notification)

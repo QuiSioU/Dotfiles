@@ -7,6 +7,8 @@ project(ElyseanShell)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_AUTOMOC ON)
 
+set(QT_QML_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/qml")
+
 find_package(Qt6 REQUIRED COMPONENTS Core Quick DBus ShaderTools)
 
 add_subdirectory(modules/Blobs)

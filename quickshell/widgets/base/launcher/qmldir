@@ -2,3 +2,5 @@
 
 
 LauncherMenu 1.0 LauncherMenu.qml
+ResultList 1.0 ResultList.qml
+SearchBar 1.0 SearchBar.qml
