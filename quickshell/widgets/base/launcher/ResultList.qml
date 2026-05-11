@@ -19,8 +19,6 @@ Item {
     }
 
     // ── List ──────────────────────────────────────────────────────────────────
-    anchors.fill: parent
-
     ListView {
         id: listView
         anchors.fill: parent

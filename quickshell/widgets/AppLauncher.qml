@@ -29,29 +29,6 @@ Drawer {
         height:  500
         spacing: 12
 
-        SearchBar {
-            id: searchBar
-            width:  parent.width
-            height: 56
-
-            entries:      root._entries
-            modes:        root._modes
-            actionPrefix: "/"
-
-            onCloseRequested: root.visible = false
-
-            onNavigated: function(index) {
-                resultsList.positionAt(index)
-            }
-
-            onActivated: {
-                const entry = searchBar.filteredEntries[searchBar.currentIndex]
-                if (!entry) return
-                entry.action()
-                if (!entry.stayOpen) root.visible = false
-            }
-        }
-
         ResultList {
             id: resultsList
             width:  parent.width
@@ -64,7 +41,30 @@ Drawer {
                 entry.action()
             }
 
-            onCloseRequested: root.visible = false
+            onCloseRequested: root.close()
+        }
+
+        SearchBar {
+            id: searchBar
+            width:  parent.width
+            height: 56
+
+            entries:      root._entries
+            modes:        root._modes
+            actionPrefix: "/"
+
+            onCloseRequested: root.close()
+
+            onNavigated: function(index) {
+                resultsList.positionAt(index)
+            }
+
+            onActivated: {
+                const entry = searchBar.filteredEntries[searchBar.currentIndex]
+                if (!entry) return
+                entry.action()
+                if (!entry.stayOpen) root.close()
+            }
         }
     }
 
@@ -84,8 +84,8 @@ Drawer {
 
     Connections {
         target: BluetoothDeviceModel
-        function onDataChanged() { root.searchBar.refresh() }
-        function onModelReset()  { root.searchBar.refresh() }
+        function onDataChanged() { searchBar.refresh() }
+        function onModelReset()  { searchBar.refresh() }
     }
 
     // ── App entries ───────────────────────────────────────────────────────────

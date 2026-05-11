@@ -110,8 +110,6 @@ Item {
     Component.onCompleted: filteredEntries = computeFilteredEntries()
 
     // ── Layout ────────────────────────────────────────────────────────────────
-    anchors.fill: parent
-
     // Mode chip + sub-query input (visible when inside a mode)
     Row {
         anchors.fill: parent

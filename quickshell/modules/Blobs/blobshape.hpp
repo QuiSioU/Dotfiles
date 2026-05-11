@@ -1,4 +1,4 @@
-/* quickshell/modules/Blobs/include/blobshape.hpp */
+/* quickshell/modules/Blobs/blobshape.hpp */
 
 
 #pragma once

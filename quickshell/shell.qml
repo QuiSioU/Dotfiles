@@ -17,7 +17,7 @@ ShellRoot {
     Loader {
         id: globalLauncherLoader
         active: false
-        source: "widgets/GlobalLauncher.qml"
+        source: "widgets/AppLauncher.qml"
         visible: false
     }
 
@@ -56,7 +56,13 @@ ShellRoot {
             }
 
             var launcher = globalLauncherLoader.item
-            if (launcher) launcher.visible = !launcher.visible
+            if (!launcher) return
+
+            if (!launcher.visible) {
+                launcher.visible = true
+            } else {
+                launcher.close()
+            }
         }
     }
 

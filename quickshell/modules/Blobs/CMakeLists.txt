@@ -3,17 +3,9 @@
 
 qt_add_library(elyseanshell-blobs SHARED)
 
-file(GLOB_RECURSE BLOB_SOURCES CONFIGURE_DEPENDS src/*.cpp)
-
-target_sources(elyseanshell-blobs PRIVATE ${BLOB_SOURCES})
-
 qt_add_qml_module(elyseanshell-blobs
     URI ElyseanShell.Blobs
     VERSION 1.0
-)
-
-set_target_properties(elyseanshell-blobsplugin PROPERTIES 
-    PREFIX ""
 )
 
 qt_add_shaders(elyseanshell-blobs "blob_shaders"
@@ -25,11 +17,18 @@ qt_add_shaders(elyseanshell-blobs "blob_shaders"
         shaders/blob.vert
 )
 
+target_sources(elyseanshell-blobs PRIVATE
+    blobgroup.cpp
+    blobshape.cpp
+    blobrect.cpp
+    blobinvertedrect.cpp
+    blobmaterial.cpp
+)
+
 target_include_directories(elyseanshell-blobs PRIVATE
-    include
+    ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 target_link_libraries(elyseanshell-blobs PRIVATE
-    Qt6::Core
     Qt6::Quick
 )

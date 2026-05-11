@@ -1,4 +1,4 @@
-/* quickshell/modules/Blobs/src/blobshape.cpp */
+/* quickshell/modules/Blobs/blobshape.cpp */
 
 
 #include "blobshape.hpp"

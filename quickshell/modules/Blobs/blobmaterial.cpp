@@ -1,4 +1,4 @@
-/* quickshell/modules/Blobs/src/blobmaterial.cpp */
+/* quickshell/modules/Blobs/blobmaterial.cpp */
 
 
 #include "blobmaterial.hpp"

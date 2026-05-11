@@ -1,4 +1,4 @@
-/* quickshell/modules/Blobs/src/blobrect.cpp */
+/* quickshell/modules/Blobs/blobrect.cpp */
 
 
 #include "blobrect.hpp"

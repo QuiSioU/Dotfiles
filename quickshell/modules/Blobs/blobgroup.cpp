@@ -1,4 +1,4 @@
-/* quickshell/modules/Blobs/src/blobgroup.cpp */
+/* quickshell/modules/Blobs/blobgroup.cpp */
 
 
 #include "blobgroup.hpp"

@@ -7,7 +7,7 @@ import QtQuick
 import ElyseanShell.Blobs
 
 PanelWindow {
-    id: drawer_panwin
+    id: root
 
     // ── Enums ─────────────────────────────────────────────────────────────────
     enum Edge {
@@ -23,14 +23,15 @@ PanelWindow {
     property real  blobSmoothing: 36
     property real  blobRadius:    18
 
-    // ── Default children land directly in the slide container ─────────────────
+    // ── Default children land in the content area ─────────────────────────────
     default property alias content: contentArea.data
 
     // ── Internal ──────────────────────────────────────────────────────────────
     readonly property real blobPad: blobSmoothing * 1.5
     readonly property bool _isVertical: edge === Drawer.Edge.Bottom || edge === Drawer.Edge.Top
 
-    // Bounding box of all direct children
+    property bool _closing: false
+
     readonly property real _contentW: {
         let s = 0
         for (let i = 0; i < contentArea.children.length; i++) {
@@ -48,15 +49,15 @@ PanelWindow {
         return s
     }
 
-    // PanelWindow size: content + padding on both sides + edge strip on one side
     implicitWidth:  _contentW + blobPad * 2 + (!_isVertical ? blobPad : 0)
     implicitHeight: _contentH + blobPad * 2 + ( _isVertical ? blobPad : 0)
 
-    color:     "transparent"
-    focusable: true
-    visible:   false
+    color:         "transparent"
+    focusable:     true
+    visible:       false
+    exclusiveZone: 0
 
-    // ── Panel anchors — full-length along the docked edge ─────────────────────
+    // ── Panel anchors ─────────────────────────────────────────────────────────
     anchors {
         bottom: edge === Drawer.Edge.Bottom || edge === Drawer.Edge.Left || edge === Drawer.Edge.Right
         top:    edge === Drawer.Edge.Top    || edge === Drawer.Edge.Left || edge === Drawer.Edge.Right
@@ -64,36 +65,47 @@ PanelWindow {
         right:  edge === Drawer.Edge.Right  || edge === Drawer.Edge.Top  || edge === Drawer.Edge.Bottom
     }
 
-    // ── Focus grab — dismiss on click-outside ─────────────────────────────────
+    // ── Focus grab ────────────────────────────────────────────────────────────
     HyprlandFocusGrab {
-        windows: [ drawer_panwin ]
-        active:  drawer_panwin.visible
-        onCleared: drawer_panwin.visible = false
+        windows: [ root ]
+        active:  root.visible
+        onCleared: root.close()
     }
 
-    // ── Slide animation ───────────────────────────────────────────────────────
+    // ── Open / close ──────────────────────────────────────────────────────────
     onVisibleChanged: {
         if (!visible) return
-        switch (drawer_panwin.edge) {
+        _closing = false
+        _playSlide(true)
+    }
+
+    function close() {
+        if (_closing) return
+        _closing = true
+        _playSlide(false)
+    }
+
+    function _playSlide(opening) {
+        switch (root.edge) {
             case Drawer.Edge.Bottom:
                 slideAnim.property = "y"
-                slideAnim.from     = drawer_panwin.implicitHeight
-                slideAnim.to       = 0
+                slideAnim.from     = opening ? root.implicitHeight : 0
+                slideAnim.to       = opening ? 0 : root.implicitHeight
                 break
             case Drawer.Edge.Top:
                 slideAnim.property = "y"
-                slideAnim.from     = -drawer_panwin.implicitHeight
-                slideAnim.to       = 0
+                slideAnim.from     = opening ? -root.implicitHeight : 0
+                slideAnim.to       = opening ? 0 : -root.implicitHeight
                 break
             case Drawer.Edge.Left:
                 slideAnim.property = "x"
-                slideAnim.from     = -drawer_panwin.implicitWidth
-                slideAnim.to       = 0
+                slideAnim.from     = opening ? -root.implicitWidth : 0
+                slideAnim.to       = opening ? 0 : -root.implicitWidth
                 break
             case Drawer.Edge.Right:
                 slideAnim.property = "x"
-                slideAnim.from     = drawer_panwin.implicitWidth
-                slideAnim.to       = 0
+                slideAnim.from     = opening ? root.implicitWidth : 0
+                slideAnim.to       = opening ? 0 : root.implicitWidth
                 break
         }
         slideAnim.start()
@@ -102,11 +114,11 @@ PanelWindow {
     // ── Blob group ────────────────────────────────────────────────────────────
     BlobGroup {
         id: blobGroup
-        smoothing: drawer_panwin.blobSmoothing
-        color:     drawer_panwin.blobColor
+        smoothing: root.blobSmoothing
+        color:     root.blobColor
     }
 
-    // ── Screen-edge anchor — the wall blobs merge into ────────────────────────
+    // ── Screen-edge anchor — fixed, never slides ──────────────────────────────
     BlobInvertedRect {
         id: screenEdge
         group:  blobGroup
@@ -115,8 +127,8 @@ PanelWindow {
         x: edge === Drawer.Edge.Right  ? blobPad + _contentW : 0
         y: edge === Drawer.Edge.Bottom ? blobPad + _contentH : 0
 
-        width:  _isVertical ? drawer_panwin.implicitWidth : blobPad * 2
-        height: _isVertical ? blobPad * 2        : drawer_panwin.implicitHeight
+        width:  _isVertical ? root.implicitWidth : blobPad * 2
+        height: _isVertical ? blobPad * 2        : root.implicitHeight
 
         borderTop:    edge === Drawer.Edge.Bottom ? blobPad : 0
         borderBottom: edge === Drawer.Edge.Top    ? blobPad : 0
@@ -124,51 +136,59 @@ PanelWindow {
         borderRight:  edge === Drawer.Edge.Left   ? blobPad : 0
     }
 
-    // ── Sliding container ─────────────────────────────────────────────────────
+    // ── BlobRects — one per content child, rendered BELOW content ─────────────
+    // At window root so scene coords match shader expectations.
+    // Track slideContainer so they follow the slide animation.
+    Repeater {
+        model: contentArea.children.length
+
+        delegate: BlobRect {
+            required property int index
+            readonly property Item _child: contentArea.children[index]
+
+            group:       blobGroup
+            radius:      root.blobRadius
+            stiffness:   300
+            damping:     50
+            deformScale: 0
+
+            x:       slideContainer.x + contentArea.x + _child.x
+            y:       slideContainer.y + contentArea.y + _child.y
+            width:   _child.width
+            height:  _child.height
+            visible: _child.visible
+        }
+    }
+
+    // ── Sliding container — declared AFTER Repeater so it renders on top ──────
     Item {
         id: slideContainer
-        width:  drawer_panwin.implicitWidth
-        height: drawer_panwin.implicitHeight
+        width:  root.implicitWidth
+        height: root.implicitHeight
 
+        clip: true
         anchors.horizontalCenter: _isVertical ? parent.horizontalCenter : undefined
         anchors.verticalCenter:   _isVertical ? undefined               : parent.verticalCenter
 
         NumberAnimation {
             id: slideAnim
-            target:   slideContainer
-            duration: 420
+            target:      slideContainer
+            duration:    500
             easing.type: Easing.OutExpo
-        }
-
-        // ── One BlobRect per direct child ─────────────────────────────────────
-        Repeater {
-            model: contentArea.children.length
-
-            delegate: BlobRect {
-                required property int index
-                readonly property Item _child: contentArea.children[index]
-
-                group:       blobGroup
-                radius:      drawer_panwin.blobRadius
-                stiffness:   180
-                damping:     14
-                deformScale: 0.0004
-
-                x:       contentArea.x + _child.x
-                y:       contentArea.y + _child.y
-                width:   _child.width
-                height:  _child.height
-                visible: _child.visible
+            onStopped: {
+                if (root._closing) {
+                    root._closing = false
+                    root.visible  = false
+                }
             }
         }
 
-        // ── Content area — default children land here ─────────────────────────
         Item {
             id: contentArea
-            x:      drawer_panwin.blobPad
-            y:      drawer_panwin.blobPad
-            width:  drawer_panwin._contentW
-            height: drawer_panwin._contentH
+            x:      root.blobPad
+            y:      root.blobPad
+            width:  root._contentW
+            height: root._contentH
         }
     }
 }

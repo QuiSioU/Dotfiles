@@ -1,4 +1,4 @@
-/* quickshell/modules/Blobs/include/blobmaterial.hpp */
+/* quickshell/modules/Blobs/blobmaterial.hpp */
 
 
 #pragma once

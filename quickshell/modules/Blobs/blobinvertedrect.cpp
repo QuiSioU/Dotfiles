@@ -1,4 +1,4 @@
-/* quickshell/modules/Blobs/src/blobinvertedrect.cpp */
+/* quickshell/modules/Blobs/blobinvertedrect.cpp */
 
 
 #include "blobinvertedrect.hpp"

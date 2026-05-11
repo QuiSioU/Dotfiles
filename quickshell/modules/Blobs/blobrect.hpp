@@ -1,4 +1,4 @@
-/* quickshell/modules/Blobs/include/blobrect.hpp */
+/* quickshell/modules/Blobs/blobrect.hpp */
 
 
 #pragma once

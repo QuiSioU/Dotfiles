@@ -1,4 +1,4 @@
-/* quickshell/modules/Blobs/include/blobinvertedrect.hpp */
+/* quickshell/modules/Blobs/blobinvertedrect.hpp */
 
 
 #pragma once
