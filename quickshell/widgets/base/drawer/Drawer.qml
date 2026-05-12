@@ -19,7 +19,7 @@ PanelWindow {
 
     // ── Public properties ─────────────────────────────────────────────────────
     property int   edge:          Drawer.Edge.Bottom
-    property color blobColor:     "#4488ff"
+    property color blobColor:     "#ffffff"
     property real  blobSmoothing: 36
     property real  blobRadius:    18
 
@@ -89,13 +89,13 @@ PanelWindow {
         switch (root.edge) {
             case Drawer.Edge.Bottom:
                 slideAnim.property = "y"
-                slideAnim.from     = opening ? root.implicitHeight : 0
-                slideAnim.to       = opening ? 0 : root.implicitHeight
+                slideAnim.from     = opening ? root.implicitHeight : blobPad * 2
+                slideAnim.to       = opening ? blobPad * 2 : root.implicitHeight
                 break
             case Drawer.Edge.Top:
                 slideAnim.property = "y"
-                slideAnim.from     = opening ? -root.implicitHeight : 0
-                slideAnim.to       = opening ? 0 : -root.implicitHeight
+                slideAnim.from     = opening ? -root.implicitHeight : -blobPad * 2 + 50
+                slideAnim.to       = opening ? -blobPad * 2 + 50 : -root.implicitHeight
                 break
             case Drawer.Edge.Left:
                 slideAnim.property = "x"
@@ -124,8 +124,12 @@ PanelWindow {
         group:  blobGroup
         radius: 0
 
-        x: edge === Drawer.Edge.Right  ? blobPad + _contentW : 0
-        y: edge === Drawer.Edge.Bottom ? blobPad + _contentH : 0
+        x: _isVertical  ? (root.width - root.implicitWidth) / 2
+                        : edge === Drawer.Edge.Right ? blobPad + _contentW
+                        : 0
+        y: edge === Drawer.Edge.Bottom  ? root.implicitHeight + 3
+                                        : edge === Drawer.Edge.Top ? -blobPad * 2
+                                        : 0
 
         width:  _isVertical ? root.implicitWidth : blobPad * 2
         height: _isVertical ? blobPad * 2        : root.implicitHeight

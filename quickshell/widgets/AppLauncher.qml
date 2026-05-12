@@ -11,7 +11,7 @@ Drawer {
     id: root
 
     edge:          Drawer.Edge.Bottom
-    blobColor:     "#4488ff"
+    blobColor:     "#1e1e2e"
     blobSmoothing: 36
     blobRadius:    18
 

@@ -4,8 +4,10 @@
 import QtQuick
 import QtQuick.Layouts
 
-Item {
+Rectangle {
     id: root
+    radius: 50
+    color: "#181825"
 
     // ── Public API ────────────────────────────────────────────────────────────
     property var    entries:         []
@@ -121,7 +123,7 @@ Item {
             visible: root.activeMode !== null
             height: 26
             width: chipLabel.implicitWidth + 16
-            radius: 6
+            radius: 50
             color: "#1e3a5f"
             anchors.verticalCenter: parent.verticalCenter
 
