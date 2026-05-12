@@ -22,7 +22,7 @@ create_file() {
 
 EOF
 
-    echo "  created   $filepath"
+    echo "    created   $filepath"
 }
 
 
@@ -36,14 +36,14 @@ echo "Creating override files in hypr/user/ directory..."
 
 mkdir -p "$USER_DIR"
 
-create_file "env.conf"              "ENVIRONMENT VARIABLES CONFIGURATION"
-create_file "variables.conf"        "GENERAL SETTINGS"
-create_file "monitors.conf"         "MONITORS CONFIGURATION"
-create_file "look-and-feel.conf"    "LOOK AND FEEL CONFIGURATION"
-create_file "input.conf"            "INPUT CONFIGURATION"
-create_file "keybinds.conf"         "KEYBINDS CONFIGURATION"
-create_file "windowrules.conf"      "WINDOW RULES CONFIGURATION"
-create_file "autostart.conf"        "AUTO START CONFIGURATION"
+create_file "env.lua"              "ENVIRONMENT VARIABLES CONFIGURATION"
+create_file "variables.lua"        "GENERAL SETTINGS"
+create_file "monitors.lua"         "MONITORS CONFIGURATION"
+create_file "look_and_feel.lua"    "LOOK AND FEEL CONFIGURATION"
+create_file "input.lua"            "INPUT CONFIGURATION"
+create_file "keybinds.lua"         "KEYBINDS CONFIGURATION"
+create_file "windowrules.lua"      "WINDOW RULES CONFIGURATION"
+create_file "autostart.lua"        "AUTO START CONFIGURATION"
 
 echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌"
 

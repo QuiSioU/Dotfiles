@@ -405,7 +405,7 @@
                (for ws in ws_data
                     (eventbox
                          :cursor "pointer"
-                         :onclick "hyprctl dispatch workspace ${ws.id}"
+                         :onclick "hyprctl dispatch 'hl.dsp.focus({ workspace = ${ws.id}})'"
                          (box :class "ws-pill ${ws.state}")
                     )
                )

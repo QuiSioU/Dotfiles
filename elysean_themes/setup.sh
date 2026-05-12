@@ -16,17 +16,17 @@ WP_USER_DIR="$ROOT_DIR/wallpapers/user"
 echo "Creating directory structure for user's custom themes and wallpapers..."
 
 if [ -d "$THEME_USER_DIR" ]; then
-    echo "  skipped    $THEME_USER_DIR/:  directory already exists"
+    echo "    skipped    $THEME_USER_DIR/:  directory already exists"
 else
     mkdir -p "$THEME_USER_DIR"
-    echo "  created    $THEME_USER_DIR/"
+    echo "    created    $THEME_USER_DIR/"
 fi
 
 if [ -d "$WP_USER_DIR" ]; then
-    echo "  skipped    $WP_USER_DIR/:  directory already exists"
+    echo "    skipped    $WP_USER_DIR/:  directory already exists"
 else
     mkdir -p "$WP_USER_DIR"
-    echo "  created    $WP_USER_DIR/"
+    echo "    created    $WP_USER_DIR/"
 fi
 
 echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌"
@@ -34,10 +34,10 @@ echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌�
 echo "Setting active theme configuration file..."
 
 if [ -f "$ROOT_DIR/active_theme" ]; then
-    echo "  skipped    $ROOT_DIR/active_theme:  file already exists"
+    echo "    skipped    $ROOT_DIR/active_theme:  file already exists"
 else
     cp "themes/default/TokyoNight.conf" "active_theme"
-    echo "  created    $ROOT_DIR/active_theme"
+    echo "    created    $ROOT_DIR/active_theme"
 fi
 
 echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌"

@@ -18,10 +18,10 @@ fi
 # Define your direction based on the argument passed
 if [ "$1" == "up" ]; then
     if [ "$current" -lt "$max_ws" ]; then
-        hyprctl dispatch workspace $((current + 1))
+        hyprctl dispatch "hl.dsp.focus({ workspace = $((current + 1))})"
     fi
 elif [ "$1" == "down" ]; then
     if [ "$current" -gt 1 ]; then
-        hyprctl dispatch workspace $((current - 1))
+        hyprctl dispatch "hl.dsp.focus({ workspace = $((current - 1))})"
     fi
 fi
