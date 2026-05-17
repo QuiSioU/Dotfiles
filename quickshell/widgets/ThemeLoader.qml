@@ -9,7 +9,7 @@ import ElyseanShell.Themes
 
 QtObject {
     property var _file: FileView {
-        path: Quickshell.env("HOME") + "/.config/elysean_themes/active_theme"
+        path: Quickshell.env("HOME") + "/.config/elysean_themes/active_theme.lua"
         watchChanges: true
 
         onFileChanged: reload()
@@ -21,30 +21,33 @@ QtObject {
 
             const color = {}
             const token = {}
+
             for (const line of text().split("\n")) {
                 const trimmed = line.trim()
-                if (!trimmed.startsWith("$")) continue
 
-                const eq = trimmed.indexOf("=")
-                if (eq === -1) continue
+                // skip blank lines and comments
+                if (!trimmed || trimmed.startsWith("--")) continue
 
-                const key = trimmed.slice(0, eq).trim().replace(/^\$/, "")  // Hyprland's $VAR format
-                const val = trimmed.slice(eq + 1).trim().replace(/#.*$/, "").trim()
+                const match = trimmed.match(/^(\w+)\s*=\s*"(.+?)"/)
+                if (!match) continue
+
+                const key = match[1]
+                const val = match[2]
 
                 console.log(JSON.stringify(key), "=", JSON.stringify(val))
 
-                if (key === "WALLPAPER") {
+                if (key === "wallpaper") {
                     ActiveTheme.wallpaper = val.replace("~", Quickshell.env("HOME"))
                     continue
                 }
-                // input: RRGGBBAA || Quickshell expects: AARRGGBB
-                const rgba = val.match(/^rgba\(([a-zA-Z0-9]{6})([a-zA-Z0-9]{2})\).*$/)
 
+                // input: RRGGBBAA || Quickshell expects: AARRGGBB
+                const rgba = val.match(/^rgba\(([a-zA-Z0-9]{6})([a-zA-Z0-9]{2})\)$/)
                 if (rgba) {
                     color[key] = "#" + rgba[2] + rgba[1]
                     continue
                 }
-                
+
                 token[key] = val
             }
 

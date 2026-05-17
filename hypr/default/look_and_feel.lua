@@ -16,6 +16,8 @@
 
 -- See https://wiki.hypr.land/Configuring/Workspace-Rules/ for more
 
+-- See https://wiki.hypr.land/Configuring/Advanced-and-Cool/Tearing/ for more
+
 
 hl.config({
     general = {
@@ -27,18 +29,17 @@ hl.config({
         col = {
             active_border   = {
                 colors = {
-                    "rgba(33ccffee)",   -- MAGENTA
-                    "rgba(00ff99ee)"    -- CYAN
+                    theme.color.MAGENTA,   -- MAGENTA
+                    theme.color.CYAN    -- CYAN
                 },
                 angle = 45
             },
-            inactive_border = "rgba(595959aa)", -- FG_GUTTER
+            inactive_border = theme.color.FG_GUTTER, -- FG_GUTTER
         },
 
         -- Set to true to enable resizing windows by clicking and dragging on borders and gaps
         resize_on_border = false,
 
-        -- Please see https://wiki.hypr.land/Configuring/Advanced-and-Cool/Tearing/ before you turn this on
         allow_tearing = false,
 
         layout = "dwindle",

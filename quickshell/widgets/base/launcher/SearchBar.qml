@@ -4,10 +4,8 @@
 import QtQuick
 import QtQuick.Layouts
 
-Rectangle {
+Item {
     id: root
-    radius: 50
-    color: "#181825"
 
     // ── Public API ────────────────────────────────────────────────────────────
     property var    entries:         []
@@ -21,7 +19,7 @@ Rectangle {
     // Signals
     signal closeRequested()
     signal navigated(int index)
-    signal activated()
+    signal activated(var entry)
 
     // Functions
     function forceInputFocus() {
@@ -72,6 +70,7 @@ Rectangle {
                     icon:        m.icon,
                     comment:     "Type " + prefix + m.prefix + " to browse",
                     isModeEntry: true,
+                    fallbackText: root.actionPrefix,
                     modePrefix:  prefix + m.prefix + " ",
                     stayOpen:    true,
                     action:      () => { searchInput.text = prefix + m.prefix + " " }
@@ -123,7 +122,7 @@ Rectangle {
             visible: root.activeMode !== null
             height: 26
             width: chipLabel.implicitWidth + 16
-            radius: 50
+            radius: 6
             color: "#1e3a5f"
             anchors.verticalCenter: parent.verticalCenter
 
@@ -163,7 +162,10 @@ Rectangle {
             }
 
             Keys.priority: Keys.BeforeItem
-            Keys.onReturnPressed:  root.activated()
+            Keys.onReturnPressed:  {
+                const entry = root.filteredEntries[root.currentIndex]
+                if (entry) root.activated(entry)
+            }
             Keys.onUpPressed:      root._navigateUp()
             Keys.onDownPressed:    root._navigateDown()
             Keys.onEscapePressed:  root.closeRequested()
@@ -192,20 +194,11 @@ Rectangle {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
-        anchors.margins: 14
+        anchors.margins: 16
         visible: root.activeMode === null
         focus:   root.activeMode === null
-        color: "#cdd6f4"
+        color: searchInput.text.startsWith(root.actionPrefix) ? "#89b4fa" : "#cdd6f4"
         font.pixelSize: 16
-
-        Text {
-            visible: searchInput.text.startsWith(root.actionPrefix)
-            text: root.actionPrefix
-            color: "#89b4fa"
-            font.pixelSize: 16
-            anchors.left: parent.left
-            anchors.verticalCenter: parent.verticalCenter
-        }
 
         onTextChanged: {
             root.currentIndex = 0
@@ -216,7 +209,10 @@ Rectangle {
 
         Keys.priority: Keys.BeforeItem
         Keys.onEscapePressed: root.closeRequested()
-        Keys.onReturnPressed: root.activated()
+        Keys.onReturnPressed: {
+            const entry = root.filteredEntries[root.currentIndex]
+            if (entry) root.activated(entry)
+        }
         Keys.onUpPressed:     root._navigateUp()
         Keys.onDownPressed:   root._navigateDown()
         Keys.onTabPressed: {
@@ -238,7 +234,7 @@ Rectangle {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
-        anchors.margins: 14
+        anchors.margins: 16
         visible: searchInput.text === "" && root.activeMode === null
         text: "Search apps  ·  type " + root.actionPrefix + " for commands"
         color: "#45475a"

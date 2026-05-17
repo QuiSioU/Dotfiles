@@ -17,7 +17,7 @@ ShellRoot {
     Loader {
         id: globalLauncherLoader
         active: false
-        source: "widgets/AppLauncher.qml"
+        source: "widgets/GlobalLauncher.qml"
         visible: false
     }
 

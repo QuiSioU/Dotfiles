@@ -3,53 +3,60 @@
 
 import Quickshell
 import QtQuick
+import QtQuick.Layouts
+import Quickshell.Hyprland
 import ElyseanShell.Services
+import ElyseanShell.Themes
 import "base/launcher"
 
-LauncherMenu {
-    id: root
+PanelWindow {
+    id: launcher_panwin
 
-    Component.onCompleted: {
-        rebuildEntries()
-        rebuildModes()
-    }
+    implicitWidth: 750
+    implicitHeight: 500
+    color: "transparent"
+    focusable: true
+    visible: false
+
+    property var _entries: []
+    property var _modes:   []
 
     Connections {
         target: DesktopEntries
-        function onApplicationsChanged() { root.rebuildEntries() }
+        function onApplicationsChanged() { launcher_panwin.rebuildEntries() }
     }
 
     Connections {
         target: BluetoothDeviceModel
-        function onDataChanged() { root.refresh() }
-        function onModelReset()  { root.refresh() }
+        function onDataChanged() { searchBar.refresh() }
+        function onModelReset()  { searchBar.refresh() }
     }
 
-    // ----------------------------------------------------------------
-    // App entries (normal mode)
-    // ----------------------------------------------------------------
+    function close() {
+        launcher_panwin.visible = false
+    }
+
+    // ── App entries ───────────────────────────────────────────────────────────
     function rebuildEntries() {
-        entries = DesktopEntries.applications.values
+        _entries = DesktopEntries.applications.values
             .filter(app => !app.noDisplay)
             .map(app => ({
-                name: app.name,
-                icon: app.icon ?? "",
+                name:    app.name,
+                icon:    app.icon ?? "",
                 comment: app.comment ?? "",
-                action: (function(a) { return () => a.execute() })(app)
+                action:  (function(a) { return () => a.execute() })(app)
             }))
             .sort((a, b) => a.name.localeCompare(b.name))
     }
 
-    // ----------------------------------------------------------------
-    // Command modes — each appears when you type "/" in the launcher.
-    // ----------------------------------------------------------------
+    // ── Command modes ─────────────────────────────────────────────────────────
     function rebuildModes() {
-        modes = [
+        _modes = [
             {
-                prefix: "bluetooth",
-                label: "Bluetooth",
+                prefix:      "bluetooth",
+                label:       "Bluetooth",
                 placeholder: "Select device to toggle connection",
-                icon: Quickshell.shellDir + "/assets/icons/bluetooth-active.svg",
+                icon:        Quickshell.shellDir + "/assets/icons/bluetooth-active.svg",
                 entries: function() {
                     return BluetoothDeviceModel.deviceList().map(dev => ({
                         name:    dev.alias || dev.name,
@@ -62,5 +69,91 @@ LauncherMenu {
                 }
             }
         ]
+    }
+
+    // ── Hooks ─────────────────────────────────────────────────────────────────
+    Component.onCompleted: {
+        rebuildEntries()
+        rebuildModes()
+    }
+
+    onVisibleChanged: {
+        if (visible)
+            searchBar.forceInputFocus()
+        else
+            searchBar.clearInput()
+    }
+
+    HyprlandFocusGrab {
+        windows: [ launcher_panwin ]
+        active: launcher_panwin.visible
+        onCleared: launcher_panwin.visible = false
+    }
+
+    // ── Content ───────────────────────────────────────────────────────────────
+    Rectangle {
+        id: root
+        anchors.fill: parent
+        color: "#1e1e2e"
+        radius: 12
+        clip: true
+
+        ColumnLayout {
+            anchors.fill: parent
+            anchors.margins: 20
+            spacing: 20
+
+            Rectangle {
+                Layout.fillWidth: true
+                Layout.preferredHeight: 50
+                color: "#181825"
+                radius: 12
+
+                SearchBar {
+                    id: searchBar
+
+                    anchors.fill: parent
+
+                    entries:      launcher_panwin._entries
+                    modes:        launcher_panwin._modes
+                    actionPrefix: "/"
+
+                    onCloseRequested: launcher_panwin.close()
+
+                    onNavigated: function(index) {
+                        resultsList.positionAt(index)
+                    }
+
+                    onActivated: function(entry) {
+                        entry.action()
+                        if (!entry.stayOpen) launcher_panwin.close()
+                    }
+                }
+            }
+
+            Rectangle {
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                color: "transparent"
+                radius: 12
+                clip: true
+
+                ResultList {
+                    id: resultsList
+
+                    anchors.fill: parent
+
+                    model:        searchBar.filteredEntries
+                    currentIndex: searchBar.currentIndex
+
+                    onActivated: function(entry) {
+                        entry.action()
+                        if (!entry.stayOpen) launcher_panwin.close()
+                    }
+
+                    onCloseRequested: launcher_panwin.close()
+                }
+            }       
+        }
     }
 }

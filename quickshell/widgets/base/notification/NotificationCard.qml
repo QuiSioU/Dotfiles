@@ -96,7 +96,7 @@ Item {
                 color:            "#eff6ff"
                 font.pixelSize:   13
                 font.bold:        true
-                font.family: "FiraCode Nerd Font Mono"
+                font.family: "FiraCode Nerd Font"
                 font.hintingPreference: Font.PreferNoHinting
                 renderType: Text.QtRendering
                 elide:            Text.ElideRight
@@ -109,7 +109,7 @@ Item {
                 text:             entry?.body ?? ""
                 color:            "#bfdbfe"
                 font.pixelSize:   12
-                font.family: "FiraCode Nerd Font Mono"
+                font.family: "FiraCode Nerd Font"
                 wrapMode:         Text.Wrap
                 maximumLineCount: 3
                 elide:            Text.ElideRight

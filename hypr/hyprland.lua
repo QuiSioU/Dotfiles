@@ -2,7 +2,7 @@
 
 
 ------ LOAD ACTIVE ELYSEAN THEME ------------------------
--- source = ~/.config/elysean_themes/active_theme
+theme = dofile(os.getenv("HOME") .. "/.config/elysean_themes/active_theme.lua")
 
 
 ------ LOAD ENV VARIABLES (DEFAULT AND/OR CUSTOM) -------

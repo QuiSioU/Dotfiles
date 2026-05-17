@@ -23,6 +23,7 @@ target_sources(elyseanshell-blobs PRIVATE
     blobrect.cpp
     blobinvertedrect.cpp
     blobmaterial.cpp
+    screenframeitem.cpp
 )
 
 target_include_directories(elyseanshell-blobs PRIVATE

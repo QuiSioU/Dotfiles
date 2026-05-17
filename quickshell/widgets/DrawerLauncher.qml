@@ -4,6 +4,7 @@
 import Quickshell
 import QtQuick
 import ElyseanShell.Services
+import ElyseanShell.Themes
 import "base/drawer"
 import "base/launcher"
 
@@ -11,7 +12,7 @@ Drawer {
     id: root
 
     edge:          Drawer.Edge.Bottom
-    blobColor:     "#1e1e2e"
+    blobColor:     ActiveTheme.color["BG"]
     blobSmoothing: 36
     blobRadius:    18
 
@@ -39,6 +40,7 @@ Drawer {
 
             onActivated: function(entry) {
                 entry.action()
+                if (!entry.stayOpen) root.close()
             }
 
             onCloseRequested: root.close()
@@ -59,9 +61,7 @@ Drawer {
                 resultsList.positionAt(index)
             }
 
-            onActivated: {
-                const entry = searchBar.filteredEntries[searchBar.currentIndex]
-                if (!entry) return
+            onActivated: function(entry) {
                 entry.action()
                 if (!entry.stayOpen) root.close()
             }
