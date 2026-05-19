@@ -1,7 +1,6 @@
-/* quickshell/widgets/GlobalLauncher.qml */
+/* quickshell/widgets/ControlCenter.qml */
 
 
-import Qt.labs.folderlistmodel
 import Quickshell
 import Quickshell.Io
 import QtQuick
@@ -9,7 +8,7 @@ import QtQuick.Layouts
 import Quickshell.Hyprland
 import ElyseanShell.Services
 import ElyseanShell.Themes
-import "base/launcher"
+import "base"
 
 PanelWindow {
     id: launcher_panwin
@@ -59,8 +58,8 @@ PanelWindow {
 
     Connections {
         target: BluetoothDeviceModel
-        function onDataChanged() { searchBar.refresh() }
-        function onModelReset()  { searchBar.refresh() }
+        function onDataChanged() { searchView.refresh() }
+        function onModelReset()  { searchView.refresh() }
     }
 
     function close() {
@@ -110,13 +109,15 @@ PanelWindow {
                         name:    f.replace(/.*\//, "").replace(/\.[^.]+$/, ""), // filename without ext
                         comment: f,
                         icon:    f,
-                        action:  (function(path) { return () => {
-                            wpProcess.running = true
-                            wpProcess.command = [
-                                "awww", "img", path,
-                                "--transition-type", "center"
-                            ]
-                        } })(f)
+                        action:  (function(path) {
+                            return () => {
+                                wpProcess.running = true
+                                wpProcess.command = [
+                                    "awww", "img", path,
+                                    "--transition-type", "center"
+                                ]
+                            }
+                        })(f)
                     }))
                 }
             }
@@ -131,13 +132,13 @@ PanelWindow {
 
     onVisibleChanged: {
         if (visible) {
-            searchBar.forceInputFocus()
+            searchView.forceInputFocus()
             _wallpaperFiles = []
             wallpaperScanner.running = false
             wallpaperScanner.running = true
         }
         else
-            searchBar.clearInput()
+            searchView.clearInput()
     }
 
     HyprlandFocusGrab {
@@ -148,68 +149,20 @@ PanelWindow {
 
     // ── Content ───────────────────────────────────────────────────────────────
     Rectangle {
-        id: root
         anchors.fill: parent
         color: "#1e1e2e"
         radius: 12
         clip: true
 
-        ColumnLayout {
-            anchors.fill: parent
-            anchors.margins: 20
-            spacing: 20
+        SearchView {
+            id: searchView
 
-            Rectangle {
-                Layout.fillWidth: true
-                Layout.preferredHeight: 50
-                color: "#181825"
-                radius: 12
+            anchors.fill: parent 
 
-                SearchBar {
-                    id: searchBar
+            entries:      launcher_panwin._entries
+            modes:        launcher_panwin._modes
 
-                    anchors.fill: parent
-
-                    entries:      launcher_panwin._entries
-                    modes:        launcher_panwin._modes
-                    actionPrefix: "/"
-
-                    onCloseRequested: launcher_panwin.close()
-
-                    onNavigated: function(index) {
-                        resultsList.positionAt(index)
-                    }
-
-                    onActivated: function(entry) {
-                        entry.action()
-                        if (!entry.stayOpen) launcher_panwin.close()
-                    }
-                }
-            }
-
-            Rectangle {
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                color: "transparent"
-                radius: 12
-                clip: true
-
-                ResultList {
-                    id: resultsList
-
-                    anchors.fill: parent
-
-                    model:        searchBar.filteredEntries
-                    currentIndex: searchBar.currentIndex
-
-                    onActivated: function(entry) {
-                        entry.action()
-                        if (!entry.stayOpen) launcher_panwin.close()
-                    }
-
-                    onCloseRequested: launcher_panwin.close()
-                }
-            }       
+            onCloseRequested: launcher_panwin.close()
         }
     }
 }

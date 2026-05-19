@@ -6,7 +6,7 @@ import QtQuick.Layouts
 import Quickshell
 import Quickshell.Wayland
 import ElyseanShell.Services
-import "base/notification"
+import "base"
 
 Variants {
     model: Quickshell.screens

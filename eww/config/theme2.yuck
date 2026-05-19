@@ -374,7 +374,7 @@
      (button-module :class "menu"
           :subclass "menu-eventbox"
           :icon " "
-          :cmd "hyprctl dispatch 'hl.dsp.global(\"quickshell:toggleGlobalLauncher\")'"
+          :cmd "hyprctl dispatch 'hl.dsp.global(\"quickshell:toggleControlCenter\")'"
      )
 )
 

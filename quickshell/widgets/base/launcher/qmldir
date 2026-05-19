@@ -1,5 +1,0 @@
-# quickshell/widgets/base/launcher/qmldir
-
-
-ResultList 1.0 ResultList.qml
-SearchBar 1.0 SearchBar.qml

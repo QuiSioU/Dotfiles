@@ -5,7 +5,6 @@ import QtQuick
 import Quickshell
 import Quickshell.Hyprland
 import ElyseanShell.Services
-import "./widgets"
 
 ShellRoot {
     Loader {
@@ -13,9 +12,9 @@ ShellRoot {
     }
 
     Loader {
-        id: globalLauncherLoader
+        id: controlCenterLoader
         active: false
-        source: "widgets/GlobalLauncher.qml"
+        source: "widgets/ControlCenter.qml"
         visible: false
     }
 
@@ -46,14 +45,14 @@ ShellRoot {
     }
 
     GlobalShortcut {
-        name: "toggleGlobalLauncher"
-        description: "Toggle Global launcher"
+        name: "toggleControlCenter"
+        description: "Toggle Control Center"
         onPressed: {
-            if (!globalLauncherLoader.active) {
-                globalLauncherLoader.active = true
+            if (!controlCenterLoader.active) {
+                controlCenterLoader.active = true
             }
 
-            var launcher = globalLauncherLoader.item
+            var launcher = controlCenterLoader.item
             if (!launcher) return
 
             if (!launcher.visible) {

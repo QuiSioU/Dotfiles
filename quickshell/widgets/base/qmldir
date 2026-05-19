@@ -1,0 +1,6 @@
+# quickshell/widgets/base/qmldir
+
+
+Drawer 1.0 Drawer.qml
+NotificationCard 1.0 NotificationCard.qml
+SearchView 1.0 SearchView.qml

@@ -98,7 +98,7 @@ hl.bind(mainMod .. " + mouse_down", hl.dsp.exec_cmd("~/.config/eww/scripts/works
 -- Quickshell binds
 hl.bind(
     mainMod .. " + SUPER_L",
-    hl.dsp.exec_cmd("hyprctl dispatch 'hl.dsp.global(\"quickshell:toggleGlobalLauncher\")'"),
+    hl.dsp.exec_cmd("hyprctl dispatch 'hl.dsp.global(\"quickshell:toggleControlCenter\")'"),
     { release = true }
 )
 hl.bind(
