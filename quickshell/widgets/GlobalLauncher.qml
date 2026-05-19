@@ -1,7 +1,9 @@
 /* quickshell/widgets/GlobalLauncher.qml */
 
 
+import Qt.labs.folderlistmodel
 import Quickshell
+import Quickshell.Io
 import QtQuick
 import QtQuick.Layouts
 import Quickshell.Hyprland
@@ -20,6 +22,35 @@ PanelWindow {
 
     property var _entries: []
     property var _modes:   []
+    property var _wallpaperFiles: []
+
+    Process {
+        id: wallpaperScanner
+        command: ["find",
+            Quickshell.env("HOME") + "/.config/elysean_themes/wallpapers/",
+            "-type", "f",
+            "(",
+            "-iname", "*.jpg", "-o",
+            "-iname", "*.jpeg", "-o",
+            "-iname", "*.png", "-o",
+            "-iname", "*.webp",
+            ")"
+        ]
+        stdout: SplitParser {
+            onRead: function(line) {
+                if (line.trim() !== "")
+                    launcher_panwin._wallpaperFiles.push(line.trim())  // ← _wallpaperFiles
+            }
+        }
+        onExited: {
+            launcher_panwin._wallpaperFiles = [...launcher_panwin._wallpaperFiles]
+        }
+    }
+
+    Process {
+        id: wpProcess
+        running: false
+    }
 
     Connections {
         target: DesktopEntries
@@ -52,7 +83,7 @@ PanelWindow {
     // ── Command modes ─────────────────────────────────────────────────────────
     function rebuildModes() {
         _modes = [
-            {
+            {  /* Bluetooth */
                 prefix:      "bluetooth",
                 label:       "Bluetooth",
                 placeholder: "Select device to toggle connection",
@@ -67,6 +98,27 @@ PanelWindow {
                         })(dev.path)
                     }))
                 }
+            },
+            {  /* Wallpaper manager */
+                prefix:      "wallpaper",
+                label:       "Wallpaper",
+                placeholder: "Select image to set as wallpaper",
+                icon:        Quickshell.shellDir + "/assets/icons/notification-bell.svg",
+                entries: function() {
+                    const dir = Quickshell.env("HOME") + "/.config/elysean_themes/wallpapers/"
+                    return _wallpaperFiles.map(f => ({
+                        name:    f.replace(/.*\//, "").replace(/\.[^.]+$/, ""), // filename without ext
+                        comment: f,
+                        icon:    f,
+                        action:  (function(path) { return () => {
+                            wpProcess.running = true
+                            wpProcess.command = [
+                                "awww", "img", path,
+                                "--transition-type", "center"
+                            ]
+                        } })(f)
+                    }))
+                }
             }
         ]
     }
@@ -78,8 +130,12 @@ PanelWindow {
     }
 
     onVisibleChanged: {
-        if (visible)
+        if (visible) {
             searchBar.forceInputFocus()
+            _wallpaperFiles = []
+            wallpaperScanner.running = false
+            wallpaperScanner.running = true
+        }
         else
             searchBar.clearInput()
     }

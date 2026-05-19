@@ -12,8 +12,6 @@ ShellRoot {
         source: "widgets/ThemeLoader.qml"
     }
 
-    Wallpaper {}
-
     Loader {
         id: globalLauncherLoader
         active: false

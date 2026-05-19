@@ -36,11 +36,6 @@ QtObject {
 
                 console.log(JSON.stringify(key), "=", JSON.stringify(val))
 
-                if (key === "wallpaper") {
-                    ActiveTheme.wallpaper = val.replace("~", Quickshell.env("HOME"))
-                    continue
-                }
-
                 // input: RRGGBBAA || Quickshell expects: AARRGGBB
                 const rgba = val.match(/^rgba\(([a-zA-Z0-9]{6})([a-zA-Z0-9]{2})\)$/)
                 if (rgba) {

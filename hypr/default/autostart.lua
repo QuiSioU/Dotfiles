@@ -10,6 +10,9 @@ hl.on("hyprland.start", function()
     -- Top bar (temporary until quickshell replacement)
     hl.exec_cmd("eww open topbar")
 
+    -- Wallpaper daemon
+    hl.exec_cmd("awww-daemon")
+
     -- Shell
     hl.exec_cmd("quickshell")
 end)

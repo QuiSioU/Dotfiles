@@ -2,8 +2,6 @@
 
 
 return {
-    -- Wallpaper
-    wallpaper = "~/.config/elysean_themes/wallpapers/default/Witcher.jpg",
 
     -- Colors
     color = {
