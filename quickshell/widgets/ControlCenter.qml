@@ -25,7 +25,8 @@ PanelWindow {
 
     Process {
         id: wallpaperScanner
-        command: ["find",
+        command: [
+            "find",
             Quickshell.env("HOME") + "/.config/elysean_themes/wallpapers/",
             "-type", "f",
             "(",
@@ -112,6 +113,9 @@ PanelWindow {
                         action:  (function(path) {
                             return () => {
                                 wpProcess.running = true
+                                wpProcess.environment = ({
+                                    "XDG_CACHE_HOME": Quickshell.env("$AWWW_CACHE_HOME"),
+                                })
                                 wpProcess.command = [
                                     "awww", "img", path,
                                     "--transition-type", "center"

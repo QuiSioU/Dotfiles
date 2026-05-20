@@ -15,4 +15,4 @@ hl.env("SSH_AUTH_SOCK", os.getenv("XDG_RUNTIME_DIR") .. "/ssh-agent.socket")
 
 hl.env("STARSHIP_CONFIG", os.getenv("HOME") .. "/.config/starship/starship.toml")
 hl.env("QML_IMPORT_PATH", os.getenv("HOME") .. "/.config/quickshell/.build/qml")
-
+hl.env("AWWW_CACHE_HOME", os.getenv("HOME") .. "/.local/share/awww")
