@@ -27,14 +27,15 @@ hl.config({
         border_size = 2,
 
         col = {
-            active_border   = {
-                colors = {
-                    theme.color.MAGENTA,   -- MAGENTA
-                    theme.color.CYAN    -- CYAN
-                },
-                angle = 45
-            },
-            inactive_border = theme.color.FG_GUTTER, -- FG_GUTTER
+            -- active_border   = {
+            --     colors = {
+            --         theme.color.CYAN,   -- MAGENTA
+            --         theme.color.BLUE    -- CYAN
+            --     },
+            --     angle = 45
+            -- },
+            active_border = theme.color.FG_DARK,
+            inactive_border = theme.color.BG_HIGHLIGHT, -- FG_GUTTER
         },
 
         -- Set to true to enable resizing windows by clicking and dragging on borders and gaps
@@ -46,7 +47,7 @@ hl.config({
     },
 
     decoration = {
-        rounding       = 15,
+        rounding       = 5,
         rounding_power = 2,
 
         -- Change transparency of focused and unfocused windows
