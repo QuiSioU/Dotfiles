@@ -11,7 +11,7 @@ hl.on("hyprland.start", function()
     hl.exec_cmd("eww open topbar")
 
     -- Wallpaper daemon
-    hl.exec_cmd('sh -c "mkdir -p $AWWW_CACHE_HOME && XDG_CACHE_HOME=$AWWW_CACHE_HOME awww-daemon"')
+    hl.exec_cmd("awww-daemon")
 
     -- Shell
     hl.exec_cmd("quickshell")

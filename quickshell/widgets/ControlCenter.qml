@@ -113,9 +113,6 @@ PanelWindow {
                         action:  (function(path) {
                             return () => {
                                 wpProcess.running = true
-                                wpProcess.environment = ({
-                                    "XDG_CACHE_HOME": Quickshell.env("$AWWW_CACHE_HOME"),
-                                })
                                 wpProcess.command = [
                                     "awww", "img", path,
                                     "--transition-type", "center"
