@@ -22,6 +22,7 @@ PanelWindow {
     property var _entries: []
     property var _modes:   []
     property var _wallpaperFiles: []
+    property var _colorThemeFiles: []
 
     Process {
         id: wallpaperScanner
@@ -48,7 +49,33 @@ PanelWindow {
     }
 
     Process {
+        id: colorThemeScanner
+        command: [
+            "find",
+            Quickshell.env("HOME") + "/.config/elysean_themes/themes/",
+            "-type", "f",
+            "(",
+            "-iname", "*.lua",
+            ")"
+        ]
+        stdout: SplitParser {
+            onRead: function(line) {
+                if (line.trim() !== "")
+                    launcher_panwin._colorThemeFiles.push(line.trim())  // ← _colorThemeFiles
+            }
+        }
+        onExited: {
+            launcher_panwin._colorThemeFiles = [...launcher_panwin._colorThemeFiles]
+        }
+    }
+
+    Process {
         id: wpProcess
+        running: false
+    }
+
+    Process {
+        id: ctProcess
         running: false
     }
 
@@ -103,7 +130,7 @@ PanelWindow {
                 prefix:      "wallpaper",
                 label:       "Wallpaper",
                 placeholder: "Select image to set as wallpaper",
-                icon:        Quickshell.shellDir + "/assets/icons/notification-bell.svg",
+                icon:        Quickshell.shellDir + "/assets/images/preferences-desktop-wallpaper.svg",
                 entries: function() {
                     const dir = Quickshell.env("HOME") + "/.config/elysean_themes/wallpapers/"
                     return _wallpaperFiles.map(f => ({
@@ -112,11 +139,37 @@ PanelWindow {
                         icon:    f,
                         action:  (function(path) {
                             return () => {
-                                wpProcess.running = true
                                 wpProcess.command = [
                                     "awww", "img", path,
                                     "--transition-type", "center"
                                 ]
+                                wpProcess.running = true
+                            }
+                        })(f)
+                    }))
+                }
+            },
+            {  /* Color theme manager */
+                prefix:      "color-theme",
+                label:       "Color Theme",
+                placeholder: "Select a color theme",
+                icon:        Quickshell.shellDir + "/assets/images/color-palette.svg",
+                entries: function() {
+                    const dir = Quickshell.env("HOME") + "/.config/elysean_themes/themes/"
+                    return _colorThemeFiles.map(f => ({
+                        name:    f.replace(/.*\//, "").replace(/\.[^.]+$/, ""), // filename without ext
+                        comment: f,
+                        icon:    Quickshell.shellDir + "/assets/images/preferences-desktop-color",
+                        action:  (function(path) {
+                            return () => {
+                                ctProcess.command = [
+                                    "bash", "-c",
+                                    "cp " +
+                                    path + " " +
+                                    Quickshell.env("HOME") + "/.config/elysean_themes/active_theme.lua" +
+                                    " && hyprctl reload"
+                                ]
+                                ctProcess.running = true
                             }
                         })(f)
                     }))
@@ -134,9 +187,14 @@ PanelWindow {
     onVisibleChanged: {
         if (visible) {
             searchView.forceInputFocus()
+
             _wallpaperFiles = []
             wallpaperScanner.running = false
             wallpaperScanner.running = true
+
+            _colorThemeFiles = []
+            colorThemeScanner.running = false
+            colorThemeScanner.running = true
         }
         else
             searchView.clearInput()

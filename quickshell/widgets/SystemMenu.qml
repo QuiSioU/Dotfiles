@@ -46,8 +46,9 @@ OrbitMenu {
             readonly property var adapter: Bluetooth.adapters.values[0] ?? null
 
             name:     "Bluetooth"
-            icon:     (adapter?.enabled ?? false) ? Qt.resolvedUrl("../assets/icons/bluetooth-active.svg")
-                                                : Qt.resolvedUrl("../assets/icons/bluetooth-disabled.svg")
+            icon:     !(adapter?.enabled ?? false) ? Qt.resolvedUrl("../assets/icons/bluetooth-disabled.svg")
+                : BluetoothDeviceModel.connectedNames.length > 0 ? Qt.resolvedUrl("../assets/icons/bluetooth-paired.svg")
+                : Qt.resolvedUrl("../assets/icons/bluetooth-active.svg")
             comment:  !(adapter?.enabled ?? false)                  ? "Off"
                 : BluetoothDeviceModel.connectedNames.length > 0    ? BluetoothDeviceModel.connectedNames.join("\n")
                 : "On"
