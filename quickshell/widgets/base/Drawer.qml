@@ -5,6 +5,7 @@ import Quickshell
 import Quickshell.Hyprland
 import QtQuick
 import ElyseanShell.Blobs
+import ElyseanShell.Themes
 
 PanelWindow {
     id: root
@@ -19,7 +20,7 @@ PanelWindow {
 
     // ── Public properties ─────────────────────────────────────────────────────
     property int   edge:          Drawer.Edge.Bottom
-    property color blobColor:     "#ffffff"
+    property color blobColor:     ActiveTheme.color["BG"]
     property real  blobSmoothing: 36
     property real  blobRadius:    18
 

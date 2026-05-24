@@ -5,37 +5,41 @@ return {
 
     -- Colors
     color = {
-        -- Base UI
-        BG              =   "rgba(1a1b26ff)",
-        BG_DARK         =   "rgba(16161eff)",
-        BG_HIGHLIGHT    =   "rgba(292e42ff)",
-        TERMINAL_BLACK  =   "rgba(414868ff)",
-        FG              =   "rgba(c0caf5ff)",
-        FG_DARK         =   "rgba(a9b1d6ff)",
-        FG_GUTTER       =   "rgba(3b4261ff)",
-        DARK3           =   "rgba(545c7eff)",
-        DARK5           =   "rgba(737aa2ff)",
-        COMMENT         =   "rgba(565f89ff)",
-        SHADOW          =   "rgba(16161eee)",
 
-        -- Syntax / Accent
-        BLUE            =   "rgba(7aa2f7ff)",
-        CYAN            =   "rgba(7dcfffff)",
-        BLUE1           =   "rgba(2ac3deff)",
-        BLUE2           =   "rgba(0db9d7ff)",
-        BLUE5           =   "rgba(89ddffff)",
-        BLUE6           =   "rgba(b4f9f8ff)",
-        BLUE7           =   "rgba(394b70ff)",
-        MAGENTA         =   "rgba(bb9af7ff)",
-        MAGENTA2        =   "rgba(ff007cff)",
-        PURPLE          =   "rgba(9d7cd8ff)",
-        ORANGE          =   "rgba(ff9e64ff)",
-        YELLOW          =   "rgba(e0af68ff)",
-        GREEN           =   "rgba(9ece6aff)",
-        GREEN1          =   "rgba(73dacaff)",
-        GREEN2          =   "rgba(41a6b5ff)",
-        TEAL            =   "rgba(1abc9cff)",
-        RED             =   "rgba(f7768eff)",
-        RED1            =   "rgba(db4b4bff)"
+        -- Backgrounds
+        BG_DARK         = "rgba(16161eff)",   -- Deepest bg (titlebars, borders)
+        BG              = "rgba(1a1b26ff)",   -- Main background
+        BG_HIGHLIGHT    = "rgba(292e42ff)",   -- Raised surfaces, hover
+        TERMINAL_BLACK  = "rgba(414868ff)",   -- Input fields, popups
+        SURFACE         = "rgba(1e2030ff)",   -- Slightly lifted from BG, below BG_HIGHLIGHT
+        SURFACE_OVERLAY = "rgba(ffffff0f)",   -- White at 6% opacity, universal hover tint
+
+        -- Foregrounds
+        FG              = "rgba(c0caf5ff)",   -- Primary text
+        FG_DARK         = "rgba(a9b1d6ff)",   -- Secondary / dimmed text
+        FG_DISABLED     = "rgba(545c7eff)",   -- Truly disabled text
+        DARK5           = "rgba(737aa2ff)",   -- Disabled / placeholder text
+        DARK3           = "rgba(545c7eff)",   -- Line numbers, gutters
+
+        -- Accents
+        ACCENT          = "rgba(7aa2f7ff)",   -- Primary accent (focused borders, links)
+        ACCENT_BRIGHT   = "rgba(7dcfffff)",   -- Bright accent (active elements)
+        ACCENT_MUTED    = "rgba(a8c4ffff)",   -- Desaturated accent (active text, subtle on)
+        ACCENT_DIM      = "rgba(394b70ff)",   -- Dark accent (tinted surfaces, pressed states)
+        ACCENT_SURFACE  = "rgba(394b70ff)",   -- Subtle accent (backgrounds, tints)
+
+        -- Semantic
+        SUCCESS         = "rgba(9ece6aff)",   -- Success
+        SUCCESS_MUTED   = "rgba(c4e38fff)",   -- Soft green (active text on dark)
+        WARNING         = "rgba(e0af68ff)",   -- Warning
+        WARNING_MUTED   = "rgba(eecb96ff)",   -- Soft yellow (warning text on dark)
+        ERROR           = "rgba(f7768eff)",   -- Error
+        ERROR_MUTED     = "rgba(fab8c4ff)",   -- Soft red (error text on dark)
+        INFO            = "rgba(73dacaff)",   -- Info / teal
+
+        -- Extras
+        SHADOW          = "rgba(16161eee)",   -- Subtle shadow
+        SECONDARY       = "rgba(bb9af7ff)",   -- Purple (notifications, tags)
+        URGENT          = "rgba(ff9e64ff)",   -- Orange (urgent, badges)
     }
 }

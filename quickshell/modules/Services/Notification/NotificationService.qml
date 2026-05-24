@@ -103,6 +103,8 @@ Singleton {
                 summary: notif.summary || "",
                 body:    notif.body    || "",
                 icon:   root.resolveIcon(notif),
+                urgency: notif.urgency ?? 1,
+                category: notif.category ?? "",
                 _notif:  notif
             });
 
@@ -125,6 +127,8 @@ Singleton {
             property string summary:    ""
             property string body:       ""
             property string icon:       ""
+            property int    urgency:    1
+            property string category:   ""
             property var    _notif:     null
 
             property var _timer: Timer {

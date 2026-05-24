@@ -6,10 +6,9 @@
 format = """
 ╭─\
 [](fg:#c1cdee)\
-[ ](bg:#c1cdee fg:#090c0c)\
-[](bg:#a3aed2 fg:#c1cdee)\
-[ $hostname#$username ](bold bg:#a3aed2 fg:#090c0c)\
-[](bg:#769ff0 fg:#a3aed2)\
+[$username  ](bold bg:#c1cdee fg:#090c0c)\
+[](fg:#c1cdee)\
+[ ](fg:#769ff0)\
 $directory\
 [](fg:#769ff0)\
 $fill\
@@ -34,12 +33,12 @@ format = "[$hostname]($style)"
 
 [username]
 show_always = true
-format = "[$user](bold fg:#090c0c bg:#a3aed2)"
+format = "[$user](bold bg:#c1cdee fg:#090c0c)"
 
 [directory]
 style = "bold fg:#e3e5e5 bg:#769ff0"
-format = "[ $path ]($style)"
-truncation_length = 2
+format = "[󰉖 󱦰 $path]($style)"
+truncation_length = 5
 truncation_symbol = "../"
 home_symbol = "~"
 truncate_to_repo = false

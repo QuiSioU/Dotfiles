@@ -5,6 +5,7 @@ import Quickshell
 import Quickshell.Hyprland
 import QtQuick
 import ElyseanShell.Services
+import ElyseanShell.Themes
 
 PanelWindow {
     id: orbit_panwin
@@ -142,15 +143,15 @@ PanelWindow {
                     radius: orbit_panwin.bubbleSize / 2
 
                     color: {
-                        if (bubbleItem.hovered)   return "#45475a"
-                        if (bubbleItem.selected)  return "#313244"
-                        return "#1e1e2e"
+                        if (bubbleItem.hovered)   return ActiveTheme.color["DARK3"]
+                        if (bubbleItem.selected)  return ActiveTheme.color["SURFACE"]
+                        return ActiveTheme.color["BG"]
                     }
 
                     border.color: {
-                        if (bubbleItem.selected)  return "#89b4fa"
-                        if (bubbleItem.hovered)   return "#cdd6f4"
-                        return "#6c7086"
+                        if (bubbleItem.selected)  return ActiveTheme.color["ACCENT"]
+                        if (bubbleItem.hovered)   return ActiveTheme.color["FG_DARK"]
+                        return ActiveTheme.color["DARK5"]
                     }
                     border.width: bubbleItem.selected ? 1.5 : 0.5
 
@@ -168,7 +169,7 @@ PanelWindow {
                     Text {
                         anchors.centerIn: parent
                         text: (bubbleItem.entry?.name ?? "").charAt(0).toUpperCase()
-                        color: bubbleItem.selected ? "#cdd6f4" : "#6c7086"
+                        color: bubbleItem.selected ? ActiveTheme.color["FG"] : ActiveTheme.color["DARK5"]
                         font.pixelSize: 16
                         font.weight: Font.Medium
                         visible: bubbleIcon.status !== Image.Ready
@@ -185,9 +186,9 @@ PanelWindow {
                     anchors.bottomMargin: 6
                     width:  tooltipCol.implicitWidth + 16
                     height: tooltipCol.implicitHeight + 10
-                    color: "#1e1e2e"
-                    border.color: "#45475a"
-                    border.width: 0.5
+                    color: ActiveTheme.color["SURFACE"]
+                    border.color: bubbleItem.selected ? ActiveTheme.color["ACCENT"] : ActiveTheme.color["DARK5"]
+                    border.width: 1
                     radius: 6
                     z: 10
 
@@ -198,7 +199,7 @@ PanelWindow {
 
                         Text {
                             text: bubbleItem.entry?.name ?? ""
-                            color: "#cdd6f4"
+                            color: ActiveTheme.color["FG"]
                             font.pixelSize: 12
                             font.weight: Font.Medium
                             visible: text !== ""
@@ -208,7 +209,8 @@ PanelWindow {
 
                         Text {
                             text: bubbleItem.entry?.comment ?? ""
-                            color: "#6c7086"
+                            color: bubbleItem.selected
+                                    ? ActiveTheme.color["ACCENT_MUTED"] : ActiveTheme.color["FG_DISABLED"]
                             font.pixelSize: 11
                             visible: text !== ""
                             horizontalAlignment: Text.AlignHCenter

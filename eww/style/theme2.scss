@@ -3,7 +3,7 @@
 
 * {
   all: unset;
-  font-family:"FiraCode Nerd Font";
+  font-family:"JetBrainsMono Nerd Font";
 }
 
 .bar {
@@ -46,7 +46,7 @@
   color:rgb(230,100,100);
   font-weight:bold;
   font-size:15px;
-  font-family: "FiraCode Nerd Font";
+  font-family: "JetBrainsMono Nerd Font";
   transition: color 0.3s;
   &:hover{
     color:rgb(245,162,96);
@@ -445,7 +445,7 @@ menu {
   border-radius:20px;
   padding:5px;
   background-color:rgba(65,72,86,0.3);
-  font-family: "FiraCode Nerd Font";
+  font-family: "JetBrainsMono Nerd Font";
   box-shadow: 0 2px 3px 2px rgba(6,6,11,0.9);
 }
 

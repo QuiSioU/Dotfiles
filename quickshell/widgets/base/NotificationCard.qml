@@ -20,6 +20,18 @@ Item {
     // Progress bar animation for each of the cards, even if they como from the same app/program
     onEntryChanged: { if (entry !== null) startTimer.restart() }
 
+    property color accentColor: {
+        const cat = entry?.category ?? ""
+        if (cat.includes("error"))    return ActiveTheme.color["ERROR_MUTED"]
+        if (cat.includes("complete")) return ActiveTheme.color["SUCCESS_MUTED"]
+        if (cat.includes("warning"))  return ActiveTheme.color["WARNING_MUTED"]
+        switch (entry?.urgency ?? 1) {
+            case 0:  return ActiveTheme.color["FG_DISABLED"]
+            case 2:  return ActiveTheme.color["URGENT"]
+            default: return ActiveTheme.color["ACCENT"]
+        }
+    }
+
     // Fade in
     opacity: 0
     NumberAnimation on opacity {
@@ -36,8 +48,8 @@ Item {
 
         gradient: Gradient {
             orientation: Gradient.Horizontal
-            GradientStop { position: 0.0; color: ActiveTheme.color["CYAN"] }  // Cyan
-            GradientStop { position: 1.0; color: ActiveTheme.color["MAGENTA"] }  // Purple
+            GradientStop { position: 0.0; color: card.accentColor }
+            GradientStop { position: 1.0; color: ActiveTheme.color["FG_DARK"] }
         }
     }
 
@@ -49,7 +61,7 @@ Item {
             margins:     1
         }
         radius:          8
-        color:           "#1a3a5c"
+        color:           ActiveTheme.color["TERMINAL_BLACK"]
         implicitHeight:  content.childrenRect.height + 24
 
         ColumnLayout {
@@ -81,9 +93,9 @@ Item {
 
                 Text {
                     text:             entry?.appName || "Notification"
-                    color:            "#93c5fd"
+                    color:            card.accentColor
                     font.pixelSize:   20
-                    font.family: "FiraCode Nerd Font Mono"
+                    font.family: "JetBrainsMono Nerd Font"
                     Layout.fillWidth: true
                     elide:            Text.ElideRight
                 }
@@ -93,10 +105,10 @@ Item {
             Text {
                 visible:          text !== ""
                 text:             entry?.summary ?? ""
-                color:            "#eff6ff"
+                color:            ActiveTheme.color["FG"]
                 font.pixelSize:   13
                 font.bold:        true
-                font.family: "FiraCode Nerd Font"
+                font.family: "JetBrainsMono Nerd Font"
                 font.hintingPreference: Font.PreferNoHinting
                 renderType: Text.QtRendering
                 elide:            Text.ElideRight
@@ -107,9 +119,9 @@ Item {
             Text {
                 visible:          text !== ""
                 text:             entry?.body ?? ""
-                color:            "#bfdbfe"
+                color:            ActiveTheme.color["FG_DARK"]
                 font.pixelSize:   12
-                font.family: "FiraCode Nerd Font"
+                font.family: "JetBrainsMono Nerd Font"
                 wrapMode:         Text.Wrap
                 maximumLineCount: 3
                 elide:            Text.ElideRight
@@ -131,7 +143,7 @@ Item {
                     Rectangle {
                         anchors.fill: parent
                         radius:       2
-                        color:        "#0d2a45"
+                        color:        ActiveTheme.color["SURFACE"]
                     }
 
                     // Fill — anchored to the RIGHT so it shrinks leftward
@@ -147,8 +159,8 @@ Item {
 
                         gradient: Gradient {
                             orientation: Gradient.Horizontal
-                            GradientStop { position: 0.0; color: ActiveTheme.color["CYAN"] }
-                            GradientStop { position: 1.0; color: ActiveTheme.color["MAGENTA"] }
+                            GradientStop { position: 0.0; color: card.accentColor }
+                            GradientStop { position: 1.0; color: ActiveTheme.color["FG_DARK"] }
                         }
 
                         // interval:0 fires after the current event loop tick,
@@ -181,9 +193,9 @@ Item {
                 // Dismiss button
                 Text {
                     text:  "󱞵 Dismiss"
-                    color: closeArea.containsMouse ? "#60a5fa" : "#ffffff"
+                    color: closeArea.containsMouse ? ActiveTheme.color["ACCENT"] : ActiveTheme.color["FG_DARK"]
                     font.pixelSize: 11
-                    font.family:    "FiraCode Nerd Font Mono"
+                    font.family:    "JetBrainsMono Nerd Font"
 
                     MouseArea {
                         id:           closeArea
