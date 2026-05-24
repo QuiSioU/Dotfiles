@@ -4,18 +4,27 @@
 # add_newline = false
 
 format = """
+╭─\
 [](fg:#c1cdee)\
 [ ](bg:#c1cdee fg:#090c0c)\
 [](bg:#a3aed2 fg:#c1cdee)\
 [ $hostname#$username ](bold bg:#a3aed2 fg:#090c0c)\
 [](bg:#769ff0 fg:#a3aed2)\
 $directory\
-[](fg:#769ff0 bg:#394260)\
+[](fg:#769ff0)\
+$fill\
 $git_branch\
 $git_status\
-[ ](fg:#394260)"""
-# $python\
-# [ ](fg:#212736)"""
+\n╰──\
+$character"""
+
+[fill]
+symbol = "·"
+style = "fg:#394260"
+
+[character]
+success_symbol = "[❯](bold fg:#769ff0)"
+error_symbol = "[❯](bold fg:#e06c75)"
 
 [hostname]
 ssh_only = false
@@ -45,11 +54,11 @@ truncate_to_repo = false
 [git_branch]
 symbol = " "
 style = "bg:#394260"
-format = '[[ $symbol$branch ](bold fg:#769ff0 bg:#394260)]($style)'
+format = '[](fg:#769ff0)[[ $symbol$branch ](bold fg:#e3e5e5 bg:#769ff0)]($style)'
 
 [git_status]
-style = "bg:#212736"
-format = '[[($all_status$ahead_behind )](bold fg:#769ff0 bg:#394260)]($style)'
+style = "bg:#769ff0"
+format = '[[($all_status$ahead_behind )](bold fg:#e3e5e5 bg:#769ff0)]($style)[](fg:#769ff0)'
 
 [nodejs]
 symbol = " "
