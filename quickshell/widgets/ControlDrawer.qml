@@ -5,7 +5,6 @@ import Quickshell
 import Quickshell.Io
 import QtQuick
 import QtQuick.Layouts
-import Quickshell.Hyprland
 import ElyseanShell.Services
 import ElyseanShell.Themes
 import "base"

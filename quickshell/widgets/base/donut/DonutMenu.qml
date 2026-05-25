@@ -2,7 +2,7 @@
 
 
 import Quickshell
-import Quickshell.Hyprland
+import Quickshell.Wayland
 import QtQuick
 import ElyseanShell.Services
 import ElyseanShell.Themes
@@ -32,11 +32,7 @@ PanelWindow {
         right: true
     }
 
-    HyprlandFocusGrab {
-        windows: [ donut_panwin ]
-        active: donut_panwin.visible
-        onCleared: donut_panwin.visible = false
-    }
+    WlrLayershell.keyboardFocus: visible ? WlrKeyboardFocus.Exclusive : WlrKeyboardFocus.None
 
     onVisibleChanged: {
         if (visible) innerItem.forceActiveFocus()

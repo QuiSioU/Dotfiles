@@ -2,7 +2,7 @@
 
 
 import Quickshell
-import Quickshell.Hyprland
+import Quickshell.Wayland
 import QtQuick
 import ElyseanShell.Services
 import ElyseanShell.Themes
@@ -37,11 +37,7 @@ PanelWindow {
         bubbleRepeater.triggerCollapse()
     }
 
-    HyprlandFocusGrab {
-        windows: [orbit_panwin]
-        active: orbit_panwin.visible
-        onCleared: orbit_panwin.closeMenu()
-    }
+    WlrLayershell.keyboardFocus: visible ? WlrKeyboardFocus.Exclusive : WlrKeyboardFocus.None
 
     onVisibleChanged: {
         if (visible) {

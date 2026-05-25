@@ -5,7 +5,7 @@ import Quickshell
 import Quickshell.Io
 import QtQuick
 import QtQuick.Layouts
-import Quickshell.Hyprland
+import Quickshell.Wayland
 import ElyseanShell.Services
 import ElyseanShell.Themes
 import "base"
@@ -166,8 +166,8 @@ PanelWindow {
                                     "bash", "-c",
                                     "cp " +
                                     path + " " +
-                                    Quickshell.env("HOME") + "/.config/elysean_themes/active_theme.lua" +
-                                    " && hyprctl reload"
+                                    Quickshell.env("HOME") + "/.config/elysean_themes/active_theme.lua"
+                                    + " && hyprctl reload"
                                 ]
                                 ctProcess.running = true
                             }
@@ -200,11 +200,7 @@ PanelWindow {
             searchView.clearInput()
     }
 
-    HyprlandFocusGrab {
-        windows: [ launcher_panwin ]
-        active: launcher_panwin.visible
-        onCleared: launcher_panwin.visible = false
-    }
+    WlrLayershell.keyboardFocus: visible ? WlrKeyboardFocus.Exclusive : WlrKeyboardFocus.None
 
     // ── Content ───────────────────────────────────────────────────────────────
     Rectangle {

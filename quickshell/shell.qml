@@ -3,7 +3,7 @@
 
 import QtQuick
 import Quickshell
-import Quickshell.Hyprland
+import Quickshell.Io
 import ElyseanShell.Services
 
 ShellRoot {
@@ -44,32 +44,27 @@ ShellRoot {
         onTriggered: systemMenuLoader.active = false
     }
 
-    GlobalShortcut {
-        name: "toggleControlCenter"
-        description: "Toggle Control Center"
-        onPressed: {
-            if (!controlCenterLoader.active) {
+    IpcHandler {
+        target: "toggleControlCenter"
+        function handle(): void {
+            if (!controlCenterLoader.active)
                 controlCenterLoader.active = true
-            }
 
             var launcher = controlCenterLoader.item
             if (!launcher) return
 
-            if (!launcher.visible) {
+            if (!launcher.visible)
                 launcher.visible = true
-            } else {
+            else
                 launcher.close()
-            }
         }
     }
 
-    GlobalShortcut {
-        name: "toggleSessionMenu"
-        description: "Session donut menu"
-        onPressed: {
-            if (!sessionMenuLoader.active) {
+    IpcHandler {
+        target: "toggleSessionMenu"
+        function handle(): void {
+            if (!sessionMenuLoader.active)
                 sessionMenuLoader.active = true
-            }
 
             var donut = sessionMenuLoader.item
             if (!donut) return
@@ -83,14 +78,12 @@ ShellRoot {
         }
     }
 
-    GlobalShortcut {
-        name: "toggleSystemMenu"
-        description: "System orbit menu"
-        onPressed: {
-            if (!systemMenuLoader.active) {
+    IpcHandler {
+        target: "toggleSystemMenu"
+        function handle(): void {
+            if (!systemMenuLoader.active)
                 systemMenuLoader.active = true
-            }
-            
+
             var orbit = systemMenuLoader.item
             if (!orbit) return
 

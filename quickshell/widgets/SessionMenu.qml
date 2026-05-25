@@ -38,7 +38,10 @@ DonutMenu {
 
     Process {
         id: logout
-        command: ["hyprctl", "dispatch", "exit"]
+        command: [
+            "bash", "-c",
+            "loginctl terminate-session $(loginctl session-status | head -1 | awk '{print $1}')"
+        ]
         running: false
     }
 }

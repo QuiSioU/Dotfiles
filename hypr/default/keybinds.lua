@@ -98,14 +98,14 @@ hl.bind(mainMod .. " + mouse_down", hl.dsp.exec_cmd("~/.config/eww/scripts/works
 -- Quickshell binds
 hl.bind(
     mainMod .. " + SUPER_L",
-    hl.dsp.exec_cmd("hyprctl dispatch 'hl.dsp.global(\"quickshell:toggleControlCenter\")'"),
+    hl.dsp.exec_cmd("qs ipc call toggleControlCenter handle"),
     { release = true }
 )
 hl.bind(
     mainMod .. " + Escape",
-    hl.dsp.global("quickshell:toggleSessionMenu")
+    hl.dsp.exec_cmd("qs ipc call toggleSessionMenu handle")
 )
 hl.bind(
     mainMod .. " + Tab",
-    hl.dsp.global("quickshell:toggleSystemMenu")
+    hl.dsp.exec_cmd("qs ipc call toggleSystemMenu handle")
 )

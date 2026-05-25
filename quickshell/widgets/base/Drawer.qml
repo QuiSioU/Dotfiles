@@ -2,7 +2,7 @@
 
 
 import Quickshell
-import Quickshell.Hyprland
+import Quickshell.Wayland
 import QtQuick
 import ElyseanShell.Blobs
 import ElyseanShell.Themes
@@ -67,11 +67,8 @@ PanelWindow {
     }
 
     // ── Focus grab ────────────────────────────────────────────────────────────
-    HyprlandFocusGrab {
-        windows: [ root ]
-        active:  root.visible
-        onCleared: root.close()
-    }
+    WlrLayershell.keyboardFocus: visible ? WlrKeyboardFocus.Exclusive : WlrKeyboardFocus.None
+    Keys.onEscapePressed: root.close()
 
     // ── Open / close ──────────────────────────────────────────────────────────
     onVisibleChanged: {
@@ -186,6 +183,11 @@ PanelWindow {
                     root.visible  = false
                 }
             }
+        }
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: root.close()
         }
 
         Item {
