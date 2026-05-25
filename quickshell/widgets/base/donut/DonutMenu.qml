@@ -4,7 +4,6 @@
 import Quickshell
 import Quickshell.Wayland
 import QtQuick
-import ElyseanShell.Services
 import ElyseanShell.Themes
 
 PanelWindow {
@@ -17,8 +16,9 @@ PanelWindow {
     
     property bool _pendingShow: false
 
-    property real centerX: CursorPosition.x
-    property real centerY: CursorPosition.y
+    property real centerX: -1
+    property real centerY: -1
+    property bool centerSet: false
     
     property real innerRadius: 45
     property real radius: innerRadius * 2.4
@@ -35,9 +35,16 @@ PanelWindow {
     WlrLayershell.keyboardFocus: visible ? WlrKeyboardFocus.Exclusive : WlrKeyboardFocus.None
 
     onVisibleChanged: {
-        if (visible) innerItem.forceActiveFocus()
+        if (visible) {
+            centerSet = false
+            innerItem.forceActiveFocus()
+        }
     }
 
+    Connections {
+        target: donut_panwin
+        function onCenterSetChanged() { canvas.requestPaint() }
+    }
 
     // Fullscreen mouse tracking area
     Item {
@@ -53,6 +60,12 @@ PanelWindow {
             hoverEnabled: true
 
             onPositionChanged: mouse => {
+                if (!donut_panwin.centerSet) {
+                    donut_panwin.centerX = mouse.x
+                    donut_panwin.centerY = mouse.y
+                    donut_panwin.centerSet = true
+                }
+
                 const dx = mouse.x - donut_panwin.centerX
                 const dy = mouse.y - donut_panwin.centerY
                 const dist = Math.sqrt(dx * dx + dy * dy)
@@ -87,15 +100,22 @@ PanelWindow {
 
         // Donut slices
         Canvas {
+            id: canvas
+
             anchors.fill: parent
             property int hoveredIndex: donut_panwin.hoveredIndex
+            property real centerX: donut_panwin.centerX
+            property real centerY: donut_panwin.centerY
 
             onHoveredIndexChanged: requestPaint()
+            onCenterXChanged: requestPaint()
+            onCenterYChanged: requestPaint()
             Component.onCompleted: requestPaint()
 
             onPaint: {
                 const ctx = getContext("2d")
                 ctx.clearRect(0, 0, width, height)
+                if (!donut_panwin.centerSet) return
                 for (let i = 0; i < entries.length; i++) {
                     const sliceAngle = (2 * Math.PI) / entries.length
                     const startAngle = i * sliceAngle - Math.PI / 2

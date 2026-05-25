@@ -10,7 +10,6 @@ qt_add_qml_module(elyseanshell-services
 
 add_subdirectory(Notification)
 add_subdirectory(Bluetooth)
-add_subdirectory(CursorPosition)
 add_subdirectory(Network)
 
 target_link_libraries(elyseanshell-services PRIVATE

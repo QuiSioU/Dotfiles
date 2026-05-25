@@ -4,7 +4,6 @@
 import Quickshell
 import Quickshell.Wayland
 import QtQuick
-import ElyseanShell.Services
 import ElyseanShell.Themes
 
 PanelWindow {
@@ -41,10 +40,10 @@ PanelWindow {
 
     onVisibleChanged: {
         if (visible) {
-            centerX = CursorPosition.x
-            centerY = CursorPosition.y
+            centerX = -1
+            centerY = -1
+            _pendingShow = true
             innerItem.forceActiveFocus()
-            bubbleRepeater.triggerExpand()
         }
     }
 
@@ -223,6 +222,13 @@ PanelWindow {
             propagateComposedEvents: true
 
             onPositionChanged: mouse => {
+                if (orbit_panwin._pendingShow) {
+                    orbit_panwin.centerX = mouse.x
+                    orbit_panwin.centerY = mouse.y
+                    orbit_panwin._pendingShow = false
+                    bubbleRepeater.triggerExpand()
+                }
+
                 let closest = -1
                 let closestDist = orbit_panwin.bubbleSize / 2 + 8
 
