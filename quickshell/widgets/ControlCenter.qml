@@ -28,7 +28,7 @@ PanelWindow {
         id: wallpaperScanner
         command: [
             "find",
-            Quickshell.env("HOME") + "/.config/elysean_themes/wallpapers/",
+            Quickshell.env("HOME") + "/.config/awww/",
             "-type", "f",
             "(",
             "-iname", "*.jpg", "-o",
@@ -52,7 +52,7 @@ PanelWindow {
         id: colorThemeScanner
         command: [
             "find",
-            Quickshell.env("HOME") + "/.config/elysean_themes/themes/",
+            Quickshell.env("HOME") + "/.config/elysean_themes/",
             "-type", "f",
             "(",
             "-iname", "*.toml",
@@ -132,7 +132,6 @@ PanelWindow {
                 placeholder: "Select image to set as wallpaper",
                 icon:        Quickshell.shellDir + "/assets/images/preferences-desktop-wallpaper.svg",
                 entries: function() {
-                    const dir = Quickshell.env("HOME") + "/.config/elysean_themes/wallpapers/"
                     return _wallpaperFiles.map(f => ({
                         name:    f.replace(/.*\//, "").replace(/\.[^.]+$/, ""), // filename without ext
                         comment: f,
@@ -155,7 +154,6 @@ PanelWindow {
                 placeholder: "Select a color theme",
                 icon:        Quickshell.shellDir + "/assets/images/color-palette.svg",
                 entries: function() {
-                    const dir = Quickshell.env("HOME") + "/.config/elysean_themes/themes/"
                     return _colorThemeFiles.map(f => ({
                         name:    f.replace(/.*\//, "").replace(/\.[^.]+$/, ""), // filename without ext
                         comment: f,

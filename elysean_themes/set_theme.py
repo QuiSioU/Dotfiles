@@ -11,7 +11,7 @@ def print_usage():
     print("Usage:")
     print("\tpython set_theme.py <toml-theme-file>\n")
     print("Example:")
-    print("\tpython set_theme ~/.config/elysean_themes/themes/default/Oxocarbon.toml")
+    print("\tpython set_theme ~/.config/elysean_themes/default/Oxocarbon.toml")
 
 
 def parse_toml(toml_path: str) -> dict[str, dict[str, str]]:
