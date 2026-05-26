@@ -5,6 +5,7 @@ from sys import argv
 from pathlib import Path
 import tomllib
 import subprocess
+from jinja2 import Environment, FileSystemLoader
 
 
 def print_usage():
@@ -25,7 +26,7 @@ def parse_toml(toml_path: str) -> dict[str, dict[str, str]]:
 
 
 def hyprland_quickshell(config_dir: Path, theme: dict[str, dict[str, str]]) -> None:
-    filepath: Path = config_dir / "theme.lua"
+    filepath: Path = config_dir / "hypr_quickshell.lua"
 
     with open(filepath, "w+") as f:
         f.write(f"-- {filepath.relative_to(config_dir.parent.parent)}\n\n\n")
@@ -43,14 +44,23 @@ def hyprland_quickshell(config_dir: Path, theme: dict[str, dict[str, str]]) -> N
 
 
 def kitty(config_dir: Path, theme: dict[str, dict[str, str]]) -> None:
-    filepath: Path = config_dir / "theme.conf"
+    filepath: Path = config_dir / "kitty.conf"
+    template = env.get_template("kitty.conf")
+    output = template.render(colors=theme["colors"], meta=theme["meta"]).replace(
+        "# elysean_themes/templates/kitty.conf",
+        f"# {filepath.relative_to(config_dir.parent.parent)}" 
+    )
+    filepath.write_text(output)
 
-    with open(filepath, "w+") as f:
-        f.write(f"# {filepath.relative_to(config_dir.parent.parent)}\n\n\n")
 
-        # Set here the main colors directly
-        f.write(f"{"background":<25} {theme["colors"]["BG"][0:7]}\n")
-        # ...
+def yazi(config_dir: Path, theme: dict[str, dict[str, str]], env: Environment) -> None:
+    filepath: Path = config_dir / "yazi.toml"
+    template = env.get_template("yazi.toml")
+    output = template.render(colors=theme["colors"], meta=theme["meta"]).replace(
+        "# elysean_themes/templates/yazi.toml",
+        f"# {filepath.relative_to(config_dir.parent.parent)}" 
+    )
+    filepath.write_text(output)
 
 
 if __name__ == "__main__":
@@ -60,12 +70,18 @@ if __name__ == "__main__":
 
     theme: dict[str, dict[str, str]] = parse_toml(argv[1])
 
-    config_dir: Path = Path(__file__).parent / "active_theme"
+    config_dir: Path = Path.home() / ".config" / "elysean_themes" / "active_theme"
     config_dir.mkdir(exist_ok=True)
 
     # Create the template files for all utilities
     hyprland_quickshell(config_dir, theme)
+
+    # For files that are actually templates, use Jinja2
+    env = Environment(loader=FileSystemLoader("templates/"))
+    env.filters["rgb"] = lambda color: color[:7]
+
     kitty(config_dir, theme)
+    yazi(config_dir, theme, env)
 
     # Reload what needs to be reloaded
     subprocess.run(["hyprctl", "reload"])

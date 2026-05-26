@@ -1,0 +1,37 @@
+# elysean_themes/templates/yazi.toml
+
+
+[mgr]
+cwd = { fg = "{{ colors.ACCENT | rgb }}" }
+find_keyword  = { fg = "{{ colors.WARNING | rgb }}",   bold = true, italic = true, underline = true }
+find_position = { fg = "{{ colors.SECONDARY | rgb }}", bold = true, italic = true }
+marker_copied = { fg = "{{ colors.SUCCESS | rgb }}", bg = "{{ colors.SUCCESS | rgb }}" }
+marker_cut    = { fg = "{{ colors.ERROR | rgb }}",   bg = "{{ colors.ERROR | rgb }}" }
+marker_marked = { fg = "{{ colors.INFO | rgb }}",    bg = "{{ colors.INFO | rgb }}" }
+
+[status]
+overall     = { bg = "{{ colors.BG_DARK | rgb }}" }
+mode_normal = { fg = "{{ colors.BG | rgb }}", bg = "{{ colors.ACCENT | rgb }}",    bold = true }
+mode_select = { fg = "{{ colors.BG | rgb }}", bg = "{{ colors.SUCCESS | rgb }}",   bold = true }
+mode_unset  = { fg = "{{ colors.BG | rgb }}", bg = "{{ colors.SECONDARY | rgb }}", bold = true }
+
+[input]
+border   = { fg = "{{ colors.ACCENT | rgb }}" }
+title    = { fg = "{{ colors.ACCENT_MUTED | rgb }}" }
+value    = { fg = "{{ colors.FG | rgb }}" }
+selected = { reversed = true }
+
+[select]
+border   = { fg = "{{ colors.ACCENT | rgb }}" }
+active   = { fg = "{{ colors.ACCENT_BRIGHT | rgb }}" }
+inactive = {}
+
+[filetype]
+rules = [
+  { mime = "image/*",         fg = "{{ colors.INFO | rgb }}" },
+  { mime = "video/*",         fg = "{{ colors.SECONDARY | rgb }}" },
+  { mime = "audio/*",         fg = "{{ colors.SECONDARY | rgb }}" },
+  { mime = "application/zip", fg = "{{ colors.URGENT | rgb }}" },
+  { url = "*.toml",           fg = "{{ colors.ACCENT | rgb }}" },
+  { url = "*.lua",            fg = "{{ colors.ACCENT | rgb }}" },
+]

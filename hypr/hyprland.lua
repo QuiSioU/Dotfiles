@@ -2,7 +2,7 @@
 
 
 ------ LOAD ACTIVE ELYSEAN THEME ------------------------
-theme = dofile(os.getenv("HOME") .. "/.config/elysean_themes/active_theme/theme.lua")
+theme = dofile(os.getenv("HOME") .. "/.config/elysean_themes/active_theme/hypr_quickshell.lua")
 
 
 ------ LOAD ENV VARIABLES (DEFAULT AND/OR CUSTOM) -------
