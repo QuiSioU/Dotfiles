@@ -55,7 +55,7 @@ PanelWindow {
             Quickshell.env("HOME") + "/.config/elysean_themes/themes/",
             "-type", "f",
             "(",
-            "-iname", "*.lua",
+            "-iname", "*.toml",
             ")"
         ]
         stdout: SplitParser {
@@ -163,11 +163,9 @@ PanelWindow {
                         action:  (function(path) {
                             return () => {
                                 ctProcess.command = [
-                                    "bash", "-c",
-                                    "cp " +
-                                    path + " " +
-                                    Quickshell.env("HOME") + "/.config/elysean_themes/active_theme.lua"
-                                    + " && hyprctl reload"
+                                    "python",
+                                    Quickshell.env("HOME") + "/.config/elysean_themes/set_theme.py",
+                                    path
                                 ]
                                 ctProcess.running = true
                             }

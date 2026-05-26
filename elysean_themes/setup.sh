@@ -33,11 +33,11 @@ echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌�
 
 echo "Setting active theme configuration file..."
 
-if [ -f "$ROOT_DIR/active_theme.lua" ]; then
-    echo "    skipped    $ROOT_DIR/active_theme.lua:  file already exists"
+if [ -d "$ROOT_DIR/active_theme" ]; then
+    echo "    skipped    $ROOT_DIR/active_theme/:  directory already exists"
 else
-    cp "themes/default/Oxocarbon.lua" "active_theme.lua"
-    echo "    created    $ROOT_DIR/active_theme.lua"
+    python "set_theme.py" "themes/default/Oxocarbon.toml"
+    echo "    created    $ROOT_DIR/active_theme/"
 fi
 
 echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌"

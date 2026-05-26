@@ -1,0 +1,47 @@
+# elysean_themes/themes/default/TokyoNight.toml
+
+
+[meta]
+name    = "TokyoNight"
+variant = "default"
+
+
+[colors]
+
+# Backgrounds
+BG              = "#1a1b26ff"   # Main background
+BG_DARK         = "#16161eff"   # Deepest bg (titlebars, borders)
+BG_HIGHLIGHT    = "#292e42ff"   # Raised surfaces, hover
+TERMINAL_BLACK  = "#414868ff"   # Input fields, popups
+
+# Foregrounds
+FG              = "#c0caf5ff"   # Primary text
+FG_DARK         = "#a9b1d6ff"   # Secondary / dimmed text
+DARK5           = "#737aa2ff"   # Disabled / placeholder text
+DARK3           = "#545c7eff"   # Line numbers, gutters
+FG_DISABLED     = "#545c7eff"   # Truly disabled text (same as DARK3, explicit role)
+
+# Accents
+ACCENT          = "#7aa2f7ff"   # Primary accent (focused borders, links)
+ACCENT_BRIGHT   = "#7dcfffff"   # Bright accent (active elements)
+ACCENT_SURFACE  = "#394b70ff"   # Subtle accent (backgrounds, tints)
+ACCENT_MUTED    = "#a8c4ffff"   # Desaturated accent (active text, subtle on)
+ACCENT_DIM      = "#394b70ff"   # Dark accent (tinted surfaces, pressed states)
+
+# Semantic
+SUCCESS         = "#9ece6aff"   # Success
+SUCCESS_MUTED   = "#c4e38fff"   # Soft green (active text on dark, like ACCENT_MUTED)
+WARNING         = "#e0af68ff"   # Warning
+WARNING_MUTED   = "#eecb96ff"   # Soft yellow (same idea)
+ERROR           = "#f7768eff"   # Error
+ERROR_MUTED     = "#fab8c4ff"   # Soft red (error text without being aggressive)
+INFO            = "#73dacaff"   # Info / teal
+
+# Surfaces
+SURFACE         = "#1e2030ff"   # Slightly lifted from BG, below BG_HIGHLIGHT
+SURFACE_OVERLAY = "#ffffff0f"   # White at 6% opacity, universal hover tint
+
+# Extras
+SECONDARY       = "#bb9af7ff"   # Purple (notifications, tags)
+URGENT          = "#ff9e64ff"   # Orange (urgent, badges)
+SHADOW          = "#16161eee"   # Subtle shadow

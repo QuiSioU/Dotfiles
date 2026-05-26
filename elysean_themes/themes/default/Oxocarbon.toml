@@ -1,0 +1,47 @@
+# elysean_themes/themes/default/Oxocarbon.toml
+
+
+[meta]
+name    = "Oxocarbon"
+variant = "default"
+
+
+[colors]
+
+# Backgrounds
+BG              = "#161616ff"   # Main background
+BG_DARK         = "#0f0f0fff"   # Deepest bg (titlebars, borders)
+BG_HIGHLIGHT    = "#262626ff"   # Raised surfaces, hover
+TERMINAL_BLACK  = "#393939ff"   # Input fields, popups
+
+# Foregrounds
+FG              = "#f2f4f8ff"   # Primary text
+FG_DARK         = "#dde1e7ff"   # Secondary / dimmed text
+DARK5           = "#6f6f6fff"   # Disabled / placeholder text
+DARK3           = "#525252ff"   # Line numbers, gutters
+FG_DISABLED     = "#525252ff"   # Truly disabled text (same as DARK3, explicit role)
+
+# Accents
+ACCENT          = "#78a9ffff"   # Primary accent (focused borders, links)
+ACCENT_BRIGHT   = "#33b1ffff"   # Bright accent (active elements)
+ACCENT_SURFACE  = "#1e3a5fff"   # Subtle accent (backgrounds, tints)
+ACCENT_MUTED    = "#a8c4ffff"   # Desaturated accent (active text, subtle on)
+ACCENT_DIM      = "#4d6fa8ff"   # Dark accent (tinted surfaces, pressed states)
+
+# Semantic
+SUCCESS         = "#42be65ff"   # Success
+WARNING         = "#f1c21bff"   # Warning
+ERROR           = "#ff5f5fff"   # Error
+INFO            = "#3ddbd9ff"   # Info / teal
+SUCCESS_MUTED   = "#aad9b8ff"   # Soft green (active text on dark, like ACCENT_MUTED)
+WARNING_MUTED   = "#f5d97fff"   # Soft yellow (same idea)
+ERROR_MUTED     = "#ffababff"   # Soft red (error text without being aggressive)
+
+# Surfaces
+SURFACE         = "#1e1e1eff"   # Slightly lifted from BG, below BG_HIGHLIGHT
+SURFACE_OVERLAY = "#ffffff0f"   # White at 6% opacity, universal hover tint
+
+# Extras
+SECONDARY       = "#be95ffff"   # Purple (notifications, tags)
+URGENT          = "#ff832bff"   # Orange (urgent, badges)
+SHADOW          = "#0f0f0fee"   # Subtle shadow

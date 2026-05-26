@@ -9,7 +9,7 @@ import ElyseanShell.Themes
 
 QtObject {
     property var _file: FileView {
-        path: Quickshell.env("HOME") + "/.config/elysean_themes/active_theme.lua"
+        path: Quickshell.env("HOME") + "/.config/elysean_themes/active_theme/theme.lua"
         watchChanges: true
 
         onFileChanged: reload()
@@ -37,7 +37,7 @@ QtObject {
                 console.log(JSON.stringify(key), "=", JSON.stringify(val))
 
                 // input: RRGGBBAA || Quickshell expects: AARRGGBB
-                const rgba = val.match(/^rgba\(([a-zA-Z0-9]{6})([a-zA-Z0-9]{2})\)$/)
+                const rgba = val.match(/^#([a-fA-F0-9]{6})([a-fA-F0-9]{2})$/)
                 if (rgba) {
                     color[key] = "#" + rgba[2] + rgba[1]
                     continue
