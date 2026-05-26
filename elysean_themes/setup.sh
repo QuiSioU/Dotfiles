@@ -10,23 +10,15 @@ echo ""
 ROOT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 cd "$ROOT_DIR"
 
-THEME_USER_DIR="$ROOT_DIR/themes/user"
-WP_USER_DIR="$ROOT_DIR/wallpapers/user"
+USER_DIR="$ROOT_DIR/user"
 
-echo "Creating directory structure for user's custom themes and wallpapers..."
+echo "Creating directory structure for user's custom themes..."
 
-if [ -d "$THEME_USER_DIR" ]; then
-    echo "    skipped    $THEME_USER_DIR/:  directory already exists"
+if [ -d "$USER_DIR" ]; then
+    echo "    skipped    $USER_DIR/:  directory already exists"
 else
-    mkdir -p "$THEME_USER_DIR"
-    echo "    created    $THEME_USER_DIR/"
-fi
-
-if [ -d "$WP_USER_DIR" ]; then
-    echo "    skipped    $WP_USER_DIR/:  directory already exists"
-else
-    mkdir -p "$WP_USER_DIR"
-    echo "    created    $WP_USER_DIR/"
+    mkdir -p "$USER_DIR"
+    echo "    created    $USER_DIR/"
 fi
 
 echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌"
