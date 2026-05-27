@@ -1,0 +1,95 @@
+# elysean_themes/templates/starship.toml
+
+
+format = """
+╭─\
+[](fg:{{ colors.ACCENT_MUTED | rgb }})\
+[$os$username](bold bg:{{ colors.ACCENT_MUTED | rgb }} fg:{{ colors.BG_DARK | rgb }})\
+[](fg:{{ colors.ACCENT_MUTED | rgb }})\
+[ ](fg:{{ colors.ACCENT | rgb }})\
+$directory\
+[](fg:{{ colors.ACCENT | rgb }})\
+$fill\
+$git_branch\
+$git_status\
+\n╰──\
+$character"""
+
+[fill]
+symbol = "·"
+style = "fg:{{ colors.SURFACE | rgb }}"
+
+[character]
+success_symbol = "[❯](bold fg:{{ colors.ACCENT | rgb }})"
+error_symbol = "[❯](bold fg:{{ colors.ERROR | rgb }})"
+
+[os]
+disabled = false
+style = "bold bg:{{ colors.ACCENT_MUTED | rgb }} fg:{{ colors.BG_DARK | rgb }}"
+
+[os.symbols]
+Arch = " "
+Ubuntu = " "
+Fedora = " "
+NixOS = " "
+Debian = " "
+CachyOS = " "
+
+[hostname]
+ssh_only = false
+trim_at = "."
+style = "bold fg:{{ colors.BG_DARK | rgb }} bg:{{ colors.ACCENT_MUTED | rgb }}"
+format = "[$hostname]($style)"
+
+[username]
+show_always = true
+format = "[$user](bold bg:{{ colors.ACCENT_MUTED | rgb }} fg:{{ colors.BG_DARK | rgb }})"
+
+[directory]
+style = "bold fg:{{ colors.FG | rgb }} bg:{{ colors.ACCENT | rgb }}"
+format = "[󰉖 󱦰 $path]($style)"
+truncation_length = 5
+truncation_symbol = "../"
+home_symbol = "~"
+truncate_to_repo = false
+
+[directory.substitutions]
+"Documents" = "󰈙 "
+"Downloads" = " "
+"Music" = " "
+"Pictures" = " "
+"~" = " "
+
+[git_branch]
+symbol = " "
+style = "bg:{{ colors.SURFACE | rgb }}"
+format = '[](fg:{{ colors.ACCENT | rgb }})[[ $symbol$branch ](bold fg:{{ colors.FG | rgb }} bg:{{ colors.ACCENT | rgb }})]($style)'
+
+[git_status]
+style = "bg:{{ colors.ACCENT | rgb }}"
+format = '[[($all_status$ahead_behind )](bold fg:{{ colors.FG | rgb }} bg:{{ colors.ACCENT | rgb }})]($style)[](fg:{{ colors.ACCENT | rgb }})'
+
+[nodejs]
+symbol = " "
+style = "bg:{{ colors.BG_HIGHLIGHT | rgb }}"
+format = '[[ $symbol ($version) ](fg:{{ colors.ACCENT | rgb }} bg:{{ colors.BG_HIGHLIGHT | rgb }})]($style)'
+
+[rust]
+symbol = " "
+style = "bg:{{ colors.BG_HIGHLIGHT | rgb }}"
+format = '[[ $symbol ($version) ](fg:{{ colors.ACCENT | rgb }} bg:{{ colors.BG_HIGHLIGHT | rgb }})]($style)'
+
+[golang]
+symbol = " "
+style = "bg:{{ colors.BG_HIGHLIGHT | rgb }}"
+format = '[[ $symbol ($version) ](fg:{{ colors.ACCENT | rgb }} bg:{{ colors.BG_HIGHLIGHT | rgb }})]($style)'
+
+[php]
+symbol = " "
+style = "bg:{{ colors.BG_HIGHLIGHT | rgb }}"
+format = '[[ $symbol ($version) ](fg:{{ colors.ACCENT | rgb }} bg:{{ colors.BG_HIGHLIGHT | rgb }})]($style)'
+
+[python]
+symbol = " "
+style = "bg:{{ colors.BG_HIGHLIGHT | rgb }}"
+format = '[[ $symbol($version) ](bold fg:{{ colors.ACCENT | rgb }} bg:{{ colors.BG_HIGHLIGHT | rgb }})]($style)'

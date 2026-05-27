@@ -10,7 +10,7 @@ echo ""
 ROOT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 cd "$ROOT_DIR"
 
-USER_DIR="$ROOT_DIR/user"
+USER_DIR="$ROOT_DIR/themes/user"
 
 echo "Creating directory structure for user's custom themes..."
 
@@ -28,7 +28,7 @@ echo "Setting active theme configuration file..."
 if [ -d "$ROOT_DIR/active_theme" ]; then
     echo "    skipped    $ROOT_DIR/active_theme/:  directory already exists"
 else
-    python "set_theme.py" "default/Oxocarbon.toml"
+    python "set_theme.py" "themes/default/Oxocarbon.toml"
     echo "    created    $ROOT_DIR/active_theme/"
 fi
 

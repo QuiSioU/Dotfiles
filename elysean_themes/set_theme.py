@@ -12,7 +12,7 @@ def print_usage():
     print("Usage:")
     print("\tpython set_theme.py <toml-theme-file>\n")
     print("Example:")
-    print("\tpython set_theme ~/.config/elysean_themes/default/Oxocarbon.toml")
+    print("\tpython set_theme ~/.config/elysean_themes/themes/default/Oxocarbon.toml")
 
 
 def parse_toml(toml_path: str) -> dict[str, dict[str, str]]:
@@ -43,7 +43,7 @@ def hyprland_quickshell(config_dir: Path, theme: dict[str, dict[str, str]]) -> N
         f.write("}\n")
 
 
-def kitty(config_dir: Path, theme: dict[str, dict[str, str]]) -> None:
+def kitty(config_dir: Path, theme: dict[str, dict[str, str]], env: Environment) -> None:
     filepath: Path = config_dir / "kitty.conf"
     template = env.get_template("kitty.conf")
     output = template.render(colors=theme["colors"], meta=theme["meta"]).replace(
@@ -63,6 +63,16 @@ def yazi(config_dir: Path, theme: dict[str, dict[str, str]], env: Environment) -
     filepath.write_text(output)
 
 
+def starship(config_dir: Path, theme: dict[str, dict[str, str]], env: Environment) -> None:
+    filepath: Path = config_dir / "starship.toml"
+    template = env.get_template("starship.toml")
+    output = template.render(colors=theme["colors"], meta=theme["meta"]).replace(
+        "# elysean_themes/templates/starship.toml",
+        f"# {filepath.relative_to(config_dir.parent.parent)}"
+    )
+    filepath.write_text(output)
+
+
 if __name__ == "__main__":
     argc: int = len(argv)
     if argc != 2:
@@ -77,11 +87,12 @@ if __name__ == "__main__":
     hyprland_quickshell(config_dir, theme)
 
     # For files that are actually templates, use Jinja2
-    env = Environment(loader=FileSystemLoader("templates/"))
+    env = Environment(loader=FileSystemLoader(config_dir.parent / "templates/"))
     env.filters["rgb"] = lambda color: color[:7]
 
-    kitty(config_dir, theme)
+    kitty(config_dir, theme, env)
     yazi(config_dir, theme, env)
+    starship(config_dir, theme, env)
 
     # Reload what needs to be reloaded
     subprocess.run(["hyprctl", "reload"])

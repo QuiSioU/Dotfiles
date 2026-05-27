@@ -52,7 +52,7 @@ PanelWindow {
         id: colorThemeScanner
         command: [
             "find",
-            Quickshell.env("HOME") + "/.config/elysean_themes/",
+            Quickshell.env("HOME") + "/.config/elysean_themes/themes/",
             "-type", "f",
             "(",
             "-iname", "*.toml",
