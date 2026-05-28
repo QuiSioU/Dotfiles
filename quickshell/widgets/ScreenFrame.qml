@@ -14,7 +14,7 @@ Variants {
         id: scope
         required property var modelData
 
-        readonly property color frameColor:         ActiveTheme.color["BG"]
+        readonly property color frameColor:         ActiveTheme.colors["BG"]
         readonly property int   rounding:           33
         readonly property int   thicknessTop:       30
         readonly property int   thicknessBottom:    10

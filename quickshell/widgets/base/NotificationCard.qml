@@ -22,13 +22,13 @@ Item {
 
     property color accentColor: {
         const cat = entry?.category ?? ""
-        if (cat.includes("error"))    return ActiveTheme.color["ERROR_MUTED"]
-        if (cat.includes("complete")) return ActiveTheme.color["SUCCESS_MUTED"]
-        if (cat.includes("warning"))  return ActiveTheme.color["WARNING_MUTED"]
+        if (cat.includes("error"))    return ActiveTheme.colors["ERROR_LOW"]
+        if (cat.includes("complete")) return ActiveTheme.colors["SUCCESS_MUTED"]
+        if (cat.includes("warning"))  return ActiveTheme.colors["WARNING_LOW"]
         switch (entry?.urgency ?? 1) {
-            case 0:  return ActiveTheme.color["FG_DISABLED"]
-            case 2:  return ActiveTheme.color["URGENT"]
-            default: return ActiveTheme.color["ACCENT"]
+            case 0:  return ActiveTheme.colors["FG_DISABLED"]
+            case 2:  return ActiveTheme.colors["URGENT"]
+            default: return ActiveTheme.colors["ANSI_BLUE"]
         }
     }
 
@@ -49,7 +49,7 @@ Item {
         gradient: Gradient {
             orientation: Gradient.Horizontal
             GradientStop { position: 0.0; color: card.accentColor }
-            GradientStop { position: 1.0; color: ActiveTheme.color["FG_DARK"] }
+            GradientStop { position: 1.0; color: ActiveTheme.colors["FG_DARK"] }
         }
     }
 
@@ -61,7 +61,7 @@ Item {
             margins:     1
         }
         radius:          8
-        color:           ActiveTheme.color["TERMINAL_BLACK"]
+        color:           ActiveTheme.colors["ANSI_BLACK"]
         implicitHeight:  content.childrenRect.height + 24
 
         ColumnLayout {
@@ -105,7 +105,7 @@ Item {
             Text {
                 visible:          text !== ""
                 text:             entry?.summary ?? ""
-                color:            ActiveTheme.color["FG"]
+                color:            ActiveTheme.colors["FG"]
                 font.pixelSize:   13
                 font.bold:        true
                 font.family: "JetBrainsMono Nerd Font"
@@ -119,7 +119,7 @@ Item {
             Text {
                 visible:          text !== ""
                 text:             entry?.body ?? ""
-                color:            ActiveTheme.color["FG_DARK"]
+                color:            ActiveTheme.colors["FG_DARK"]
                 font.pixelSize:   12
                 font.family: "JetBrainsMono Nerd Font"
                 wrapMode:         Text.Wrap
@@ -143,7 +143,7 @@ Item {
                     Rectangle {
                         anchors.fill: parent
                         radius:       2
-                        color:        ActiveTheme.color["SURFACE"]
+                        color:        ActiveTheme.colors["BG_HIGHLIGHT"]
                     }
 
                     // Fill — anchored to the RIGHT so it shrinks leftward
@@ -160,7 +160,7 @@ Item {
                         gradient: Gradient {
                             orientation: Gradient.Horizontal
                             GradientStop { position: 0.0; color: card.accentColor }
-                            GradientStop { position: 1.0; color: ActiveTheme.color["FG_DARK"] }
+                            GradientStop { position: 1.0; color: ActiveTheme.colors["FG_DARK"] }
                         }
 
                         // interval:0 fires after the current event loop tick,
@@ -193,7 +193,7 @@ Item {
                 // Dismiss button
                 Text {
                     text:  "󱞵 Dismiss"
-                    color: closeArea.containsMouse ? ActiveTheme.color["ACCENT"] : ActiveTheme.color["FG_DARK"]
+                    color: closeArea.containsMouse ? ActiveTheme.colors["ANSI_BLUE"] : ActiveTheme.colors["FG_DARK"]
                     font.pixelSize: 11
                     font.family:    "JetBrainsMono Nerd Font"
 

@@ -201,12 +201,12 @@ PanelWindow {
     // ── Content ───────────────────────────────────────────────────────────────
     Rectangle {
         anchors.fill: parent
-        color: ActiveTheme.color["BG"]
+        color: ActiveTheme.colors["BG"]
         radius: 12
         clip: true
 
         border.width: 2
-        border.color: ActiveTheme.color["FG_DARK"]
+        border.color: ActiveTheme.colors["FG_DARK"]
 
         SearchView {
             id: searchView

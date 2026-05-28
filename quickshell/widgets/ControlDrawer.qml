@@ -13,7 +13,7 @@ Drawer {
     id: drawer
 
     edge:          Drawer.Edge.Bottom
-    blobColor:     ActiveTheme.color["BG"]
+    blobColor:     ActiveTheme.colors["BG"]
     blobSmoothing: 36
     blobRadius:    18
 

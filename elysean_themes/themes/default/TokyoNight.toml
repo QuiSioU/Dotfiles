@@ -3,45 +3,118 @@
 
 [meta]
 name    = "TokyoNight"
-variant = "default"
+variant = "dark"
 
 
 [colors]
 
-# Backgrounds
-BG              = "#1a1b26ff"   # Main background
-BG_DARK         = "#16161eff"   # Deepest bg (titlebars, borders)
-BG_HIGHLIGHT    = "#292e42ff"   # Raised surfaces, hover
-TERMINAL_BLACK  = "#414868ff"   # Input fields, popups
+# --- Backgrounds ---
+BG                      = "#1a1b26"     # main surface — app background
+BG_DARK                 = "#16161e"     # recessed surface — panels, sidebars, bars, titlebar
+BG_DEEP                 = "#101014"     # deeply recessed surface — borders, inner panels
+BG_DARKEST              = "#0d0f17"     # near-black edge — outermost window borders
+BG_POPUP                = "#14141b"     # floating surface — inputs, dropdowns, popups
+BG_HIGHLIGHT            = "#1e202e"     # subtle highlight — current line, drop targets, menu hover
+BG_FOCUSED              = "#1c1d29"     # focus state — inactive selection, focused container bg
+BG_ACTIVE               = "#202330"     # active interactive — pressed/active item, selected row
+BG_HOVER                = "#13131a"     # hover state — pointer-over row or item
+BG_SELECTED             = "#20222c"     # selected state — status bar item hover, chosen option
+BG_STRIPE               = "#232433"     # structural guide — indent / tree line background
+BG_OVERLAY              = "#1b1e2e"     # overlay tint — context menus, label backgrounds
+BG_TINTED               = "#29355a"     # tinted accent surface — focused containers, accent panels
 
-# Foregrounds
-FG              = "#c0caf5ff"   # Primary text
-FG_DARK         = "#a9b1d6ff"   # Secondary / dimmed text
-DARK5           = "#737aa2ff"   # Disabled / placeholder text
-DARK3           = "#545c7eff"   # Line numbers, gutters
-FG_DISABLED     = "#545c7eff"   # Truly disabled text (same as DARK3, explicit role)
+# --- Foregrounds ---
+FG                      = "#c0caf5"     # primary text — body, cursor, identifiers
+FG_DARK                 = "#a9b1d6"     # secondary text — input content, list items
+FG_MUTED                = "#787c99"     # muted ui text — sidebars, status bars, terminal fg
+FG_BRIGHT               = "#acb0d0"     # bright ui text — badge labels, active links
+FG_DIM                  = "#9aa5ce"     # dimmed text — supplementary values, chart labels
+FG_LIGHT                = "#bbc2e0"     # light text — readable on dark diagnostic backgrounds
+FG_SUBTLE               = "#9699a8"     # subtle text — preformatted spans, between muted and dim
+FG_DISABLED             = "#545c7e"     # disabled text — unavailable controls
+FG_ON_ACCENT            = "#ffffff"     # text on accent — labels on colored buttons or badges
+FG_GHOST                = "#5a638c"     # ghost text — documentation comments, mid-tone placeholder
+FG_HINT                 = "#646e9c"     # hint text — inline hints, trailing annotations, ghost completions
 
-# Accents
-ACCENT          = "#7aa2f7ff"   # Primary accent (focused borders, links)
-ACCENT_BRIGHT   = "#7dcfffff"   # Bright accent (active elements)
-ACCENT_SURFACE  = "#394b70ff"   # Subtle accent (backgrounds, tints)
-ACCENT_MUTED    = "#a8c4ffff"   # Desaturated accent (active text, subtle on)
-ACCENT_DIM      = "#394b70ff"   # Dark accent (tinted surfaces, pressed states)
+# --- Inactive / Structural ---
+DARK3                   = "#515670"     # description text — metadata, breadcrumbs, ignored items
+DARK4                   = "#51597d"     # comment text — code comments, secondary annotations
+DARK5                   = "#4e5579"     # structural punctuation — delimiters in muted contexts
+DARK6                   = "#42465d"     # inactive border — match outlines, inactive tab borders
+DARK7                   = "#3b3e52"     # secondary control bg — inactive icon fg, secondary buttons
 
-# Semantic
-SUCCESS         = "#9ece6aff"   # Success
-SUCCESS_MUTED   = "#c4e38fff"   # Soft green (active text on dark, like ACCENT_MUTED)
-WARNING         = "#e0af68ff"   # Warning
-WARNING_MUTED   = "#eecb96ff"   # Soft yellow (same idea)
-ERROR           = "#f7768eff"   # Error
-ERROR_MUTED     = "#fab8c4ff"   # Soft red (error text without being aggressive)
-INFO            = "#73dacaff"   # Info / teal
+# --- ANSI Terminal Colors ---
+ANSI_BLACK              = "#363b54"     # ansiBlack — line numbers, whitespace markers
+ANSI_RED                = "#f7768e"     # ansiRed
+ANSI_GREEN              = "#73daca"     # ansiGreen
+ANSI_YELLOW             = "#e0af68"     # ansiYellow
+ANSI_BLUE               = "#7aa2f7"     # ansiBlue
+ANSI_MAGENTA            = "#bb9af7"     # ansiMagenta
+ANSI_CYAN               = "#7dcfff"     # ansiCyan
+ANSI_WHITE              = "#787c99"     # ansiWhite
 
-# Surfaces
-SURFACE         = "#1e2030ff"   # Slightly lifted from BG, below BG_HIGHLIGHT
-SURFACE_OVERLAY = "#ffffff0f"   # White at 6% opacity, universal hover tint
+# --- Primary Brand / Accent ---
+ACCENT                  = "#3d59a1"     # primary accent — buttons, progress bars, active indicators
+ACCENT_SUBTLE           = "#506fca"     # mid accent — between ACCENT and ANSI_BLUE
+ACCENT_MUTED            = "#6183bb"     # muted accent — links, subtle highlights
+ACCENT_DIM              = "#668ac4"     # dim accent — mid-tone highlighted foreground
+ACCENT_LOW              = "#9abdf5"     # light accent — structural punctuation, soft highlights
 
-# Extras
-SECONDARY       = "#bb9af7ff"   # Purple (notifications, tags)
-URGENT          = "#ff9e64ff"   # Orange (urgent, badges)
-SHADOW          = "#16161eee"   # Subtle shadow
+# --- Secondary Brand / Accent ---
+SECONDARY               = "#7dcfff"     # bright cyan — keywords, prominent tokens
+SECONDARY_SUBTLE        = "#89ddff"     # sky blue — operators, punctuation, escape sequences
+SECONDARY_MUTED         = "#2ac3de"     # vivid cyan — built-in / library identifiers
+SECONDARY_DIM           = "#b4f9f8"     # pale mint — special literals, regex strings
+
+# --- Tertiary Brand / Accent ---
+TERTIARY                = "#bb9af7"     # secondary accent — keywords, attributes
+TERTIARY_SUBTLE         = "#9d7cd8"     # dim secondary — modifiers, mixins, muted purple
+TERTIARY_MUTED          = "#b267e6"     # vivid violet — special debug / trace tokens
+TERTIARY_DIM            = "#ba3c97"     # deep magenta — structural tag punctuation
+TERTIARY_LOW            = "#de5971"     # pink — unrecognized or custom tag names
+
+# --- Info ---
+INFO                    = "#0db9d7"     # info — diagnostic info, notable identifiers
+INFO_SUBTLE             = "#0da0ba"     # dim info — subtle info indicators, hint icons
+INFO_ALT                = "#1abc9c"     # emerald outlier — teal-green info variant
+
+# --- Success (green) ---
+SUCCESS                 = "#73daca"     # success — positive state, object keys, links
+SUCCESS_SUBTLE          = "#41a6b5"     # dim success — muted positive, merge additions
+SUCCESS_MUTED           = "#9ece6a"     # muted success — strings, secondary positive tokens
+VCS_ADDED               = "#449dab"     # vcs added — new / renamed / untracked files
+
+# --- Warning (yellow / orange) ---
+WARNING                 = "#e0af68"     # warning — caution state, match borders, lightbulb
+WARNING_SUBTLE          = "#c49a5a"     # muted warning — warning text in lists and consoles
+WARNING_MUTED           = "#bba461"     # dim warning — subtle warning icons
+WARNING_LOW             = "#ffdb69"     # bright warning — high-visibility warning tokens
+WARNING_SURFACE         = "#c2985b"     # warning background — validation warning surfaces
+URGENT                  = "#ff9e64"     # urgent — constants, booleans, high-emphasis values
+
+# --- Error (red) ---
+ERROR                   = "#db4b4b"     # error — diagnostic error, breakpoints
+ERROR_SUBTLE            = "#bb616b"     # muted error — error text in lists and consoles
+ERROR_LOW               = "#fc7b7b"     # bright error — high-visibility error tokens
+ERROR_HIGH              = "#ff5370"     # vivid error — invalid / illegal tokens
+ERROR_SURFACE           = "#85353e"     # error background — validation error surfaces
+ERROR_BORDER            = "#963c47"     # error border — validation error outlines
+ERROR_DIM               = "#c24242"     # dim error — unverified / inactive error markers
+
+
+# --- VCS ---
+VCS_MODIFIED            = "#6183bb"     # vcs modified — changed files
+VCS_DELETED             = "#914c54"     # vcs deleted — removed files
+VCS_IGNORED             = "#515670"     # vcs ignored — excluded files
+
+# --- Borders ---
+BORDER                  = "#0f0f14"     # input border — fields, chat request borders
+
+# --- Rainbow / Hierarchy ---
+# Vivid — nesting levels, bracket pairs, hierarchy colouring
+RAINBOW_1               = "#7aa2f7"
+RAINBOW_2               = "#0db9d7"
+RAINBOW_3               = "#7dcfff"
+RAINBOW_4               = "#bb9af7"
+RAINBOW_5               = "#e0af68"
+RAINBOW_6               = "#f7768e"

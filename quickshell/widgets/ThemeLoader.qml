@@ -19,8 +19,8 @@ QtObject {
 
             ActiveTheme.ready = false
 
-            const color = {}
-            const token = {}
+            const colors = {}
+            const tokens = {}
 
             for (const line of text().split("\n")) {
                 const trimmed = line.trim()
@@ -36,18 +36,16 @@ QtObject {
 
                 console.log(JSON.stringify(key), "=", JSON.stringify(val))
 
-                // input: RRGGBBAA || Quickshell expects: AARRGGBB
-                const rgba = val.match(/^#([a-fA-F0-9]{6})([a-fA-F0-9]{2})$/)
-                if (rgba) {
-                    color[key] = "#" + rgba[2] + rgba[1]
+                if (val.match(/^#([a-fA-F0-9]{6})$/)) {
+                    colors[key] = val
                     continue
                 }
 
-                token[key] = val
+                tokens[key] = val
             }
 
-            ActiveTheme.color = color
-            ActiveTheme.token = token
+            ActiveTheme.colors = colors
+            ActiveTheme.tokens = tokens
             ActiveTheme.ready = true
         }
     }

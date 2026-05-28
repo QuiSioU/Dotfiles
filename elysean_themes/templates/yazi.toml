@@ -2,36 +2,36 @@
 
 
 [mgr]
-cwd = { fg = "{{ colors.ACCENT | rgb }}" }
-find_keyword  = { fg = "{{ colors.WARNING | rgb }}",   bold = true, italic = true, underline = true }
-find_position = { fg = "{{ colors.SECONDARY | rgb }}", bold = true, italic = true }
-marker_copied = { fg = "{{ colors.SUCCESS | rgb }}", bg = "{{ colors.SUCCESS | rgb }}" }
-marker_cut    = { fg = "{{ colors.ERROR | rgb }}",   bg = "{{ colors.ERROR | rgb }}" }
-marker_marked = { fg = "{{ colors.INFO | rgb }}",    bg = "{{ colors.INFO | rgb }}" }
+cwd = { fg = "{{ colors.ANSI_BLUE }}" }
+find_keyword  = { fg = "{{ colors.WARNING }}",   bold = true, italic = true, underline = true }
+find_position = { fg = "{{ colors.TERTIARY }}", bold = true, italic = true }
+marker_copied = { fg = "{{ colors.SUCCESS_MUTED }}", bg = "{{ colors.SUCCESS_MUTED }}" }
+marker_cut    = { fg = "{{ colors.ANSI_RED }}",   bg = "{{ colors.ANSI_RED }}" }
+marker_marked = { fg = "{{ colors.ANSI_GREEN }}",    bg = "{{ colors.ANSI_GREEN }}" }
 
 [status]
-overall     = { bg = "{{ colors.BG_DARK | rgb }}" }
-mode_normal = { fg = "{{ colors.BG | rgb }}", bg = "{{ colors.ACCENT | rgb }}",    bold = true }
-mode_select = { fg = "{{ colors.BG | rgb }}", bg = "{{ colors.SUCCESS | rgb }}",   bold = true }
-mode_unset  = { fg = "{{ colors.BG | rgb }}", bg = "{{ colors.SECONDARY | rgb }}", bold = true }
+overall     = { bg = "{{ colors.BG_DARK }}" }
+mode_normal = { fg = "{{ colors.BG }}", bg = "{{ colors.ANSI_BLUE }}",    bold = true }
+mode_select = { fg = "{{ colors.BG }}", bg = "{{ colors.SUCCESS_MUTED }}",   bold = true }
+mode_unset  = { fg = "{{ colors.BG }}", bg = "{{ colors.TERTIARY }}", bold = true }
 
 [input]
-border   = { fg = "{{ colors.ACCENT | rgb }}" }
-title    = { fg = "{{ colors.ACCENT_MUTED | rgb }}" }
-value    = { fg = "{{ colors.FG | rgb }}" }
+border   = { fg = "{{ colors.ANSI_BLUE }}" }
+title    = { fg = "{{ colors.ACCENT_MUTED }}" }
+value    = { fg = "{{ colors.FG }}" }
 selected = { reversed = true }
 
 [select]
-border   = { fg = "{{ colors.ACCENT | rgb }}" }
-active   = { fg = "{{ colors.ACCENT_BRIGHT | rgb }}" }
+border   = { fg = "{{ colors.ANSI_BLUE }}" }
+active   = { fg = "{{ colors.SECONDARY }}" }
 inactive = {}
 
 [filetype]
 rules = [
-  { mime = "image/*",         fg = "{{ colors.INFO | rgb }}" },
-  { mime = "video/*",         fg = "{{ colors.SECONDARY | rgb }}" },
-  { mime = "audio/*",         fg = "{{ colors.SECONDARY | rgb }}" },
-  { mime = "application/zip", fg = "{{ colors.URGENT | rgb }}" },
-  { url = "*.toml",           fg = "{{ colors.ACCENT | rgb }}" },
-  { url = "*.lua",            fg = "{{ colors.ACCENT | rgb }}" },
+  { mime = "image/*",         fg = "{{ colors.ANSI_GREEN }}" },
+  { mime = "video/*",         fg = "{{ colors.TERTIARY }}" },
+  { mime = "audio/*",         fg = "{{ colors.TERTIARY }}" },
+  { mime = "application/zip", fg = "{{ colors.URGENT }}" },
+  { url = "*.toml",           fg = "{{ colors.ANSI_BLUE }}" },
+  { url = "*.lua",            fg = "{{ colors.ANSI_BLUE }}" },
 ]

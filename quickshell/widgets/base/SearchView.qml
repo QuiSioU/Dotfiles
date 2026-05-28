@@ -48,7 +48,7 @@ ColumnLayout {
     Rectangle {
         Layout.fillWidth: true
         Layout.preferredHeight: 50
-        color: ActiveTheme.color["BG_HIGHLIGHT"]
+        color: ActiveTheme.colors["BG_STRIPE"]
         radius: 12
 
         Item {
@@ -154,14 +154,14 @@ ColumnLayout {
                     height: 26
                     width: chipLabel.implicitWidth + 16
                     radius: 6
-                    color: ActiveTheme.color["ACCENT_SURFACE"]
+                    color: "#0fffffff"
                     anchors.verticalCenter: parent.verticalCenter
 
                     Text {
                         id: chipLabel
                         anchors.centerIn: parent
                         text: searchBar.activeMode?.label ?? ""
-                        color: ActiveTheme.color["ACCENT"]
+                        color: ActiveTheme.colors["ANSI_BLUE"]
                         font.pixelSize: 12
                         font.weight: Font.Medium
                     }
@@ -171,7 +171,7 @@ ColumnLayout {
                     id: modeInput
                     width: parent.width - chipLabel.implicitWidth - 32
                     anchors.verticalCenter: parent.verticalCenter
-                    color: ActiveTheme.color["FG"]
+                    color: ActiveTheme.colors["FG"]
                     font.pixelSize: 16
                     focus: searchBar.activeMode !== null
 
@@ -204,7 +204,7 @@ ColumnLayout {
                         visible: modeInput.text === ""
                         text: searchBar.activeMode?.placeholder
                             ?? ("Search " + (searchBar.activeMode?.label ?? "") + "...")
-                        color: ActiveTheme.color["DARK5"]
+                        color: ActiveTheme.colors["DARK3"]
                         font.pixelSize: 16
                         font.italic: true
                         anchors.verticalCenter: parent.verticalCenter
@@ -222,7 +222,7 @@ ColumnLayout {
                 visible: searchBar.activeMode === null
                 focus:   searchBar.activeMode === null
                 color: searchInput.text.startsWith(searchBar.actionPrefix)
-                        ? ActiveTheme.color["ACCENT"] : ActiveTheme.color["FG"]
+                        ? ActiveTheme.colors["ANSI_BLUE"] : ActiveTheme.colors["FG"]
                 font.pixelSize: 16
 
                 onTextChanged: {
@@ -255,7 +255,7 @@ ColumnLayout {
                 anchors.margins: 16
                 visible: searchInput.text === "" && searchBar.activeMode === null
                 text: "Search apps  ·  type " + searchBar.actionPrefix + " for commands"
-                color: ActiveTheme.color["DARK5"]
+                color: ActiveTheme.colors["DARK3"]
                 font.pixelSize: 15
                 font.italic: true
             }
@@ -301,8 +301,8 @@ ColumnLayout {
                     Rectangle {
                         anchors.fill: parent
                         radius: 8
-                        color: index === resultList.currentIndex ? ActiveTheme.color["DARK3"]
-                            : mouseArea.containsMouse    ? ActiveTheme.color["SURFACE_OVERLAY"]
+                        color: index === resultList.currentIndex ? ActiveTheme.colors["DARK4"]
+                            : mouseArea.containsMouse    ? "#0fffffff"
                             : "transparent"
 
                         Rectangle {
@@ -312,7 +312,7 @@ ColumnLayout {
                             anchors.bottom: parent.bottom
                             anchors.left: parent.left
                             anchors.margins: 6
-                            color: modelData.isModeEntry ? ActiveTheme.color["ACCENT"] : ActiveTheme.color["URGENT"]
+                            color: modelData.isModeEntry ? ActiveTheme.colors["ANSI_BLUE"] : ActiveTheme.colors["URGENT"]
                             radius: 2
                         }
 
@@ -339,7 +339,7 @@ ColumnLayout {
                                 Rectangle {
                                     anchors.fill: parent
                                     color: (modelData.isModeEntry ?? false)
-                                                ? ActiveTheme.color["ACCENT_DIM"] : ActiveTheme.color["SURFACE"]
+                                                ? ActiveTheme.colors["BG_TINTED"] : ActiveTheme.colors["BG_HIGHLIGHT"]
                                     radius: 4
                                     visible: iconImage.status !== Image.Ready
 
@@ -347,7 +347,7 @@ ColumnLayout {
                                         anchors.centerIn: parent
                                         text: modelData.fallbackText ?? (modelData.name ?? "").charAt(0).toUpperCase()
                                         color: (modelData.isModeEntry ?? false)
-                                                    ? ActiveTheme.color["ACCENT"] : ActiveTheme.color["FG"]
+                                                    ? ActiveTheme.colors["ANSI_BLUE"] : ActiveTheme.colors["FG"]
                                         font.pixelSize: 14
                                         font.weight: Font.Medium
                                     }
@@ -362,7 +362,7 @@ ColumnLayout {
                                 Text {
                                     text: modelData.name ?? ""
                                     color: (modelData.isModeEntry ?? false)
-                                            ? ActiveTheme.color["ACCENT"] : ActiveTheme.color["FG"]
+                                            ? ActiveTheme.colors["ANSI_BLUE"] : ActiveTheme.colors["FG"]
                                     font.pixelSize: 14
                                     font.weight: Font.Medium
                                     elide: Text.ElideRight
@@ -371,7 +371,7 @@ ColumnLayout {
 
                                 Text {
                                     text: modelData.comment ?? ""
-                                    color: ActiveTheme.color["DARK5"]
+                                    color: ActiveTheme.colors["FG_DARK"]
                                     font.pixelSize: 12
                                     elide: Text.ElideRight
                                     Layout.fillWidth: true
@@ -382,7 +382,7 @@ ColumnLayout {
                             Text {
                                 visible: modelData.isModeEntry ?? false
                                 text: "→"
-                                color: ActiveTheme.color["DARK3"]
+                                color: ActiveTheme.colors["DARK4"]
                                 font.pixelSize: 16
                             }
                         }

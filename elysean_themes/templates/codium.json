@@ -1,454 +1,453 @@
 {
     "name": "Tokyo Night",
     "author": "Enkia",
-    "maintainers": ["Enkia <enki77@gmail.com>"],
     "type": "dark",
     "semanticTokenColors": {
         "parameter.declaration": {
-            "foreground": {{ colors.ANSI_YELLOW }}
+            "foreground": "{{ colors.ANSI_YELLOW }}"
         },
         "parameter": {
-            "foreground": {{ colors.FG_DIM }}
+            "foreground": "{{ colors.FG_DIM }}"
         },
         "property.declaration": {
-            "foreground": {{ colors.ANSI_GREEN }}
+            "foreground": "{{ colors.ANSI_GREEN }}"
         },
         "property.defaultLibrary": {
-            "foreground": {{ colors.SECONDARY_MUTED }}
+            "foreground": "{{ colors.SECONDARY_MUTED }}"
         },
         "*.defaultLibrary": {
-            "foreground": {{ colors.SECONDARY_MUTED }}
+            "foreground": "{{ colors.SECONDARY_MUTED }}"
         },
         "variable.defaultLibrary": {
-            "foreground": {{ colors.SECONDARY_MUTED }}
+            "foreground": "{{ colors.SECONDARY_MUTED }}"
         },
         "variable.declaration": {
-            "foreground": {{ colors.ANSI_MAGENTA }}
+            "foreground": "{{ colors.ANSI_MAGENTA }}"
         },
         "variable": {
-            "foreground": {{ colors.FG }}
+            "foreground": "{{ colors.FG }}"
         }
     },
     "semanticClass": "tokyo-night",
     "colors": {
-        "foreground": {{ colors.FG_MUTED }},
-        "descriptionForeground": {{ colors.DARK3 }},
-        "disabledForeground": {{ colors.FG_DISABLED }},
-        "focusBorder": {{ colors.FG_DISABLED | rgba("33") }},
-        "errorForeground": {{ colors.DARK3 }},
-        "widget.shadow": {{ colors.FG_ON_ACCENT | rgba("00") }},
-        "scrollbar.shadow": {{ colors.BG_DARKEST | rgba("33") }},
-        "badge.background": {{ colors.FG_MUTED | rgba("30") }},
-        "badge.foreground": {{ colors.FG_BRIGHT }},
-        "icon.foreground": {{ colors.FG_MUTED }},
-        "settings.headerForeground": {{ colors.ACCENT_MUTED }},
-        "window.activeBorder": {{ colors.BG_DARKEST }},
-        "window.inactiveBorder":{{ colors.BG_DARKEST }},
-        "sash.hoverBorder": {{ colors.BG_TINTED }},
+        "foreground": "{{ colors.FG_MUTED }}",
+        "descriptionForeground": "{{ colors.DARK3 }}",
+        "disabledForeground": "{{ colors.FG_DISABLED }}",
+        "focusBorder": "{{ colors.FG_DISABLED | rgba("33") }}",
+        "errorForeground": "{{ colors.DARK3 }}",
+        "widget.shadow": "{{ colors.FG_ON_ACCENT | rgba("00") }}",
+        "scrollbar.shadow": "{{ colors.BG_DARKEST | rgba("33") }}",
+        "badge.background": "{{ colors.FG_MUTED | rgba("30") }}",
+        "badge.foreground": "{{ colors.FG_BRIGHT }}",
+        "icon.foreground": "{{ colors.FG_MUTED }}",
+        "settings.headerForeground": "{{ colors.ACCENT_MUTED }}",
+        "window.activeBorder": "{{ colors.BG_DARKEST }}",
+        "window.inactiveBorder":"{{ colors.BG_DARKEST }}",
+        "sash.hoverBorder": "{{ colors.BG_TINTED }}",
 
-        "toolbar.activeBackground": {{ colors.BG_ACTIVE }},
-        "toolbar.hoverBackground": {{ colors.BG_ACTIVE }},
+        "toolbar.activeBackground": "{{ colors.BG_ACTIVE }}",
+        "toolbar.hoverBackground": "{{ colors.BG_ACTIVE }}",
 
-        "extensionButton.prominentBackground": {{ colors.ACCENT | rgba("DD") }},
-        "extensionButton.prominentHoverBackground": {{ colors.ACCENT | rgba("AA") }},
-        "extensionButton.prominentForeground": {{ colors.FG_ON_ACCENT }},
-        "extensionBadge.remoteBackground": {{ colors.ACCENT }},
-        "extensionBadge.remoteForeground": {{ colors.FG_ON_ACCENT }},
+        "extensionButton.prominentBackground": "{{ colors.ACCENT | rgba("DD") }}",
+        "extensionButton.prominentHoverBackground": "{{ colors.ACCENT | rgba("AA") }}",
+        "extensionButton.prominentForeground": "{{ colors.FG_ON_ACCENT }}",
+        "extensionBadge.remoteBackground": "{{ colors.ACCENT }}",
+        "extensionBadge.remoteForeground": "{{ colors.FG_ON_ACCENT }}",
 
-        "button.background": {{ colors.ACCENT | rgba("dd") }},
-        "button.hoverBackground": {{ colors.ACCENT | rgba("AA") }},
-        "button.secondaryBackground": {{ colors.DARK7 }},
-        "button.foreground": {{ colors.FG_ON_ACCENT }},
-        "progressBar.background": {{ colors.ACCENT }},
+        "button.background": "{{ colors.ACCENT | rgba("dd") }}",
+        "button.hoverBackground": "{{ colors.ACCENT | rgba("AA") }}",
+        "button.secondaryBackground": "{{ colors.DARK7 }}",
+        "button.foreground": "{{ colors.FG_ON_ACCENT }}",
+        "progressBar.background": "{{ colors.ACCENT }}",
 
-        "input.background": {{ colors.BG_POPUP }},
-        "input.foreground": {{ colors.FG_DARK }},
-        "input.border": {{ colors.BORDER }},
-        "input.placeholderForeground": {{ colors.FG_MUTED | rgba("8A") }},
-        "inputOption.activeForeground": {{ colors.FG }},
-        "inputOption.activeBackground": {{ colors.ACCENT | rgba("44") }},
+        "input.background": "{{ colors.BG_POPUP }}",
+        "input.foreground": "{{ colors.FG_DARK }}",
+        "input.border": "{{ colors.BORDER }}",
+        "input.placeholderForeground": "{{ colors.FG_MUTED | rgba("8A") }}",
+        "inputOption.activeForeground": "{{ colors.FG }}",
+        "inputOption.activeBackground": "{{ colors.ACCENT | rgba("44") }}",
 
-        "inputValidation.infoForeground": {{ colors.FG_LIGHT }},
-        "inputValidation.infoBackground": {{ colors.ACCENT | rgba("5c") }},
-        "inputValidation.infoBorder": {{ colors.ACCENT }},
-        "inputValidation.warningForeground": {{ colors.BG_DARKEST }},
-        "inputValidation.warningBackground": {{ colors.WARNING_SURFACE }},
-        "inputValidation.warningBorder": {{ colors.ANSI_YELLOW }},
-        "inputValidation.errorForeground": {{ colors.FG_LIGHT }},
-        "inputValidation.errorBackground": {{ colors.ERROR_SURFACE }},
-        "inputValidation.errorBorder": {{ colors.ERROR_BORDER }},
+        "inputValidation.infoForeground": "{{ colors.FG_LIGHT }}",
+        "inputValidation.infoBackground": "{{ colors.ACCENT | rgba("5c") }}",
+        "inputValidation.infoBorder": "{{ colors.ACCENT }}",
+        "inputValidation.warningForeground": "{{ colors.BG_DARKEST }}",
+        "inputValidation.warningBackground": "{{ colors.WARNING_SURFACE }}",
+        "inputValidation.warningBorder": "{{ colors.ANSI_YELLOW }}",
+        "inputValidation.errorForeground": "{{ colors.FG_LIGHT }}",
+        "inputValidation.errorBackground": "{{ colors.ERROR_SURFACE }}",
+        "inputValidation.errorBorder": "{{ colors.ERROR_BORDER }}",
 
-        "dropdown.foreground": {{ colors.FG_MUTED }},
-        "dropdown.background": {{ colors.BG_POPUP }},
-        "dropdown.listBackground": {{ colors.BG_POPUP }},
+        "dropdown.foreground": "{{ colors.FG_MUTED }}",
+        "dropdown.background": "{{ colors.BG_POPUP }}",
+        "dropdown.listBackground": "{{ colors.BG_POPUP }}",
 
-        "activityBar.background": {{ colors.BG_DARK }},
-        "activityBar.foreground": {{ colors.FG_MUTED }},
-        //"activityBar.activeBorder": {{ colors.DARK7 }},
-        //"activityBar.activeBackground": {{ colors.BG_DEEP }},
-        "activityBar.inactiveForeground": {{ colors.DARK7 }},
-        "activityBar.border": {{ colors.BG_DARK }},
-        "activityBarBadge.background": {{ colors.ACCENT }},
-        "activityBarBadge.foreground": {{ colors.FG_ON_ACCENT }},
+        "activityBar.background": "{{ colors.BG_DARK }}",
+        "activityBar.foreground": "{{ colors.FG_MUTED }}",
+        //"activityBar.activeBorder": "{{ colors.DARK7 }}",
+        //"activityBar.activeBackground": "{{ colors.BG_DEEP }}",
+        "activityBar.inactiveForeground": "{{ colors.DARK7 }}",
+        "activityBar.border": "{{ colors.BG_DARK }}",
+        "activityBarBadge.background": "{{ colors.ACCENT }}",
+        "activityBarBadge.foreground": "{{ colors.FG_ON_ACCENT }}",
 
-        "activityBarTop.foreground": {{ colors.FG_MUTED }},
-        "activityBarTop.inactiveForeground": {{ colors.DARK7 }},
+        "activityBarTop.foreground": "{{ colors.FG_MUTED }}",
+        "activityBarTop.inactiveForeground": "{{ colors.DARK7 }}",
 
-        "tree.indentGuidesStroke": {{ colors.BG_STRIPE }},
-        "sideBar.foreground": {{ colors.FG_MUTED }},
-        "sideBar.background": {{ colors.BG_DARK }},
-        "sideBar.border": {{ colors.BG_DEEP }},
-        "sideBarTitle.foreground": {{ colors.FG_MUTED }},
-        "sideBarSectionHeader.background": {{ colors.BG_DARK }},
-        "sideBarSectionHeader.foreground": {{ colors.FG_DARK }},
-        "sideBarSectionHeader.border": {{ colors.BG_DEEP }},
-        "sideBar.dropBackground": {{ colors.BG_HIGHLIGHT }},
+        "tree.indentGuidesStroke": "{{ colors.BG_STRIPE }}",
+        "sideBar.foreground": "{{ colors.FG_MUTED }}",
+        "sideBar.background": "{{ colors.BG_DARK }}",
+        "sideBar.border": "{{ colors.BG_DEEP }}",
+        "sideBarTitle.foreground": "{{ colors.FG_MUTED }}",
+        "sideBarSectionHeader.background": "{{ colors.BG_DARK }}",
+        "sideBarSectionHeader.foreground": "{{ colors.FG_DARK }}",
+        "sideBarSectionHeader.border": "{{ colors.BG_DEEP }}",
+        "sideBar.dropBackground": "{{ colors.BG_HIGHLIGHT }}",
 
-        "list.dropBackground": {{ colors.BG_HIGHLIGHT }},
-        "list.deemphasizedForeground":{{ colors.FG_MUTED }},
-        "list.activeSelectionBackground": {{ colors.BG_ACTIVE }},
+        "list.dropBackground": "{{ colors.BG_HIGHLIGHT }}",
+        "list.deemphasizedForeground":"{{ colors.FG_MUTED }}",
+        "list.activeSelectionBackground": "{{ colors.BG_ACTIVE }}",
 
-        "list.activeSelectionForeground": {{ colors.FG_DARK }},
-        "list.inactiveSelectionBackground": {{ colors.BG_FOCUSED }},
-        "list.inactiveSelectionForeground": {{ colors.FG_DARK }},
-        "list.focusBackground": {{ colors.BG_FOCUSED }},
-        "list.focusForeground": {{ colors.FG_DARK }},
-        "list.hoverBackground": {{ colors.BG_HOVER }},
-        "list.hoverForeground": {{ colors.FG_DARK }},
+        "list.activeSelectionForeground": "{{ colors.FG_DARK }}",
+        "list.inactiveSelectionBackground": "{{ colors.BG_FOCUSED }}",
+        "list.inactiveSelectionForeground": "{{ colors.FG_DARK }}",
+        "list.focusBackground": "{{ colors.BG_FOCUSED }}",
+        "list.focusForeground": "{{ colors.FG_DARK }}",
+        "list.hoverBackground": "{{ colors.BG_HOVER }}",
+        "list.hoverForeground": "{{ colors.FG_DARK }}",
 
-        "list.highlightForeground": {{ colors.ACCENT_DIM }},
-        "list.invalidItemForeground": {{ colors.ERROR }},
-        "list.errorForeground": {{ colors.ERROR_SUBTLE }},
-        "list.warningForeground": {{ colors.WARNING_SUBTLE }},
+        "list.highlightForeground": "{{ colors.ACCENT_DIM }}",
+        "list.invalidItemForeground": "{{ colors.ERROR }}",
+        "list.errorForeground": "{{ colors.ERROR_SUBTLE }}",
+        "list.warningForeground": "{{ colors.WARNING_SUBTLE }}",
 
-        "listFilterWidget.background": {{ colors.BG_DEEP }},
-        "listFilterWidget.outline": {{ colors.ACCENT }},
-        "listFilterWidget.noMatchesOutline": {{ colors.ERROR_BORDER }},
+        "listFilterWidget.background": "{{ colors.BG_DEEP }}",
+        "listFilterWidget.outline": "{{ colors.ACCENT }}",
+        "listFilterWidget.noMatchesOutline": "{{ colors.ERROR_BORDER }}",
 
-        "pickerGroup.foreground": {{ colors.FG_DARK }},
-        "pickerGroup.border": {{ colors.BG_DEEP }},
+        "pickerGroup.foreground": "{{ colors.FG_DARK }}",
+        "pickerGroup.border": "{{ colors.BG_DEEP }}",
 
-        "scrollbarSlider.background": {{ colors.ACCENT_DIM | rgba("15") }},
-        "scrollbarSlider.hoverBackground": {{ colors.ACCENT_DIM | rgba("10") }},
-        "scrollbarSlider.activeBackground": {{ colors.ACCENT_DIM | rgba("22") }},
+        "scrollbarSlider.background": "{{ colors.ACCENT_DIM | rgba("15") }}",
+        "scrollbarSlider.hoverBackground": "{{ colors.ACCENT_DIM | rgba("10") }}",
+        "scrollbarSlider.activeBackground": "{{ colors.ACCENT_DIM | rgba("22") }}",
 
-        "editorBracketHighlight.foreground1": {{ colors.RAINBOW_1 }}, //{{ colors.ANSI_BLUE }},
-        "editorBracketHighlight.foreground2": {{ colors.RAINBOW_2 }}, //{{ colors.ANSI_CYAN }},
-        "editorBracketHighlight.foreground3": {{ colors.RAINBOW_3 }}, //{{ colors.ANSI_MAGENTA }},
-        "editorBracketHighlight.foreground4": {{ colors.RAINBOW_4 }}, //{{ colors.SECONDARY_MUTED }},
-        "editorBracketHighlight.foreground5": {{ colors.RAINBOW_5 }}, //{{ colors.SUCCESS_MUTED }},
-        "editorBracketHighlight.foreground6": {{ colors.RAINBOW_6 }}, //{{ colors.ANSI_YELLOW }},
-        "editorBracketHighlight.unexpectedBracket.foreground": {{ colors.ERROR }},
+        "editorBracketHighlight.foreground1": "{{ colors.RAINBOW_1 }}", //"{{ colors.ANSI_BLUE }}",
+        "editorBracketHighlight.foreground2": "{{ colors.RAINBOW_2 }}", //"{{ colors.ANSI_CYAN }}",
+        "editorBracketHighlight.foreground3": "{{ colors.RAINBOW_3 }}", //"{{ colors.ANSI_MAGENTA }}",
+        "editorBracketHighlight.foreground4": "{{ colors.RAINBOW_4 }}", //"{{ colors.SECONDARY_MUTED }}",
+        "editorBracketHighlight.foreground5": "{{ colors.RAINBOW_5 }}", //"{{ colors.SUCCESS_MUTED }}",
+        "editorBracketHighlight.foreground6": "{{ colors.RAINBOW_6 }}", //"{{ colors.ANSI_YELLOW }}",
+        "editorBracketHighlight.unexpectedBracket.foreground": "{{ colors.ERROR }}",
 
-        "editorBracketPairGuide.activeBackground1": {{ colors.RAINBOW_1 }},
-        "editorBracketPairGuide.activeBackground2": {{ colors.RAINBOW_2 }},
-        "editorBracketPairGuide.activeBackground3": {{ colors.RAINBOW_3 }},
-        "editorBracketPairGuide.activeBackground4": {{ colors.RAINBOW_4 }},
-        "editorBracketPairGuide.activeBackground5": {{ colors.RAINBOW_5 }},
-        "editorBracketPairGuide.activeBackground6": {{ colors.RAINBOW_6 }},
+        "editorBracketPairGuide.activeBackground1": "{{ colors.RAINBOW_1 }}",
+        "editorBracketPairGuide.activeBackground2": "{{ colors.RAINBOW_2 }}",
+        "editorBracketPairGuide.activeBackground3": "{{ colors.RAINBOW_3 }}",
+        "editorBracketPairGuide.activeBackground4": "{{ colors.RAINBOW_4 }}",
+        "editorBracketPairGuide.activeBackground5": "{{ colors.RAINBOW_5 }}",
+        "editorBracketPairGuide.activeBackground6": "{{ colors.RAINBOW_6 }}",
 
-        "selection.background": {{ colors.FG_DISABLED | rgba("40") }},
-        "editor.background": {{ colors.BG }},
-        "editor.foreground": {{ colors.FG_DARK }},
-        "editor.foldBackground": {{ colors.BG_DEEP | rgba("4a") }},
-        "editorLink.activeForeground": {{ colors.FG_BRIGHT }},
+        "selection.background": "{{ colors.FG_DISABLED | rgba("40") }}",
+        "editor.background": "{{ colors.BG }}",
+        "editor.foreground": "{{ colors.FG_DARK }}",
+        "editor.foldBackground": "{{ colors.BG_DEEP | rgba("4a") }}",
+        "editorLink.activeForeground": "{{ colors.FG_BRIGHT }}",
 
-        "editor.selectionBackground": {{ colors.FG_DISABLED | rgba("4d") }},
-        "editor.inactiveSelectionBackground": {{ colors.FG_DISABLED | rgba("25") }},
+        "editor.selectionBackground": "{{ colors.FG_DISABLED | rgba("4d") }}",
+        "editor.inactiveSelectionBackground": "{{ colors.FG_DISABLED | rgba("25") }}",
 
-        "editor.findMatchBackground": {{ colors.ACCENT | rgba("66") }},
-        "editor.findMatchBorder": {{ colors.ANSI_YELLOW }},
-        "editor.findMatchHighlightBackground": {{ colors.ACCENT | rgba("66") }},
+        "editor.findMatchBackground": "{{ colors.ACCENT | rgba("66") }}",
+        "editor.findMatchBorder": "{{ colors.ANSI_YELLOW }}",
+        "editor.findMatchHighlightBackground": "{{ colors.ACCENT | rgba("66") }}",
 
-        "editor.findRangeHighlightBackground": {{ colors.FG_DISABLED | rgba("33") }},
-        "editor.rangeHighlightBackground": {{ colors.FG_DISABLED | rgba("20") }},
-        "editor.wordHighlightBackground": {{ colors.FG_DISABLED | rgba("44") }},
-        "editor.wordHighlightStrongBackground": {{ colors.FG_DISABLED | rgba("55") }},
-        "editor.selectionHighlightBackground": {{ colors.FG_DISABLED | rgba("44") }},
+        "editor.findRangeHighlightBackground": "{{ colors.FG_DISABLED | rgba("33") }}",
+        "editor.rangeHighlightBackground": "{{ colors.FG_DISABLED | rgba("20") }}",
+        "editor.wordHighlightBackground": "{{ colors.FG_DISABLED | rgba("44") }}",
+        "editor.wordHighlightStrongBackground": "{{ colors.FG_DISABLED | rgba("55") }}",
+        "editor.selectionHighlightBackground": "{{ colors.FG_DISABLED | rgba("44") }}",
 
-        "editorCursor.foreground": {{ colors.FG }},
-        "editorIndentGuide.background1": {{ colors.BG_STRIPE }},
-        "editorIndentGuide.activeBackground1": {{ colors.ANSI_BLACK }},
-        "editorLineNumber.foreground": {{ colors.ANSI_BLACK }},
-        "editorLineNumber.activeForeground": {{ colors.FG_MUTED }},
-        "editor.lineHighlightBackground": {{ colors.BG_HIGHLIGHT }},
-        "editorWhitespace.foreground": {{ colors.ANSI_BLACK }},
+        "editorCursor.foreground": "{{ colors.FG }}",
+        "editorIndentGuide.background1": "{{ colors.BG_STRIPE }}",
+        "editorIndentGuide.activeBackground1": "{{ colors.ANSI_BLACK }}",
+        "editorLineNumber.foreground": "{{ colors.ANSI_BLACK }}",
+        "editorLineNumber.activeForeground": "{{ colors.FG_MUTED }}",
+        "editor.lineHighlightBackground": "{{ colors.BG_HIGHLIGHT }}",
+        "editorWhitespace.foreground": "{{ colors.ANSI_BLACK }}",
 
-        "editorMarkerNavigation.background": {{ colors.BG_DARK }},
-        "editorHoverWidget.background": {{ colors.BG_DARK }},
-        "editorHoverWidget.border": {{ colors.BG_DEEP }},
+        "editorMarkerNavigation.background": "{{ colors.BG_DARK }}",
+        "editorHoverWidget.background": "{{ colors.BG_DARK }}",
+        "editorHoverWidget.border": "{{ colors.BG_DEEP }}",
 
-        "editorBracketMatch.background": {{ colors.BG_DARK }},
-        "editorBracketMatch.border": {{ colors.DARK6 }},
+        "editorBracketMatch.background": "{{ colors.BG_DARK }}",
+        "editorBracketMatch.border": "{{ colors.DARK6 }}",
 
-        "editorOverviewRuler.border": {{ colors.BG_DEEP }},
-        "editorOverviewRuler.errorForeground": {{ colors.ERROR }},
-        "editorOverviewRuler.warningForeground": {{ colors.ANSI_YELLOW }},
-        "editorOverviewRuler.infoForeground": {{ colors.INFO_ALT }},
-        "editorOverviewRuler.bracketMatchForeground": {{ colors.BG_DEEP }},
-        "editorOverviewRuler.findMatchForeground": {{ colors.FG_DARK | rgba("44") }},
-        "editorOverviewRuler.rangeHighlightForeground": {{ colors.FG_DARK | rgba("44") }},
-        "editorOverviewRuler.selectionHighlightForeground": {{ colors.FG_DARK | rgba("22") }},
-        "editorOverviewRuler.wordHighlightForeground": {{ colors.TERTIARY | rgba("55") }},
-        "editorOverviewRuler.wordHighlightStrongForeground": {{ colors.TERTIARY | rgba("66") }},
-        "editorOverviewRuler.modifiedForeground": {{ colors.DARK6 }},
-        "editorOverviewRuler.addedForeground": {{ colors.VCS_ADDED }},
-        "editorOverviewRuler.deletedForeground": {{ colors.ERROR_SURFACE }},
+        "editorOverviewRuler.border": "{{ colors.BG_DEEP }}",
+        "editorOverviewRuler.errorForeground": "{{ colors.ERROR }}",
+        "editorOverviewRuler.warningForeground": "{{ colors.ANSI_YELLOW }}",
+        "editorOverviewRuler.infoForeground": "{{ colors.INFO_ALT }}",
+        "editorOverviewRuler.bracketMatchForeground": "{{ colors.BG_DEEP }}",
+        "editorOverviewRuler.findMatchForeground": "{{ colors.FG_DARK | rgba("44") }}",
+        "editorOverviewRuler.rangeHighlightForeground": "{{ colors.FG_DARK | rgba("44") }}",
+        "editorOverviewRuler.selectionHighlightForeground": "{{ colors.FG_DARK | rgba("22") }}",
+        "editorOverviewRuler.wordHighlightForeground": "{{ colors.TERTIARY | rgba("55") }}",
+        "editorOverviewRuler.wordHighlightStrongForeground": "{{ colors.TERTIARY | rgba("66") }}",
+        "editorOverviewRuler.modifiedForeground": "{{ colors.DARK6 }}",
+        "editorOverviewRuler.addedForeground": "{{ colors.VCS_ADDED }}",
+        "editorOverviewRuler.deletedForeground": "{{ colors.ERROR_SURFACE }}",
 
-        "editorRuler.foreground": {{ colors.BG_DEEP }},
-        "editorError.foreground": {{ colors.ERROR }},
-        "editorWarning.foreground": {{ colors.ANSI_YELLOW }},
-        "editorInfo.foreground": {{ colors.INFO_SUBTLE }},
-        "editorHint.foreground": {{ colors.INFO_SUBTLE }},
+        "editorRuler.foreground": "{{ colors.BG_DEEP }}",
+        "editorError.foreground": "{{ colors.ERROR }}",
+        "editorWarning.foreground": "{{ colors.ANSI_YELLOW }}",
+        "editorInfo.foreground": "{{ colors.INFO_SUBTLE }}",
+        "editorHint.foreground": "{{ colors.INFO_SUBTLE }}",
 
-        "editorGutter.modifiedBackground": {{ colors.DARK6 }},
-        "editorGutter.addedBackground": {{ colors.VCS_ADDED }},
-        "editorGutter.deletedBackground": {{ colors.ERROR_SURFACE }},
+        "editorGutter.modifiedBackground": "{{ colors.DARK6 }}",
+        "editorGutter.addedBackground": "{{ colors.VCS_ADDED }}",
+        "editorGutter.deletedBackground": "{{ colors.ERROR_SURFACE }}",
 
-        "editorGhostText.foreground": {{ colors.FG_HINT }},
+        "editorGhostText.foreground": "{{ colors.FG_HINT }}",
 
-        "minimapGutter.modifiedBackground": {{ colors.DARK4 }},
-        "minimapGutter.addedBackground": {{ colors.VCS_ADDED }},
-        "minimapGutter.deletedBackground": {{ colors.ERROR_BORDER }},
+        "minimapGutter.modifiedBackground": "{{ colors.DARK4 }}",
+        "minimapGutter.addedBackground": "{{ colors.VCS_ADDED }}",
+        "minimapGutter.deletedBackground": "{{ colors.ERROR_BORDER }}",
 
-        "editorGroup.border": {{ colors.BG_DEEP }},
-        "editorGroup.dropBackground": {{ colors.BG_HIGHLIGHT }},
-        "editorGroupHeader.tabsBorder": {{ colors.BG_DEEP }},
-        "editorGroupHeader.tabsBackground": {{ colors.BG_DARK }},
-        "editorGroupHeader.noTabsBackground": {{ colors.BG_DARK }},
-        "editorGroupHeader.border": {{ colors.BG_DEEP }},
+        "editorGroup.border": "{{ colors.BG_DEEP }}",
+        "editorGroup.dropBackground": "{{ colors.BG_HIGHLIGHT }}",
+        "editorGroupHeader.tabsBorder": "{{ colors.BG_DEEP }}",
+        "editorGroupHeader.tabsBackground": "{{ colors.BG_DARK }}",
+        "editorGroupHeader.noTabsBackground": "{{ colors.BG_DARK }}",
+        "editorGroupHeader.border": "{{ colors.BG_DEEP }}",
 
-        "editorPane.background": {{ colors.BG }},
+        "editorPane.background": "{{ colors.BG }}",
 
-        "editorWidget.foreground": {{ colors.FG_MUTED }},
-        "editorWidget.background": {{ colors.BG_DARK }},
-        "editorWidget.border": {{ colors.BG_DEEP }},
-        "editorWidget.resizeBorder": {{ colors.FG_DISABLED | rgba("33") }},
+        "editorWidget.foreground": "{{ colors.FG_MUTED }}",
+        "editorWidget.background": "{{ colors.BG_DARK }}",
+        "editorWidget.border": "{{ colors.BG_DEEP }}",
+        "editorWidget.resizeBorder": "{{ colors.FG_DISABLED | rgba("33") }}",
 
-        "editorSuggestWidget.background": {{ colors.BG_DARK }},
-        "editorSuggestWidget.border": {{ colors.BG_DEEP }},
-        "editorSuggestWidget.selectedBackground": {{ colors.BG_SELECTED }},
-        "editorSuggestWidget.highlightForeground": {{ colors.ACCENT_MUTED }},
+        "editorSuggestWidget.background": "{{ colors.BG_DARK }}",
+        "editorSuggestWidget.border": "{{ colors.BG_DEEP }}",
+        "editorSuggestWidget.selectedBackground": "{{ colors.BG_SELECTED }}",
+        "editorSuggestWidget.highlightForeground": "{{ colors.ACCENT_MUTED }}",
 
-        "editorCodeLens.foreground": {{ colors.DARK4 }},
-        "editorLightBulb.foreground": {{ colors.ANSI_YELLOW }},
-        "editorLightBulbAutoFix.foreground": {{ colors.ANSI_YELLOW }},
+        "editorCodeLens.foreground": "{{ colors.DARK4 }}",
+        "editorLightBulb.foreground": "{{ colors.ANSI_YELLOW }}",
+        "editorLightBulbAutoFix.foreground": "{{ colors.ANSI_YELLOW }}",
 
-        "editorInlayHint.foreground": {{ colors.FG_HINT }},
+        "editorInlayHint.foreground": "{{ colors.FG_HINT }}",
 
-        "peekView.border": {{ colors.BG_DEEP }},
-        "peekViewEditor.background": {{ colors.BG_DARK }},
-        "peekViewEditor.matchHighlightBackground": {{ colors.ACCENT | rgba("66") }},
-        "peekViewTitle.background": {{ colors.BG_DEEP }},
-        "peekViewTitleLabel.foreground": {{ colors.FG_DARK }},
-        "peekViewTitleDescription.foreground": {{ colors.FG_MUTED }},
-        "peekViewResult.background": {{ colors.BG_DEEP }},
-        "peekViewResult.selectionForeground": {{ colors.FG_DARK }},
-        "peekViewResult.selectionBackground": {{ colors.ACCENT | rgba("33") }},
-        "peekViewResult.lineForeground": {{ colors.FG_DARK }},
-        "peekViewResult.fileForeground": {{ colors.FG_MUTED }},
-        "peekViewResult.matchHighlightBackground": {{ colors.ACCENT | rgba("66") }},
+        "peekView.border": "{{ colors.BG_DEEP }}",
+        "peekViewEditor.background": "{{ colors.BG_DARK }}",
+        "peekViewEditor.matchHighlightBackground": "{{ colors.ACCENT | rgba("66") }}",
+        "peekViewTitle.background": "{{ colors.BG_DEEP }}",
+        "peekViewTitleLabel.foreground": "{{ colors.FG_DARK }}",
+        "peekViewTitleDescription.foreground": "{{ colors.FG_MUTED }}",
+        "peekViewResult.background": "{{ colors.BG_DEEP }}",
+        "peekViewResult.selectionForeground": "{{ colors.FG_DARK }}",
+        "peekViewResult.selectionBackground": "{{ colors.ACCENT | rgba("33") }}",
+        "peekViewResult.lineForeground": "{{ colors.FG_DARK }}",
+        "peekViewResult.fileForeground": "{{ colors.FG_MUTED }}",
+        "peekViewResult.matchHighlightBackground": "{{ colors.ACCENT | rgba("66") }}",
 
-        "diffEditor.insertedTextBackground": {{ colors.SUCCESS_SUBTLE | rgba("20") }},
-        "diffEditor.removedTextBackground": {{ colors.ERROR | rgba("22") }},
-        "diffEditor.insertedLineBackground": {{ colors.SUCCESS_SUBTLE | rgba("20") }},
-        "diffEditor.removedLineBackground": {{ colors.ERROR | rgba("22") }},
-        "diffEditorGutter.insertedLineBackground": {{ colors.SUCCESS_SUBTLE | rgba("25") }},
-        "diffEditorGutter.removedLineBackground": {{ colors.ERROR | rgba("22") }},
-        "diffEditorOverview.insertedForeground": {{ colors.SUCCESS_SUBTLE | rgba("25") }},
-        "diffEditorOverview.removedForeground": {{ colors.ERROR | rgba("22") }},
-        "diffEditor.diagonalFill": {{ colors.BG_STRIPE }},
-        "diffEditor.unchangedCodeBackground": {{ colors.BG_STRIPE | rgba("66") }},
+        "diffEditor.insertedTextBackground": "{{ colors.SUCCESS_SUBTLE | rgba("20") }}",
+        "diffEditor.removedTextBackground": "{{ colors.ERROR | rgba("22") }}",
+        "diffEditor.insertedLineBackground": "{{ colors.SUCCESS_SUBTLE | rgba("20") }}",
+        "diffEditor.removedLineBackground": "{{ colors.ERROR | rgba("22") }}",
+        "diffEditorGutter.insertedLineBackground": "{{ colors.SUCCESS_SUBTLE | rgba("25") }}",
+        "diffEditorGutter.removedLineBackground": "{{ colors.ERROR | rgba("22") }}",
+        "diffEditorOverview.insertedForeground": "{{ colors.SUCCESS_SUBTLE | rgba("25") }}",
+        "diffEditorOverview.removedForeground": "{{ colors.ERROR | rgba("22") }}",
+        "diffEditor.diagonalFill": "{{ colors.BG_STRIPE }}",
+        "diffEditor.unchangedCodeBackground": "{{ colors.BG_STRIPE | rgba("66") }}",
 
-        "multiDiffEditor.headerBackground": {{ colors.BG }},
-        "multiDiffEditor.border": {{ colors.BG }},
+        "multiDiffEditor.headerBackground": "{{ colors.BG }}",
+        "multiDiffEditor.border": "{{ colors.BG }}",
 
-        "breadcrumb.background": {{ colors.BG_DARK }},
-        "breadcrumbPicker.background": {{ colors.BG_DARK }},
-        "breadcrumb.foreground": {{ colors.DARK3 }},
-        "breadcrumb.focusForeground": {{ colors.FG_DARK }},
-        "breadcrumb.activeSelectionForeground": {{ colors.FG_DARK }},
+        "breadcrumb.background": "{{ colors.BG_DARK }}",
+        "breadcrumbPicker.background": "{{ colors.BG_DARK }}",
+        "breadcrumb.foreground": "{{ colors.DARK3 }}",
+        "breadcrumb.focusForeground": "{{ colors.FG_DARK }}",
+        "breadcrumb.activeSelectionForeground": "{{ colors.FG_DARK }}",
 
-        "tab.activeBackground": {{ colors.BG_DARK }},
-        "tab.inactiveBackground": {{ colors.BG_DARK }},
-        "tab.activeForeground": {{ colors.FG_DARK }},
-        "tab.hoverForeground": {{ colors.FG_DARK }},
-        "tab.activeBorder": {{ colors.ACCENT }},
-        "tab.inactiveForeground": {{ colors.FG_MUTED }},
-        "tab.border": {{ colors.BG_DEEP }},
-        "tab.unfocusedActiveForeground": {{ colors.FG_DARK }},
-        "tab.unfocusedInactiveForeground": {{ colors.FG_MUTED }},
-        "tab.unfocusedHoverForeground": {{ colors.FG_DARK }},
-        "tab.activeModifiedBorder": {{ colors.BG }},
-        "tab.inactiveModifiedBorder": {{ colors.BG_HIGHLIGHT }},
-        "tab.unfocusedActiveBorder": {{ colors.BG_HIGHLIGHT }},
-        "tab.lastPinnedBorder": {{ colors.BG_STRIPE }},
+        "tab.activeBackground": "{{ colors.BG_DARK }}",
+        "tab.inactiveBackground": "{{ colors.BG_DARK }}",
+        "tab.activeForeground": "{{ colors.FG_DARK }}",
+        "tab.hoverForeground": "{{ colors.FG_DARK }}",
+        "tab.activeBorder": "{{ colors.ACCENT }}",
+        "tab.inactiveForeground": "{{ colors.FG_MUTED }}",
+        "tab.border": "{{ colors.BG_DEEP }}",
+        "tab.unfocusedActiveForeground": "{{ colors.FG_DARK }}",
+        "tab.unfocusedInactiveForeground": "{{ colors.FG_MUTED }}",
+        "tab.unfocusedHoverForeground": "{{ colors.FG_DARK }}",
+        "tab.activeModifiedBorder": "{{ colors.BG }}",
+        "tab.inactiveModifiedBorder": "{{ colors.BG_HIGHLIGHT }}",
+        "tab.unfocusedActiveBorder": "{{ colors.BG_HIGHLIGHT }}",
+        "tab.lastPinnedBorder": "{{ colors.BG_STRIPE }}",
 
-        "panel.background": {{ colors.BG_DARK }},
-        "panel.border": {{ colors.BG_DEEP }},
-        "panelTitle.activeForeground": {{ colors.FG_MUTED }},
-        "panelTitle.inactiveForeground": {{ colors.DARK6 }},
-        "panelTitle.activeBorder": {{ colors.BG_DARK }},
-        "panelInput.border": {{ colors.BG_DARK }},
+        "panel.background": "{{ colors.BG_DARK }}",
+        "panel.border": "{{ colors.BG_DEEP }}",
+        "panelTitle.activeForeground": "{{ colors.FG_MUTED }}",
+        "panelTitle.inactiveForeground": "{{ colors.DARK6 }}",
+        "panelTitle.activeBorder": "{{ colors.BG_DARK }}",
+        "panelInput.border": "{{ colors.BG_DARK }}",
 
-        "statusBar.foreground": {{ colors.FG_MUTED }},
-        "statusBar.background": {{ colors.BG_DARK }},
-        "statusBar.border": {{ colors.BG_DEEP }},
-        "statusBar.noFolderBackground": {{ colors.BG_DARK }},
-        "statusBar.debuggingBackground": {{ colors.BG_DARK }},
-        "statusBar.debuggingForeground": {{ colors.FG_MUTED }},
+        "statusBar.foreground": "{{ colors.FG_MUTED }}",
+        "statusBar.background": "{{ colors.BG_DARK }}",
+        "statusBar.border": "{{ colors.BG_DEEP }}",
+        "statusBar.noFolderBackground": "{{ colors.BG_DARK }}",
+        "statusBar.debuggingBackground": "{{ colors.BG_DARK }}",
+        "statusBar.debuggingForeground": "{{ colors.FG_MUTED }}",
 
-        "statusBarItem.activeBackground": {{ colors.BG_DEEP }},
-        "statusBarItem.hoverBackground": {{ colors.BG_SELECTED }},
-        "statusBarItem.prominentBackground": {{ colors.BG_DEEP }},
-        "statusBarItem.prominentHoverBackground": {{ colors.BG_SELECTED }},
+        "statusBarItem.activeBackground": "{{ colors.BG_DEEP }}",
+        "statusBarItem.hoverBackground": "{{ colors.BG_SELECTED }}",
+        "statusBarItem.prominentBackground": "{{ colors.BG_DEEP }}",
+        "statusBarItem.prominentHoverBackground": "{{ colors.BG_SELECTED }}",
 
-        "titleBar.activeForeground": {{ colors.FG_MUTED }},
-        "titleBar.inactiveForeground": {{ colors.FG_MUTED }},
-        "titleBar.activeBackground": {{ colors.BG_DARK }},
-        "titleBar.inactiveBackground": {{ colors.BG_DARK }},
-        "titleBar.border": {{ colors.BG_DEEP }},
+        "titleBar.activeForeground": "{{ colors.FG_MUTED }}",
+        "titleBar.inactiveForeground": "{{ colors.FG_MUTED }}",
+        "titleBar.activeBackground": "{{ colors.BG_DARK }}",
+        "titleBar.inactiveBackground": "{{ colors.BG_DARK }}",
+        "titleBar.border": "{{ colors.BG_DEEP }}",
 
-        "walkThrough.embeddedEditorBackground": {{ colors.BG_DARK }},
-        "textLink.foreground": {{ colors.ACCENT_MUTED }},
-        "textLink.activeForeground": {{ colors.ANSI_CYAN }},
-        "textPreformat.foreground": {{ colors.FG_SUBTLE }},
-        "textBlockQuote.background": {{ colors.BG_DARK }},
-        "textCodeBlock.background": {{ colors.BG_DARK }},
-        "textSeparator.foreground": {{ colors.ANSI_BLACK }},
+        "walkThrough.embeddedEditorBackground": "{{ colors.BG_DARK }}",
+        "textLink.foreground": "{{ colors.ACCENT_MUTED }}",
+        "textLink.activeForeground": "{{ colors.ANSI_CYAN }}",
+        "textPreformat.foreground": "{{ colors.FG_SUBTLE }}",
+        "textBlockQuote.background": "{{ colors.BG_DARK }}",
+        "textCodeBlock.background": "{{ colors.BG_DARK }}",
+        "textSeparator.foreground": "{{ colors.ANSI_BLACK }}",
 
-        "debugExceptionWidget.border": {{ colors.ERROR_BORDER }},
-        "debugExceptionWidget.background": {{ colors.BG_DEEP }},
-        "debugToolBar.background": {{ colors.BG_DEEP }},
+        "debugExceptionWidget.border": "{{ colors.ERROR_BORDER }}",
+        "debugExceptionWidget.background": "{{ colors.BG_DEEP }}",
+        "debugToolBar.background": "{{ colors.BG_DEEP }}",
 
-        "debugConsole.infoForeground": {{ colors.FG_MUTED }},
-        "debugConsole.errorForeground": {{ colors.ERROR_SUBTLE }},
-        "debugConsole.sourceForeground": {{ colors.FG_MUTED }},
-        "debugConsole.warningForeground": {{ colors.WARNING_SUBTLE }},
-        "debugConsoleInputIcon.foreground": {{ colors.ANSI_GREEN }},
+        "debugConsole.infoForeground": "{{ colors.FG_MUTED }}",
+        "debugConsole.errorForeground": "{{ colors.ERROR_SUBTLE }}",
+        "debugConsole.sourceForeground": "{{ colors.FG_MUTED }}",
+        "debugConsole.warningForeground": "{{ colors.WARNING_SUBTLE }}",
+        "debugConsoleInputIcon.foreground": "{{ colors.ANSI_GREEN }}",
 
-        "editor.stackFrameHighlightBackground": {{ colors.WARNING_LOW | rgba("20") }},
-        "editor.focusedStackFrameHighlightBackground": {{ colors.SUCCESS | rgba("20") }},
-        "debugView.stateLabelForeground":{{ colors.FG_MUTED }},
-        "debugView.stateLabelBackground": {{ colors.BG_POPUP }},
-        "debugView.valueChangedHighlight": {{ colors.ACCENT | rgba("aa") }},
-        "debugTokenExpression.name": {{ colors.ANSI_CYAN }},
-        "debugTokenExpression.value":{{ colors.FG_DIM }},
-        "debugTokenExpression.string":{{ colors.SUCCESS_MUTED }},
-        "debugTokenExpression.boolean":{{ colors.URGENT }},
-        "debugTokenExpression.number":{{ colors.URGENT }},
-        "debugTokenExpression.error":{{ colors.ERROR_SUBTLE }},
+        "editor.stackFrameHighlightBackground": "{{ colors.WARNING_LOW | rgba("20") }}",
+        "editor.focusedStackFrameHighlightBackground": "{{ colors.SUCCESS | rgba("20") }}",
+        "debugView.stateLabelForeground":"{{ colors.FG_MUTED }}",
+        "debugView.stateLabelBackground": "{{ colors.BG_POPUP }}",
+        "debugView.valueChangedHighlight": "{{ colors.ACCENT | rgba("aa") }}",
+        "debugTokenExpression.name": "{{ colors.ANSI_CYAN }}",
+        "debugTokenExpression.value":"{{ colors.FG_DIM }}",
+        "debugTokenExpression.string":"{{ colors.SUCCESS_MUTED }}",
+        "debugTokenExpression.boolean":"{{ colors.URGENT }}",
+        "debugTokenExpression.number":"{{ colors.URGENT }}",
+        "debugTokenExpression.error":"{{ colors.ERROR_SUBTLE }}",
 
-        "debugIcon.breakpointForeground": {{ colors.ERROR }},
-        "debugIcon.breakpointDisabledForeground": {{ colors.DARK6 }},
-        "debugIcon.breakpointUnverifiedForeground": {{ colors.ERROR_DIM }},
+        "debugIcon.breakpointForeground": "{{ colors.ERROR }}",
+        "debugIcon.breakpointDisabledForeground": "{{ colors.DARK6 }}",
+        "debugIcon.breakpointUnverifiedForeground": "{{ colors.ERROR_DIM }}",
 
-        "terminal.background": {{ colors.BG_DARK }},
-        "terminal.foreground": {{ colors.FG_MUTED }},
-        "terminal.selectionBackground": {{ colors.FG_DISABLED | rgba("4d") }},
+        "terminal.background": "{{ colors.BG_DARK }}",
+        "terminal.foreground": "{{ colors.FG_MUTED }}",
+        "terminal.selectionBackground": "{{ colors.FG_DISABLED | rgba("4d") }}",
         // "terminalCursor.background": "",
         // "terminalCursor.foreground": "",
 
-        "terminal.ansiBlack": {{ colors.ANSI_BLACK }},
-        "terminal.ansiRed": {{ colors.ANSI_RED }},
-        "terminal.ansiGreen": {{ colors.ANSI_GREEN }},
-        "terminal.ansiYellow": {{ colors.ANSI_YELLOW }},
-        "terminal.ansiBlue": {{ colors.ANSI_BLUE }},
-        "terminal.ansiMagenta": {{ colors.ANSI_MAGENTA }},
-        "terminal.ansiCyan": {{ colors.ANSI_CYAN }},
-        "terminal.ansiWhite": {{ colors.FG_MUTED }},
-        "terminal.ansiBrightBlack": {{ colors.ANSI_BLACK }},
-        "terminal.ansiBrightRed": {{ colors.ANSI_RED }},
-        "terminal.ansiBrightGreen": {{ colors.ANSI_GREEN }},
-        "terminal.ansiBrightYellow": {{ colors.ANSI_YELLOW }},
-        "terminal.ansiBrightBlue": {{ colors.ANSI_BLUE }},
-        "terminal.ansiBrightMagenta": {{ colors.ANSI_MAGENTA }},
-        "terminal.ansiBrightCyan": {{ colors.ANSI_CYAN }},
-        "terminal.ansiBrightWhite": {{ colors.FG_BRIGHT }},
+        "terminal.ansiBlack": "{{ colors.ANSI_BLACK }}",
+        "terminal.ansiRed": "{{ colors.ANSI_RED }}",
+        "terminal.ansiGreen": "{{ colors.ANSI_GREEN }}",
+        "terminal.ansiYellow": "{{ colors.ANSI_YELLOW }}",
+        "terminal.ansiBlue": "{{ colors.ANSI_BLUE }}",
+        "terminal.ansiMagenta": "{{ colors.ANSI_MAGENTA }}",
+        "terminal.ansiCyan": "{{ colors.ANSI_CYAN }}",
+        "terminal.ansiWhite": "{{ colors.FG_MUTED }}",
+        "terminal.ansiBrightBlack": "{{ colors.ANSI_BLACK }}",
+        "terminal.ansiBrightRed": "{{ colors.ANSI_RED }}",
+        "terminal.ansiBrightGreen": "{{ colors.ANSI_GREEN }}",
+        "terminal.ansiBrightYellow": "{{ colors.ANSI_YELLOW }}",
+        "terminal.ansiBrightBlue": "{{ colors.ANSI_BLUE }}",
+        "terminal.ansiBrightMagenta": "{{ colors.ANSI_MAGENTA }}",
+        "terminal.ansiBrightCyan": "{{ colors.ANSI_CYAN }}",
+        "terminal.ansiBrightWhite": "{{ colors.FG_BRIGHT }}",
 
-        "gitDecoration.modifiedResourceForeground": {{ colors.ACCENT_MUTED }},
-        "gitDecoration.ignoredResourceForeground": {{ colors.DARK3 }},
-        "gitDecoration.deletedResourceForeground": {{ colors.VCS_DELETED }},
-        "gitDecoration.renamedResourceForeground": {{ colors.VCS_ADDED }},
-        "gitDecoration.addedResourceForeground": {{ colors.VCS_ADDED }},
-        "gitDecoration.untrackedResourceForeground": {{ colors.VCS_ADDED }},
-        "gitDecoration.conflictingResourceForeground": {{ colors.WARNING | rgba("cc") }},
-        "gitDecoration.stageDeletedResourceForeground": {{ colors.VCS_DELETED }},
-        "gitDecoration.stageModifiedResourceForeground": {{ colors.ACCENT_MUTED }},
+        "gitDecoration.modifiedResourceForeground": "{{ colors.ACCENT_MUTED }}",
+        "gitDecoration.ignoredResourceForeground": "{{ colors.DARK3 }}",
+        "gitDecoration.deletedResourceForeground": "{{ colors.VCS_DELETED }}",
+        "gitDecoration.renamedResourceForeground": "{{ colors.VCS_ADDED }}",
+        "gitDecoration.addedResourceForeground": "{{ colors.VCS_ADDED }}",
+        "gitDecoration.untrackedResourceForeground": "{{ colors.VCS_ADDED }}",
+        "gitDecoration.conflictingResourceForeground": "{{ colors.WARNING | rgba("cc") }}",
+        "gitDecoration.stageDeletedResourceForeground": "{{ colors.VCS_DELETED }}",
+        "gitDecoration.stageModifiedResourceForeground": "{{ colors.ACCENT_MUTED }}",
 
-        "notebook.editorBackground": {{ colors.BG }},
-        "notebook.cellEditorBackground": {{ colors.BG_DARK }},
-        "notebook.cellBorderColor": {{ colors.BG_DEEP }},
-        "notebook.focusedCellBorder": {{ colors.BG_TINTED }},
-        "notebook.cellStatusBarItemHoverBackground": {{ colors.BG_FOCUSED }},
+        "notebook.editorBackground": "{{ colors.BG }}",
+        "notebook.cellEditorBackground": "{{ colors.BG_DARK }}",
+        "notebook.cellBorderColor": "{{ colors.BG_DEEP }}",
+        "notebook.focusedCellBorder": "{{ colors.BG_TINTED }}",
+        "notebook.cellStatusBarItemHoverBackground": "{{ colors.BG_FOCUSED }}",
 
-        "charts.red": {{ colors.ANSI_RED }},
-        "charts.blue": {{ colors.ANSI_BLUE }},
-        "charts.yellow": {{ colors.ANSI_YELLOW }},
-        "charts.orange": {{ colors.URGENT }},
-        "charts.green": {{ colors.SUCCESS_SUBTLE }},
-        "charts.purple": {{ colors.TERTIARY_SUBTLE }},
-        "charts.foreground": {{ colors.FG_DIM }},
-        "charts.lines": {{ colors.BG_DARK }},
+        "charts.red": "{{ colors.ANSI_RED }}",
+        "charts.blue": "{{ colors.ANSI_BLUE }}",
+        "charts.yellow": "{{ colors.ANSI_YELLOW }}",
+        "charts.orange": "{{ colors.URGENT }}",
+        "charts.green": "{{ colors.SUCCESS_SUBTLE }}",
+        "charts.purple": "{{ colors.TERTIARY_SUBTLE }}",
+        "charts.foreground": "{{ colors.FG_DIM }}",
+        "charts.lines": "{{ colors.BG_DARK }}",
 
-        "scmGraph.historyItemHoverLabelForeground": {{ colors.BG_OVERLAY }},
-        "scmGraph.foreground1": {{ colors.URGENT }},
-        "scmGraph.foreground2": {{ colors.ANSI_YELLOW }},
-        "scmGraph.foreground3": {{ colors.SUCCESS_SUBTLE }},
-        "scmGraph.foreground4": {{ colors.ANSI_BLUE }},
-        "scmGraph.foreground5": {{ colors.ANSI_MAGENTA }},
-        "scmGraph.historyItemHoverAdditionsForeground": {{ colors.SUCCESS_SUBTLE }},
-        "scmGraph.historyItemHoverDeletionsForeground": {{ colors.ANSI_RED }},
-        "scmGraph.historyItemRefColor": {{ colors.ACCENT_SUBTLE }},
-        "scmGraph.historyItemRemoteRefColor": {{ colors.SUCCESS_SUBTLE }},
-        "scmGraph.historyItemBaseRefColor": {{ colors.TERTIARY_SUBTLE }},
-        "scmGraph.historyItemHoverDefaultLabelForeground": {{ colors.FG_DARK }},
+        "scmGraph.historyItemHoverLabelForeground": "{{ colors.BG_OVERLAY }}",
+        "scmGraph.foreground1": "{{ colors.URGENT }}",
+        "scmGraph.foreground2": "{{ colors.ANSI_YELLOW }}",
+        "scmGraph.foreground3": "{{ colors.SUCCESS_SUBTLE }}",
+        "scmGraph.foreground4": "{{ colors.ANSI_BLUE }}",
+        "scmGraph.foreground5": "{{ colors.ANSI_MAGENTA }}",
+        "scmGraph.historyItemHoverAdditionsForeground": "{{ colors.SUCCESS_SUBTLE }}",
+        "scmGraph.historyItemHoverDeletionsForeground": "{{ colors.ANSI_RED }}",
+        "scmGraph.historyItemRefColor": "{{ colors.ACCENT_SUBTLE }}",
+        "scmGraph.historyItemRemoteRefColor": "{{ colors.SUCCESS_SUBTLE }}",
+        "scmGraph.historyItemBaseRefColor": "{{ colors.TERTIARY_SUBTLE }}",
+        "scmGraph.historyItemHoverDefaultLabelForeground": "{{ colors.FG_DARK }}",
 
-        "merge.currentHeaderBackground": {{ colors.SUCCESS_SUBTLE | rgba("25") }},
-        "merge.currentContentBackground": {{ colors.VCS_ADDED | rgba("44") }},
-        "merge.incomingHeaderBackground": {{ colors.ACCENT | rgba("aa") }},
-        "merge.incomingContentBackground": {{ colors.ACCENT | rgba("44") }},
-        "mergeEditor.change.background": {{ colors.SUCCESS_SUBTLE | rgba("25") }},
-        "mergeEditor.change.word.background": {{ colors.SUCCESS_SUBTLE | rgba("40") }},
-        "mergeEditor.conflict.unhandledUnfocused.border": {{ colors.WARNING | rgba("88") }},
-        "mergeEditor.conflict.unhandledFocused.border": {{ colors.WARNING | rgba("b0") }},
-        "mergeEditor.conflict.handledUnfocused.border": {{ colors.SUCCESS_SUBTLE | rgba("25") }},
-        "mergeEditor.conflict.handledFocused.border": {{ colors.SUCCESS_SUBTLE | rgba("65") }},
-        "mergeEditor.conflict.handled.minimapOverViewRuler": {{ colors.VCS_ADDED }},
-        "mergeEditor.conflict.unhandled.minimapOverViewRuler": {{ colors.ANSI_YELLOW }},
+        "merge.currentHeaderBackground": "{{ colors.SUCCESS_SUBTLE | rgba("25") }}",
+        "merge.currentContentBackground": "{{ colors.VCS_ADDED | rgba("44") }}",
+        "merge.incomingHeaderBackground": "{{ colors.ACCENT | rgba("aa") }}",
+        "merge.incomingContentBackground": "{{ colors.ACCENT | rgba("44") }}",
+        "mergeEditor.change.background": "{{ colors.SUCCESS_SUBTLE | rgba("25") }}",
+        "mergeEditor.change.word.background": "{{ colors.SUCCESS_SUBTLE | rgba("40") }}",
+        "mergeEditor.conflict.unhandledUnfocused.border": "{{ colors.WARNING | rgba("88") }}",
+        "mergeEditor.conflict.unhandledFocused.border": "{{ colors.WARNING | rgba("b0") }}",
+        "mergeEditor.conflict.handledUnfocused.border": "{{ colors.SUCCESS_SUBTLE | rgba("25") }}",
+        "mergeEditor.conflict.handledFocused.border": "{{ colors.SUCCESS_SUBTLE | rgba("65") }}",
+        "mergeEditor.conflict.handled.minimapOverViewRuler": "{{ colors.VCS_ADDED }}",
+        "mergeEditor.conflict.unhandled.minimapOverViewRuler": "{{ colors.ANSI_YELLOW }}",
 
-        "gitlens.trailingLineForegroundColor": {{ colors.FG_HINT }},
-        "gitlens.gutterUncommittedForegroundColor": {{ colors.ANSI_BLUE }},
-        "gitlens.gutterForegroundColor": {{ colors.FG_MUTED }},
-        "gitlens.gutterBackgroundColor": {{ colors.BG_DARK }},
+        "gitlens.trailingLineForegroundColor": "{{ colors.FG_HINT }}",
+        "gitlens.gutterUncommittedForegroundColor": "{{ colors.ANSI_BLUE }}",
+        "gitlens.gutterForegroundColor": "{{ colors.FG_MUTED }}",
+        "gitlens.gutterBackgroundColor": "{{ colors.BG_DARK }}",
 
-        "notificationCenterHeader.background": {{ colors.BG_DEEP }},
-        "notifications.background": {{ colors.BG_DEEP }},
-        "notificationLink.foreground": {{ colors.ACCENT_MUTED }},
-        "notificationsErrorIcon.foreground": {{ colors.ERROR_SUBTLE }},
-        "notificationsWarningIcon.foreground": {{ colors.WARNING_MUTED }},
-        "notificationsInfoIcon.foreground": {{ colors.INFO_SUBTLE }},
+        "notificationCenterHeader.background": "{{ colors.BG_DEEP }}",
+        "notifications.background": "{{ colors.BG_DEEP }}",
+        "notificationLink.foreground": "{{ colors.ACCENT_MUTED }}",
+        "notificationsErrorIcon.foreground": "{{ colors.ERROR_SUBTLE }}",
+        "notificationsWarningIcon.foreground": "{{ colors.WARNING_MUTED }}",
+        "notificationsInfoIcon.foreground": "{{ colors.INFO_SUBTLE }}",
 
-        "menubar.selectionForeground":{{ colors.FG_DARK }},
-        "menubar.selectionBackground":{{ colors.BG_HIGHLIGHT }},
-        "menubar.selectionBorder":{{ colors.BG_OVERLAY }},
-        "menu.foreground":{{ colors.FG_MUTED }},
-        "menu.background":{{ colors.BG_DARK }},
-        "menu.selectionForeground":{{ colors.FG_DARK }},
-        "menu.selectionBackground":{{ colors.BG_HIGHLIGHT }},
-        "menu.separatorBackground":{{ colors.BG_DEEP }},
-        "menu.border":{{ colors.BG_DEEP }},
+        "menubar.selectionForeground":"{{ colors.FG_DARK }}",
+        "menubar.selectionBackground":"{{ colors.BG_HIGHLIGHT }}",
+        "menubar.selectionBorder":"{{ colors.BG_OVERLAY }}",
+        "menu.foreground":"{{ colors.FG_MUTED }}",
+        "menu.background":"{{ colors.BG_DARK }}",
+        "menu.selectionForeground":"{{ colors.FG_DARK }}",
+        "menu.selectionBackground":"{{ colors.BG_HIGHLIGHT }}",
+        "menu.separatorBackground":"{{ colors.BG_DEEP }}",
+        "menu.border":"{{ colors.BG_DEEP }}",
 
-        "chat.requestBorder": {{ colors.BORDER }},
-        "chat.avatarBackground": {{ colors.ACCENT }},
-        "chat.avatarForeground": {{ colors.FG_DARK }},
-        "chat.slashCommandBackground": {{ colors.BG_POPUP }},
-        "chat.slashCommandForeground": {{ colors.ANSI_BLUE }},
+        "chat.requestBorder": "{{ colors.BORDER }}",
+        "chat.avatarBackground": "{{ colors.ACCENT }}",
+        "chat.avatarForeground": "{{ colors.FG_DARK }}",
+        "chat.slashCommandBackground": "{{ colors.BG_POPUP }}",
+        "chat.slashCommandForeground": "{{ colors.ANSI_BLUE }}",
 
-        "inlineChat.foreground": {{ colors.FG_DARK }},
-        "inlineChatInput.background": {{ colors.BG_POPUP }},
-        "inlineChatDiff.inserted": {{ colors.SUCCESS_SUBTLE | rgba("40") }},
-        "inlineChatDiff.removed": {{ colors.ERROR | rgba("42") }},
+        "inlineChat.foreground": "{{ colors.FG_DARK }}",
+        "inlineChatInput.background": "{{ colors.BG_POPUP }}",
+        "inlineChatDiff.inserted": "{{ colors.SUCCESS_SUBTLE | rgba("40") }}",
+        "inlineChatDiff.removed": "{{ colors.ERROR | rgba("42") }}",
 
     },
     "tokenColors": [
@@ -496,7 +495,7 @@
                 "string.quoted.docstring.multi.python constant.character.escape"
 			],
 			"settings": {
-				"foreground": {{ colors.DARK4 }}
+				"foreground": "{{ colors.DARK4 }}"
 			}
         },
         {
@@ -517,7 +516,7 @@
                 "log.date"
             ],
             "settings": {
-                "foreground": {{ colors.FG_GHOST }}
+                "foreground": "{{ colors.FG_GHOST }}"
             }
         },
         {
@@ -529,7 +528,7 @@
                 "comment.block.documentation entity.name.type.instance"
             ],
             "settings": {
-                "foreground": {{ colors.FG_HINT }}
+                "foreground": "{{ colors.FG_HINT }}"
             }
         },
         {
@@ -543,7 +542,7 @@
                 "constant.other.caps"
             ],
             "settings": {
-                "foreground": {{ colors.URGENT }}
+                "foreground": "{{ colors.URGENT }}"
             }
         },
         {
@@ -557,7 +556,7 @@
             ],
             "settings": {
                 "fontStyle": "",
-                "foreground": {{ colors.SUCCESS_MUTED }}
+                "foreground": "{{ colors.SUCCESS_MUTED }}"
             }
         },
         {
@@ -567,7 +566,7 @@
                 "constant.other.color.rgb-value.hex punctuation.definition.constant"
             ],
             "settings": {
-                "foreground": {{ colors.FG_DIM }}
+                "foreground": "{{ colors.FG_DIM }}"
             }
         },
         {
@@ -577,21 +576,21 @@
                 "invalid.illegal"
             ],
             "settings": {
-                "foreground": {{ colors.ERROR_HIGH }}
+                "foreground": "{{ colors.ERROR_HIGH }}"
             }
         },
         {
             "name": "Invalid deprecated",
             "scope": "invalid.deprecated",
             "settings": {
-                "foreground": {{ colors.ANSI_MAGENTA }}
+                "foreground": "{{ colors.ANSI_MAGENTA }}"
             }
         },
         {
             "name": "Storage Type",
             "scope": "storage.type",
             "settings": {
-                "foreground": {{ colors.ANSI_MAGENTA }}
+                "foreground": "{{ colors.ANSI_MAGENTA }}"
             }
         },
         {
@@ -601,7 +600,7 @@
                 "storage.modifier"
             ],
             "settings": {
-                "foreground": {{ colors.TERTIARY_SUBTLE }}
+                "foreground": "{{ colors.TERTIARY_SUBTLE }}"
             }
         },
         {
@@ -614,7 +613,7 @@
                 "punctuation.section.tag.twig",
             ],
             "settings": {
-                "foreground": {{ colors.ANSI_CYAN }}
+                "foreground": "{{ colors.ANSI_CYAN }}"
             }
         },
         {
@@ -629,7 +628,7 @@
                 "meta.tag.blade keyword.other.type.php",
             ],
             "settings": {
-                "foreground": {{ colors.INFO }}
+                "foreground": "{{ colors.INFO }}"
             }
         },
         {
@@ -639,7 +638,7 @@
                 "keyword.operator.rest"
             ],
             "settings": {
-                "foreground": {{ colors.ANSI_RED }},
+                "foreground": "{{ colors.ANSI_RED }}",
                 "fontStyle": "bold"
             }
         },
@@ -674,7 +673,7 @@
                 "meta.embedded.inline.phpx punctuation.definition.tag.end.html"
             ],
             "settings": {
-                "foreground": {{ colors.SECONDARY_SUBTLE }}
+                "foreground": "{{ colors.SECONDARY_SUBTLE }}"
             }
         },
         {
@@ -688,7 +687,7 @@
                 "meta.import keyword.other"
             ],
             "settings": {
-                "foreground":  {{ colors.ANSI_CYAN }}
+                "foreground":  "{{ colors.ANSI_CYAN }}"
             }
         },
         {
@@ -699,14 +698,14 @@
                 "keyword.other.important"
             ],
             "settings": {
-                "foreground": {{ colors.ANSI_MAGENTA }}
+                "foreground": "{{ colors.ANSI_MAGENTA }}"
             }
         },
         {
             "name": "Keyword SQL",
             "scope": "keyword.other.DML",
             "settings": {
-                "foreground": {{ colors.ANSI_CYAN }}
+                "foreground": "{{ colors.ANSI_CYAN }}"
             }
         },
         {
@@ -721,14 +720,14 @@
                 "keyword.operator.or.regexp"
             ],
             "settings": {
-                "foreground":  {{ colors.ANSI_MAGENTA }}
+                "foreground":  "{{ colors.ANSI_MAGENTA }}"
             }
         },
         {
             "name": "Tag",
             "scope": "entity.name.tag",
             "settings": {
-                "foreground": {{ colors.ANSI_RED }}
+                "foreground": "{{ colors.ANSI_RED }}"
             }
         },
         {
@@ -740,7 +739,7 @@
                 "meta.tag"
             ],
             "settings": {
-                "foreground": {{ colors.TERTIARY_LOW }}
+                "foreground": "{{ colors.TERTIARY_LOW }}"
             }
         },
         {
@@ -750,7 +749,7 @@
                 "text.html.php meta.embedded.block.html meta.tag.metadata.script.end.html punctuation.definition.tag.begin.html text.html.basic"
             ],
             "settings": {
-                "foreground": {{ colors.TERTIARY_DIM }}
+                "foreground": "{{ colors.TERTIARY_DIM }}"
             }
         },
         {
@@ -764,7 +763,7 @@
                 "constant.other"
             ],
             "settings": {
-                "foreground": {{ colors.ANSI_YELLOW }}
+                "foreground": "{{ colors.ANSI_YELLOW }}"
             }
         },
         {
@@ -780,14 +779,14 @@
                 "meta.embedded.inline.phpx constant.other.php"
             ],
             "settings": {
-                "foreground": {{ colors.FG }}
+                "foreground": "{{ colors.FG }}"
             }
         },
         {
             "name": "Variable Array Key",
             "scope": "meta.array.literal variable",
             "settings": {
-                "foreground": {{ colors.ANSI_CYAN }} //{{ colors.ANSI_GREEN }}
+                "foreground": "{{ colors.ANSI_CYAN }}" //"{{ colors.ANSI_GREEN }}"
             }
         },
         {
@@ -803,7 +802,7 @@
                 "meta.block entity.name.label"
             ],
             "settings": {
-                "foreground": {{ colors.ANSI_GREEN }}
+                "foreground": "{{ colors.ANSI_GREEN }}"
             }
         },
         {
@@ -815,35 +814,35 @@
                 "meta.function-call variable.other.object.property"
             ],
             "settings": {
-                "foreground": {{ colors.ANSI_CYAN }}
+                "foreground": "{{ colors.ANSI_CYAN }}"
             }
         },
         {
             "name": "Object Property",
             "scope": "variable.other.object.property",
             "settings": {
-                "foreground": {{ colors.FG }}
+                "foreground": "{{ colors.FG }}"
             }
         },
         {
             "name": "Object Literal Member lvl 3 (Vue Prop Validation)",
             "scope": "meta.objectliteral meta.object.member meta.objectliteral meta.object.member meta.objectliteral meta.object.member meta.object-literal.key",
             "settings": {
-                "foreground": {{ colors.SUCCESS_SUBTLE }}
+                "foreground": "{{ colors.SUCCESS_SUBTLE }}"
             }
         },
         {
             "name": "C-related Block Level Variables",
             "scope": "source.cpp meta.block variable.other",
             "settings": {
-                "foreground": {{ colors.ANSI_RED }}
+                "foreground": "{{ colors.ANSI_RED }}"
             }
         },
         {
             "name": "Other Variable",
             "scope": "support.other.variable",
             "settings": {
-                "foreground": {{ colors.ANSI_RED }}
+                "foreground": "{{ colors.ANSI_RED }}"
             }
         },
         {
@@ -856,7 +855,7 @@
                 "storage.type.cs"
             ],
             "settings": {
-                "foreground": {{ colors.ANSI_BLUE }}
+                "foreground": "{{ colors.ANSI_BLUE }}"
             }
         },
         {
@@ -871,7 +870,7 @@
                 "meta.object-literal entity.name.function"
             ],
             "settings": {
-                "foreground": {{ colors.ANSI_BLUE }}
+                "foreground": "{{ colors.ANSI_BLUE }}"
             }
         },
         {
@@ -883,7 +882,7 @@
                 "meta.function.parameter variable"
             ],
             "settings": {
-                "foreground": {{ colors.ANSI_YELLOW }}
+                "foreground": "{{ colors.ANSI_YELLOW }}"
             }
         },
         {
@@ -896,7 +895,7 @@
                 "keyword.other.unit"
             ],
             "settings": {
-                "foreground": {{ colors.ANSI_MAGENTA }}
+                "foreground": "{{ colors.ANSI_MAGENTA }}"
             }
         },
         {
@@ -909,7 +908,7 @@
                 "variable.other.declaration"
             ],
             "settings": {
-                "foreground": {{ colors.ANSI_MAGENTA }}
+                "foreground": "{{ colors.ANSI_MAGENTA }}"
             }
         },
         {
@@ -917,7 +916,7 @@
             "scope": "entity.other.inherited-class",
             "settings": {
                 "fontStyle": "",
-                "foreground": {{ colors.ANSI_MAGENTA }}
+                "foreground": "{{ colors.ANSI_MAGENTA }}"
             }
         },
         {
@@ -939,21 +938,21 @@
                 "variable.other.constant.object"
             ],
             "settings": {
-                "foreground": {{ colors.INFO }}
+                "foreground": "{{ colors.INFO }}"
             }
         },
         {
             "name": "Class Name",
             "scope": "entity.name",
             "settings": {
-                "foreground": {{ colors.FG }}
+                "foreground": "{{ colors.FG }}"
             }
         },
         {
             "name": "Support Function",
             "scope": "support.function",
             "settings": {
-                "foreground": {{ colors.INFO }}
+                "foreground": "{{ colors.INFO }}"
             }
         },
         {
@@ -970,7 +969,7 @@
                 "support.type.map.key"
             ],
             "settings": {
-                "foreground": {{ colors.ANSI_BLUE }}
+                "foreground": "{{ colors.ANSI_BLUE }}"
             }
         },
         {
@@ -980,7 +979,7 @@
                 "meta.definition.variable"
             ],
             "settings": {
-                "foreground": {{ colors.SUCCESS_MUTED }}
+                "foreground": "{{ colors.SUCCESS_MUTED }}"
             }
         },
         {
@@ -990,21 +989,21 @@
                 "meta.at-rule.mixin.scss entity.name.function.scss"
             ],
             "settings": {
-                "foreground": {{ colors.SUCCESS_MUTED }}
+                "foreground": "{{ colors.SUCCESS_MUTED }}"
             }
         },
         {
             "name": "CSS ID",
             "scope": "entity.other.attribute-name.id",
             "settings": {
-                "foreground": {{ colors.ERROR_LOW }}
+                "foreground": "{{ colors.ERROR_LOW }}"
             }
         },
         {
             "name": "CSS Tag",
             "scope": "entity.name.tag.css",
             "settings": {
-                "foreground": {{ colors.INFO }}
+                "foreground": "{{ colors.INFO }}"
             }
         },
         {
@@ -1016,14 +1015,14 @@
                 "entity.name.tag.reference"
             ],
             "settings": {
-                "foreground": {{ colors.ANSI_YELLOW }}
+                "foreground": "{{ colors.ANSI_YELLOW }}"
             }
         },
         {
             "name": "CSS Punctuation",
             "scope": "meta.property-list",
             "settings": {
-                "foreground": {{ colors.ACCENT_LOW }} //{{ colors.ANSI_YELLOW }}
+                "foreground": "{{ colors.ACCENT_LOW }}" //"{{ colors.ANSI_YELLOW }}"
             }
         },
         {
@@ -1034,7 +1033,7 @@
                 "meta.property-list meta.at-rule.else"
             ],
             "settings": {
-                "foreground": {{ colors.URGENT }}
+                "foreground": "{{ colors.URGENT }}"
             }
         },
         {
@@ -1043,7 +1042,7 @@
                 "entity.other.attribute-name.parent-selector-suffix punctuation.definition.entity.css"
             ],
             "settings": {
-                "foreground": {{ colors.ANSI_GREEN }}
+                "foreground": "{{ colors.ANSI_GREEN }}"
             }
         },
         {
@@ -1051,7 +1050,7 @@
             "scope":
                 "meta.property-list meta.property-list",
             "settings": {
-                "foreground": {{ colors.ACCENT_LOW }}
+                "foreground": "{{ colors.ACCENT_LOW }}"
             }
         },
         {
@@ -1062,7 +1061,7 @@
                 "meta.at-rule.include keyword.control.at-rule.include"
             ],
             "settings": {
-                "foreground": {{ colors.ANSI_MAGENTA }}
+                "foreground": "{{ colors.ANSI_MAGENTA }}"
             }
         },
         {
@@ -1080,21 +1079,21 @@
                 "keyword.control punctuation.definition.keyword"
             ],
             "settings": {
-                "foreground": {{ colors.TERTIARY_SUBTLE }}
+                "foreground": "{{ colors.TERTIARY_SUBTLE }}"
             }
         },
         {
             "name": "SCSS Include Mixin Argument",
             "scope": "meta.property-list meta.at-rule.include",
             "settings": {
-                "foreground": {{ colors.FG }}
+                "foreground": "{{ colors.FG }}"
             }
         },
         {
             "name": "CSS value",
             "scope": "support.constant.property-value",
             "settings": {
-                "foreground": {{ colors.URGENT }}
+                "foreground": "{{ colors.URGENT }}"
             }
         },
         {
@@ -1105,21 +1104,21 @@
                 "variable.other.class.js"
             ],
             "settings": {
-                "foreground": {{ colors.FG }}
+                "foreground": "{{ colors.FG }}"
             }
         },
         {
             "name": "Language methods",
             "scope": "variable.language",
             "settings": {
-                "foreground": {{ colors.ANSI_RED }}
+                "foreground": "{{ colors.ANSI_RED }}"
             }
         },
         {
             "name": "Variable punctuation",
             "scope": "variable.other punctuation.definition.variable",
             "settings": {
-                "foreground": {{ colors.FG }}
+                "foreground": "{{ colors.FG }}"
             }
         },
         {
@@ -1130,7 +1129,7 @@
                 "keyword.other.this"
             ],
             "settings": {
-                "foreground": {{ colors.ANSI_RED }}
+                "foreground": "{{ colors.ANSI_RED }}"
             }
         },
         {
@@ -1141,14 +1140,14 @@
                 "text.html.basic entity.other.attribute-name"
             ],
             "settings": {
-                "foreground": {{ colors.ANSI_MAGENTA }}
+                "foreground": "{{ colors.ANSI_MAGENTA }}"
             }
         },
         {
             "name": "HTML Character Entity",
             "scope": "text.html constant.character.entity",
             "settings": {
-                "foreground": {{ colors.INFO }}
+                "foreground": "{{ colors.INFO }}"
             }
         },
         {
@@ -1158,14 +1157,14 @@
                 "meta.directive.vue entity.other.attribute-name.html"
             ],
             "settings": {
-                "foreground": {{ colors.ANSI_MAGENTA }}
+                "foreground": "{{ colors.ANSI_MAGENTA }}"
             }
         },
         {
             "name": "CSS ID's",
             "scope": "source.sass keyword.control",
             "settings": {
-                "foreground": {{ colors.ANSI_BLUE }}
+                "foreground": "{{ colors.ANSI_BLUE }}"
             }
         },
         {
@@ -1177,42 +1176,42 @@
                 "meta.property-list meta.property-value"
             ],
             "settings": {
-                "foreground": {{ colors.ANSI_MAGENTA }}
+                "foreground": "{{ colors.ANSI_MAGENTA }}"
             }
         },
         {
             "name": "Inserted",
             "scope": "markup.inserted",
             "settings": {
-                "foreground": {{ colors.VCS_ADDED }}
+                "foreground": "{{ colors.VCS_ADDED }}"
             }
         },
         {
             "name": "Deleted",
             "scope":"markup.deleted",
             "settings": {
-                "foreground": {{ colors.VCS_DELETED }}
+                "foreground": "{{ colors.VCS_DELETED }}"
             }
         },
         {
             "name": "Changed",
             "scope": "markup.changed",
             "settings": {
-                "foreground": {{ colors.ACCENT_MUTED }}
+                "foreground": "{{ colors.ACCENT_MUTED }}"
             }
         },
         {
             "name": "Regular Expressions",
             "scope": "string.regexp",
             "settings": {
-                "foreground": {{ colors.SECONDARY_DIM }}
+                "foreground": "{{ colors.SECONDARY_DIM }}"
             }
         },
         {
             "name": "Regular Expressions - Punctuation",
             "scope": "punctuation.definition.group",
             "settings": {
-                "foreground": {{ colors.ANSI_RED }}
+                "foreground": "{{ colors.ANSI_RED }}"
             }
         },
         {
@@ -1221,7 +1220,7 @@
                 "constant.other.character-class.regexp"
             ],
             "settings": {
-                "foreground": {{ colors.ANSI_MAGENTA }}
+                "foreground": "{{ colors.ANSI_MAGENTA }}"
             }
         },
         {
@@ -1231,28 +1230,28 @@
                 "punctuation.definition.character-class.regexp"
             ],
             "settings": {
-                "foreground": {{ colors.ANSI_YELLOW }}
+                "foreground": "{{ colors.ANSI_YELLOW }}"
             }
         },
         {
             "name": "Regular Expressions - Quantifier",
             "scope": "keyword.operator.quantifier.regexp",
             "settings": {
-                "foreground": {{ colors.SECONDARY_SUBTLE }}
+                "foreground": "{{ colors.SECONDARY_SUBTLE }}"
             }
         },
         {
             "name": "Regular Expressions - Backslash",
             "scope": "constant.character.escape.backslash",
             "settings": {
-                "foreground": {{ colors.FG }}
+                "foreground": "{{ colors.FG }}"
             }
         },
         {
             "name": "Escape Characters",
             "scope": "constant.character.escape",
             "settings": {
-                "foreground": {{ colors.SECONDARY_SUBTLE }}
+                "foreground": "{{ colors.SECONDARY_SUBTLE }}"
             }
         },
         {
@@ -1262,14 +1261,14 @@
                 "tag.decorator.js punctuation.definition.tag.js"
             ],
             "settings": {
-                "foreground": {{ colors.ANSI_BLUE }}
+                "foreground": "{{ colors.ANSI_BLUE }}"
             }
         },
         {
             "name": "CSS Units",
             "scope": "keyword.other.unit",
             "settings": {
-                "foreground": {{ colors.ANSI_RED }}
+                "foreground": "{{ colors.ANSI_RED }}"
             }
         },
         {
@@ -1278,7 +1277,7 @@
                 "source.json meta.structure.dictionary.json support.type.property-name.json"
             ],
             "settings": {
-                "foreground": {{ colors.ANSI_BLUE }}
+                "foreground": "{{ colors.ANSI_BLUE }}"
             }
         },
         {
@@ -1287,7 +1286,7 @@
                 "source.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json support.type.property-name.json"
             ],
             "settings": {
-                "foreground": {{ colors.INFO }}
+                "foreground": "{{ colors.INFO }}"
             }
         },
         {
@@ -1296,7 +1295,7 @@
                 "source.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json support.type.property-name.json"
             ],
             "settings": {
-                "foreground": {{ colors.ANSI_CYAN }}
+                "foreground": "{{ colors.ANSI_CYAN }}"
             }
         },
         {
@@ -1305,7 +1304,7 @@
                 "source.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json support.type.property-name.json"
             ],
             "settings": {
-                "foreground": {{ colors.ANSI_MAGENTA }}
+                "foreground": "{{ colors.ANSI_MAGENTA }}"
             }
         },
         {
@@ -1314,7 +1313,7 @@
                 "source.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json support.type.property-name.json"
             ],
             "settings": {
-                "foreground": {{ colors.ANSI_YELLOW }}
+                "foreground": "{{ colors.ANSI_YELLOW }}"
             }
         },
         {
@@ -1323,7 +1322,7 @@
                 "source.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json support.type.property-name.json"
             ],
             "settings": {
-                "foreground": {{ colors.INFO }}
+                "foreground": "{{ colors.INFO }}"
             }
         },
         {
@@ -1332,7 +1331,7 @@
                 "source.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json support.type.property-name.json"
             ],
             "settings": {
-                "foreground": {{ colors.ANSI_GREEN }}
+                "foreground": "{{ colors.ANSI_GREEN }}"
             }
         },
         {
@@ -1341,7 +1340,7 @@
                 "source.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json support.type.property-name.json"
             ],
             "settings": {
-                "foreground": {{ colors.ANSI_RED }}
+                "foreground": "{{ colors.ANSI_RED }}"
             }
         },
         {
@@ -1350,14 +1349,14 @@
                 "source.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json support.type.property-name.json"
             ],
             "settings": {
-                "foreground": {{ colors.SUCCESS_MUTED }}
+                "foreground": "{{ colors.SUCCESS_MUTED }}"
             }
         },
         {
             "name": "Plain Punctuation",
             "scope": "punctuation.definition.list_item.markdown",
             "settings": {
-                "foreground": {{ colors.ACCENT_LOW }}
+                "foreground": "{{ colors.ACCENT_LOW }}"
             }
         },
         {
@@ -1382,7 +1381,7 @@
                 "punctuation.section"
             ],
             "settings": {
-                "foreground": {{ colors.ACCENT_LOW }}
+                "foreground": "{{ colors.ACCENT_LOW }}"
             }
         },
         {
@@ -1391,7 +1390,7 @@
                 "meta.embedded.block"
             ],
             "settings": {
-                "foreground": {{ colors.FG }}
+                "foreground": "{{ colors.FG }}"
             }
         },
         {
@@ -1403,21 +1402,21 @@
                 "text.log"
             ],
             "settings": {
-                "foreground": {{ colors.FG_DIM }}
+                "foreground": "{{ colors.FG_DIM }}"
             }
         },
         {
             "name": "Markdown - Markup Raw Inline",
             "scope": "text.html.markdown markup.inline.raw.markdown",
             "settings": {
-                "foreground": {{ colors.ANSI_MAGENTA }}
+                "foreground": "{{ colors.ANSI_MAGENTA }}"
             }
         },
         {
             "name": "Markdown - Markup Raw Inline Punctuation",
             "scope": "text.html.markdown markup.inline.raw.markdown punctuation.definition.raw.markdown",
             "settings": {
-                "foreground": {{ colors.DARK5 }}
+                "foreground": "{{ colors.DARK5 }}"
             }
         },
         {
@@ -1428,7 +1427,7 @@
             ],
             "settings": {
                 "fontStyle": "bold",
-                "foreground": {{ colors.SECONDARY_SUBTLE }}
+                "foreground": "{{ colors.SECONDARY_SUBTLE }}"
             }
         },
         {
@@ -1439,7 +1438,7 @@
             ],
             "settings": {
                 "fontStyle": "bold",
-                "foreground": {{ colors.INFO }}
+                "foreground": "{{ colors.INFO }}"
             }
         },
         {
@@ -1450,7 +1449,7 @@
             ],
             "settings": {
                 "fontStyle": "bold",
-                "foreground": {{ colors.ANSI_BLUE }}
+                "foreground": "{{ colors.ANSI_BLUE }}"
             }
         },
         {
@@ -1461,7 +1460,7 @@
             ],
             "settings": {
                 "fontStyle": "bold",
-                "foreground": {{ colors.RAINBOW_1 }}
+                "foreground": "{{ colors.RAINBOW_1 }}"
             }
         },
         {
@@ -1472,7 +1471,7 @@
             ],
             "settings": {
                 "fontStyle": "bold",
-                "foreground": {{ colors.FG_DIM }}
+                "foreground": "{{ colors.FG_DIM }}"
             }
         },
         {
@@ -1483,7 +1482,7 @@
             ],
             "settings": {
                 "fontStyle": "bold",
-                "foreground": {{ colors.FG_MUTED }}
+                "foreground": "{{ colors.FG_MUTED }}"
             }
         },
         {
@@ -1494,7 +1493,7 @@
             ],
             "settings": {
                 "fontStyle": "italic",
-                "foreground": {{ colors.FG }}
+                "foreground": "{{ colors.FG }}"
             }
         },
         {
@@ -1506,7 +1505,7 @@
             ],
             "settings": {
                 "fontStyle": "bold",
-                "foreground": {{ colors.FG }}
+                "foreground": "{{ colors.FG }}"
             }
         },
         {
@@ -1517,7 +1516,7 @@
             ],
             "settings": {
                 "fontStyle": "bold italic",
-                "foreground": {{ colors.FG }}
+                "foreground": "{{ colors.FG }}"
             }
         },
         {
@@ -1534,7 +1533,7 @@
             "name": "Markdown - Blockquote",
             "scope": "markup.quote punctuation.definition.blockquote.markdown",
             "settings": {
-                "foreground": {{ colors.DARK5 }}
+                "foreground": "{{ colors.DARK5 }}"
             }
         },
         {
@@ -1553,7 +1552,7 @@
                 "string.other.link.description.title.markdown"
             ],
             "settings": {
-                "foreground": {{ colors.ANSI_GREEN }}
+                "foreground": "{{ colors.ANSI_GREEN }}"
             }
         },
         {
@@ -1564,7 +1563,7 @@
                 "variable.language.fenced.markdown"
             ],
             "settings": {
-                "foreground": {{ colors.SECONDARY_SUBTLE }}
+                "foreground": "{{ colors.SECONDARY_SUBTLE }}"
             }
         },
         {
@@ -1572,49 +1571,49 @@
             "scope": "meta.separator",
             "settings": {
                 "fontStyle": "bold",
-                "foreground": {{ colors.DARK4 }}
+                "foreground": "{{ colors.DARK4 }}"
             }
         },
         {
             "name": "Markup - Table",
             "scope": "markup.table",
             "settings": {
-                "foreground": {{ colors.FG }}
+                "foreground": "{{ colors.FG }}"
             }
         },
         {
             "name": "Token - Info",
             "scope": "token.info-token",
             "settings": {
-                "foreground": {{ colors.INFO }}
+                "foreground": "{{ colors.INFO }}"
             }
         },
         {
             "name": "Token - Warn",
             "scope": "token.warn-token",
             "settings": {
-                "foreground": {{ colors.WARNING_LOW }}
+                "foreground": "{{ colors.WARNING_LOW }}"
             }
         },
         {
             "name": "Token - Error",
             "scope": "token.error-token",
             "settings": {
-                "foreground": {{ colors.ERROR }}
+                "foreground": "{{ colors.ERROR }}"
             }
         },
         {
             "name": "Token - Debug",
             "scope": "token.debug-token",
             "settings": {
-                "foreground": {{ colors.TERTIARY_MUTED }}
+                "foreground": "{{ colors.TERTIARY_MUTED }}"
             }
         },
         {
             "name": "Apache Tag",
             "scope": "entity.tag.apacheconf",
             "settings": {
-                "foreground": {{ colors.ANSI_RED }}
+                "foreground": "{{ colors.ANSI_RED }}"
             }
         },
         {
@@ -1623,14 +1622,14 @@
                 "meta.preprocessor"
             ],
             "settings": {
-                "foreground": {{ colors.ANSI_GREEN }}
+                "foreground": "{{ colors.ANSI_GREEN }}"
             }
         },
         {
             "name": "ENV value",
             "scope": "source.env",
             "settings": {
-                "foreground": {{ colors.ANSI_BLUE }}
+                "foreground": "{{ colors.ANSI_BLUE }}"
             }
         }
     ]

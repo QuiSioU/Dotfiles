@@ -12,7 +12,7 @@ def print_usage():
     print("Usage:")
     print("\tpython set_theme.py <toml-theme-file>\n")
     print("Example:")
-    print("\tpython set_theme ~/.config/elysean_themes/themes/default/Oxocarbon.toml")
+    print("\tpython set_theme ~/.config/elysean_themes/themes/default/TokyoNight.toml")
 
 
 def parse_toml(toml_path: str) -> dict[str, dict[str, str]]:
@@ -60,7 +60,7 @@ if __name__ == "__main__":
 
     selected_theme: dict[str, dict[str, str]] = parse_toml(argv[1])
     fallback_theme: dict[str, dict[str, str]] = parse_toml(
-        Path.home() / ".config" / "elysean_themes" / "themes" / "default" / "TokyoCarbon.toml"
+        Path.home() / ".config" / "elysean_themes" / "themes" / "default" / "TokyoNight.toml"
     )
 
     theme: dict[str, dict[str, str]] = {
@@ -74,15 +74,15 @@ if __name__ == "__main__":
     # Create the template files for all utilities
     hyprland_quickshell(config_dir, theme)
 
-    # For files that are actually templates, use Jinja2
+    # # For files that are actually templates, use Jinja2
     env = Environment(loader=FileSystemLoader(config_dir.parent / "templates/"))
     env.filters["rgb"] = lambda color: color[:7]
     env.filters["rgba"] = lambda color, a: f"{color}{a}"
     env.filters["argb"] = lambda color, a: f"#{a}{color[1:]}"
 
-    template_replace(config_dir, "kitty.conf", theme, env)
-    template_replace(config_dir, "yazi.toml", theme, env)
-    template_replace(config_dir, "starship.toml", theme, env)
+    template_replace(config_dir, "kitty.conf",      theme, env)
+    template_replace(config_dir, "yazi.toml",       theme, env)
+    template_replace(config_dir, "starship.toml",   theme, env)
 
     # Reload what needs to be reloaded
     subprocess.run(["hyprctl", "reload"])

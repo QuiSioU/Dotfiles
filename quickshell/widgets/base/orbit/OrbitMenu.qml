@@ -138,15 +138,15 @@ PanelWindow {
                     radius: orbit_panwin.bubbleSize / 2
 
                     color: {
-                        if (bubbleItem.hovered)   return ActiveTheme.color["DARK3"]
-                        if (bubbleItem.selected)  return ActiveTheme.color["SURFACE"]
-                        return ActiveTheme.color["BG"]
+                        if (bubbleItem.hovered)   return ActiveTheme.colors["DARK4"]
+                        if (bubbleItem.selected)  return ActiveTheme.colors["BG_HIGHLIGHT"]
+                        return ActiveTheme.colors["BG"]
                     }
 
                     border.color: {
-                        if (bubbleItem.selected)  return ActiveTheme.color["ACCENT"]
-                        if (bubbleItem.hovered)   return ActiveTheme.color["FG_DARK"]
-                        return ActiveTheme.color["DARK5"]
+                        if (bubbleItem.selected)  return ActiveTheme.colors["ANSI_BLUE"]
+                        if (bubbleItem.hovered)   return ActiveTheme.colors["FG_DARK"]
+                        return ActiveTheme.colors["DARK3"]
                     }
                     border.width: bubbleItem.selected ? 1.5 : 0.5
 
@@ -164,7 +164,7 @@ PanelWindow {
                     Text {
                         anchors.centerIn: parent
                         text: (bubbleItem.entry?.name ?? "").charAt(0).toUpperCase()
-                        color: bubbleItem.selected ? ActiveTheme.color["FG"] : ActiveTheme.color["DARK5"]
+                        color: bubbleItem.selected ? ActiveTheme.colors["FG"] : ActiveTheme.colors["DARK3"]
                         font.pixelSize: 16
                         font.weight: Font.Medium
                         visible: bubbleIcon.status !== Image.Ready
@@ -181,8 +181,8 @@ PanelWindow {
                     anchors.bottomMargin: 6
                     width:  tooltipCol.implicitWidth + 16
                     height: tooltipCol.implicitHeight + 10
-                    color: ActiveTheme.color["SURFACE"]
-                    border.color: bubbleItem.selected ? ActiveTheme.color["ACCENT"] : ActiveTheme.color["DARK5"]
+                    color: ActiveTheme.colors["BG_HIGHLIGHT"]
+                    border.color: bubbleItem.selected ? ActiveTheme.colors["ANSI_BLUE"] : ActiveTheme.colors["DARK3"]
                     border.width: 1
                     radius: 6
                     z: 10
@@ -194,7 +194,7 @@ PanelWindow {
 
                         Text {
                             text: bubbleItem.entry?.name ?? ""
-                            color: ActiveTheme.color["FG"]
+                            color: ActiveTheme.colors["FG"]
                             font.pixelSize: 12
                             font.weight: Font.Medium
                             visible: text !== ""
@@ -205,7 +205,7 @@ PanelWindow {
                         Text {
                             text: bubbleItem.entry?.comment ?? ""
                             color: bubbleItem.selected
-                                    ? ActiveTheme.color["ACCENT_MUTED"] : ActiveTheme.color["FG_DISABLED"]
+                                    ? ActiveTheme.colors["ACCENT_LOW"] : ActiveTheme.colors["FG_DISABLED"]
                             font.pixelSize: 11
                             visible: text !== ""
                             horizontalAlignment: Text.AlignHCenter

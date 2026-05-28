@@ -28,7 +28,7 @@ echo "Setting active theme configuration file..."
 if [ -d "$ROOT_DIR/active_theme" ]; then
     echo "    skipped    $ROOT_DIR/active_theme/:  directory already exists"
 else
-    python "set_theme.py" "themes/default/Oxocarbon.toml"
+    python "set_theme.py" "themes/default/TokyoNight.toml"
     echo "    created    $ROOT_DIR/active_theme/"
 fi
 

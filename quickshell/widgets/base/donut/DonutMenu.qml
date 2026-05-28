@@ -127,14 +127,14 @@ PanelWindow {
                     ctx.closePath()
 
                     ctx.fillStyle = i === hoveredIndex
-                        ? ActiveTheme.color["SURFACE_OVERLAY"] : "#1616163d"
+                        ? "#0fffffff" : "#1616163d"
                     ctx.fill()
                     
                     ctx.lineWidth = 2
                 
                     let grad = ctx.createLinearGradient(0, 0, width, height)
-                    grad.addColorStop(0, ActiveTheme.color["SECONDARY"])
-                    grad.addColorStop(1, ActiveTheme.color["ACCENT"])
+                    grad.addColorStop(0, ActiveTheme.colors["TERTIARY"])
+                    grad.addColorStop(1, ActiveTheme.colors["ANSI_BLUE"])
                     
                     ctx.strokeStyle = grad
 
@@ -161,7 +161,7 @@ PanelWindow {
                     horizontalAlignment: Text.AlignHCenter
                     text: entries[index].name
                     color: index === donut_panwin.hoveredIndex
-                        ? ActiveTheme.color["FG"] : ActiveTheme.color["FG_DISABLED"]
+                        ? ActiveTheme.colors["FG"] : ActiveTheme.colors["FG_DISABLED"]
                     font.pixelSize: 12
                     font.weight: Font.Medium
                 }
