@@ -43,32 +43,12 @@ def hyprland_quickshell(config_dir: Path, theme: dict[str, dict[str, str]]) -> N
         f.write("}\n")
 
 
-def kitty(config_dir: Path, theme: dict[str, dict[str, str]], env: Environment) -> None:
-    filepath: Path = config_dir / "kitty.conf"
-    template = env.get_template("kitty.conf")
-    output = template.render(colors=theme["colors"], meta=theme["meta"]).replace(
-        "# elysean_themes/templates/kitty.conf",
-        f"# {filepath.relative_to(config_dir.parent.parent)}" 
-    )
-    filepath.write_text(output)
-
-
-def yazi(config_dir: Path, theme: dict[str, dict[str, str]], env: Environment) -> None:
-    filepath: Path = config_dir / "yazi.toml"
-    template = env.get_template("yazi.toml")
-    output = template.render(colors=theme["colors"], meta=theme["meta"]).replace(
-        "# elysean_themes/templates/yazi.toml",
-        f"# {filepath.relative_to(config_dir.parent.parent)}" 
-    )
-    filepath.write_text(output)
-
-
-def starship(config_dir: Path, theme: dict[str, dict[str, str]], env: Environment) -> None:
-    filepath: Path = config_dir / "starship.toml"
-    template = env.get_template("starship.toml")
-    output = template.render(colors=theme["colors"], meta=theme["meta"]).replace(
-        "# elysean_themes/templates/starship.toml",
-        f"# {filepath.relative_to(config_dir.parent.parent)}"
+def template_replace(config_dir: Path, name: str, theme: dict[str, dict[str, str]], env: Environment) -> None:
+    filepath: Path = config_dir / name
+    template = env.get_template(name)
+    output = template.render(colors=theme["colors"]).replace(
+        f"elysean_themes/templates/{name}",
+        f"{filepath.relative_to(config_dir.parent.parent)}" 
     )
     filepath.write_text(output)
 
@@ -78,7 +58,15 @@ if __name__ == "__main__":
     if argc != 2:
         print_usage()
 
-    theme: dict[str, dict[str, str]] = parse_toml(argv[1])
+    selected_theme: dict[str, dict[str, str]] = parse_toml(argv[1])
+    fallback_theme: dict[str, dict[str, str]] = parse_toml(
+        Path.home() / ".config" / "elysean_themes" / "themes" / "default" / "TokyoCarbon.toml"
+    )
+
+    theme: dict[str, dict[str, str]] = {
+        k: fallback_theme.get(k, {}) | selected_theme.get(k, {})
+        for k in fallback_theme
+    }
 
     config_dir: Path = Path.home() / ".config" / "elysean_themes" / "active_theme"
     config_dir.mkdir(exist_ok=True)
@@ -89,10 +77,12 @@ if __name__ == "__main__":
     # For files that are actually templates, use Jinja2
     env = Environment(loader=FileSystemLoader(config_dir.parent / "templates/"))
     env.filters["rgb"] = lambda color: color[:7]
+    env.filters["rgba"] = lambda color, a: f"{color}{a}"
+    env.filters["argb"] = lambda color, a: f"#{a}{color[1:]}"
 
-    kitty(config_dir, theme, env)
-    yazi(config_dir, theme, env)
-    starship(config_dir, theme, env)
+    template_replace(config_dir, "kitty.conf", theme, env)
+    template_replace(config_dir, "yazi.toml", theme, env)
+    template_replace(config_dir, "starship.toml", theme, env)
 
     # Reload what needs to be reloaded
     subprocess.run(["hyprctl", "reload"])
