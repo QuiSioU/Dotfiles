@@ -46,7 +46,7 @@ def hyprland_quickshell(config_dir: Path, theme: dict[str, dict[str, str]]) -> N
 def template_replace(config_dir: Path, name: str, theme: dict[str, dict[str, str]], env: Environment) -> None:
     filepath: Path = config_dir / name
     template = env.get_template(name)
-    output = template.render(colors=theme["colors"]).replace(
+    output = template.render(colors=theme["colors"], meta=theme["meta"]).replace(
         f"elysean_themes/templates/{name}",
         f"{filepath.relative_to(config_dir.parent.parent)}" 
     )

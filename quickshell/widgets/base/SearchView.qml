@@ -154,14 +154,14 @@ ColumnLayout {
                     height: 26
                     width: chipLabel.implicitWidth + 16
                     radius: 6
-                    color: "#0fffffff"
+                    color: ActiveTheme.colors["ACCENT_DIM"]
                     anchors.verticalCenter: parent.verticalCenter
 
                     Text {
                         id: chipLabel
                         anchors.centerIn: parent
                         text: searchBar.activeMode?.label ?? ""
-                        color: ActiveTheme.colors["ANSI_BLUE"]
+                        color: ActiveTheme.colors["FG"]
                         font.pixelSize: 12
                         font.weight: Font.Medium
                     }
@@ -222,7 +222,7 @@ ColumnLayout {
                 visible: searchBar.activeMode === null
                 focus:   searchBar.activeMode === null
                 color: searchInput.text.startsWith(searchBar.actionPrefix)
-                        ? ActiveTheme.colors["ANSI_BLUE"] : ActiveTheme.colors["FG"]
+                        ? ActiveTheme.colors["ACCENT_DIM"] : ActiveTheme.colors["FG"]
                 font.pixelSize: 16
 
                 onTextChanged: {
@@ -306,13 +306,13 @@ ColumnLayout {
                             : "transparent"
 
                         Rectangle {
-                            visible: true
+                            visible: false  // Set to true for indicator
                             width: 3
                             anchors.top: parent.top
                             anchors.bottom: parent.bottom
                             anchors.left: parent.left
                             anchors.margins: 6
-                            color: modelData.isModeEntry ? ActiveTheme.colors["ANSI_BLUE"] : ActiveTheme.colors["URGENT"]
+                            color: modelData.isModeEntry ? ActiveTheme.colors["ACCENT_DIM"] : ActiveTheme.colors["URGENT"]
                             radius: 2
                         }
 
@@ -347,7 +347,7 @@ ColumnLayout {
                                         anchors.centerIn: parent
                                         text: modelData.fallbackText ?? (modelData.name ?? "").charAt(0).toUpperCase()
                                         color: (modelData.isModeEntry ?? false)
-                                                    ? ActiveTheme.colors["ANSI_BLUE"] : ActiveTheme.colors["FG"]
+                                                    ? ActiveTheme.colors["ACCENT_DIM"] : ActiveTheme.colors["FG"]
                                         font.pixelSize: 14
                                         font.weight: Font.Medium
                                     }
@@ -362,7 +362,7 @@ ColumnLayout {
                                 Text {
                                     text: modelData.name ?? ""
                                     color: (modelData.isModeEntry ?? false)
-                                            ? ActiveTheme.colors["ANSI_BLUE"] : ActiveTheme.colors["FG"]
+                                            ? ActiveTheme.colors["ACCENT_DIM"] : ActiveTheme.colors["FG"]
                                     font.pixelSize: 14
                                     font.weight: Font.Medium
                                     elide: Text.ElideRight

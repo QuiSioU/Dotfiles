@@ -1,7 +1,7 @@
 {
-    "name": "Tokyo Night",
-    "author": "Enkia",
-    "type": "dark",
+    "name": "{{ meta.name }}",
+    "type": "{{ meta.type }}",
+    "author": "{{ meta.author }}",
     "semanticTokenColors": {
         "parameter.declaration": {
             "foreground": "{{ colors.ANSI_YELLOW }}"
@@ -343,7 +343,8 @@
         "debugIcon.breakpointUnverifiedForeground": "{{ colors.ERROR_DIM }}",
 
         "terminal.background": "{{ colors.BG_DARK }}",
-        "terminal.foreground": "{{ colors.FG_MUTED }}",
+        "terminal.foreground": "{{ colors.FG }}",
+        "terminal.border": "{{ colors.BG_DEEP }}",
         "terminal.selectionBackground": "{{ colors.FG_DISABLED | rgba("4d") }}",
         // "terminalCursor.background": "",
         // "terminalCursor.foreground": "",
@@ -356,6 +357,7 @@
         "terminal.ansiMagenta": "{{ colors.ANSI_MAGENTA }}",
         "terminal.ansiCyan": "{{ colors.ANSI_CYAN }}",
         "terminal.ansiWhite": "{{ colors.FG_MUTED }}",
+        
         "terminal.ansiBrightBlack": "{{ colors.ANSI_BLACK }}",
         "terminal.ansiBrightRed": "{{ colors.ANSI_RED }}",
         "terminal.ansiBrightGreen": "{{ colors.ANSI_GREEN }}",

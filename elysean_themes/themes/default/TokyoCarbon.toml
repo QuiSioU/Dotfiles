@@ -1,48 +1,48 @@
-# elysean_themes/themes/default/TokyoNight.toml
+# elysean_themes/themes/default/TokyoCarbon.toml
 
 
 [meta]
-name    = "TokyoNight"
+name    = "TokyoCarbon"
 type    = "dark"
-author  = "Enkia"
+author  = "QuiSioU"
 
 
 [colors]
 
 # --- Backgrounds ---
-BG                      = "#1a1b26"     # main surface — app background
-BG_DARK                 = "#16161e"     # recessed surface — panels, sidebars, bars, titlebar
-BG_DEEP                 = "#101014"     # deeply recessed surface — borders, inner panels
-BG_DARKEST              = "#0d0f17"     # near-black edge — outermost window borders
-BG_POPUP                = "#14141b"     # floating surface — inputs, dropdowns, popups
-BG_HIGHLIGHT            = "#1e202e"     # subtle highlight — current line, drop targets, menu hover
-BG_FOCUSED              = "#1c1d29"     # focus state — inactive selection, focused container bg
-BG_ACTIVE               = "#202330"     # active interactive — pressed/active item, selected row
-BG_HOVER                = "#13131a"     # hover state — pointer-over row or item
-BG_SELECTED             = "#20222c"     # selected state — status bar item hover, chosen option
-BG_STRIPE               = "#232433"     # structural guide — indent / tree line background
-BG_OVERLAY              = "#1b1e2e"     # overlay tint — context menus, label backgrounds
-BG_TINTED               = "#29355a"     # tinted accent surface — focused containers, accent panels
+BG                      = "#161616"     # main surface — app background
+BG_DARK                 = "#0f0f0f"     # recessed surface — panels, sidebars, bars, titlebar
+BG_DEEP                 = "#080808"     # deeply recessed surface — borders, inner panels
+BG_DARKEST              = "#030303"     # near-black edge — outermost window borders
+BG_POPUP                = "#1a1a1a"     # floating surface — inputs, dropdowns, popups
+BG_HIGHLIGHT            = "#222222"     # subtle highlight — current line, drop targets, menu hover
+BG_FOCUSED              = "#1e1e1e"     # focus state — inactive selection, focused container bg
+BG_ACTIVE               = "#282828"     # active interactive — pressed/active item, selected row
+BG_HOVER                = "#1c1c1c"     # hover state — pointer-over row or item
+BG_SELECTED             = "#2a2a2a"     # selected state — status bar item hover, chosen option
+BG_STRIPE               = "#202020"     # structural guide — indent / tree line background
+BG_OVERLAY              = "#1f1f1f"     # overlay tint — context menus, label backgrounds
+BG_TINTED               = "#1e3a5f"     # tinted accent surface — focused containers, accent panels
 
 # --- Foregrounds ---
-FG                      = "#c0caf5"     # primary text — body, cursor, identifiers
-FG_DARK                 = "#a9b1d6"     # secondary text — input content, list items
-FG_MUTED                = "#787c99"     # muted ui text — sidebars, status bars, terminal fg
-FG_BRIGHT               = "#acb0d0"     # bright ui text — badge labels, active links
-FG_DIM                  = "#9aa5ce"     # dimmed text — supplementary values, chart labels
-FG_LIGHT                = "#bbc2e0"     # light text — readable on dark diagnostic backgrounds
-FG_SUBTLE               = "#9699a8"     # subtle text — preformatted spans, between muted and dim
-FG_DISABLED             = "#545c7e"     # disabled text — unavailable controls
+FG                      = "#f2f4f8"     # primary text — body, cursor, identifiers
+FG_DARK                 = "#dde1e7"     # secondary text — input content, list items
+FG_MUTED                = "#a2a9b0"     # muted ui text — sidebars, status bars, terminal fg
+FG_BRIGHT               = "#e5e9f0"     # bright ui text — badge labels, active links
+FG_DIM                  = "#c1c7cd"     # dimmed text — supplementary values, chart labels
+FG_LIGHT                = "#d0d7df"     # light text — readable on dark diagnostic backgrounds
+FG_SUBTLE               = "#b0b8c1"     # subtle text — preformatted spans, between muted and dim
+FG_DISABLED             = "#6e7681"     # disabled text — unavailable controls
 FG_ON_ACCENT            = "#ffffff"     # text on accent — labels on colored buttons or badges
-FG_GHOST                = "#5a638c"     # ghost text — documentation comments, mid-tone placeholder
-FG_HINT                 = "#646e9c"     # hint text — inline hints, trailing annotations, ghost completions
+FG_GHOST                = "#525a65"     # ghost text — documentation comments, mid-tone placeholder
+FG_HINT                 = "#5c6370"     # hint text — inline hints, trailing annotations, ghost completions
 
 # --- Inactive / Structural ---
-DARK3                   = "#515670"     # description text — metadata, breadcrumbs, ignored items
-DARK4                   = "#51597d"     # comment text — code comments, secondary annotations
-DARK5                   = "#4e5579"     # structural punctuation — delimiters in muted contexts
-DARK6                   = "#42465d"     # inactive border — match outlines, inactive tab borders
-DARK7                   = "#3b3e52"     # secondary control bg — inactive icon fg, secondary buttons
+DARK3                   = "#5c6370"     # description text — metadata, breadcrumbs, ignored items
+DARK4                   = "#525a65"     # comment text — code comments, secondary annotations
+DARK5                   = "#484f58"     # structural punctuation — delimiters in muted contexts
+DARK6                   = "#3d444b"     # inactive border — match outlines, inactive tab borders
+DARK7                   = "#333940"     # secondary control bg — inactive icon fg, secondary buttons
 
 # --- ANSI Terminal Colors ---
 ANSI_BLACK              = "#363b54"     # ansiBlack — line numbers, whitespace markers

@@ -3,7 +3,8 @@
 
 [meta]
 name    = "Oxocarbon"
-variant = "default"
+type    = "default"
+author  = "QuiSioU"
 
 
 [colors]
