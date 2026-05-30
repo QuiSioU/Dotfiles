@@ -1,25 +1,30 @@
 /* quickshell/widgets/base/notification/NotificationCard.qml */
 
-
 import QtQuick
 import QtQuick.Layouts
 import ElyseanShell.Themes
 
+// Animation: circle slides from right to left, revealing the panel behind it.
+// Final state: circle at x=0, overlapping the left cap of the panel.
 
-// Gradient border trick: outer rectangle filled with gradient,
-// inner rectangle (the actual card) inset by border width.
 Item {
     id: card
 
     property var entry: null
-    property int timeoutMs: 4000   // total lifetime in milliseconds
+    property int timeoutMs: 4000
 
-    implicitHeight: inner.implicitHeight + 2   // 1px border top + bottom
-    implicitWidth:  inner.implicitWidth  + 2   // 1px border left + right
+    readonly property int d:           60
+    readonly property int bw:          2
+    readonly property int panelWidth:  260
+    readonly property int panelHeight: Math.round(d * 2 / 3)
 
-    // Progress bar animation for each of the cards, even if they como from the same app/program
-    onEntryChanged: { if (entry !== null) startTimer.restart() }
+    // Total width: panel spans 0..panelWidth, right half of circle sticks out = panelWidth
+    implicitWidth:  panelWidth
+    implicitHeight: d
 
+    onEntryChanged: { if (entry !== null) slideTimer.restart() }
+
+    // ── Accent colour ──────────────────────────────────────────────────────
     property color accentColor: {
         const cat = entry?.category ?? ""
         if (cat.includes("error"))    return ActiveTheme.colors["ERROR_LOW"]
@@ -32,150 +37,122 @@ Item {
         }
     }
 
-    // Fade in
-    opacity: 0
-    NumberAnimation on opacity {
-        from: 0; to: 1
-        duration: 150
-        easing.type: Easing.OutCubic
-        running: true
-    }
+    // ── Panel clip ─────────────────────────────────────────────────────────
+    // Left edge glued to circle's right edge, right edge fixed at panelWidth.
+    // Width = panelWidth - (circle.x + d): 0 at start, (panelWidth-d) at rest.
+    Item {
+        id: panelClip
+        clip: true
+        anchors.verticalCenter: parent.verticalCenter
+        x:      circle.x + card.d / 2
+        width:  card.panelWidth - circle.x - card.d / 2
+        height: card.panelHeight
 
-    // ── Gradient border ────────────────────────────────────────────────────
-    Rectangle {
-        anchors.fill: parent
-        radius: 9
+        // Content offset so it appears at its final absolute position (x=0 in card space)
+        // Absolute x of inner item = clip.x + inner.x = (circle.x+d) + (-(circle.x+d)) = 0
+        Item {
+            x:      -(circle.x + card.d / 2)
+            width:  card.panelWidth
+            height: card.panelHeight
 
-        gradient: Gradient {
-            orientation: Gradient.Horizontal
-            GradientStop { position: 0.0; color: card.accentColor }
-            GradientStop { position: 1.0; color: ActiveTheme.colors["FG_DARK"] }
-        }
-    }
-
-    // ── Card face ──────────────────────────────────────────────────────────
-    Rectangle {
-        id: inner
-        anchors {
-            fill:        parent
-            margins:     1
-        }
-        radius:          8
-        color:           ActiveTheme.colors["ANSI_BLACK"]
-        implicitHeight:  content.childrenRect.height + 24
-
-        ColumnLayout {
-            id: content
-            anchors {
-                top:          parent.top
-                left:         parent.left
-                right:        parent.right
-                leftMargin:   12
-                rightMargin:  12
-                topMargin:    12
-                bottomMargin: 12
-            }
-            spacing: 4
-
-            // App icon + App name
-            RowLayout {
-                Layout.fillWidth: true
-                spacing: 6
-
-                Image {
-                    source:   entry?.icon ?? ""
-                    Layout.preferredWidth:    48
-                    Layout.preferredHeight:   48
-                    fillMode: Image.PreserveAspectFit
-                    smooth:   true
-                    visible:  status !== Image.Error && source !== ""
-                }
-
-                Text {
-                    text:             entry?.appName || "Notification"
-                    color:            card.accentColor
-                    font.pixelSize:   20
-                    font.family: "JetBrainsMono Nerd Font"
-                    Layout.fillWidth: true
-                    elide:            Text.ElideRight
+            // Gradient border
+            Rectangle {
+                anchors.fill: parent
+                radius:       card.panelHeight / 2
+                gradient: Gradient {
+                    orientation: Gradient.Horizontal
+                    GradientStop { position: 0.0; color: card.accentColor }
+                    GradientStop { position: 1.0; color: ActiveTheme.colors["FG_DARK"] }
                 }
             }
 
-            // Summary
-            Text {
-                visible:          text !== ""
-                text:             entry?.summary ?? ""
-                color:            ActiveTheme.colors["FG"]
-                font.pixelSize:   13
-                font.bold:        true
-                font.family: "JetBrainsMono Nerd Font"
-                font.hintingPreference: Font.PreferNoHinting
-                renderType: Text.QtRendering
-                elide:            Text.ElideRight
-                Layout.fillWidth: true
-            }
+            // Inner face
+            Rectangle {
+                anchors { fill: parent; margins: card.bw }
+                radius: (card.panelHeight - card.bw * 2) / 2
+                color:  ActiveTheme.colors["ANSI_BLACK"]
 
-            // Body
-            Text {
-                visible:          text !== ""
-                text:             entry?.body ?? ""
-                color:            ActiveTheme.colors["FG_DARK"]
-                font.pixelSize:   12
-                font.family: "JetBrainsMono Nerd Font"
-                wrapMode:         Text.Wrap
-                maximumLineCount: 3
-                elide:            Text.ElideRight
-                Layout.fillWidth: true
-            }
+                ColumnLayout {
+                    anchors {
+                        left:         parent.left
+                        right:        parent.right
+                        top:          parent.top
+                        bottom:       parent.bottom
+                        leftMargin:   card.d + 8
+                        rightMargin:  12
+                        topMargin:    6
+                        bottomMargin: 6
+                    }
+                    spacing: 2
 
-            RowLayout {
-                Layout.fillWidth: true
-                spacing: 6
-                Layout.topMargin: 4
-
-                // ── Reverse progress bar ───────────────────────────────────────────
-                Item {
-                    id: progressBar
-                    Layout.fillWidth: true
-                    height: 5
-
-                    // Track (background)
-                    Rectangle {
-                        anchors.fill: parent
-                        radius:       2
-                        color:        ActiveTheme.colors["BG_HIGHLIGHT"]
+                    Text {
+                        text:             entry?.appName || "Notification"
+                        color:            card.accentColor
+                        font.pixelSize:   13
+                        font.bold:        true
+                        font.family:      "JetBrainsMono Nerd Font"
+                        Layout.fillWidth: true
+                        elide:            Text.ElideRight
                     }
 
-                    // Fill — anchored to the RIGHT so it shrinks leftward
-                    Rectangle {
-                        id: progressFill
-                        anchors {
-                            top:    parent.top
-                            left:  parent.left
-                            bottom: parent.bottom
-                        }
-                        radius: 2
-                        width:  0   // NO binding — animation must own this property
+                    Text {
+                        visible:          text !== ""
+                        text:             entry?.summary ?? ""
+                        color:            ActiveTheme.colors["FG"]
+                        font.pixelSize:   11
+                        font.family:      "JetBrainsMono Nerd Font"
+                        font.hintingPreference: Font.PreferNoHinting
+                        renderType:       Text.QtRendering
+                        elide:            Text.ElideRight
+                        Layout.fillWidth: true
+                    }
 
-                        gradient: Gradient {
-                            orientation: Gradient.Horizontal
-                            GradientStop { position: 0.0; color: card.accentColor }
-                            GradientStop { position: 1.0; color: ActiveTheme.colors["FG_DARK"] }
+                    Text {
+                        visible:          text !== ""
+                        text:             entry?.body ?? ""
+                        color:            ActiveTheme.colors["FG_DARK"]
+                        font.pixelSize:   10
+                        font.family:      "JetBrainsMono Nerd Font"
+                        wrapMode:         Text.Wrap
+                        maximumLineCount: 2
+                        elide:            Text.ElideRight
+                        Layout.fillWidth: true
+                    }
+
+                    Item {
+                        id: progressBar
+                        Layout.fillWidth: true
+                        height: 3
+
+                        Rectangle {
+                            anchors.fill: parent
+                            radius: 2
+                            color:  ActiveTheme.colors["BG_HIGHLIGHT"]
                         }
 
-                        // interval:0 fires after the current event loop tick,
-                        // by which point anchors/widths are fully resolved
-                        Timer {
-                            id: startTimer
-                            interval: 50
-                            running:  true
-                            repeat:   false
-                            onTriggered: {
-                                progressFill.width = progressBar.width
-                                widthAnim.stop()
-                                widthAnim.from     = progressBar.width
-                                widthAnim.to       = 0
-                                widthAnim.start()
+                        Rectangle {
+                            id: progressFill
+                            anchors { top: parent.top; left: parent.left; bottom: parent.bottom }
+                            radius: 2
+                            width:  0
+                            gradient: Gradient {
+                                orientation: Gradient.Horizontal
+                                GradientStop { position: 0.0; color: card.accentColor }
+                                GradientStop { position: 1.0; color: ActiveTheme.colors["FG_DARK"] }
+                            }
+
+                            Timer {
+                                id: startTimer
+                                interval: 0
+                                repeat:   false
+                                running:  false
+                                onTriggered: {
+                                    progressFill.width = progressBar.width
+                                    widthAnim.stop()
+                                    widthAnim.from = progressBar.width
+                                    widthAnim.to   = 0
+                                    widthAnim.start()
+                                }
                             }
                         }
 
@@ -189,32 +166,90 @@ Item {
                         }
                     }
                 }
-
-                // Dismiss button
-                Text {
-                    text:  "󱞵 Dismiss"
-                    color: closeArea.containsMouse ? ActiveTheme.colors["ANSI_BLUE"] : ActiveTheme.colors["FG_DARK"]
-                    font.pixelSize: 11
-                    font.family:    "JetBrainsMono Nerd Font"
-
-                    MouseArea {
-                        id:           closeArea
-                        anchors.fill: parent
-                        hoverEnabled: true
-                        cursorShape:  Qt.PointingHandCursor
-                        onClicked:    entry?.dismiss()
-                    }
-                }
             }
         }
     }
 
-    // Click card body to dismiss
+    // ── Circle ────────────────────────────────────────────────────────────
+    Item {
+        id: circle
+        width:  card.d
+        height: card.d
+        x:      card.panelWidth - card.d   // starts at right edge, fully visible
+        anchors.verticalCenter: parent.verticalCenter
+        z: 1
+
+        Rectangle {
+            anchors.fill: parent
+            radius:       width / 2
+            gradient: Gradient {
+                orientation: Gradient.Vertical
+                GradientStop { position: 0.0; color: card.accentColor }
+                GradientStop { position: 1.0; color: ActiveTheme.colors["FG_DARK"] }
+            }
+        }
+
+        Rectangle {
+            anchors { fill: parent; margins: card.bw }
+            radius: width / 2
+            color:  ActiveTheme.colors["ANSI_BLACK"]
+
+            Image {
+                anchors.centerIn: parent
+                width:  parent.width  - 12
+                height: parent.height - 12
+                source:   entry?.icon ?? ""
+                fillMode: Image.PreserveAspectFit
+                smooth:   true
+                visible:  status !== Image.Error && source !== ""
+            }
+
+            Text {
+                anchors.centerIn: parent
+                text:    entry?.appName?.charAt(0)?.toUpperCase() ?? "?"
+                color:   card.accentColor
+                font.pixelSize: 20
+                font.family:    "JetBrainsMono Nerd Font"
+                visible: (entry?.icon ?? "") === ""
+            }
+        }
+    }
+
+    // ── Slide animation ────────────────────────────────────────────────────
+    Timer {
+        id: slideTimer
+        interval: 80
+        repeat:   false
+        running:  false
+        onTriggered: {
+            circle.x = card.panelWidth - card.d
+            slideAnim.start()
+        }
+    }
+
+    NumberAnimation {
+        id:          slideAnim
+        target:      circle
+        property:    "x"
+        from:        card.panelWidth - card.d
+        to:          0
+        duration:    400
+        easing.type: Easing.OutCubic
+        running:     false
+        onStopped:   { if (circle.x <= 0) startTimer.restart() }
+    }
+
+    opacity: 0
+    NumberAnimation on opacity {
+        from: 0; to: 1
+        duration: 150
+        easing.type: Easing.OutCubic
+        running: true
+    }
+
     MouseArea {
-        anchors.fill:      parent
-        anchors.topMargin: 26
-        z:                 -1
-        cursorShape:       Qt.PointingHandCursor
-        onClicked:         entry?.dismiss()
+        anchors.fill: parent
+        cursorShape:  Qt.PointingHandCursor
+        onClicked:    entry?.dismiss()
     }
 }
