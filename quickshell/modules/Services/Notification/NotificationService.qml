@@ -90,7 +90,6 @@ Singleton {
             if (idStr !== "") {
                 const existing = root.notifications.find(n => n._pid === idStr);
                 if (existing) {
-                    existing._stopTimer();
                     root.notifications = root.notifications.filter(n => n !== existing);
                     existing.destroy();
                 }
@@ -131,17 +130,7 @@ Singleton {
             property string category:   ""
             property var    _notif:     null
 
-            property var _timer: Timer {
-                interval: 4000
-                running:  true
-                repeat:   false
-                onTriggered: parent.dismiss()
-            }
-
-            function _stopTimer() { _timer.stop(); }
-
             function dismiss() {
-                _timer.stop();
                 root.notifications = root.notifications.filter(n => n !== this);
                 if (_notif) try { _notif.dismiss(); } catch(e) {}
                 destroy();

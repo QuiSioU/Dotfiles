@@ -4,8 +4,11 @@ import QtQuick
 import QtQuick.Layouts
 import ElyseanShell.Themes
 
-// Animation: circle slides from right to left, revealing the panel behind it.
-// Final state: circle at x=0, overlapping the left cap of the panel.
+// Lifecycle:
+//   1. fade in + slide circle left  → reveals panel
+//   2. radial countdown (timeoutMs)
+//   3. slide circle right           → hides panel
+//   4. fade out circle
 
 Item {
     id: card
@@ -16,13 +19,12 @@ Item {
     readonly property int d:           60
     readonly property int bw:          2
     readonly property int panelWidth:  260
-    readonly property int panelHeight: Math.round(d * 2 / 3)
+    readonly property int panelHeight: Math.round(d * 3 / 4)
 
-    // Total width: panel spans 0..panelWidth, right half of circle sticks out = panelWidth
     implicitWidth:  panelWidth
     implicitHeight: d
 
-    onEntryChanged: { if (entry !== null) slideTimer.restart() }
+    onEntryChanged: { if (entry !== null) introTimer.restart() }
 
     // ── Accent colour ──────────────────────────────────────────────────────
     property color accentColor: {
@@ -38,8 +40,6 @@ Item {
     }
 
     // ── Panel clip ─────────────────────────────────────────────────────────
-    // Left edge glued to circle's right edge, right edge fixed at panelWidth.
-    // Width = panelWidth - (circle.x + d): 0 at start, (panelWidth-d) at rest.
     Item {
         id: panelClip
         clip: true
@@ -48,25 +48,17 @@ Item {
         width:  card.panelWidth - circle.x - card.d / 2
         height: card.panelHeight
 
-        // Content offset so it appears at its final absolute position (x=0 in card space)
-        // Absolute x of inner item = clip.x + inner.x = (circle.x+d) + (-(circle.x+d)) = 0
         Item {
             x:      -(circle.x + card.d / 2)
             width:  card.panelWidth
             height: card.panelHeight
 
-            // Gradient border
             Rectangle {
                 anchors.fill: parent
                 radius:       card.panelHeight / 2
-                gradient: Gradient {
-                    orientation: Gradient.Horizontal
-                    GradientStop { position: 0.0; color: card.accentColor }
-                    GradientStop { position: 1.0; color: ActiveTheme.colors["FG_DARK"] }
-                }
+                color:        card.accentColor
             }
 
-            // Inner face
             Rectangle {
                 anchors { fill: parent; margins: card.bw }
                 radius: (card.panelHeight - card.bw * 2) / 2
@@ -118,53 +110,6 @@ Item {
                         elide:            Text.ElideRight
                         Layout.fillWidth: true
                     }
-
-                    Item {
-                        id: progressBar
-                        Layout.fillWidth: true
-                        height: 3
-
-                        Rectangle {
-                            anchors.fill: parent
-                            radius: 2
-                            color:  ActiveTheme.colors["BG_HIGHLIGHT"]
-                        }
-
-                        Rectangle {
-                            id: progressFill
-                            anchors { top: parent.top; left: parent.left; bottom: parent.bottom }
-                            radius: 2
-                            width:  0
-                            gradient: Gradient {
-                                orientation: Gradient.Horizontal
-                                GradientStop { position: 0.0; color: card.accentColor }
-                                GradientStop { position: 1.0; color: ActiveTheme.colors["FG_DARK"] }
-                            }
-
-                            Timer {
-                                id: startTimer
-                                interval: 0
-                                repeat:   false
-                                running:  false
-                                onTriggered: {
-                                    progressFill.width = progressBar.width
-                                    widthAnim.stop()
-                                    widthAnim.from = progressBar.width
-                                    widthAnim.to   = 0
-                                    widthAnim.start()
-                                }
-                            }
-                        }
-
-                        NumberAnimation {
-                            id:          widthAnim
-                            target:      progressFill
-                            property:    "width"
-                            duration:    card.timeoutMs
-                            running:     false
-                            easing.type: Easing.Linear
-                        }
-                    }
                 }
             }
         }
@@ -175,20 +120,18 @@ Item {
         id: circle
         width:  card.d
         height: card.d
-        x:      card.panelWidth - card.d   // starts at right edge, fully visible
+        x:      card.panelWidth - card.d
         anchors.verticalCenter: parent.verticalCenter
         z: 1
 
+        // Track ring (background)
         Rectangle {
             anchors.fill: parent
             radius:       width / 2
-            gradient: Gradient {
-                orientation: Gradient.Vertical
-                GradientStop { position: 0.0; color: card.accentColor }
-                GradientStop { position: 1.0; color: ActiveTheme.colors["FG_DARK"] }
-            }
+            color:        ActiveTheme.colors["BG_HIGHLIGHT"]
         }
 
+        // Inner face
         Rectangle {
             anchors { fill: parent; margins: card.bw }
             radius: width / 2
@@ -213,38 +156,107 @@ Item {
                 visible: (entry?.icon ?? "") === ""
             }
         }
+
+        // Radial progress arc
+        Canvas {
+            id: progressArc
+            anchors.fill: parent
+
+            // 1.0 = full ring → 0.0 = empty
+            property real progress: 1.0
+            onProgressChanged: requestPaint()
+
+            property color arcColor: card.accentColor
+            onArcColorChanged: requestPaint()
+
+            onPaint: {
+                var ctx = getContext("2d")
+                ctx.clearRect(0, 0, width, height)
+                var cx  = width  / 2
+                var cy  = height / 2
+                var r   = (Math.min(width, height) - card.bw) / 2
+                var startAngle = -Math.PI / 2
+                var endAngle   = startAngle + progress * 2 * Math.PI
+                ctx.beginPath()
+                ctx.arc(cx, cy, r, startAngle, endAngle, false)
+                ctx.strokeStyle = arcColor
+                ctx.lineWidth   = card.bw
+                ctx.lineCap     = "round"
+                ctx.stroke()
+            }
+        }
     }
 
-    // ── Slide animation ────────────────────────────────────────────────────
+    // ── Sequence ───────────────────────────────────────────────────────────
+
+    opacity: 0
+
     Timer {
-        id: slideTimer
+        id: introTimer
         interval: 80
         repeat:   false
         running:  false
         onTriggered: {
-            circle.x = card.panelWidth - card.d
-            slideAnim.start()
+            circle.x             = card.panelWidth - card.d
+            progressArc.progress = 1.0
+            lifecycleAnim.restart()
         }
     }
 
-    NumberAnimation {
-        id:          slideAnim
-        target:      circle
-        property:    "x"
-        from:        card.panelWidth - card.d
-        to:          0
-        duration:    400
-        easing.type: Easing.OutCubic
-        running:     false
-        onStopped:   { if (circle.x <= 0) startTimer.restart() }
-    }
+    SequentialAnimation {
+        id: lifecycleAnim
+        running: false
 
-    opacity: 0
-    NumberAnimation on opacity {
-        from: 0; to: 1
-        duration: 150
-        easing.type: Easing.OutCubic
-        running: true
+        // 1. Fade in
+        NumberAnimation {
+            target:      card
+            property:    "opacity"
+            from:        0.0
+            to:          1.0
+            duration:    150
+            easing.type: Easing.OutCubic
+        }
+
+        // 2. Slide circle left → reveal panel
+        NumberAnimation {
+            target:      circle
+            property:    "x"
+            from:        card.panelWidth - card.d
+            to:          0
+            duration:    400
+            easing.type: Easing.OutCubic
+        }
+
+        // 3. Radial countdown
+        NumberAnimation {
+            target:      progressArc
+            property:    "progress"
+            from:        1.0
+            to:          0.0
+            duration:    card.timeoutMs
+            easing.type: Easing.Linear
+        }
+
+        // 4. Slide circle right → hide panel
+        NumberAnimation {
+            target:      circle
+            property:    "x"
+            to:          card.panelWidth - card.d
+            duration:    400
+            easing.type: Easing.InCubic
+        }
+
+        // 5. Fade out
+        NumberAnimation {
+            target:      card
+            property:    "opacity"
+            from:        1.0
+            to:          0.0
+            duration:    200
+            easing.type: Easing.InCubic
+        }
+
+        onStopped: { if (!lifecycleAnim.running) entry?.dismiss() }
     }
 
     MouseArea {
