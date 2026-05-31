@@ -4,12 +4,6 @@ import QtQuick
 import QtQuick.Layouts
 import ElyseanShell.Themes
 
-// Lifecycle:
-//   1. fade in + slide circle left  → reveals panel
-//   2. radial countdown (timeoutMs)
-//   3. slide circle right           → hides panel
-//   4. fade out circle
-
 Item {
     id: card
 
@@ -18,8 +12,8 @@ Item {
 
     readonly property int d:           60
     readonly property int bw:          2
-    readonly property int panelWidth:  260
-    readonly property int panelHeight: Math.round(d * 3 / 4)
+    readonly property int panelWidth:  300
+    readonly property int panelHeight: d
 
     implicitWidth:  panelWidth
     implicitHeight: d
@@ -41,17 +35,18 @@ Item {
 
     // ── Panel clip ─────────────────────────────────────────────────────────
     Item {
-        id: panelClip
-        clip: true
-        anchors.verticalCenter: parent.verticalCenter
-        x:      circle.x + card.d / 2
-        width:  card.panelWidth - circle.x - card.d / 2
+        id: viewport
+        width: card.panelWidth - x
         height: card.panelHeight
-
+        x: circle.x + (card.d / 2)  // Every part of the rectangle that is left of the circle will NOT be visible
+        anchors.verticalCenter: parent.verticalCenter
+        clip: true
+    
         Item {
-            x:      -(circle.x + card.d / 2)
+            id: infoRect
             width:  card.panelWidth
             height: card.panelHeight
+            x: -viewport.x - circle.x   // When animating, it will move away from the center, mirroring the circle
 
             Rectangle {
                 anchors.fill: parent
@@ -120,7 +115,7 @@ Item {
         id: circle
         width:  card.d
         height: card.d
-        x:      card.panelWidth - card.d
+        x:      (card.panelWidth - card.d) / 2
         anchors.verticalCenter: parent.verticalCenter
         z: 1
 
@@ -197,7 +192,7 @@ Item {
         repeat:   false
         running:  false
         onTriggered: {
-            circle.x             = card.panelWidth - card.d
+            circle.x             = (card.panelWidth - card.d) / 2
             progressArc.progress = 1.0
             lifecycleAnim.restart()
         }
@@ -221,7 +216,7 @@ Item {
         NumberAnimation {
             target:      circle
             property:    "x"
-            from:        card.panelWidth - card.d
+            from:        (card.panelWidth - card.d) / 2
             to:          0
             duration:    400
             easing.type: Easing.OutCubic
@@ -241,7 +236,7 @@ Item {
         NumberAnimation {
             target:      circle
             property:    "x"
-            to:          card.panelWidth - card.d
+            to:          (card.panelWidth - card.d) / 2
             duration:    400
             easing.type: Easing.InCubic
         }
