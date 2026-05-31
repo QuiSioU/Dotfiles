@@ -17,7 +17,7 @@ $character"""
 
 [fill]
 symbol = "·"
-style = "fg:{{ colors.BG_HIGHLIGHT }}"
+style = "fg:{{ colors.FG_GHOST }}"
 
 [character]
 success_symbol = "[❯](bold fg:{{ colors.ANSI_BLUE }})"
