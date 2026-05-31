@@ -374,7 +374,7 @@
      (button-module :class "menu"
           :subclass "menu-eventbox"
           :icon " "
-          :cmd "hyprctl dispatch 'hl.dsp.global(\"quickshell:toggleControlCenter\")'"
+          :cmd "hyprctl dispatch 'hl.dsp.exec_cmd(\"qs ipc call toggleControlCenter handle\")'"
      )
 )
 

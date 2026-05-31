@@ -18,7 +18,13 @@ Item {
     implicitWidth:  panelWidth
     implicitHeight: d
 
-    onEntryChanged: { if (entry !== null) introTimer.restart() }
+    onEntryChanged: {
+        if (entry !== null) {
+            circle.scale     = 0.0
+            viewport.opacity = 0.0
+            introTimer.restart()
+        }
+    }
 
     // ── Accent colour ──────────────────────────────────────────────────────
     property color accentColor: {
@@ -184,8 +190,6 @@ Item {
 
     // ── Sequence ───────────────────────────────────────────────────────────
 
-    opacity: 0
-
     Timer {
         id: introTimer
         interval: 80
@@ -199,20 +203,58 @@ Item {
     }
 
     SequentialAnimation {
+        id: exitAnim
+        running: false
+
+        // 1.a Slide circle right; Slide infoRect left → hide panel
+        NumberAnimation {
+            target:      circle
+            property:    "x"
+            to:          (card.panelWidth - card.d) / 2
+            duration:    400
+            easing.type: Easing.InCubic
+        }
+
+        // 1.b viewport hidden again before circle shrinks
+        PropertyAction { target: viewport; property: "opacity"; value: 0.0 }
+
+        // 1.c Pause before disappearing
+        PauseAnimation { duration: 250 }
+
+        // 2. Circle shrinks
+        NumberAnimation {
+            target:      circle
+            property:    "scale"
+            from:        1.0
+            to:          0.0
+            duration:    300
+            easing.type: Easing.InBack
+        }
+
+        onStopped: { if (!exitAnim.running) entry?.dismiss() }
+    }
+
+    SequentialAnimation {
         id: lifecycleAnim
         running: false
 
-        // 1. Fade in
+        // 1.a Circle grows from nothing
         NumberAnimation {
-            target:      card
-            property:    "opacity"
+            target:      circle
+            property:    "scale"
             from:        0.0
             to:          1.0
-            duration:    150
-            easing.type: Easing.OutCubic
+            duration:    300
+            easing.type: Easing.OutBack
         }
 
-        // 2. Slide circle left → reveal panel
+        // 1.b Pause before sliding
+        PauseAnimation { duration: 250 }
+
+        // 1.c viewport becomes visible just before the slide begins
+        PropertyAction { target: viewport; property: "opacity"; value: 1.0 }
+
+        // 2. Slide circle left; Slide infoRect right → reveal panel
         NumberAnimation {
             target:      circle
             property:    "x"
@@ -232,31 +274,16 @@ Item {
             easing.type: Easing.Linear
         }
 
-        // 4. Slide circle right → hide panel
-        NumberAnimation {
-            target:      circle
-            property:    "x"
-            to:          (card.panelWidth - card.d) / 2
-            duration:    400
-            easing.type: Easing.InCubic
-        }
-
-        // 5. Fade out
-        NumberAnimation {
-            target:      card
-            property:    "opacity"
-            from:        1.0
-            to:          0.0
-            duration:    200
-            easing.type: Easing.InCubic
-        }
-
-        onStopped: { if (!lifecycleAnim.running) entry?.dismiss() }
+        // 4. Run exit animation
+        onStopped: { if (!lifecycleAnim.running) exitAnim.start() }
     }
 
     MouseArea {
         anchors.fill: parent
         cursorShape:  Qt.PointingHandCursor
-        onClicked:    entry?.dismiss()
+        onClicked: {
+            lifecycleAnim.stop()
+            exitAnim.start()
+        }
     }
 }
