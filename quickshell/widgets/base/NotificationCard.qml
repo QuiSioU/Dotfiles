@@ -95,12 +95,14 @@ Item {
                             
                             anchors {
                                 left:           parent.left
+                                right:          parent.right
                                 verticalCenter: parent.verticalCenter
                             }
-
-                            width:                  parent.width            // Bounds the text to the safe width
-                            horizontalAlignment:    Text.AlignLeft          // Align the text glyphs to the left
-                            elide:                  Text.ElideRight
+                            
+                            wrapMode:               Text.Wrap            // Enables text wrapping to the next line
+                            maximumLineCount:       2                    // Caps the rendering at exactly 2 lines
+                            elide:                  Text.ElideRight      // Adds "..." at the end of the second line if it overflows
+                            horizontalAlignment:    Text.AlignLeft
                         }
                     }
 
