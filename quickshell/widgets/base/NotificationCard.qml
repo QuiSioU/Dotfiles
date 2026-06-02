@@ -8,7 +8,7 @@ Item {
     id: card
 
     property var entry: null
-    property int timeoutMs: 4000
+    property int timeoutMs: 5000
 
     readonly property int d:           60
     readonly property int bw:          2
@@ -65,53 +65,77 @@ Item {
                 radius: (card.panelHeight - card.bw * 2) / 2
                 color:  ActiveTheme.colors["ANSI_BLACK"]
 
-                ColumnLayout {
+                Item {
                     anchors {
-                        left:         parent.left
-                        right:        parent.right
-                        top:          parent.top
-                        bottom:       parent.bottom
-                        leftMargin:   card.d + 8
-                        rightMargin:  12
-                        topMargin:    6
-                        bottomMargin: 6
+                        fill:         parent
+                        leftMargin:   card.d * (6 / 5)
+                        rightMargin:  24
                     }
-                    spacing: 2
+                    clip: true
 
-                    Text {
-                        text:             entry?.appName || "Notification"
-                        color:            card.accentColor
-                        font.pixelSize:   13
-                        font.bold:        true
-                        font.family:      "JetBrainsMono Nerd Font"
-                        Layout.fillWidth: true
-                        elide:            Text.ElideRight
+                    Item {
+                        id: summaryItem
+                        anchors {
+                            left:                   parent.left
+                            right:                  parent.right
+                            verticalCenter:         parent.verticalCenter
+                            verticalCenterOffset:   0
+                        }
+                        height: summaryText.height
+                        opacity: 1.0
+
+                        Text {
+                            id: summaryText
+                            visible:          text !== ""
+                            text:             entry?.summary ?? ""
+                            color:            ActiveTheme.colors["FG"]
+                            font.pixelSize:   15
+                            font.bold:        true
+                            font.family:      "JetBrainsMono Nerd Font"
+                            
+                            anchors {
+                                left:           parent.left
+                                verticalCenter: parent.verticalCenter
+                            }
+
+                            width:                  parent.width            // Bounds the text to the safe width
+                            horizontalAlignment:    Text.AlignLeft          // Align the text glyphs to the left
+                            elide:                  Text.ElideRight
+                        }
                     }
 
-                    Text {
-                        visible:          text !== ""
-                        text:             entry?.summary ?? ""
-                        color:            ActiveTheme.colors["FG"]
-                        font.pixelSize:   11
-                        font.family:      "JetBrainsMono Nerd Font"
-                        font.hintingPreference: Font.PreferNoHinting
-                        renderType:       Text.QtRendering
-                        elide:            Text.ElideRight
-                        Layout.fillWidth: true
-                    }
+                    Item {
+                        id: bodyItem
+                        anchors {
+                            left:                   parent.left
+                            right:                  parent.right
+                            verticalCenter:         parent.verticalCenter
+                            verticalCenterOffset:   card.panelHeight
+                        }
+                        height: bodyText.height
+                        opacity: 1.0
 
-                    Text {
-                        visible:          text !== ""
-                        text:             entry?.body ?? ""
-                        color:            ActiveTheme.colors["FG_DARK"]
-                        font.pixelSize:   10
-                        font.family:      "JetBrainsMono Nerd Font"
-                        wrapMode:         Text.Wrap
-                        maximumLineCount: 2
-                        elide:            Text.ElideRight
-                        Layout.fillWidth: true
+                        Text {
+                            id: bodyText
+                            visible:          text !== ""
+                            text:             entry?.body ?? ""
+                            color:            ActiveTheme.colors["FG_DARK"]
+                            font.pixelSize:   13
+                            font.family:      "JetBrainsMono Nerd Font"
+                            
+                            anchors {
+                                left:           parent.left
+                                right:          parent.right
+                                verticalCenter: parent.verticalCenter
+                            }
+                            
+                            wrapMode:               Text.Wrap            // Enables text wrapping to the next line
+                            maximumLineCount:       2                    // Caps the rendering at exactly 2 lines
+                            elide:                  Text.ElideRight      // Adds "..." at the end of the second line if it overflows
+                            horizontalAlignment:    Text.AlignLeft
+                        }
                     }
-                }
+                }   
             }
         }
     }
@@ -216,10 +240,11 @@ Item {
         }
 
         // 1.b viewport hidden again before circle shrinks
-        PropertyAction { target: viewport; property: "opacity"; value: 0.0 }
-
-        // 1.c Pause before disappearing
-        PauseAnimation { duration: 250 }
+        PropertyAction {
+            target: viewport;
+            property: "opacity";
+            value: 0.0
+        }
 
         // 2. Circle shrinks
         NumberAnimation {
@@ -252,7 +277,11 @@ Item {
         PauseAnimation { duration: 250 }
 
         // 1.c viewport becomes visible just before the slide begins
-        PropertyAction { target: viewport; property: "opacity"; value: 1.0 }
+        PropertyAction {
+            target: viewport;
+            property: "opacity";
+            value: 1.0
+        }
 
         // 2. Slide circle left; Slide infoRect right → reveal panel
         NumberAnimation {
@@ -264,14 +293,61 @@ Item {
             easing.type: Easing.OutCubic
         }
 
-        // 3. Radial countdown
-        NumberAnimation {
-            target:      progressArc
-            property:    "progress"
-            from:        1.0
-            to:          0.0
-            duration:    card.timeoutMs
-            easing.type: Easing.Linear
+        // 3. Radial countdown + Text change
+        ParallelAnimation {
+            NumberAnimation {
+                target:      progressArc
+                property:    "progress"
+                from:        1.0
+                to:          0.0
+                duration:    card.timeoutMs
+                easing.type: Easing.Linear
+            }
+
+            SequentialAnimation {
+                // First text stays there for 40% of the total countdown time
+                PauseAnimation { duration: card.timeoutMs * (2 / 5) }
+
+                // Push-up + fade in/out of both texts
+                ParallelAnimation {
+                    ParallelAnimation {
+                        NumberAnimation {
+                            target:      summaryItem
+                            property:    "anchors.verticalCenterOffset"
+                            from:        0
+                            to:          -card.panelWidth
+                            duration:    400
+                            easing.type: Easing.InCubic
+                        }
+                        NumberAnimation {
+                            target:      summaryItem
+                            property:    "opacity"
+                            from:        1.0
+                            to:          0.0
+                            duration:    400
+                            easing.type: Easing.InCubic
+                        }
+                    }
+                    ParallelAnimation {
+                        NumberAnimation {
+                            target:      bodyItem
+                            property:    "anchors.verticalCenterOffset"
+                            from:        card.panelWidth
+                            to:          0
+                            duration:    400
+                            easing.type: Easing.OutCubic
+                        }
+                        NumberAnimation {
+                            target:      bodyItem
+                            property:    "opacity"
+                            from:        0.0
+                            to:          1.0
+                            duration:    400
+                            easing.type: Easing.InCubic
+                        }
+                    }
+                }
+            }
         }
 
         // 4. Run exit animation
