@@ -1,4 +1,4 @@
-# elysean_themes/set_theme.py
+# elysian_themes/set_theme.py
 
 
 from sys import argv
@@ -12,7 +12,7 @@ def print_usage():
     print("Usage:")
     print("\tpython set_theme.py <toml-theme-file>\n")
     print("Example:")
-    print("\tpython set_theme ~/.config/elysean_themes/themes/default/TokyoNight.toml")
+    print("\tpython set_theme ~/.config/elysian_themes/themes/default/TokyoCarbon.toml")
 
 
 def parse_toml(toml_path: str) -> dict[str, dict[str, str]]:
@@ -47,7 +47,7 @@ def template_replace(config_dir: Path, name: str, theme: dict[str, dict[str, str
     filepath: Path = config_dir / name
     template = env.get_template(name)
     output = template.render(colors=theme["colors"], meta=theme["meta"]).replace(
-        f"elysean_themes/templates/{name}",
+        f"elysian_themes/templates/{name}",
         f"{filepath.relative_to(config_dir.parent.parent)}" 
     )
     filepath.write_text(output)
@@ -58,9 +58,11 @@ if __name__ == "__main__":
     if argc != 2:
         print_usage()
 
+    root_dir: Path = Path(__file__).resolve().parent
+
     selected_theme: dict[str, dict[str, str]] = parse_toml(argv[1])
     fallback_theme: dict[str, dict[str, str]] = parse_toml(
-        Path.home() / ".config" / "elysean_themes" / "themes" / "default" / "TokyoNight.toml"
+        Path.home() / ".config" / "elysian_themes" / "themes" / "default" / "TokyoCarbon.toml"
     )
 
     theme: dict[str, dict[str, str]] = {
@@ -68,14 +70,14 @@ if __name__ == "__main__":
         for k in fallback_theme
     }
 
-    config_dir: Path = Path.home() / ".config" / "elysean_themes" / "active_theme"
+    config_dir: Path = Path.home() / ".config" / "elysian_themes" / "active_theme"
     config_dir.mkdir(exist_ok=True)
 
     # Create the template files for all utilities
     hyprland_quickshell(config_dir, theme)
 
     # # For files that are actually templates, use Jinja2
-    env = Environment(loader=FileSystemLoader(config_dir.parent / "templates/"))
+    env = Environment(loader=FileSystemLoader(root_dir / "templates/"))
     env.filters["rgb"] = lambda color: color[:7]
     env.filters["rgba"] = lambda color, a: f"{color}{a}"
     env.filters["argb"] = lambda color, a: f"#{a}{color[1:]}"

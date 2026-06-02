@@ -1,8 +1,8 @@
 -- hypr/hyprland.lua
 
 
------- LOAD ACTIVE ELYSEAN THEME ------------------------
-theme = dofile(os.getenv("HOME") .. "/.config/elysean_themes/active_theme/hypr_quickshell.lua")
+------ LOAD ACTIVE ELYSIAN THEME ------------------------
+theme = dofile(os.getenv("HOME") .. "/.config/elysian_themes/active_theme/hypr_quickshell.lua")
 
 
 ------ LOAD ENV VARIABLES (DEFAULT AND/OR CUSTOM) -------

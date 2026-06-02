@@ -2,6 +2,14 @@
 # quickshell/setup.sh
 
 
+flag_force=false
+while getopts "f" opt; do
+    case "$opt" in
+        f) flag_force=true ;;
+        *) echo "Usage: $0 [-f]"; exit 1 ;;
+    esac
+done
+
 echo "╔═════════════════════════════════════╗"
 echo "║ Setting up quickshell configuration ║"
 echo "╚═════════════════════════════════════╝"
@@ -12,8 +20,12 @@ cd "$ROOT_DIR"
 
 echo "Building resources and dependencies..."
 
-rm -rf .build .cache
-bash "$ROOT_DIR/build.sh"
+if [ "$flag_force" = true ]; then
+    rm -rf .build .cache
+fi
+
+cmake -B .build -G Ninja -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+cmake --build .build --parallel
 
 echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌"
 

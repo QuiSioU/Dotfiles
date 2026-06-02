@@ -5,6 +5,14 @@
 DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CONFIG_DIR="$HOME/.config"
 
+flag_force=false
+while getopts "f" opt; do
+    case "$opt" in
+        f) flag_force=true ;;
+        *) echo "Usage: $0 [-f]"; exit 1 ;;
+    esac
+done
+
 echo ""
 echo "Creating symlinks in $CONFIG_DIR..."
 for dir in "$DOTFILES_DIR"/*/; do
@@ -27,7 +35,11 @@ for dir in "$DOTFILES_DIR"/*/; do
     if [ -f "$script" ]; then
         echo ""
         echo ""
-        bash "$script"
+        if [ "$flag_force" = true ]; then
+            bash "$script" -f
+        else
+            bash "$script"
+        fi
         echo ""
     fi
 done

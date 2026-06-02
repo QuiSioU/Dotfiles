@@ -3,7 +3,7 @@
 
 import QtQuick
 import QtQuick.Layouts
-import ElyseanShell.Themes
+import ElysianShell.Themes
 
 
 ColumnLayout {

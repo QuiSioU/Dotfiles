@@ -4,12 +4,12 @@
 import QtQuick
 import Quickshell
 import Quickshell.Io
-import ElyseanShell.Themes
+import ElysianShell.Themes
 
 
 QtObject {
     property var _file: FileView {
-        path: Quickshell.env("HOME") + "/.config/elysean_themes/active_theme/hypr_quickshell.lua"
+        path: Quickshell.env("HOME") + "/.config/elysian_themes/active_theme/hypr_quickshell.lua"
         watchChanges: true
 
         onFileChanged: reload()

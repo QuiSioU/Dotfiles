@@ -1,8 +1,9 @@
-# elysean_themes/themes/default/Oxocarbon.toml
+# elysian_themes/themes/default/Oxocarbon.toml
 
 
 [meta]
 name    = "Oxocarbon"
+id      = "oxocarbon"
 type    = "default"
 author  = "QuiSioU"
 

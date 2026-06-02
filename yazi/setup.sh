@@ -2,6 +2,14 @@
 # yazi/setup.sh
 
 
+flag_force=false
+while getopts "f" opt; do
+    case "$opt" in
+        f) flag_force=true ;;
+        *) echo "Usage: $0 [-f]"; exit 1 ;;
+    esac
+done
+
 echo "╔═══════════════════════════════╗"
 echo "║ Setting up yazi configuration ║"
 echo "╚═══════════════════════════════╝"
@@ -11,9 +19,13 @@ ROOT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 cd "$ROOT_DIR"
 
 target="theme.toml"
-dir="$HOME/.config/elysean_themes/active_theme/yazi.toml"
+dir="$HOME/.config/elysian_themes/active_theme/yazi.toml"
 
 echo "Setting up color theme configuration file..."
+
+if [ "$flag_force" = true ]; then
+    rm -f "$target"
+fi
 
 if [ -L "$target" ]; then
     echo "    skipped    $target: file already exists (symlink)"

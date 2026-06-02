@@ -4,7 +4,7 @@
 import Quickshell
 import Quickshell.Wayland
 import QtQuick
-import ElyseanShell.Themes
+import ElysianShell.Themes
 
 PanelWindow {
     id: orbit_panwin

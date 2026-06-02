@@ -4,7 +4,7 @@
 import QtQuick
 import Quickshell.Bluetooth
 import Quickshell.Services.Pipewire
-import ElyseanShell.Services
+import ElysianShell.Services
 import "base/orbit"
 
 OrbitMenu {

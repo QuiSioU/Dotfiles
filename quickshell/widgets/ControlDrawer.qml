@@ -5,8 +5,8 @@ import Quickshell
 import Quickshell.Io
 import QtQuick
 import QtQuick.Layouts
-import ElyseanShell.Services
-import ElyseanShell.Themes
+import ElysianShell.Services
+import ElysianShell.Themes
 import "base"
 
 Drawer {
@@ -24,7 +24,7 @@ Drawer {
     Process {
         id: wallpaperScanner
         command: ["find",
-            Quickshell.env("HOME") + "/.config/elysean_themes/wallpapers/",
+            Quickshell.env("HOME") + "/.config/elysian_themes/wallpapers/",
             "-type", "f",
             "(",
             "-iname", "*.jpg", "-o",
@@ -112,7 +112,7 @@ Drawer {
                 placeholder: "Select image to set as wallpaper",
                 icon:        Quickshell.shellDir + "/assets/icons/notification-bell.svg",
                 entries: function() {
-                    const dir = Quickshell.env("HOME") + "/.config/elysean_themes/wallpapers/"
+                    const dir = Quickshell.env("HOME") + "/.config/elysian_themes/wallpapers/"
                     return _wallpaperFiles.map(f => ({
                         name:    f.replace(/.*\//, "").replace(/\.[^.]+$/, ""), // filename without ext
                         comment: f,

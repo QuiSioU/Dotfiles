@@ -6,8 +6,8 @@ import Quickshell.Io
 import QtQuick
 import QtQuick.Layouts
 import Quickshell.Wayland
-import ElyseanShell.Services
-import ElyseanShell.Themes
+import ElysianShell.Services
+import ElysianShell.Themes
 import "base"
 
 PanelWindow {
@@ -52,7 +52,7 @@ PanelWindow {
         id: colorThemeScanner
         command: [
             "find",
-            Quickshell.env("HOME") + "/.config/elysean_themes/themes/",
+            Quickshell.env("HOME") + "/.config/elysian_themes/themes/",
             "-type", "f",
             "(",
             "-iname", "*.toml",
@@ -162,7 +162,7 @@ PanelWindow {
                             return () => {
                                 ctProcess.command = [
                                     "python",
-                                    Quickshell.env("HOME") + "/.config/elysean_themes/set_theme.py",
+                                    Quickshell.env("HOME") + "/.config/elysian_themes/set_theme.py",
                                     path
                                 ]
                                 ctProcess.running = true

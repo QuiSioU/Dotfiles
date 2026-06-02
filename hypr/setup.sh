@@ -2,6 +2,14 @@
 # hypr/setup.sh
 
 
+flag_force=false
+while getopts "f" opt; do
+    case "$opt" in
+        f) flag_force=true ;;
+        *) echo "Usage: $0 [-f]"; exit 1 ;;
+    esac
+done
+
 USER_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/user"
 
 create_file() {

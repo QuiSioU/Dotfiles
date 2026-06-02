@@ -4,8 +4,8 @@
 import QtQuick
 import Quickshell
 import Quickshell.Wayland
-import ElyseanShell.Blobs
-import ElyseanShell.Themes
+import ElysianShell.Blobs
+import ElysianShell.Themes
 
 Variants {
     model: Quickshell.screens

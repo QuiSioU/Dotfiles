@@ -1,9 +1,17 @@
 #!/bin/bash
-# elysean_themes/setup.sh
+# elysian_themes/setup.sh
 
+
+flag_force=false
+while getopts "f" opt; do
+    case "$opt" in
+        f) flag_force=true ;;
+        *) echo "Usage: $0 [-f]"; exit 1 ;;
+    esac
+done
 
 echo "╔═════════════════════════════════════════╗"
-echo "║ Setting up elysean themes configuration ║"
+echo "║ Setting up elysian themes configuration ║"
 echo "╚═════════════════════════════════════════╝"
 echo ""
 
@@ -25,13 +33,17 @@ echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌�
 
 echo "Setting active theme configuration file..."
 
-if [ -d "$ROOT_DIR/active_theme" ]; then
+if [[ -d "$ROOT_DIR/active_theme" && "$flag_force" = false ]]; then
     echo "    skipped    $ROOT_DIR/active_theme/:  directory already exists"
 else
-    python "set_theme.py" "themes/default/TokyoNight.toml"
+    if [ "$flag_force" = true ]; then
+        rm -rf "$ROOT_DIR/active_theme"
+    fi
+
+    python "set_theme.py" "themes/default/TokyoCarbon.toml"
     echo "    created    $ROOT_DIR/active_theme/"
 fi
 
 echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌"
 
-echo "Elysean themes configured successfully!"
+echo "Elysian themes configured successfully!"

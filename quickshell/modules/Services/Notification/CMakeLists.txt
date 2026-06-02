@@ -6,7 +6,7 @@ set_source_files_properties(NotificationService.qml
         QT_QML_SINGLETON_TYPE TRUE
 )
 
-qt_target_qml_sources(elyseanshell-services
+qt_target_qml_sources(elysianshell-services
     QML_FILES
         NotificationService.qml
 )

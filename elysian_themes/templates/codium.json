@@ -28,7 +28,7 @@
             "foreground": "{{ colors.FG }}"
         }
     },
-    "semanticClass": "tokyo-night",
+    "semanticClass": "{{ meta.id }}",
     "colors": {
         "foreground": "{{ colors.FG_MUTED }}",
         "descriptionForeground": "{{ colors.DARK3 }}",

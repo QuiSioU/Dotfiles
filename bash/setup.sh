@@ -2,6 +2,14 @@
 # bash/setup.sh
 
 
+flag_force=false
+while getopts "f" opt; do
+    case "$opt" in
+        f) flag_force=true ;;
+        *) echo "Usage: $0 [-f]"; exit 1 ;;
+    esac
+done
+
 echo "╔═══════════════════════════════╗"
 echo "║ Setting up bash configuration ║"
 echo "╚═══════════════════════════════╝"

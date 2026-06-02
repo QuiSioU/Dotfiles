@@ -2,6 +2,14 @@
 # awww/setup.sh
 
 
+flag_force=false
+while getopts "f" opt; do
+    case "$opt" in
+        f) flag_force=true ;;
+        *) echo "Usage: $0 [-f]"; exit 1 ;;
+    esac
+done
+
 echo "╔═══════════════════════════════╗"
 echo "║ Setting up awww configuration ║"
 echo "╚═══════════════════════════════╝"
@@ -20,7 +28,7 @@ fi
 
 CACHE_FILE="$HOME/.cache/awww/$AWWW_VERSION/eDP-1"
 
-if [ -f "$CACHE_FILE" ]; then
+if [[ -f "$CACHE_FILE" && "$flag_force" = false ]]; then
     echo "    skipped    $CACHE_FILE:  cached wallpaper already exists"
 else
     awww img "$HOME/.config/awww/default/Leshy.jpg" --transition-type center
