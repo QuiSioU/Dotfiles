@@ -4,7 +4,6 @@
 import Quickshell
 import Quickshell.Io
 import QtQuick
-import QtQuick.Layouts
 import Quickshell.Wayland
 import ElysianShell.Services
 import ElysianShell.Themes

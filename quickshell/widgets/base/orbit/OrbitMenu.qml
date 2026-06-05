@@ -80,10 +80,10 @@ PanelWindow {
                 readonly property real targetAngle: index * sliceAngle - Math.PI / 2
                 readonly property real targetX:     orbit_panwin.centerX + Math.cos(targetAngle) * orbit_panwin.orbitRadius
                 readonly property real targetY:     orbit_panwin.centerY + Math.sin(targetAngle) * orbit_panwin.orbitRadius
-                readonly property bool hovered:     index === orbit_panwin.hoveredIndex
                 readonly property bool selected:    entry?.selected ?? false
 
-                property bool animating: false
+                property bool hovered:      false
+                property bool animating:    false
 
                 width:  orbit_panwin.bubbleSize
                 height: orbit_panwin.bubbleSize
@@ -169,11 +169,24 @@ PanelWindow {
                         font.weight: Font.Medium
                         visible: bubbleIcon.status !== Image.Ready
                     }
+
+                    MouseArea {
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        
+                        onEntered:  { if (!orbit_panwin._pendingClose) bubbleItem.hovered = true }
+                        onExited:   bubbleItem.hovered = false
+
+                        onClicked: {
+                            bubbleItem.entry.action()
+                            if (!bubbleItem.entry.stateful) orbit_panwin.closeMenu()
+                        }
+                    }
                 }
 
                 // Tooltip
                 Rectangle {
-                    visible: bubbleItem.hovered &&
+                    visible: bubbleItem.hovered && !orbit_panwin._pendingClose &&
                              ((bubbleItem.entry?.name ?? "") !== "" ||
                               (bubbleItem.entry?.comment ?? "") !== "")
                     anchors.horizontalCenter: parent.horizontalCenter
@@ -216,10 +229,12 @@ PanelWindow {
             }
         }
 
+        // This MouseArea covers the whole screen. Only used to capture mouse position (x, Y) on screen
         MouseArea {
             anchors.fill: parent
             hoverEnabled: true
             propagateComposedEvents: true
+            z: -1
 
             onPositionChanged: mouse => {
                 if (orbit_panwin._pendingShow) {
@@ -228,34 +243,10 @@ PanelWindow {
                     orbit_panwin._pendingShow = false
                     bubbleRepeater.triggerExpand()
                 }
-
-                let closest = -1
-                let closestDist = orbit_panwin.bubbleSize / 2 + 8
-
-                for (let i = 0; i < orbit_panwin.entries.length; i++) {
-                    const angle = i * (2 * Math.PI / orbit_panwin.entries.length) - Math.PI / 2
-                    const bx = orbit_panwin.centerX + Math.cos(angle) * orbit_panwin.orbitRadius
-                    const by = orbit_panwin.centerY + Math.sin(angle) * orbit_panwin.orbitRadius
-                    const dx = mouse.x - bx
-                    const dy = mouse.y - by
-                    const dist = Math.sqrt(dx*dx + dy*dy)
-                    if (dist < closestDist) {
-                        closestDist = dist
-                        closest = i
-                    }
-                }
-                orbit_panwin.hoveredIndex = closest
             }
 
-            onClicked: {
-                if (orbit_panwin.hoveredIndex >= 0 && orbit_panwin.hoveredIndex < orbit_panwin.entries.length) {
-                    const entry = orbit_panwin.entries[orbit_panwin.hoveredIndex]
-                    const wasSelected = entry.selected
-                    entry.action()
-
-                    if (!entry.stateful) orbit_panwin.closeMenu()
-                }
-            }
+            // Close menu if clicking outside of any bubble
+            onClicked: { orbit_panwin.closeMenu() }
         }
     }
 }
