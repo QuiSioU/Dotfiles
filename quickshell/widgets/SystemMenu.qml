@@ -126,21 +126,6 @@ OrbitMenu {
             action:   function() {
                 NotificationService.showNotifications = !NotificationService.showNotifications
             }
-        },
-
-        // OrbitEntry {
-        //     readonly property bool muted: Pipewire.defaultAudioSource?.audio?.muted ?? false
-
-        //     name:     "Microphone"
-        //     icon:     muted ? "image://icon/microphone-sensitivity-muted"
-        //                     : "image://icon/microphone-sensitivity-high"
-        //     comment:  muted ? "Muted" : "Unmuted"
-        //     selected: !muted
-        //     stateful: true
-        //     action:   function() {
-        //         if (Pipewire.defaultAudioSource?.audio)
-        //             Pipewire.defaultAudioSource.audio.muted = !muted
-        //     }
-        // }
+        }
     ]
 }

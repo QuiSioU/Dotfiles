@@ -14,15 +14,6 @@ PanelWindow {
 
     property list<OrbitEntry> entries: []
 
-    property bool _pendingShow: false
-    property bool _pendingClose: false
-
-    property real centerX:    0
-    property real centerY:    0
-    property real bubbleSize:  50
-    property real orbitRadius: bubbleSize * 2
-    property int  hoveredIndex: -1
-
     anchors {
         top: true;
         bottom: true;
@@ -31,111 +22,140 @@ PanelWindow {
     }
 
     function closeMenu() {
-        if (_pendingClose || !visible) return
-        _pendingClose = true
+        if (!visible) return
         bubbleRepeater.triggerCollapse()
     }
 
     WlrLayershell.keyboardFocus: visible ? WlrKeyboardFocus.Exclusive : WlrKeyboardFocus.None
 
-    onVisibleChanged: {
-        if (visible) {
-            centerX = -1
-            centerY = -1
-            _pendingShow = true
-            innerItem.forceActiveFocus()
-        }
-    }
+    onVisibleChanged: { if (visible) root.open() }
 
     Item {
-        id: innerItem
+        id: root
         anchors.fill: parent
         focus: true
 
+        property bool fetchMousePos:        false
+        property real centerX:              0
+        property real centerY:              0
+        property real bubbleSize:           50
+        property real orbitRadius:          bubbleSize * 2
+        property list<OrbitEntry> entries:  orbit_panwin.entries
+
         Keys.onEscapePressed: orbit_panwin.closeMenu()
+
+        function open() {
+            centerX = -1
+            centerY = -1
+            fetchMousePos = true
+            forceActiveFocus()
+        }
 
         Repeater {
             id: bubbleRepeater
-            model: orbit_panwin.entries.length
+            model: root.entries.length
 
             function triggerExpand() {
                 for (let i = 0; i < count; i++) {
                     const item = itemAt(i)
-                    if (item) item.expand()
+                    if (item) item.expandBubble()
                 }
             }
 
             function triggerCollapse() {
                 for (let i = 0; i < count; i++) {
                     const item = itemAt(i)
-                    if (item) item.collapse()
+                    if (item) item.collapseBubble()
                 }
             }
 
             Item {
                 id: bubbleItem
 
-                readonly property var  entry:       orbit_panwin.entries[index]
-                readonly property real sliceAngle:  (2 * Math.PI) / orbit_panwin.entries.length
+                readonly property var  entry:       root.entries[index]
+                readonly property real sliceAngle:  (2 * Math.PI) / root.entries.length
                 readonly property real targetAngle: index * sliceAngle - Math.PI / 2
-                readonly property real targetX:     orbit_panwin.centerX + Math.cos(targetAngle) * orbit_panwin.orbitRadius
-                readonly property real targetY:     orbit_panwin.centerY + Math.sin(targetAngle) * orbit_panwin.orbitRadius
+                readonly property real targetX:     root.centerX + Math.cos(targetAngle) * root.orbitRadius
+                readonly property real targetY:     root.centerY + Math.sin(targetAngle) * root.orbitRadius
                 readonly property bool selected:    entry?.selected ?? false
 
                 property bool hovered:      false
-                property bool animating:    false
 
-                width:  orbit_panwin.bubbleSize
-                height: orbit_panwin.bubbleSize
+                width:  root.bubbleSize
+                height: root.bubbleSize
                 x: 0
                 y: 0
+                opacity: root.fetchMousePos ? 0 : 1
 
-                Behavior on x {
-                    enabled: bubbleItem.animating
-                    NumberAnimation {
-                        duration: 450;
-                        easing.type: orbit_panwin._pendingClose ? Easing.InBack : Easing.OutBack;
-                        easing.overshoot: 1.5
+                function expandBubble() {
+                    if (collapseAnimation.running) return
+                    expandAnimation.start()
+                }
+
+                function collapseBubble() {
+                    if (expandAnimation.running) return
+                    collapseAnimation.start()
+                }
+
+                SequentialAnimation {
+                    id: expandAnimation
+                    running: false
+
+                    ParallelAnimation {
+                        NumberAnimation {
+                            target:             bubbleItem
+                            property:           "x"
+                            from:               root.centerX - root.bubbleSize / 2
+                            to:                 targetX - root.bubbleSize / 2
+                            duration:           450
+                            easing.type:        Easing.OutBack
+                            easing.overshoot:   1.5
+                        }
+                        NumberAnimation {
+                            target:             bubbleItem
+                            property:           "y"
+                            from:               root.centerY - root.bubbleSize / 2
+                            to:                 targetY - root.bubbleSize / 2
+                            duration:           450
+                            easing.type:        Easing.OutBack
+                            easing.overshoot:   1.5
+                        }
                     }
                 }
-                Behavior on y {
-                    enabled: bubbleItem.animating
-                    NumberAnimation {
-                        duration: 450;
-                        easing.type: orbit_panwin._pendingClose ? Easing.InBack : Easing.OutBack;
-                        easing.overshoot: 1.5
+
+                SequentialAnimation {
+                    id: collapseAnimation
+                    running: false
+
+                    ParallelAnimation {
+                        NumberAnimation {
+                            target:             bubbleItem
+                            property:           "x"
+                            to:                 root.centerX - root.bubbleSize / 2
+                            duration:           450
+                            easing.type:        Easing.InBack
+                            easing.overshoot:   1.5
+                        }
+                        NumberAnimation {
+                            target:             bubbleItem
+                            property:           "y"
+                            to:                 root.centerY - root.bubbleSize / 2
+                            duration:           450
+                            easing.type:        Easing.InBack
+                            easing.overshoot:   1.5
+                        }
                     }
-                }
 
-                Timer {
-                    id: hideTimer
-                    interval: 450
-                    repeat: false
-                    running: index === 0 && orbit_panwin._pendingClose
-                    onTriggered: {
-                        orbit_panwin.visible = false
-                        orbit_panwin._pendingClose = false
+                    onStopped: {
+                        if (index === root.entries.length - 1) {
+                            orbit_panwin.visible = false
+                        }
                     }
-                }
-
-                function expand() {
-                    animating = false
-                    x = orbit_panwin.centerX - orbit_panwin.bubbleSize / 2
-                    y = orbit_panwin.centerY - orbit_panwin.bubbleSize / 2
-                    animating = true
-                    x = targetX - orbit_panwin.bubbleSize / 2
-                    y = targetY - orbit_panwin.bubbleSize / 2
-                }
-
-                function collapse() {
-                    animating = true
-                    x = orbit_panwin.centerX - orbit_panwin.bubbleSize / 2
-                    y = orbit_panwin.centerY - orbit_panwin.bubbleSize / 2
                 }
 
                 Rectangle {
                     anchors.fill: parent
-                    radius: orbit_panwin.bubbleSize / 2
+                    radius: root.bubbleSize / 2
 
                     color: {
                         if (bubbleItem.hovered)   return ActiveTheme.colors["DARK4"]
@@ -174,8 +194,12 @@ PanelWindow {
                         anchors.fill: parent
                         hoverEnabled: true
                         
-                        onEntered:  { if (!orbit_panwin._pendingClose) bubbleItem.hovered = true }
-                        onExited:   bubbleItem.hovered = false
+                        onEntered: {
+                            if (!expandAnimation.running && !collapseAnimation.running) {
+                                bubbleItem.hovered = true
+                            }
+                        }
+                        onExited: bubbleItem.hovered = false
 
                         onClicked: {
                             bubbleItem.entry.action()
@@ -186,7 +210,7 @@ PanelWindow {
 
                 // Tooltip
                 Rectangle {
-                    visible: bubbleItem.hovered && !orbit_panwin._pendingClose &&
+                    visible: bubbleItem.hovered && !expandAnimation.running && !collapseAnimation.running &&
                              ((bubbleItem.entry?.name ?? "") !== "" ||
                               (bubbleItem.entry?.comment ?? "") !== "")
                     anchors.horizontalCenter: parent.horizontalCenter
@@ -237,10 +261,10 @@ PanelWindow {
             z: -1
 
             onPositionChanged: mouse => {
-                if (orbit_panwin._pendingShow) {
-                    orbit_panwin.centerX = mouse.x
-                    orbit_panwin.centerY = mouse.y
-                    orbit_panwin._pendingShow = false
+                if (root.fetchMousePos) {
+                    root.centerX = mouse.x
+                    root.centerY = mouse.y
+                    root.fetchMousePos = false
                     bubbleRepeater.triggerExpand()
                 }
             }
