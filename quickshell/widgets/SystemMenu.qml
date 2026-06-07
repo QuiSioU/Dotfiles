@@ -22,6 +22,11 @@ PanelWindow {
         right: true
     }
 
+    function closeMenu() {
+        if (!visible) return
+        orbitMenu.closeMenu()
+    }
+
     WlrLayershell.keyboardFocus: visible ? WlrKeyboardFocus.Exclusive : WlrKeyboardFocus.None
 
     onVisibleChanged: { if (visible) orbitMenu.openMenu() }

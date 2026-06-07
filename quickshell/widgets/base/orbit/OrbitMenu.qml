@@ -15,6 +15,7 @@ Item {
     property real centerY:              0
     property real bubbleSize:           50
     property real orbitRadius:          bubbleSize * 2
+    property real fetchTimeout:         100
     property list<OrbitEntry> entries:  []
 
     signal closeRequested()
@@ -28,6 +29,10 @@ Item {
     function closeMenu() { bubbleRepeater.triggerCollapse() }
 
     Keys.onEscapePressed: root.closeMenu()
+    Keys.onPressed: event => {
+        if (event.key === Qt.Key_Tab)
+            bubbleRepeater.triggerCollapse([0])
+    }
 
     /*
         This timer gives the MouseArea <interval> miliseconds to notify the new cursor position.
@@ -38,7 +43,7 @@ Item {
     */
     Timer {
         id: fallbackTimer
-        interval: 100
+        interval: root.fetchTimeout
         repeat: false
         onTriggered: {
             if (root.fetchMousePos) {
@@ -56,18 +61,30 @@ Item {
         id: bubbleRepeater
         model: root.entries.length
 
-        function triggerExpand() {
+        function triggerExpand(ignore_index) {
+            const skip = ignore_index ?? []
             for (let i = 0; i < count; i++) {
+                if (skip.includes(i)) continue
                 const item = itemAt(i)
-                if (item) item.expandBubble()
+                if (item && item.collapsed) item.expandBubble()
             }
         }
 
-        function triggerCollapse() {
+        function triggerCollapse(ignore_index) {
+            const skip = ignore_index ?? []
+            for (let i = 0; i < count; i++) {
+                if (skip.includes(i)) continue
+                const item = itemAt(i)
+                if (item && !item.collapsed) item.collapseBubble()
+            }
+        }
+
+        function allCollapsed() {
             for (let i = 0; i < count; i++) {
                 const item = itemAt(i)
-                if (item) item.collapseBubble()
+                if (item && !item.collapsed) return false
             }
+            return true
         }
 
         Item {
@@ -81,15 +98,18 @@ Item {
             readonly property bool selected:    entry?.selected ?? false
 
             property bool hovered:      false
+            property bool collapsed:    true
 
             width:  root.bubbleSize
             height: root.bubbleSize
             x: 0
             y: 0
-            opacity: root.fetchMousePos ? 0 : 1
+            opacity: 0
 
             function expandBubble() {
                 if (collapseAnimation.running) return
+                bubbleItem.x = root.centerX - root.bubbleSize / 2
+                bubbleItem.y = root.centerY - root.bubbleSize / 2
                 expandAnimation.start()
             }
 
@@ -104,9 +124,16 @@ Item {
 
                 ParallelAnimation {
                     NumberAnimation {
+                        target:     bubbleItem
+                        property:   "opacity"
+                        from:       0
+                        to:         1
+                        duration:   50
+                        easing.type: Easing.InOutQuad
+                    }
+                    NumberAnimation {
                         target:             bubbleItem
                         property:           "x"
-                        from:               root.centerX - root.bubbleSize / 2
                         to:                 targetX - root.bubbleSize / 2
                         duration:           450
                         easing.type:        Easing.OutBack
@@ -115,13 +142,14 @@ Item {
                     NumberAnimation {
                         target:             bubbleItem
                         property:           "y"
-                        from:               root.centerY - root.bubbleSize / 2
                         to:                 targetY - root.bubbleSize / 2
                         duration:           450
                         easing.type:        Easing.OutBack
                         easing.overshoot:   1.5
                     }
                 }
+
+                onStopped: bubbleItem.collapsed = false
             }
 
             SequentialAnimation {
@@ -146,11 +174,18 @@ Item {
                         easing.overshoot:   1.5
                     }
                 }
+                NumberAnimation {
+                    target:     bubbleItem
+                    property:   "opacity"
+                    from:       1
+                    to:         0
+                    duration:   150
+                    easing.type: Easing.InOutQuad
+                }
 
                 onStopped: {
-                    if (index === root.entries.length - 1) {
-                        root.closeRequested()
-                    }
+                    bubbleItem.collapsed = true
+                    if (bubbleRepeater.allCollapsed()) root.closeRequested()
                 }
             }
 
