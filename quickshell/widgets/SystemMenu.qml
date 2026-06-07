@@ -3,6 +3,7 @@
 
 import QtQuick
 import Quickshell
+import Quickshell.Io
 import Quickshell.Wayland
 import Quickshell.Bluetooth
 import Quickshell.Services.Pipewire
@@ -41,6 +42,29 @@ PanelWindow {
         objects: Pipewire.defaultAudioSource ? [Pipewire.defaultAudioSource] : []
     }
 
+    // ── Processes ──────────────────────────────────────────────────────────
+    Process {
+        id: shutdownProcess
+        command: ["systemctl", "poweroff"]
+        running: false
+    }
+
+    Process {
+        id: rebootProcess
+        command: ["systemctl", "reboot"]
+        running: false
+    }
+
+    Process {
+        id: logoutProcess
+        command: [
+            "bash", "-c",
+            "loginctl terminate-session $(loginctl session-status | head -1 | awk '{print $1}')"
+        ]
+        running: false
+    }
+
+    // ── Menu ───────────────────────────────────────────────────────────────
     OrbitMenu {
         id: orbitMenu
         onCloseRequested: orbit_panwin.visible = false
@@ -152,6 +176,36 @@ PanelWindow {
                 action:   function() {
                     NotificationService.showNotifications = !NotificationService.showNotifications
                 }
+            },
+
+            // Shutdown
+            OrbitEntry {
+                name:       "Shutdown"
+                icon:       Qt.resolvedUrl("../assets/icons/system-shutdown.svg")
+                comment:    "Shutdown computer"
+                selected:   true
+                stateful:   false
+                action:     () => shutdownProcess.running = true
+            },
+
+            // Reboot
+            OrbitEntry {
+                name:       "Reboot"
+                icon:       Qt.resolvedUrl("../assets/icons/system-reboot.svg")
+                comment:    "Reboot computer"
+                selected:   true
+                stateful:   false
+                action:     () => rebootProcess.running = true
+            },
+
+            // Logout
+            OrbitEntry {
+                name:       "Logout"
+                icon:       Qt.resolvedUrl("../assets/icons/system-log-out.svg")
+                comment:    "Logout from current session"
+                selected:   true
+                stateful:   false
+                action:     () => logoutProcess.running = true
             }
         ]
     }

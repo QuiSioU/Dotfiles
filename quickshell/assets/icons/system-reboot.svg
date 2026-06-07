@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="48"
+   height="48"
+   version="1.1"
+   id="svg1"
+   viewBox="0 0 48 48"
+   xml:space="preserve"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><defs
+     id="defs1"><style
+       id="current-color-scheme"
+       type="text/css">
+   .ColorScheme-Text { color:#444444; } .ColorScheme-Highlight { color:#4285f4; } .ColorScheme-NeutralText { color:#ff9800; } .ColorScheme-PositiveText { color:#4caf50; } .ColorScheme-NegativeText { color:#f44336; }
+  </style><style
+       id="current-color-scheme-5"
+       type="text/css">
+   .ColorScheme-Text { color:#444444; } .ColorScheme-Highlight { color:#4285f4; } .ColorScheme-NeutralText { color:#ff9800; } .ColorScheme-PositiveText { color:#4caf50; } .ColorScheme-NegativeText { color:#f44336; }
+  </style></defs><path
+     style="fill:#dfdfdf;fill-opacity:1;stroke-width:2.63495"
+     class="ColorScheme-Text"
+     d="m 9.2592955,12.913245 a 2.6352091,2.6352091 0 1 0 4.2116395,3.167641 c 2.213143,-2.943983 5.556463,-4.827354 9.221259,-5.194073 3.297645,-0.32998 6.570158,0.605776 9.200176,2.576959 l -3.150162,4.205444 6.587364,-0.0039 6.587364,-0.0039 -1.84824,-6.322905 -1.848238,-6.3227655 -3.16867,4.230156 C 31.37067,6.4893034 26.776198,5.1814592 22.16413,5.6429696 17.036534,6.1560666 12.355948,8.7942338 9.2592955,12.913245 Z m -3.1762317,17.425479 1.8482381,6.322765 1.8482383,6.322765 3.1686728,-4.230152 c 3.681116,2.756664 8.275587,4.064509 12.887656,3.602998 5.127596,-0.513102 9.808181,-3.15126 12.904836,-7.270276 a 2.6352091,2.6352091 0 1 0 -4.21164,-3.167639 C 32.315927,34.86316 28.9726,36.746537 25.307804,37.113258 22.010157,37.44323 18.737648,36.507482 16.107629,34.5363 l 3.150161,-4.205448 -6.587364,0.0039 z"
+     id="path1" /></svg>

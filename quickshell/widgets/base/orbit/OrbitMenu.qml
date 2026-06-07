@@ -247,12 +247,13 @@ Item {
 
             // Tooltip
             Rectangle {
+                readonly property real gap: 10
+
                 visible: bubbleItem.hovered &&
                             ((bubbleItem.entry?.name ?? "") !== "" ||
                             (bubbleItem.entry?.comment ?? "") !== "")
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.bottom: parent.top
-                anchors.bottomMargin: 6
+                x: Math.cos(bubbleItem.targetAngle) * (root.bubbleSize / 2 + width / 2 + gap) + root.bubbleSize / 2 - width / 2
+                y: Math.sin(bubbleItem.targetAngle) * (root.bubbleSize / 2 + height / 2 + gap) + root.bubbleSize / 2 - height / 2
                 width:  tooltipCol.implicitWidth + 16
                 height: tooltipCol.implicitHeight + 10
                 color: ActiveTheme.colors["BG_HIGHLIGHT"]
