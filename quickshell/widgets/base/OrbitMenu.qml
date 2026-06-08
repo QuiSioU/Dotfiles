@@ -18,7 +18,7 @@ Item {
     property real fetchTimeout:         100
     property int activeSet:             0
     property int _pendingSet:           -1
-    property list<OrbitEntrySet> sets:  []
+    property list<QtObject> sets:  []
 
     signal closeRequested()
 
@@ -241,13 +241,20 @@ Item {
                 MouseArea {
                     anchors.fill: parent
                     hoverEnabled: true
+                    acceptedButtons: Qt.LeftButton | Qt.RightButton
                     
                     onEntered: bubbleItem.hovered = true
                     onExited: bubbleItem.hovered = false
 
-                    onClicked: {
-                        bubbleItem.entry.action()
-                        if (!bubbleItem.entry.stateful) root.closeMenu()
+                    onClicked: (mouse) => {
+                        if (mouse.button == Qt.RightButton) {
+                            if (bubbleItem.entry.rightAction) bubbleItem.entry.rightAction()
+                            else console.log("Right click!")
+                        }
+                        else {
+                            bubbleItem.entry.leftAction()
+                            if (!bubbleItem.entry.stateful) root.closeMenu()
+                        }
                     }
                 }
             }

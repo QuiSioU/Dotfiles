@@ -31,6 +31,19 @@ ShellRoot {
     }
 
     Loader {
+        id: trayMenuLoader
+        active: false
+        source: "widgets/TrayMenu.qml"
+        visible: false
+
+        onItemChanged: {
+            if (item) item.menuClosed.connect(
+                () => trayMenuLoader.active = false
+            )
+        }
+    }
+
+    Loader {
         active: true
         source: "widgets/NotificationDisplay.qml"
     }
@@ -57,6 +70,21 @@ ShellRoot {
             if (!systemMenuLoader.active)
                 systemMenuLoader.active = true
             var orbit = systemMenuLoader.item
+            if (!orbit) return
+            if (!orbit.visible)
+                orbit.openMenu()
+            else {
+                orbit.closeMenu()
+            }
+        }
+    }
+
+    IpcHandler {
+        target: "toggleTrayMenu"
+        function handle(): void {
+            if (!trayMenuLoader.active)
+                trayMenuLoader.active = true
+            var orbit = trayMenuLoader.item
             if (!orbit) return
             if (!orbit.visible)
                 orbit.openMenu()

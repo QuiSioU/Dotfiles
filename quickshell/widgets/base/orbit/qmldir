@@ -1,6 +1,0 @@
-# quickshell/widgets/base/orbit/qmldir
-
-
-OrbitEntry 1.0 OrbitEntry.qml
-OrbitEntrySet 1.0 OrbitEntrySet.qml
-OrbitMenu 1.0 OrbitMenu.qml

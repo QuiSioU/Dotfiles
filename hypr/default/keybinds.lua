@@ -105,3 +105,7 @@ hl.bind(
     mainMod .. " + Escape",
     hl.dsp.exec_cmd("qs ipc call toggleSystemMenu handle")
 )
+hl.bind(
+    mainMod .. " + Tab",
+    hl.dsp.exec_cmd("qs ipc call toggleTrayMenu handle")
+)
