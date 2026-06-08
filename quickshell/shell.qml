@@ -18,29 +18,21 @@ ShellRoot {
     }
 
     Loader {
-        id: sessionMenuLoader
-        active: false
-        source: "widgets/SessionMenu.qml"
-        visible: false
-    }
-
-    Loader {
         id: systemMenuLoader
         active: false
         source: "widgets/SystemMenu.qml"
         visible: false
+
+        onItemChanged: {
+            if (item) item.menuClosed.connect(
+                () => systemMenuLoader.active = false
+            )
+        }
     }
 
     Loader {
         active: true
         source: "widgets/NotificationDisplay.qml"
-    }
-
-    Timer {
-        id: systemMenuDestroyTimer
-        interval: 500
-        repeat: false
-        onTriggered: systemMenuLoader.active = false
     }
 
     IpcHandler {
@@ -60,20 +52,6 @@ ShellRoot {
     }
 
     IpcHandler {
-        target: "toggleSessionMenu"
-        function handle(): void {
-            if (!sessionMenuLoader.active)
-                sessionMenuLoader.active = true
-            var donut = sessionMenuLoader.item
-            if (!donut) return
-            if (!donut.visible)
-                donut.visible = true
-            else
-                donut.visible = false
-        }
-    }
-
-    IpcHandler {
         target: "toggleSystemMenu"
         function handle(): void {
             if (!systemMenuLoader.active)
@@ -81,10 +59,9 @@ ShellRoot {
             var orbit = systemMenuLoader.item
             if (!orbit) return
             if (!orbit.visible)
-                orbit.visible = true
+                orbit.openMenu()
             else {
                 orbit.closeMenu()
-                systemMenuDestroyTimer.start()
             }
         }
     }

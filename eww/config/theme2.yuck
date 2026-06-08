@@ -539,44 +539,6 @@
                                   :space-evenly false
                                   (label :limit-width 25 :text "${uptime}")
                              )
-                             (box :class "ctlpanel"
-                                  (eventbox :cursor "pointer"
-                                            :class "shutdown"
-                                            :onclick "systemctl poweroff"
-                                            :tooltip " Shutdown "
-                                            (label :text "⏻")
-                                  )
-                                  (eventbox :cursor "pointer"
-                                            :class "logout"
-                                            :onclick "loginctl terminate-user $USER"
-                                            :tooltip " Logout "
-                                            (label :text "")
-                                  )
-                                  (eventbox :cursor "pointer"
-                                            :class "lockscr"
-                                            :onclick "./scripts/lock.sh"
-                                            :tooltip " Lock "
-                                            (label :text "\\uf023")
-                                  )
-                                  (eventbox :cursor "pointer"
-                                            :class "reboot"
-                                            :onclick "systemctl reboot"
-                                            :tooltip " Reboot "
-                                            (label :text "\\uf021")
-                                  )
-                                  (eventbox :cursor "pointer"
-                                            :class "suspend"
-                                            :onclick "systemctl suspend"
-                                            :tooltip " Sleep "
-                                            (label :text "󰒲")
-                                  )
-                                  (eventbox :cursor "pointer"
-                                            :class "hibernate"
-                                            :onclick "systemctl hibernate"
-                                            :tooltip " Hibernate "
-                                            (label :text "\\uf2dc")
-                                  )
-                             )
                         )
                    )
               )

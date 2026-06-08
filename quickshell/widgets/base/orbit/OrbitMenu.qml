@@ -16,11 +16,14 @@ Item {
     property real bubbleSize:           50
     property real orbitRadius:          bubbleSize * 2
     property real fetchTimeout:         100
-    property list<OrbitEntry> entries:  []
+    property int activeSet:             0
+    property int _pendingSet:           -1
+    property list<OrbitEntrySet> sets:  []
 
     signal closeRequested()
 
-    function openMenu() {
+    function openMenu(set_index) {
+        activeSet = set_index ?? 0
         fetchMousePos = true
         forceActiveFocus()
         fallbackTimer.restart()
@@ -28,11 +31,12 @@ Item {
 
     function closeMenu() { bubbleRepeater.triggerCollapse() }
 
-    Keys.onEscapePressed: root.closeMenu()
-    Keys.onPressed: event => {
-        if (event.key === Qt.Key_Tab)
-            bubbleRepeater.triggerCollapse([0])
+    function switchSet(index) {
+        _pendingSet = index
+        bubbleRepeater.triggerCollapse()
     }
+
+    Keys.onEscapePressed: root.closeMenu()
 
     /*
         This timer gives the MouseArea <interval> miliseconds to notify the new cursor position.
@@ -59,21 +63,17 @@ Item {
 
     Repeater {
         id: bubbleRepeater
-        model: root.entries.length
+        model: (root.sets[root.activeSet]?.entries ?? []).length
 
-        function triggerExpand(ignore_index) {
-            const skip = ignore_index ?? []
+        function triggerExpand() {
             for (let i = 0; i < count; i++) {
-                if (skip.includes(i)) continue
                 const item = itemAt(i)
                 if (item && item.collapsed) item.expandBubble()
             }
         }
 
-        function triggerCollapse(ignore_index) {
-            const skip = ignore_index ?? []
+        function triggerCollapse() {
             for (let i = 0; i < count; i++) {
-                if (skip.includes(i)) continue
                 const item = itemAt(i)
                 if (item && !item.collapsed) item.collapseBubble()
             }
@@ -87,15 +87,26 @@ Item {
             return true
         }
 
+        function collapseOrSwitch() {
+            if (root._pendingSet !== -1) {
+                root.activeSet = root._pendingSet
+                root._pendingSet = -1
+                triggerExpand()
+            } else {
+                root.closeRequested()
+            }
+        }
+
         Item {
             id: bubbleItem
 
-            readonly property var  entry:       root.entries[index]
-            readonly property real sliceAngle:  (2 * Math.PI) / root.entries.length
-            readonly property real targetAngle: index * sliceAngle - Math.PI / 2
-            readonly property real targetX:     root.centerX + Math.cos(targetAngle) * root.orbitRadius
-            readonly property real targetY:     root.centerY + Math.sin(targetAngle) * root.orbitRadius
-            readonly property bool selected:    entry?.selected ?? false
+            readonly property var  activeEntries:   root.sets[root.activeSet]?.entries ?? []
+            readonly property var  entry:           activeEntries[index]
+            readonly property real sliceAngle:      (2 * Math.PI) / activeEntries.length
+            readonly property real targetAngle:     index * sliceAngle - Math.PI / 2
+            readonly property real targetX:         root.centerX + Math.cos(targetAngle) * root.orbitRadius
+            readonly property real targetY:         root.centerY + Math.sin(targetAngle) * root.orbitRadius
+            readonly property bool selected:        entry?.selected ?? false
 
             property bool hovered:      false
             property bool collapsed:    true
@@ -185,7 +196,7 @@ Item {
 
                 onStopped: {
                     bubbleItem.collapsed = true
-                    if (bubbleRepeater.allCollapsed()) root.closeRequested()
+                    if (bubbleRepeater.allCollapsed()) bubbleRepeater.collapseOrSwitch()
                 }
             }
 
@@ -231,11 +242,7 @@ Item {
                     anchors.fill: parent
                     hoverEnabled: true
                     
-                    onEntered: {
-                        if (!expandAnimation.running && !collapseAnimation.running) {
-                            bubbleItem.hovered = true
-                        }
-                    }
+                    onEntered: bubbleItem.hovered = true
                     onExited: bubbleItem.hovered = false
 
                     onClicked: {
@@ -249,7 +256,7 @@ Item {
             Rectangle {
                 readonly property real gap: 10
 
-                visible: bubbleItem.hovered &&
+                visible: bubbleItem.hovered && !expandAnimation.running && !collapseAnimation.running &&
                             ((bubbleItem.entry?.name ?? "") !== "" ||
                             (bubbleItem.entry?.comment ?? "") !== "")
                 x: Math.cos(bubbleItem.targetAngle) * (root.bubbleSize / 2 + width / 2 + gap) + root.bubbleSize / 2 - width / 2
