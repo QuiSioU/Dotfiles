@@ -46,6 +46,30 @@ PanelWindow {
 
     WlrLayershell.keyboardFocus: visible ? WlrKeyboardFocus.Exclusive : WlrKeyboardFocus.None
 
+    Timer {
+        id: rebuildDebounce
+        interval: 50
+        repeat: false
+        onTriggered: {
+            let wasOpen = root.visible
+            let currentSet = trayMenu.activeSet
+
+            if (wasOpen) root.visible = false  // bypass animation
+
+            root.rebuildEntries()
+
+            if (root._pendingOpen && trayMenu.sets.length > 0) {
+                root._pendingOpen = false
+                root.visible = true
+                trayMenu.openMenu(root._pendingSet)
+            } else if (wasOpen && trayMenu.sets.length > 0) {
+                let safeSet = Math.min(currentSet, trayMenu.sets.length - 1)
+                root.visible = true
+                trayMenu.openMenu(safeSet)
+            }
+        }
+    }
+
     Instantiator {
         id: instantiator
         model: SystemTray.items
@@ -58,15 +82,8 @@ PanelWindow {
             property var    leftAction:  function() { if (!modelData.onlyMenu) modelData.activate() }
             property var    rightAction: function() { if (modelData.hasMenu) modelData.display() }
         }
-        onObjectRemoved: (index, obj) => root.rebuildEntries()
-        onObjectAdded: (index, obj) => {
-            root.rebuildEntries()
-            if (root._pendingOpen && trayMenu.sets.length > 0) {
-                root._pendingOpen = false
-                root.visible = true
-                trayMenu.openMenu(root._pendingSet)
-            }
-        }
+        onObjectRemoved:    (index, obj) => rebuildDebounce.restart()
+        onObjectAdded:      (index, obj) => rebuildDebounce.restart()
     }
 
     function rebuildEntries() {
