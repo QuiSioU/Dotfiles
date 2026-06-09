@@ -40,7 +40,8 @@ PanelWindow {
 
     function closeMenu() {
         if (!visible) return
-        trayMenu.closeMenu()
+        optionMenu.closeMenu()          // Close option menu (if open)
+        optionMenu.fullCloseRequested() // Makes it so the option menu closes tray menu too
     }
 
     WlrLayershell.keyboardFocus: visible ? WlrKeyboardFocus.Exclusive : WlrKeyboardFocus.None
@@ -61,10 +62,11 @@ PanelWindow {
                 root._pendingOpen = false
                 root.visible = true
                 trayMenu.openMenu(root._pendingSet)
-            } else if (wasOpen && trayMenu.sets.length > 0) {
+            }
+            else if (wasOpen && trayMenu.sets.length > 0) {
                 let safeSet = Math.min(currentSet, trayMenu.sets.length - 1)
                 root.visible = true
-                trayMenu.openMenu(safeSet)
+                trayMenu.openMenu(safeSet, trayMenu.centerX, trayMenu.centerY)
             }
         }
     }
