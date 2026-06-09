@@ -21,6 +21,7 @@ Item {
     property list<QtObject> sets:  []
 
     signal closeRequested()
+    signal fullCloseRequested()
 
     function openMenu(set_index, posX, posY) {
         activeSet = set_index ?? 0
@@ -54,7 +55,10 @@ Item {
         )
     }
 
-    Keys.onEscapePressed: root.closeMenu()
+    Keys.onPressed: event => {
+        if      (event.key === Qt.Key_Tab && sets.length > 1)   { switchSet((activeSet + 1) % sets.length) }
+        else if (event.key === Qt.Key_Escape)                   { root.closeMenu(); fullCloseRequested() }
+    }
 
     /*
         This timer gives the MouseArea <interval> miliseconds to notify the new cursor position.
@@ -137,7 +141,7 @@ Item {
             height: root.bubbleSize
             x: 0
             y: 0
-            opacity: 0
+            opacity: 1
 
             function expandBubble() {
                 if (collapseAnimation.running) return
@@ -157,12 +161,12 @@ Item {
 
                 ParallelAnimation {
                     NumberAnimation {
-                        target:     bubbleItem
-                        property:   "opacity"
-                        from:       0
-                        to:         1
-                        duration:   50
-                        easing.type: Easing.InOutQuad
+                        target:      bubbleItem
+                        property:    "scale"
+                        from:        0.0
+                        to:          1.0
+                        duration:    225
+                        easing.type: Easing.OutCubic
                     }
                     NumberAnimation {
                         target:             bubbleItem
@@ -206,14 +210,17 @@ Item {
                         easing.type:        Easing.InBack
                         easing.overshoot:   1.5
                     }
-                }
-                NumberAnimation {
-                    target:     bubbleItem
-                    property:   "opacity"
-                    from:       1
-                    to:         0
-                    duration:   150
-                    easing.type: Easing.InOutQuad
+                    SequentialAnimation {
+                        PauseAnimation { duration: 450 / 2 }
+                        NumberAnimation {
+                            target:      bubbleItem
+                            property:    "scale"
+                            from:        1.0
+                            to:          0.0
+                            duration:    450 / 2
+                            easing.type: Easing.InCubic
+                        }
+                    }
                 }
 
                 onStopped: {
@@ -277,6 +284,7 @@ Item {
                         else {
                             bubbleItem.entry.leftAction()
                             if (!bubbleItem.entry.stateful) root.closeMenu()
+                            root.fullCloseRequested()
                         }
                     }
                 }

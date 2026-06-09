@@ -78,8 +78,6 @@ PanelWindow {
             root.menuClosed()
         }
 
-        Keys.onPressed: event => { if (event.key === Qt.Key_Tab) switchSet((activeSet + 1) % sets.length) }
-        
         // ── Entries ────────────────────────────────────────────────────────────
         sets: [
             QtObject {

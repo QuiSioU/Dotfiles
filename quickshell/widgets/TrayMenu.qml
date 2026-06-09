@@ -27,7 +27,6 @@ PanelWindow {
     signal menuClosed()
 
     function openMenu(set_index, posX, posY) {
-        console.log("openMenu called, trayMenu.sets.length =", trayMenu.sets.length)
         if (visible) return
         rebuildEntries()
         if (trayMenu.sets.length === 0) {
@@ -88,20 +87,27 @@ PanelWindow {
     OrbitMenu {
         id: optionMenu
         sets: []
+        property bool fullClose: false
+
         onCloseRequested: {
             optionMenu.sets = []
             menuOpener.menu = null
-            trayMenu.forceActiveFocus()
+            if (fullClose) {
+                fullClose = false
+                trayMenu.closeMenu()
+            } else {
+                trayMenu.forceActiveFocus()
+            }
         }
+
+        onFullCloseRequested: fullClose = true
     }
 
     function buildOptionSets(entries) {
         let values = entries.values
-        console.log("buildOptionSets called, values.length =", values.length)
         let allEntries = []
         for (let i = 0; i < values.length; i++) {
             let e = values[i]
-            console.log("entry:", e.text, "separator:", e.isSeparator)
             if (e.isSeparator) continue
             allEntries.push(Qt.createQmlObject(`
                 import QtQuick
@@ -121,7 +127,6 @@ PanelWindow {
             obj.leftAction = function() { e.triggered() }
             obj.rightAction = e.hasChildren ? function() { /* nested, later */ } : null
         }
-        console.log("allEntries built:", allEntries.length)
 
         let newSets = []
         for (let i = 0; i < allEntries.length; i += 8) {
@@ -130,7 +135,6 @@ PanelWindow {
             newSets.push(set)
         }
         optionMenu.sets = newSets
-        console.log("optionMenu.sets.length =", optionMenu.sets.length)
     }
 
     Instantiator {
@@ -156,11 +160,9 @@ PanelWindow {
     }
 
     function rebuildEntries() {
-        console.log("rebuildEntries called, instantiator.count =", instantiator.count)
         let allEntries = []
         for (let i = 0; i < instantiator.count; i++)
             allEntries.push(instantiator.objectAt(i))
-        console.log("allEntries.length =", allEntries.length)
         if (allEntries.length === 0) {
             root.closeMenu()
             return
@@ -174,7 +176,6 @@ PanelWindow {
             newSets.push(set)
         }
         trayMenu.sets = newSets
-        console.log("trayMenu.sets.length after rebuild =", trayMenu.sets.length)
     }
 
     // ── Menu ───────────────────────────────────────────────────────────────
@@ -185,8 +186,6 @@ PanelWindow {
             root.menuClosed()
         }
 
-        Keys.onPressed: event => { if (event.key === Qt.Key_Tab) switchSet((activeSet + 1) % sets.length) }
-        
         // ── Entry sets ────────────────────────────────────────────────────────────
         sets: []
     }
