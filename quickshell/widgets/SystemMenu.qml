@@ -25,10 +25,10 @@ PanelWindow {
 
     signal menuClosed()
 
-    function openMenu(set_index) {
+    function openMenu(set_index, posX, posY) {
         if (visible) return
         visible = true
-        orbitMenu.openMenu(set_index ?? 0)
+        orbitMenu.openMenu(set_index ?? 0, posX, posY)
     }
 
     function closeMenu() {

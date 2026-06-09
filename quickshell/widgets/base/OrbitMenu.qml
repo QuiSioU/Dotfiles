@@ -22,11 +22,21 @@ Item {
 
     signal closeRequested()
 
-    function openMenu(set_index) {
+    function openMenu(set_index, posX, posY) {
         activeSet = set_index ?? 0
-        fetchMousePos = true
-        forceActiveFocus()
-        fallbackTimer.restart()
+
+        if (posX !== undefined && posY !== undefined) {
+            centerX = posX
+            centerY = posY
+            fetchMousePos = false
+            forceActiveFocus()
+            bubbleRepeater.triggerExpand()
+        }
+        else {
+            fetchMousePos = true
+            forceActiveFocus()
+            fallbackTimer.restart()
+        }
     }
 
     function closeMenu() { bubbleRepeater.triggerCollapse() }
@@ -34,6 +44,14 @@ Item {
     function switchSet(index) {
         _pendingSet = index
         bubbleRepeater.triggerCollapse()
+    }
+
+    function bubbleCenter(localIndex, totalInSet) {
+        let angle = (localIndex / totalInSet) * Math.PI * 2 - Math.PI / 2
+        return Qt.point(
+            root.centerX + Math.cos(angle) * root.orbitRadius,
+            root.centerY + Math.sin(angle) * root.orbitRadius
+        )
     }
 
     Keys.onEscapePressed: root.closeMenu()
@@ -99,6 +117,10 @@ Item {
 
         Item {
             id: bubbleItem
+
+            required property int index
+            
+            property int count: bubbleRepeater.count
 
             readonly property var  activeEntries:   root.sets[root.activeSet]?.entries ?? []
             readonly property var  entry:           activeEntries[index]
@@ -248,7 +270,8 @@ Item {
 
                     onClicked: (mouse) => {
                         if (mouse.button == Qt.RightButton) {
-                            if (bubbleItem.entry.rightAction) bubbleItem.entry.rightAction()
+                            if (bubbleItem.entry.rightAction)
+                                bubbleItem.entry.rightAction(bubbleItem.index, root.sets[root.activeSet].entries.length)
                             else console.log("Right click!")
                         }
                         else {
@@ -311,6 +334,7 @@ Item {
         hoverEnabled: true
         propagateComposedEvents: true
         z: -1
+        enabled: root.activeFocus
 
         onPositionChanged: mouse => {
             if (root.fetchMousePos) {
