@@ -21,8 +21,8 @@ PanelWindow {
         right: true
     }
 
-    property bool _pendingOpen: false
-    property int  _pendingSet:  0
+    property bool pendingOpen: false
+    property int  pendingSet:  0
 
     signal menuClosed()
 
@@ -30,8 +30,9 @@ PanelWindow {
         if (visible) return
         rebuildEntries()
         if (trayMenu.sets.length === 0) {
-            _pendingOpen = true
-            _pendingSet  = set_index ?? 0
+            pendingOpen = true
+            pendingSet  = set_index ?? 0
+            pendingOpenTimeout.restart()
             return
         }
         visible = true
@@ -47,6 +48,13 @@ PanelWindow {
     WlrLayershell.keyboardFocus: visible ? WlrKeyboardFocus.Exclusive : WlrKeyboardFocus.None
 
     Timer {
+        id: pendingOpenTimeout
+        interval: 500
+        repeat: false
+        onTriggered: root.pendingOpen = false
+    }
+
+    Timer {
         id: rebuildDebounce
         interval: 50
         repeat: false
@@ -58,10 +66,10 @@ PanelWindow {
 
             root.rebuildEntries()
 
-            if (root._pendingOpen && trayMenu.sets.length > 0) {
-                root._pendingOpen = false
+            if (root.pendingOpen && trayMenu.sets.length > 0) {
+                root.pendingOpen = false
                 root.visible = true
-                trayMenu.openMenu(root._pendingSet)
+                trayMenu.openMenu(root.pendingSet)
             }
             else if (wasOpen && trayMenu.sets.length > 0) {
                 let safeSet = Math.min(currentSet, trayMenu.sets.length - 1)
@@ -88,7 +96,11 @@ PanelWindow {
 
     OrbitMenu {
         id: optionMenu
+
+        fixedTooltip: true
+        bubbleSize: 35
         sets: []
+
         property bool fullClose: false
 
         onCloseRequested: {

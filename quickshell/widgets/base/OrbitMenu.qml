@@ -16,6 +16,7 @@ Item {
     property real bubbleSize:           50
     property real orbitRadius:          bubbleSize * 2
     property real fetchTimeout:         100
+    property bool fixedTooltip:         false
     property int activeSet:             0
     property int _pendingSet:           -1
     property list<QtObject> sets:  []
@@ -294,9 +295,9 @@ Item {
             Rectangle {
                 readonly property real gap: 10
 
-                visible: bubbleItem.hovered && !expandAnimation.running && !collapseAnimation.running &&
-                            ((bubbleItem.entry?.name ?? "") !== "" ||
-                            (bubbleItem.entry?.comment ?? "") !== "")
+                visible: (root.fixedTooltip || bubbleItem.hovered) &&
+                            !expandAnimation.running && !collapseAnimation.running &&
+                            ((bubbleItem.entry?.name ?? "") !== "" || (bubbleItem.entry?.comment ?? "") !== "")
                 x: Math.cos(bubbleItem.targetAngle) * (root.bubbleSize / 2 + width / 2 + gap) + root.bubbleSize / 2 - width / 2
                 y: Math.sin(bubbleItem.targetAngle) * (root.bubbleSize / 2 + height / 2 + gap) + root.bubbleSize / 2 - height / 2
                 width:  tooltipCol.implicitWidth + 16
