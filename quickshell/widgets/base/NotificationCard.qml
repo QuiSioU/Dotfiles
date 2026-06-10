@@ -360,6 +360,10 @@ Item {
         anchors.fill: parent
         cursorShape:  Qt.PointingHandCursor
         onClicked: {
+            const actions = entry?._notif?.actions ?? []
+            const def = actions.find(a => a.identifier === "default")
+            if (def) def.invoke()
+
             lifecycleAnim.stop()
             exitAnim.start()
         }
