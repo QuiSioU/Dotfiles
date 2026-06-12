@@ -23,10 +23,10 @@ create_file() {
     fi
 
     cat > "$filepath" <<EOF
-# hypr/user/$filename
+-- hypr/user/$filename
 
 
-# --- USER'S CUSTOM $title --------------------------- #
+----- USER'S CUSTOM $title --------------------------- #
 
 EOF
 
