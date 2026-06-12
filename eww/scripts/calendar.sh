@@ -3,8 +3,8 @@
 
 
 if [[ -z $(eww active-windows | grep 'calendar') ]]; then
-    /usr/bin/eww open calendar && /usr/bin/eww update calrev=true
+    eww open calendar && eww update calrev=true
 else
-    /usr/bin/eww update calrev=false
-    (sleep 0.2 && /usr/bin/eww close calendar) &
+    eww update calrev=false
+    (sleep 0.2 && eww close calendar) &
 fi
