@@ -45,7 +45,7 @@ int main(int argc, char *argv[]) {
     snd_mixer_selem_id_t *sid;
 
     snd_mixer_open(&handle, 0);
-    snd_mixer_attach(handle, "pulse");
+    snd_mixer_attach(handle, "default");
     snd_mixer_selem_register(handle, NULL, NULL);
     snd_mixer_load(handle);
     snd_mixer_selem_id_alloca(&sid);

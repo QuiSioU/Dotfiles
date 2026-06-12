@@ -18,7 +18,7 @@ int main() {
     snd_mixer_t             *handle;                    // Mixer handler (contains all the info)
     snd_mixer_selem_id_t    *sid;                       // Element Identifier
     snd_mixer_elem_t        *elem;                      // The current element being used (headphones, speaker, ...)
-    const char              *card       = "pulse";      // The soundcard's name
+    const char              *card       = "default";    // The soundcard's name
     const char              *selem_name = "Master";     // The name for <elem>
     const char              *icon;                      // The icon representing the volume
 
