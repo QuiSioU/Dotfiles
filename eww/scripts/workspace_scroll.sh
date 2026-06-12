@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # eww/scripts/workspace_scroll.sh
 
 

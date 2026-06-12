@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # bash/bash_env.sh
 
 

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # bash/bashrc.sh
 
 # If not running interactively, don't do anything

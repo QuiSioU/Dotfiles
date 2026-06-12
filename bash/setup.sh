@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # bash/setup.sh
 
 
@@ -29,7 +29,7 @@ elif [ -e "$private_script" ]; then
     echo "    skipped    $ROOT_DIR/$private_script: file already exists (not symlink)"
 else
     cat > "$private_script" <<EOF
-#!/bin/bash
+#!/usr/bin/env bash
 # bash/bash_private.sh
 
 

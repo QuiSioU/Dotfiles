@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # elysian_themes/setup.sh
 
 
