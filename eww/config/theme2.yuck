@@ -30,7 +30,7 @@
           (box :halign "end"
                :space-evenly false
                :spacing 10
-               (eventbox :onhoverlost "bash -c '/usr/bin/eww update keyrev=false keyhov=false wifirev=false wifihov=false'"
+               (eventbox :onhoverlost "bash -c 'eww update keyrev=false keyhov=false wifirev=false wifihov=false'"
                     (box :space-evenly false
                          :spacing 10
                          (tray)
@@ -246,7 +246,7 @@
                     :transition "slidedown"
                     :duration "350ms"
                     (eventbox
-                         :onhoverlost "/usr/bin/eww update wificonfigrev=false"
+                         :onhoverlost "eww update wificonfigrev=false"
                          (box :class "wifictl-container"
                               :space-evenly false
                               :orientation "v"
@@ -264,7 +264,7 @@
                                              :password true
                                              :space-evenly false
                                              :height 30
-                                             :onaccept "/usr/bin/eww update wificonfigrev=false && nmcli device wifi connect \"${wifissidrev}\" password \"{}\""
+                                             :onaccept "eww update wificonfigrev=false && nmcli device wifi connect \"${wifissidrev}\" password \"{}\""
                                         )
                                    )
                               )
@@ -275,14 +275,14 @@
                                    (eventbox :class "wifi-buttons"
                                         :cursor "pointer"
                                         :height 30
-                                        :onclick "/usr/bin/eww update wificonfigrev=false && nmcli device wifi connect \"${wifissidrev}\""
+                                        :onclick "eww update wificonfigrev=false && nmcli device wifi connect \"${wifissidrev}\""
                                         (label
                                              :text "Connect"
                                         )
                                    )
                                    (eventbox :class "wifi-buttons"
                                         :cursor "pointer"
-                                        :onclick "/usr/bin/eww update wificonfigrev=false && nmcli connection delete \"${wifissidrev}\""
+                                        :onclick "eww update wificonfigrev=false && nmcli connection delete \"${wifissidrev}\""
                                         (label
                                              :text "Remove"
                                         )
@@ -294,7 +294,7 @@
                                    :visible {wificlass=="3"?true:false}
                                    (eventbox :class "wifi-buttons"
                                         :cursor "pointer"
-                                        :onclick "/usr/bin/eww update wificonfigrev=false && nmcli device disconnect wlp0s20f3"
+                                        :onclick "eww update wificonfigrev=false && nmcli device disconnect wlp0s20f3"
                                         :height 30
                                         (label
                                              :text "Disconnect"
@@ -302,7 +302,7 @@
                                    )
                                    (eventbox :class "wifi-buttons"
                                         :cursor "pointer"
-                                        :onclick "/usr/bin/eww update wificonfigrev=false && nmcli connection delete \"${wifissidrev}\""
+                                        :onclick "eww update wificonfigrev=false && nmcli connection delete \"${wifissidrev}\""
                                         (label
                                              :text "Remove"
                                         )
