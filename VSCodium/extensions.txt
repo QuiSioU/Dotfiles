@@ -1,4 +1,6 @@
+eww-yuck.yuck
 james-yu.latex-workshop
+jeanp413.open-remote-ssh
 llvm-vs-code-extensions.vscode-clangd
 mechatroner.rainbow-csv
 ms-pyright.pyright
