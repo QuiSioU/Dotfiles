@@ -1,6 +1,6 @@
 {
     "name": "Oxocarbon",
-    "type": "default",
+    "type": "dark",
     "author": "QuiSioU",
     "semanticTokenColors": {
         "parameter.declaration": {
@@ -83,8 +83,6 @@
 
         "activityBar.background": "#0f0f0f",
         "activityBar.foreground": "#a2a9b0",
-        //"activityBar.activeBorder": "#333940",
-        //"activityBar.activeBackground": "#080808",
         "activityBar.inactiveForeground": "#333940",
         "activityBar.border": "#0f0f0f",
         "activityBarBadge.background": "#0f62fe",
@@ -131,12 +129,12 @@
         "scrollbarSlider.hoverBackground": "#8cb6ff10",
         "scrollbarSlider.activeBackground": "#8cb6ff22",
 
-        "editorBracketHighlight.foreground1": "#78a9ff", //"#78a9ff",
-        "editorBracketHighlight.foreground2": "#08bdba", //"#33b1ff",
-        "editorBracketHighlight.foreground3": "#33b1ff", //"#be95ff",
-        "editorBracketHighlight.foreground4": "#be95ff", //"#08bdba",
-        "editorBracketHighlight.foreground5": "#f1c21b", //"#46c880",
-        "editorBracketHighlight.foreground6": "#ee5396", //"#08bdba",
+        "editorBracketHighlight.foreground1": "#78a9ff",
+        "editorBracketHighlight.foreground2": "#08bdba",
+        "editorBracketHighlight.foreground3": "#33b1ff",
+        "editorBracketHighlight.foreground4": "#be95ff",
+        "editorBracketHighlight.foreground5": "#f1c21b",
+        "editorBracketHighlight.foreground6": "#ee5396",
         "editorBracketHighlight.unexpectedBracket.foreground": "#da1e28",
 
         "editorBracketPairGuide.activeBackground1": "#78a9ff",
@@ -346,8 +344,6 @@
         "terminal.foreground": "#f2f4f8",
         "terminal.border": "#080808",
         "terminal.selectionBackground": "#6e76814d",
-        // "terminalCursor.background": "",
-        // "terminalCursor.foreground": "",
 
         "terminal.ansiBlack": "#282828",
         "terminal.ansiRed": "#ee5396",
@@ -449,7 +445,7 @@
         "inlineChat.foreground": "#dde1e7",
         "inlineChatInput.background": "#1a1a1a",
         "inlineChatDiff.inserted": "#1a9e5840",
-        "inlineChatDiff.removed": "#da1e2842",
+        "inlineChatDiff.removed": "#da1e2842"
 
     },
     "tokenColors": [
@@ -612,7 +608,7 @@
                 "punctuation.section.embedded",
                 "meta.embedded.line.tag.smarty",
                 "support.constant.handlebars",
-                "punctuation.section.tag.twig",
+                "punctuation.section.tag.twig"
             ],
             "settings": {
                 "foreground": "#33b1ff"
@@ -627,7 +623,7 @@
                 "keyword.operator.comparison.twig",
                 "keyword.blade",
                 "entity.name.function.blade",
-                "meta.tag.blade keyword.other.type.php",
+                "meta.tag.blade keyword.other.type.php"
             ],
             "settings": {
                 "foreground": "#08bdba"
@@ -788,7 +784,7 @@
             "name": "Variable Array Key",
             "scope": "meta.array.literal variable",
             "settings": {
-                "foreground": "#33b1ff" //"#25be6a"
+                "foreground": "#33b1ff"
             }
         },
         {
@@ -1024,7 +1020,7 @@
             "name": "CSS Punctuation",
             "scope": "meta.property-list",
             "settings": {
-                "foreground": "#a6c8ff" //"#08bdba"
+                "foreground": "#a6c8ff"
             }
         },
         {

@@ -50,7 +50,7 @@ def template_replace(config_dir: Path, name: str, theme: dict[str, dict[str, str
         f"elysian_themes/templates/{name}",
         f"{filepath.relative_to(config_dir.parent.parent)}" 
     )
-    filepath.write_text(output)
+    filepath.write_text(output + '\n')
 
 
 if __name__ == "__main__":

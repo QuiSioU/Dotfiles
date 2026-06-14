@@ -1,5 +1,5 @@
 {
-    "name": "TokyoNight",
+    "name": "Tokyo Night",
     "type": "dark",
     "author": "Enkia",
     "semanticTokenColors": {
@@ -83,8 +83,6 @@
 
         "activityBar.background": "#16161e",
         "activityBar.foreground": "#787c99",
-        //"activityBar.activeBorder": "#3b3e52",
-        //"activityBar.activeBackground": "#101014",
         "activityBar.inactiveForeground": "#3b3e52",
         "activityBar.border": "#16161e",
         "activityBarBadge.background": "#3d59a1",
@@ -131,12 +129,12 @@
         "scrollbarSlider.hoverBackground": "#668ac410",
         "scrollbarSlider.activeBackground": "#668ac422",
 
-        "editorBracketHighlight.foreground1": "#7aa2f7", //"#7aa2f7",
-        "editorBracketHighlight.foreground2": "#0db9d7", //"#7dcfff",
-        "editorBracketHighlight.foreground3": "#7dcfff", //"#bb9af7",
-        "editorBracketHighlight.foreground4": "#bb9af7", //"#2ac3de",
-        "editorBracketHighlight.foreground5": "#e0af68", //"#9ece6a",
-        "editorBracketHighlight.foreground6": "#f7768e", //"#e0af68",
+        "editorBracketHighlight.foreground1": "#7aa2f7",
+        "editorBracketHighlight.foreground2": "#0db9d7",
+        "editorBracketHighlight.foreground3": "#7dcfff",
+        "editorBracketHighlight.foreground4": "#bb9af7",
+        "editorBracketHighlight.foreground5": "#e0af68",
+        "editorBracketHighlight.foreground6": "#f7768e",
         "editorBracketHighlight.unexpectedBracket.foreground": "#db4b4b",
 
         "editorBracketPairGuide.activeBackground1": "#7aa2f7",
@@ -346,8 +344,6 @@
         "terminal.foreground": "#c0caf5",
         "terminal.border": "#101014",
         "terminal.selectionBackground": "#545c7e4d",
-        // "terminalCursor.background": "",
-        // "terminalCursor.foreground": "",
 
         "terminal.ansiBlack": "#363b54",
         "terminal.ansiRed": "#f7768e",
@@ -449,7 +445,7 @@
         "inlineChat.foreground": "#a9b1d6",
         "inlineChatInput.background": "#14141b",
         "inlineChatDiff.inserted": "#41a6b540",
-        "inlineChatDiff.removed": "#db4b4b42",
+        "inlineChatDiff.removed": "#db4b4b42"
 
     },
     "tokenColors": [
@@ -612,7 +608,7 @@
                 "punctuation.section.embedded",
                 "meta.embedded.line.tag.smarty",
                 "support.constant.handlebars",
-                "punctuation.section.tag.twig",
+                "punctuation.section.tag.twig"
             ],
             "settings": {
                 "foreground": "#7dcfff"
@@ -627,7 +623,7 @@
                 "keyword.operator.comparison.twig",
                 "keyword.blade",
                 "entity.name.function.blade",
-                "meta.tag.blade keyword.other.type.php",
+                "meta.tag.blade keyword.other.type.php"
             ],
             "settings": {
                 "foreground": "#0db9d7"
@@ -788,7 +784,7 @@
             "name": "Variable Array Key",
             "scope": "meta.array.literal variable",
             "settings": {
-                "foreground": "#7dcfff" //"#73daca"
+                "foreground": "#7dcfff"
             }
         },
         {
@@ -1024,7 +1020,7 @@
             "name": "CSS Punctuation",
             "scope": "meta.property-list",
             "settings": {
-                "foreground": "#9abdf5" //"#e0af68"
+                "foreground": "#9abdf5"
             }
         },
         {
