@@ -10,9 +10,9 @@ from jinja2 import Environment, FileSystemLoader
 
 def print_usage():
     print("Usage:")
-    print("\tpython set_theme.py <toml-theme-file>\n")
+    print("\tpython3 set_theme.py <toml-theme-file>\n")
     print("Example:")
-    print("\tpython set_theme ~/.config/elysian_themes/themes/default/TokyoCarbon.toml")
+    print("\tpython3 set_theme.py ~/.config/elysian_themes/themes/default/TokyoCarbon.toml")
 
 
 def parse_toml(toml_path: str) -> dict[str, dict[str, str]]:
@@ -28,7 +28,7 @@ def parse_toml(toml_path: str) -> dict[str, dict[str, str]]:
 def hyprland_quickshell(config_dir: Path, theme: dict[str, dict[str, str]]) -> None:
     filepath: Path = config_dir / "hypr_quickshell.lua"
 
-    with open(filepath, "w+") as f:
+    with open(filepath, "w") as f:
         f.write(f"-- {filepath.relative_to(config_dir.parent.parent)}\n\n\n")
         f.write("return {\n")
         for k1, v1 in theme.items():
@@ -57,6 +57,7 @@ if __name__ == "__main__":
     argc: int = len(argv)
     if argc != 2:
         print_usage()
+        exit(1)
 
     root_dir: Path = Path(__file__).resolve().parent
 
@@ -78,9 +79,7 @@ if __name__ == "__main__":
 
     # # For files that are actually templates, use Jinja2
     env = Environment(loader=FileSystemLoader(root_dir / "templates/"))
-    env.filters["rgb"] = lambda color: color[:7]
     env.filters["rgba"] = lambda color, a: f"{color}{a}"
-    env.filters["argb"] = lambda color, a: f"#{a}{color[1:]}"
 
     template_replace(config_dir, "kitty.conf",      theme, env)
     template_replace(config_dir, "yazi.toml",       theme, env)

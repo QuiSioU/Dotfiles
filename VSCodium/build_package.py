@@ -1,4 +1,4 @@
-# VSCodium/update_themes.py
+# VSCodium/build_package.py
 
 
 from pathlib import Path
@@ -16,7 +16,7 @@ def get_themes_info(theme_dir: Path, root_dir: Path) -> list[dict[str, str]]:
 
         themes.append({
             "label": theme_data.get("name", "Unknown"),
-            "uiTheme": f"vs-{theme_type if theme_type is not None else "dark"}",
+            "uiTheme": f"vs-{theme_type if theme_type is not None else 'dark'}",
             "path": str(t.resolve().relative_to(root_dir))
         })
 
