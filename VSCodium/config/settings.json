@@ -6,7 +6,7 @@
     "workbench.startupEditor": "none",
     "workbench.colorTheme": "Tokyo Carbon",
     "editor.fontSize": 18,
-    "editor.fontFamily": "JetBrains Mono, 'FiraCode Nerd Font'",
+    "editor.fontFamily": "JetBrainsMono Nerd Font, 'FiraCode Nerd Font'",
     "editor.fontWeight": "500",
     "editor.fontLigatures": true,
     "explorer.confirmDelete": false,
