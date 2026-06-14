@@ -1,0 +1,43 @@
+{
+    "workbench.sideBar.location": "right",
+    "window.menuBarVisibility": "compact",
+    "workbench.activityBar.location": "top",
+    "window.commandCenter": false,
+    "workbench.startupEditor": "none",
+    "workbench.colorTheme": "Tokyo Carbon",
+    "editor.fontSize": 18,
+    "editor.fontFamily": "JetBrains Mono, 'FiraCode Nerd Font'",
+    "editor.fontWeight": "500",
+    "editor.fontLigatures": true,
+    "explorer.confirmDelete": false,
+    "editor.inlayHints.enabled": "offUnlessPressed",
+    "git.openRepositoryInParentFolders": "never",
+    "jupyter.askForKernelRestart": false,
+    "explorer.confirmDragAndDrop": false,
+    "clangd.path": "/usr/bin/clangd",
+    "clangd.arguments": [
+        "--header-insertion=never"
+    ],
+    "python.createEnvironment.trigger": "off",
+    "python.analysis.diagnosticSeverityOverrides": {
+        "reportOptionalMemberAccess": "none",
+        "reportOptionalCall": "none",
+        "reportOptionalSubscript": "none",
+        "reportAssignmentType": "none",
+        "reportArgumentType": "none"
+    }
+    ,
+    "qt-qml.qmlls.customExePath": "/usr/bin/qmlls6",
+    "workbench.editorAssociations": {
+        "{git,gitlens,chat-editing-snapshot-text-model,copilot,git-graph,git-graph-3}:/**/*.qrc": "default",
+        "*.qrc": "qt-core.qrcEditor",
+        "*.svg": "default"
+    },
+    "qt-core.additionalQtPaths": [
+        {
+            "name": "Qt-5.15.18-linux-g++_from_PATH",
+            "path": "/usr/bin/qmake"
+        }
+    ],
+    "qt-qml.doNotAskForQmllsDownload": true
+}

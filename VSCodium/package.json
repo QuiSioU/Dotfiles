@@ -1,0 +1,37 @@
+{
+    "name": "elysian-color-themes",
+    "displayName": "Elysian Themes",
+    "description": "Color themes for my dotfiles",
+    "version": "0.1.0",
+    "private": true,
+    "engines": {
+        "vscode": "^1.50.0"
+    },
+    "categories": [
+        "Themes"
+    ],
+    "contributes": {
+        "themes": [
+            {
+                "label": "Tokyo Night",
+                "uiTheme": "vs-dark",
+                "path": "./themes/tokyo-night-color-theme.json"
+            },
+            {
+                "label": "Tokyo Carbon",
+                "uiTheme": "vs-dark",
+                "path": "./themes/tokyo-carbon-color-theme.json"
+            },
+            {
+                "label": "Oxocarbon",
+                "uiTheme": "vs-dark",
+                "path": "./themes/oxocarbon-color-theme.json"
+            }
+        ]
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/QuiSioU/Dotfiles.git",
+        "directory": "VSCodium"
+    }
+}
