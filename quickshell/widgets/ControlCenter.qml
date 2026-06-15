@@ -160,7 +160,7 @@ PanelWindow {
                         action:  (function(path) {
                             return () => {
                                 ctProcess.command = [
-                                    "python",
+                                    "python3",
                                     Quickshell.env("HOME") + "/.config/elysian_themes/set_theme.py",
                                     path
                                 ]
