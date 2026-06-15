@@ -15,8 +15,28 @@ echo "║ Setting up elysian themes configuration ║"
 echo "╚═════════════════════════════════════════╝"
 echo ""
 
+CONFIG_DIR="$HOME/.config"
 ROOT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-cd "$ROOT_DIR"
+
+echo "Creating symlink in $CONFIG_DIR..."
+
+symlink_src="${ROOT_DIR%/}"
+symlink_dst="$CONFIG_DIR/$(basename "$symlink_src")"
+
+if [ "$flag_force" = true ]; then
+    rm -f "$symlink_dst"
+fi
+
+if [ -L "$symlink_dst" ]; then
+    echo "    skipped    $symlink_dst: file already exists (symlink)"
+elif [ -e "$symlink_dst" ]; then
+    echo "    skipped    $symlink_dst: file already exists (not symlink)"
+else
+    ln -s "$symlink_src" "$symlink_dst"
+    echo "    linked     $symlink_src -> $symlink_dst"
+fi
+
+echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌"
 
 USER_DIR="$ROOT_DIR/themes/user"
 
@@ -31,7 +51,7 @@ fi
 
 echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌"
 
-echo "Setting active theme configuration file..."
+echo "Setting active theme configuration files..."
 
 if [[ -d "$ROOT_DIR/active_theme" && "$flag_force" = false ]]; then
     echo "    skipped    $ROOT_DIR/active_theme/:  directory already exists"
@@ -40,7 +60,7 @@ else
         rm -rf "$ROOT_DIR/active_theme"
     fi
 
-    python "set_theme.py" "themes/default/TokyoCarbon.toml"
+    python3 "$ROOT_DIR/set_theme.py" "$ROOT_DIR/themes/default/TokyoCarbon.toml"
     echo "    created    $ROOT_DIR/active_theme/"
 fi
 

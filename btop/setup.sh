@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# quickshell/setup.sh
+# btop/setup.sh
 
 
 flag_force=false
@@ -10,14 +10,13 @@ while getopts "f" opt; do
     esac
 done
 
-echo "╔═════════════════════════════════════╗"
-echo "║ Setting up quickshell configuration ║"
-echo "╚═════════════════════════════════════╝"
+echo "╔═══════════════════════════════╗"
+echo "║ Setting up btop configuration ║"
+echo "╚═══════════════════════════════╝"
 echo ""
 
 CONFIG_DIR="$HOME/.config"
 ROOT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-cd "$ROOT_DIR"
 
 echo "Creating symlink in $CONFIG_DIR..."
 
@@ -39,15 +38,4 @@ fi
 
 echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌"
 
-echo "Building resources and dependencies..."
-
-if [ "$flag_force" = true ]; then
-    rm -rf .build .cache
-fi
-
-cmake -B .build -G Ninja -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
-cmake --build .build --parallel
-
-echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌"
-
-echo "Quickshell configured successfully!"
+echo "Btop configured successfully!"

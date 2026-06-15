@@ -14,8 +14,8 @@ def print_usage():
     print("\tpython3 build_themes.py ~/.config/elysian_themes/themes/default/TokyoCarbon.toml")
 
 
-def parse_toml(toml_path: str) -> dict[str, dict[str, str]]:
-    if not Path(toml_path).exists():
+def parse_toml(toml_path: Path) -> dict[str, dict[str, str]]:
+    if not toml_path.exists():
         raise FileNotFoundError(f"File {str(toml_path)} does not exist.")
 
     with open(toml_path, "rb") as f:
@@ -32,7 +32,7 @@ if __name__ == "__main__":
 
     root_dir: Path = Path(__file__).resolve().parent
 
-    selected_theme: dict[str, dict[str, str]] = parse_toml(argv[1])
+    selected_theme: dict[str, dict[str, str]] = parse_toml(Path(argv[1]).resolve())
     fallback_theme: dict[str, dict[str, str]] = parse_toml(
         Path.home() / ".config" / "elysian_themes" / "themes" / "default" / "TokyoCarbon.toml"
     )
@@ -45,5 +45,5 @@ if __name__ == "__main__":
     env = Environment(loader=FileSystemLoader(root_dir))
     env.filters["rgba"] = lambda color, a: f"{color}{a}"
 
-    f = Path(argv[2]) / f"{theme['meta']['id']}-color-theme.json"
+    f = Path(argv[2]).resolve() / f"{theme['meta']['id']}-color-theme.json"
     f.write_text(env.get_template("template.json").render(colors=theme["colors"], meta=theme["meta"]) + '\n')

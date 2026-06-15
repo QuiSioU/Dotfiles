@@ -15,8 +15,28 @@ echo "║ Setting up bash configuration ║"
 echo "╚═══════════════════════════════╝"
 echo ""
 
+CONFIG_DIR="$HOME/.config"
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-cd "$ROOT_DIR"
+
+echo "Creating symlink in $CONFIG_DIR..."
+
+symlink_src="${ROOT_DIR%/}"
+symlink_dst="$CONFIG_DIR/$(basename "$symlink_src")"
+
+if [ "$flag_force" = true ]; then
+    rm -f "$symlink_dst"
+fi
+
+if [ -L "$symlink_dst" ]; then
+    echo "    skipped    $symlink_dst: file already exists (symlink)"
+elif [ -e "$symlink_dst" ]; then
+    echo "    skipped    $symlink_dst: file already exists (not symlink)"
+else
+    ln -s "$symlink_src" "$symlink_dst"
+    echo "    linked     $symlink_src -> $symlink_dst"
+fi
+
+echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌"
 
 echo "Creating user scripts directory structure..."
 
@@ -24,9 +44,9 @@ mkdir -p "$ROOT_DIR/user"
 private_script="$ROOT_DIR/user/bash_private.sh"
 
 if [ -L "$private_script" ]; then
-    echo "    skipped    $ROOT_DIR/$private_script: file already exists (symlink)"
+    echo "    skipped    $private_script: file already exists (symlink)"
 elif [ -e "$private_script" ]; then
-    echo "    skipped    $ROOT_DIR/$private_script: file already exists (not symlink)"
+    echo "    skipped    $private_script: file already exists (not symlink)"
 else
     cat > "$private_script" <<EOF
 #!/usr/bin/env bash
@@ -45,7 +65,7 @@ echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌�
 echo "Linking main scripts..."
 
 shopt -s nullglob
-for bash_file in "$HOME"/.config/bash/bash*.sh; do
+for bash_file in "$ROOT_DIR"/bash*.sh; do
     filename=$(basename "$bash_file")
     target="$HOME/.${filename%.sh}"
 

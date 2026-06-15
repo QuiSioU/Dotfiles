@@ -17,13 +17,15 @@ echo ""
 
 CONFIG_DIR="$HOME/.config"
 ROOT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-cd "$ROOT_DIR"
 
 echo "Setting up configuration files..."
 
+CODIUM_USER_DIR="$CONFIG_DIR/VSCodium/User"
+mkdir -p "$CODIUM_USER_DIR"
+
 for file in "$ROOT_DIR"/config/*; do
     file="${file%/}"
-    target="$CONFIG_DIR/VSCodium/User/$(basename "$file")"
+    target="$CODIUM_USER_DIR/$(basename "$file")"
 
     if [ "$flag_force" = true ]; then
         rm -rf "$target"
@@ -46,9 +48,15 @@ echo "Setting up color themes..."
 COLOR_THEMES_DIR="$ROOT_DIR/themes/"
 mkdir -p "$COLOR_THEMES_DIR"
 
-for file in "$HOME"/.config/elysian_themes/themes/default/*; do
-    python3 build_themes.py "$file" "$COLOR_THEMES_DIR"
-done
+THEME_SRC_DIR="$CONFIG_DIR/elysian_themes/themes/default"
+if [ -d "$THEME_SRC_DIR" ]; then
+    for file in "$THEME_SRC_DIR"/*; do
+        [ -e "$file" ] || continue
+        python3 "$ROOT_DIR/build_themes.py" "$file" "$COLOR_THEMES_DIR"
+    done
+else
+    echo "    warning    Theme source directory missing: $THEME_SRC_DIR"
+fi
 
 echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌"
 
@@ -65,7 +73,7 @@ if [ -L "$PACKAGE_FILE" ]; then
 elif [ -e "$PACKAGE_FILE" ]; then
     echo "    skipped    $PACKAGE_FILE: file already exists (not symlink)"
 else
-    python3 build_package.py
+    python3 "$ROOT_DIR/build_package.py"
     echo "    created    $PACKAGE_FILE"
 fi
 
@@ -100,10 +108,10 @@ echo "Setting up custom user extensions..."
 
 while IFS= read -r extension; do
     [[ -z "$extension" || "$extension" == \#* ]] && continue
-    if codium --list-extensions | grep -q "^$extension$"; then
+    if codium --list-extensions < /dev/null | grep -q "^$extension$"; then
         echo "    skipped    $extension: extension already installed"
     else
-        codium --install-extension "$extension"
+        codium --install-extension "$extension" < /dev/null
     fi
 done < "$ROOT_DIR/extensions.txt"
 

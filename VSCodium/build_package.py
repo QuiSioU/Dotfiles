@@ -9,15 +9,20 @@ def get_themes_info(theme_dir: Path, root_dir: Path) -> list[dict[str, str]]:
     themes: list[dict[str, str]] = []
 
     for t in theme_dir.iterdir():
+        if not t.is_file():
+            continue
+
         with open(t, "r") as f:
             theme_data = json.load(f)
 
         theme_type = theme_data.get("type", None)
 
+        relative_path = t.resolve().relative_to(root_dir.resolve())
+
         themes.append({
             "label": theme_data.get("name", "Unknown"),
             "uiTheme": f"vs-{theme_type if theme_type is not None else 'dark'}",
-            "path": str(t.resolve().relative_to(root_dir))
+            "path": str(relative_path)
         })
 
     return themes

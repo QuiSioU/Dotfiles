@@ -15,6 +15,29 @@ echo "║ Setting up awww configuration ║"
 echo "╚═══════════════════════════════╝"
 echo ""
 
+CONFIG_DIR="$HOME/.config"
+ROOT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+
+echo "Creating symlink in $CONFIG_DIR..."
+
+symlink_src="${ROOT_DIR%/}"
+symlink_dst="$CONFIG_DIR/$(basename "$symlink_src")"
+
+if [ "$flag_force" = true ]; then
+    rm -f "$symlink_dst"
+fi
+
+if [ -L "$symlink_dst" ]; then
+    echo "    skipped    $symlink_dst: file already exists (symlink)"
+elif [ -e "$symlink_dst" ]; then
+    echo "    skipped    $symlink_dst: file already exists (not symlink)"
+else
+    ln -s "$symlink_src" "$symlink_dst"
+    echo "    linked     $symlink_src -> $symlink_dst"
+fi
+
+echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌"
+
 echo "Setting default wallpaper if cache is missing..."
 
 AWWW_VERSION=$(awww --version | awk '{print $2}')
@@ -31,7 +54,7 @@ CACHE_FILE="$HOME/.cache/awww/$AWWW_VERSION/eDP-1"
 if [[ -f "$CACHE_FILE" && "$flag_force" = false ]]; then
     echo "    skipped    $CACHE_FILE:  cached wallpaper already exists"
 else
-    awww img "$HOME/.config/awww/default/Leshy.jpg" --transition-type center
+    awww img "$ROOT_DIR/default/Leshy.jpg" --transition-type center
     echo "    created    $CACHE_FILE"
 fi
 

@@ -15,11 +15,31 @@ echo "║ Setting up kitty configuration ║"
 echo "╚════════════════════════════════╝"
 echo ""
 
+CONFIG_DIR="$HOME/.config"
 ROOT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-cd "$ROOT_DIR"
 
-target="theme.conf"
-dir="$HOME/.config/elysian_themes/active_theme/kitty.conf"
+echo "Creating symlink in $CONFIG_DIR..."
+
+symlink_src="${ROOT_DIR%/}"
+symlink_dst="$CONFIG_DIR/$(basename "$symlink_src")"
+
+if [ "$flag_force" = true ]; then
+    rm -f "$symlink_dst"
+fi
+
+if [ -L "$symlink_dst" ]; then
+    echo "    skipped    $symlink_dst: file already exists (symlink)"
+elif [ -e "$symlink_dst" ]; then
+    echo "    skipped    $symlink_dst: file already exists (not symlink)"
+else
+    ln -s "$symlink_src" "$symlink_dst"
+    echo "    linked     $symlink_src -> $symlink_dst"
+fi
+
+echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌"
+
+target="$ROOT_DIR/theme.conf"
+dir="$CONFIG_DIR/elysian_themes/active_theme/kitty.conf"
 
 echo "Setting up color theme configuration file..."
 

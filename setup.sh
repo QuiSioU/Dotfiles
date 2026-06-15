@@ -5,45 +5,37 @@
 DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CONFIG_DIR="$HOME/.config"
 
+args=()
 flag_force=false
 while getopts "f" opt; do
     case "$opt" in
-        f) flag_force=true ;;
+        f) args+=("-f") ;;
         *) echo "Usage: $0 [-f]"; exit 1 ;;
     esac
 done
 
-echo ""
-echo "Creating symlinks in $CONFIG_DIR..."
-for dir in "$DOTFILES_DIR"/*/; do
-    dir="${dir%/}"
-    target="$CONFIG_DIR/$(basename "$dir")"
+# 1. Run the critical theme dependency first
+if [ -f "$DOTFILES_DIR/elysian_themes/setup.sh" ]; then
+    echo ""
+    echo ""
+    bash "$DOTFILES_DIR/elysian_themes/setup.sh" "${args[@]}"
+fi
 
-    if [ -L "$target" ]; then
-        echo "    skipped    $target: file already exists (symlink)"
-    elif [ -e "$target" ]; then
-        echo "    skipped    $target: file already exists (not symlink)"
-    else
-        ln -s "$dir" "$target"
-        echo "    linked     $dir -> $target"
+for dir in "$DOTFILES_DIR"/*/; do
+    dir_name=$(basename "$dir")
+
+    # Skip elysian_themes since it ran first
+    if [ "$dir_name" = "elysian_themes" ]; then
+        continue
     fi
-done
-echo ""
 
-for dir in "$DOTFILES_DIR"/*/; do
-    script="${dir%/}/setup.sh"
+    script="${dir}setup.sh"
     if [ -f "$script" ]; then
         echo ""
         echo ""
-        if [ "$flag_force" = true ]; then
-            bash "$script" -f
-        else
-            bash "$script"
-        fi
+        bash "$script" "${args[@]}"
         echo ""
     fi
 done
 
-echo ""
-echo "All done!"
-echo ""
+echo -e "\nAll done!\n"

@@ -15,8 +15,8 @@ def print_usage():
     print("\tpython3 set_theme.py ~/.config/elysian_themes/themes/default/TokyoCarbon.toml")
 
 
-def parse_toml(toml_path: str) -> dict[str, dict[str, str]]:
-    if not Path(toml_path).exists():
+def parse_toml(toml_path: Path) -> dict[str, dict[str, str]]:
+    if not toml_path.exists():
         raise FileNotFoundError(f"File {str(toml_path)} does not exist.")
 
     with open(toml_path, "rb") as f:
@@ -29,7 +29,7 @@ def hyprland_quickshell(config_dir: Path, theme: dict[str, dict[str, str]]) -> N
     filepath: Path = config_dir / "hypr_quickshell.lua"
 
     with open(filepath, "w") as f:
-        f.write(f"-- {filepath.relative_to(config_dir.parent.parent)}\n\n\n")
+        f.write(f"-- elysian_themes/active_theme/{filepath.name}\n\n\n")
         f.write("return {\n")
         for k1, v1 in theme.items():
             if k1 == "meta":
@@ -48,7 +48,7 @@ def template_replace(config_dir: Path, name: str, theme: dict[str, dict[str, str
     template = env.get_template(name)
     output = template.render(colors=theme["colors"], meta=theme["meta"]).replace(
         f"elysian_themes/templates/{name}",
-        f"{filepath.relative_to(config_dir.parent.parent)}" 
+        f"elysian_themes/active_theme/{name}"
     )
     filepath.write_text(output + '\n')
 
@@ -61,9 +61,9 @@ if __name__ == "__main__":
 
     root_dir: Path = Path(__file__).resolve().parent
 
-    selected_theme: dict[str, dict[str, str]] = parse_toml(argv[1])
+    selected_theme: dict[str, dict[str, str]] = parse_toml(Path(argv[1]).resolve())
     fallback_theme: dict[str, dict[str, str]] = parse_toml(
-        Path.home() / ".config" / "elysian_themes" / "themes" / "default" / "TokyoCarbon.toml"
+        (Path.home() / ".config" / "elysian_themes" / "themes" / "default" / "TokyoCarbon.toml").resolve()
     )
 
     theme: dict[str, dict[str, str]] = {
@@ -71,7 +71,7 @@ if __name__ == "__main__":
         for k in fallback_theme
     }
 
-    config_dir: Path = Path.home() / ".config" / "elysian_themes" / "active_theme"
+    config_dir: Path = (Path.home() / ".config" / "elysian_themes" / "active_theme").resolve()
     config_dir.mkdir(exist_ok=True)
 
     # Create the template files for all utilities

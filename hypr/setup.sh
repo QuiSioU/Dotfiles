@@ -10,7 +10,14 @@ while getopts "f" opt; do
     esac
 done
 
-USER_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/user"
+echo "╔═══════════════════════════════════╗"
+echo "║ Setting up hyprland configuration ║"
+echo "╚═══════════════════════════════════╝"
+echo ""
+
+CONFIG_DIR="$HOME/.config"
+ROOT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+USER_DIR="$ROOT_DIR/user"
 
 create_file() {
     local filename="$1"
@@ -33,12 +40,25 @@ EOF
     echo "    created   $filepath"
 }
 
+echo "Creating symlink in $CONFIG_DIR..."
 
+symlink_src="${ROOT_DIR%/}"
+symlink_dst="$CONFIG_DIR/$(basename "$symlink_src")"
 
-echo "╔═══════════════════════════════════╗"
-echo "║ Setting up hyprland configuration ║"
-echo "╚═══════════════════════════════════╝"
-echo ""
+if [ "$flag_force" = true ]; then
+    rm -f "$symlink_dst"
+fi
+
+if [ -L "$symlink_dst" ]; then
+    echo "    skipped    $symlink_dst: file already exists (symlink)"
+elif [ -e "$symlink_dst" ]; then
+    echo "    skipped    $symlink_dst: file already exists (not symlink)"
+else
+    ln -s "$symlink_src" "$symlink_dst"
+    echo "    linked     $symlink_src -> $symlink_dst"
+fi
+
+echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌"
 
 echo "Creating override files in hypr/user/ directory..."
 
