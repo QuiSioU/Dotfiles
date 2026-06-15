@@ -14,7 +14,7 @@
     "git.openRepositoryInParentFolders": "never",
     "jupyter.askForKernelRestart": false,
     "explorer.confirmDragAndDrop": false,
-    "clangd.path": "/usr/bin/clangd",
+    "clangd.path": "clangd",
     "clangd.arguments": [
         "--header-insertion=never"
     ],
@@ -27,17 +27,11 @@
         "reportArgumentType": "none"
     }
     ,
-    "qt-qml.qmlls.customExePath": "/usr/bin/qmlls6",
+    "qt-qml.qmlls.customExePath": "qmlls6",
     "workbench.editorAssociations": {
         "{git,gitlens,chat-editing-snapshot-text-model,copilot,git-graph,git-graph-3}:/**/*.qrc": "default",
         "*.qrc": "qt-core.qrcEditor",
         "*.svg": "default"
     },
-    "qt-core.additionalQtPaths": [
-        {
-            "name": "Qt-5.15.18-linux-g++_from_PATH",
-            "path": "/usr/bin/qmake"
-        }
-    ],
     "qt-qml.doNotAskForQmllsDownload": true
 }
