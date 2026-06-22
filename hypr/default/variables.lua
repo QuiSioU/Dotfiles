@@ -4,15 +4,9 @@
 ----- GENERAL HYPRLAND VARIABLES -----------------------------
 
 -- See https://wiki.hypr.land/Configuring/ for more
--- See https://wiki.hypr.land/Configuring/Keywords/ for more
 
-
-monitor_res   = "2560x1600@180"
-monitor_scale = "1.6"
-
-kb_layout     = "es"
-
-mainMod       = "SUPER"
-
-terminal      = "kitty"
-fileManager   = terminal .. " yazi"
+Config = {
+    mainMod     = "SUPER",
+    terminal    = "kitty",
+}
+Config.fileManager = Config.terminal .. " yazi"

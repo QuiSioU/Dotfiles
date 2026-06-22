@@ -84,6 +84,3 @@ if __name__ == "__main__":
     template_replace(config_dir, "kitty.conf",      theme, env)
     template_replace(config_dir, "yazi.toml",       theme, env)
     template_replace(config_dir, "starship.toml",   theme, env)
-
-    # Reload what needs to be reloaded
-    subprocess.run(["hyprctl", "reload"])

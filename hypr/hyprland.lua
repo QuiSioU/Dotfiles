@@ -2,7 +2,7 @@
 
 
 ------ LOAD ACTIVE ELYSIAN THEME ------------------------
-theme = dofile(os.getenv("HOME") .. "/.config/elysian_themes/active_theme/hypr_quickshell.lua")
+theme = require("theme")
 
 
 ------ LOAD ENV VARIABLES (DEFAULT AND/OR CUSTOM) -------

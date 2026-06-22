@@ -9,9 +9,9 @@
 -- Monitor resolution, refresh rate and scaling
 hl.monitor({
     output   = "",
-    mode     = monitor_res,
+    mode     = "preferred",
     position = "auto",
-    scale    = monitor_scale,
+    scale    = 1.6,
 })
 
 

@@ -79,4 +79,20 @@ echo "Edit files in $USER_DIR to override defaults."
 
 echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌"
 
+echo "Creating symlink for theme file..."
+
+theme_file_src="$CONFIG_DIR/elysian_themes/active_theme/hypr_quickshell.lua"
+theme_file_dst="$ROOT_DIR/theme.lua"
+
+if [ -L "$theme_file_dst" ]; then
+    echo "    skipped    $theme_file_dst: file already exists (symlink)"
+elif [ -e "$theme_file_dst" ]; then
+    echo "    skipped    $theme_file_dst: file already exists (not symlink)"
+else
+    ln -s "$theme_file_src" "$theme_file_dst"
+    echo "    linked     $theme_file_src -> $theme_file_dst"
+fi
+
+echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌"
+
 echo "Hyprland configured successfully!"
