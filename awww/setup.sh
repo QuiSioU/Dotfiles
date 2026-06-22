@@ -38,6 +38,21 @@ fi
 
 echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌"
 
+echo "Creating user directory..."
+
+USER_DIR="$ROOT_DIR/user"
+
+if [ -L "$USER_DIR" ]; then
+    echo "    skipped    $USER_DIR: directory already exists (symlink)"
+elif [ -e "$USER_DIR" ]; then
+    echo "    skipped    $USER_DIR: directory already exists (not symlink)"
+else
+    mkdir -p "$ROOT_DIR/user"
+    echo "    created    $USER_DIR"
+fi
+
+echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌"
+
 echo "Setting default wallpaper if cache is missing..."
 
 AWWW_VERSION=$(awww --version | awk '{print $2}')
