@@ -104,17 +104,4 @@ done
 
 echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌"
 
-# echo "Setting up custom user extensions..."
-
-# while IFS= read -r extension; do
-#     [[ -z "$extension" || "$extension" == \#* ]] && continue
-#     if codium --list-extensions < /dev/null | grep -q "^$extension$"; then
-#         echo "    skipped    $extension: extension already installed"
-#     else
-#         codium --install-extension "$extension" < /dev/null
-#     fi
-# done < "$ROOT_DIR/extensions.txt"
-
-# echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌"
-
 echo "VSCodium configured successfully!"

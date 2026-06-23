@@ -2,15 +2,6 @@
 # bash/bash_env.sh
 
 
-# Default terminal code editor
-export EDITOR="nvim"
-
-# Path stuff
-export PATH="$HOME/.local/bin:$PATH"
-
-# Lib path stuff
-export LD_LIBRARY_PATH="$HOME/.local/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
-
 # LESS command formatting
 export GROFF_NO_SGR=1
 export LESS_TERMCAP_mb=$'\e[5;38;2;190;149;255m'                # blink start (text that flashes)
