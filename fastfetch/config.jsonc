@@ -3,9 +3,8 @@
 
 {
   "logo": {
-    "type": "command",
-    "source": "\"$(pokeget random --hide-name)\"",
-    "height": 15
+    "type": "command-raw",
+    "source": "pokeget random --hide-name"
   },
   "display": {
     "separator": ":",
