@@ -3,7 +3,7 @@
 
 
 alias pubip='curl ipinfo.io/ip && echo'
-alias srcrst='source ~/.zshrc'
+alias srcrst='. ~/.zshrc'
 alias suicidate='systemctl poweroff'
 alias popup='xdg-open'
 alias uvfcheck='uv format --check --preview-features format'

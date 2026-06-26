@@ -18,15 +18,18 @@ setopt EXTENDED_HISTORY     # record a timestamp (and duration) for each history
 setopt INC_APPEND_HISTORY   # write each command to HISTFILE immediately, not just on shell exit
 
 
-# System's command completions
-# Enable in user/ scripts
+# System's command completions must be enabled by user manually.
+# If you use a declarative configuration (like NixOS), do it there.
+# Otherwise, you can create this file and place the commands in it.
+[ -f "$HOME/.config/zsh/user/enable_completions.zsh" ] && . "$HOME/.config/zsh/user/enable_completions.zsh"
 
 # Source custom zsh files
 load_scripts() {
     if [ -d "$1" ]; then
         for script in "$1"/*.zsh; do
             [ -e "$script" ] || continue
-			[ -r "$script" ] && source "$script" # Source every readable file inside the directory
+            [ "$script" = "$HOME/.config/zsh/user/env.zsh" ] && continue
+			[ -r "$script" ] && . "$script" # Source every readable file inside the directory
         done
     fi
 }

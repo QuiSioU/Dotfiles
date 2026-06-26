@@ -4,7 +4,7 @@
 
 # Import auto completions for personal functions
 if [ -f "$HOME/.config/zsh/default/completions.zsh" ]; then
-    source "$HOME/.config/zsh/default/completions.zsh"
+    . "$HOME/.config/zsh/default/completions.zsh"
     compdef _bthdevs_auto_completions bthconn bthinfo
 fi
 
