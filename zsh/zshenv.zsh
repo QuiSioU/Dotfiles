@@ -2,8 +2,6 @@
 # zsh/zshenv.zsh
 
 
-# export EDITOR=nvim
-
 # LESS command formatting
 export GROFF_NO_SGR=1
 export LESS_TERMCAP_mb=$'\e[5;38;2;190;149;255m'                # blink start (text that flashes)
