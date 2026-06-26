@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 # hypr/setup.sh
 
 
@@ -16,28 +16,24 @@ echo "╚═══════════════════════�
 echo ""
 
 CONFIG_DIR="$HOME/.config"
-ROOT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+ROOT_DIR=$(cd "$(dirname "$0")" && pwd)
 USER_DIR="$ROOT_DIR/user"
 
 create_file() {
-    local filename="$1"
-    local title="$2"
-    local filepath="$USER_DIR/$filename"
-
-    if [ -f "$filepath" ]; then
-        echo "    skipped    $filepath:  file already exists"
+    if [ -f "$USER_DIR/$1" ]; then
+        echo "    skipped    $USER_DIR/$1:  file already exists"
         return
     fi
 
-    cat > "$filepath" <<EOF
--- hypr/user/$filename
+    cat > "$USER_DIR/$1" <<EOF
+-- hypr/user/$1
 
 
------ USER'S CUSTOM $title --------------------------- #
+----- USER'S CUSTOM $2 --------------------------- #
 
 EOF
 
-    echo "    created   $filepath"
+    echo "    created   $USER_DIR/$1"
 }
 
 echo "Creating symlink in $CONFIG_DIR..."

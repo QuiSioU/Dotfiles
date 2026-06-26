@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 # VSCodium/setup.sh
 
 
@@ -16,7 +16,7 @@ echo "╚═══════════════════════�
 echo ""
 
 CONFIG_DIR="$HOME/.config"
-ROOT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+ROOT_DIR=$(cd "$(dirname "$0")" && pwd)
 
 echo "Setting up configuration files..."
 

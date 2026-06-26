@@ -1,15 +1,14 @@
-#!/usr/bin/env bash
+#!/bin/sh
 # setup.sh
 
 
-DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
 CONFIG_DIR="$HOME/.config"
 
-args=()
-flag_force=false
+set --
 while getopts "f" opt; do
     case "$opt" in
-        f) args+=("-f") ;;
+        f) set -- "$@" "-f" ;;
         *) echo "Usage: $0 [-f]"; exit 1 ;;
     esac
 done
@@ -18,7 +17,7 @@ done
 if [ -f "$DOTFILES_DIR/elysian_themes/setup.sh" ]; then
     echo ""
     echo ""
-    bash "$DOTFILES_DIR/elysian_themes/setup.sh" "${args[@]}"
+    "$DOTFILES_DIR/elysian_themes/setup.sh" "$@"
 fi
 
 for dir in "$DOTFILES_DIR"/*/; do
@@ -33,9 +32,9 @@ for dir in "$DOTFILES_DIR"/*/; do
     if [ -f "$script" ]; then
         echo ""
         echo ""
-        bash "$script" "${args[@]}"
+        "$script" "$@"
         echo ""
     fi
 done
 
-echo -e "\nAll done!\n"
+printf "\nAll done!\n"

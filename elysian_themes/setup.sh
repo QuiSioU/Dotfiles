@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 # elysian_themes/setup.sh
 
 
@@ -16,7 +16,7 @@ echo "╚═══════════════════════�
 echo ""
 
 CONFIG_DIR="$HOME/.config"
-ROOT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+ROOT_DIR=$(cd "$(dirname "$0")" && pwd)
 
 echo "Creating symlink in $CONFIG_DIR..."
 
@@ -53,7 +53,7 @@ echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌�
 
 echo "Setting active theme configuration files..."
 
-if [[ -d "$ROOT_DIR/active_theme" && "$flag_force" = false ]]; then
+if [ -d "$ROOT_DIR/active_theme" ] && [ "$flag_force" = false ]; then
     echo "    skipped    $ROOT_DIR/active_theme/:  directory already exists"
 else
     if [ "$flag_force" = true ]; then

@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 # quickshell/setup.sh
 
 
@@ -16,7 +16,7 @@ echo "╚═══════════════════════�
 echo ""
 
 CONFIG_DIR="$HOME/.config"
-ROOT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+ROOT_DIR=$(cd "$(dirname "$0")" && pwd)
 cd "$ROOT_DIR"
 
 echo "Creating symlink in $CONFIG_DIR..."

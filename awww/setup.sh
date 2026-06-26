@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 # awww/setup.sh
 
 
@@ -16,7 +16,7 @@ echo "╚═══════════════════════�
 echo ""
 
 CONFIG_DIR="$HOME/.config"
-ROOT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+ROOT_DIR=$(cd "$(dirname "$0")" && pwd)
 
 echo "Creating symlink in $CONFIG_DIR..."
 
@@ -66,7 +66,7 @@ fi
 
 CACHE_FILE="$HOME/.cache/awww/$AWWW_VERSION/eDP-1"
 
-if [[ -f "$CACHE_FILE" && "$flag_force" = false ]]; then
+if [ -f "$CACHE_FILE" ] && [ "$flag_force" = false ]; then
     echo "    skipped    $CACHE_FILE:  cached wallpaper already exists"
 else
     awww img "$ROOT_DIR/default/Leshy.jpg" --transition-type center
