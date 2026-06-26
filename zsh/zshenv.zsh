@@ -19,3 +19,6 @@ export LESS_TERMCAP_ZN=$'\e[74m'                                # subscript star
 export LESS_TERMCAP_ZV=$'\e[75m'                                # subscript end
 export LESS_TERMCAP_ZO=$'\e[73m'                                # superscript start
 export LESS_TERMCAP_ZW=$'\e[75m'                                # superscript end
+
+# Source personal environment variables
+[ -f "$HOME/.config/zsh/user/env.zsh" ] && source "$HOME/.config/zsh/user/env.zsh"

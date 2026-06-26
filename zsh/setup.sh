@@ -41,7 +41,7 @@ echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌�
 echo "Creating user scripts directory structure..."
 
 mkdir -p "$ROOT_DIR/user"
-private_script="$ROOT_DIR/user/private.zsh"
+private_script="$ROOT_DIR/user/env.zsh"
 
 if [ -L "$private_script" ]; then
     echo "    skipped    $private_script: file already exists (symlink)"
@@ -50,10 +50,10 @@ elif [ -e "$private_script" ]; then
 else
     cat > "$private_script" <<EOF
 #!/usr/bin/env zsh
-# zsh/private.zsh
+# zsh/user/env.zsh
 
 
-# Place your private stuff here...
+# Place your personal environment variables here...
 
 EOF
     echo "    created    $private_script"

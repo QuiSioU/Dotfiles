@@ -4,7 +4,7 @@
 
 # Save and set last visited directory when closing terminal
 trap "pwd > $HOME/.last_dir" EXIT
-if [[ -f "$HOME/.last_dir" ]]; then
+if [ -f "$HOME/.last_dir" ]; then
 	export OLDPWD="$(cat $HOME/.last_dir)"
 fi
 
