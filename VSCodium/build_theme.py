@@ -9,9 +9,10 @@ from jinja2 import Environment, FileSystemLoader
 
 def print_usage():
     print("Usage:")
-    print("\tpython3 build_theme.py <toml-theme-file> <destination-directory>\n")
+    print("\tpython3 build_theme.py <toml-theme-file> [<destination-directory>]\n")
     print("Example:")
-    print("\tpython3 build_theme.py ~/.config/elysian_themes/themes/default/TokyoCarbon.toml ~/MyVSCodiumThemes/")
+    print("\tpython3 build_theme.py ~/.config/elysian_themes/themes/default/TokyoCarbon.toml ~/MyVSCodiumThemes/\n")
+    print("Default value for <destination-directory> is repository-root/VSCodium/themes/")
 
 
 def parse_toml(toml_path: Path) -> dict[str, dict[str, str]]:
@@ -26,11 +27,13 @@ def parse_toml(toml_path: Path) -> dict[str, dict[str, str]]:
 
 if __name__ == "__main__":
     argc: int = len(argv)
-    if argc != 3:
+    if argc < 2 or argc > 3:
         print_usage()
         exit(1)
 
     root_dir: Path = Path(__file__).resolve().parent
+
+    argv_2: Path = root_dir / "themes" if argc == 2 else Path(argv[2]).resolve()
 
     selected_theme: dict[str, dict[str, str]] = parse_toml(Path(argv[1]).resolve())
     fallback_theme: dict[str, dict[str, str]] = parse_toml(
@@ -45,5 +48,5 @@ if __name__ == "__main__":
     env = Environment(loader=FileSystemLoader(root_dir))
     env.filters["rgba"] = lambda color, a: f"{color}{a}"
 
-    f = Path(argv[2]).resolve() / f"{theme['meta']['id']}-color-theme.json"
+    f = argv_2 / f"{theme['meta']['id']}-color-theme.json"
     f.write_text(env.get_template("template.json").render(colors=theme["colors"], meta=theme["meta"]) + '\n')
