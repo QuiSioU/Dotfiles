@@ -18,14 +18,34 @@ echo ""
 CONFIG_DIR="$HOME/.config"
 ROOT_DIR=$(cd "$(dirname "$0")" && pwd)
 
+echo "Creating symlink in $CONFIG_DIR..."
+
+symlink_src="${ROOT_DIR%/}"
+symlink_dst="$CONFIG_DIR/$(basename "$symlink_src")"
+
+if [ "$flag_force" = true ]; then
+    rm -f "$symlink_dst"
+fi
+
+if [ -L "$symlink_dst" ]; then
+    echo "    skipped    $symlink_dst: file already exists (symlink)"
+elif [ -e "$symlink_dst" ]; then
+    echo "    skipped    $symlink_dst: file already exists (not symlink)"
+else
+    ln -s "$symlink_src" "$symlink_dst"
+    echo "    linked     $symlink_src -> $symlink_dst"
+fi
+
+echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌"
+
 echo "Setting up configuration files..."
 
 CODIUM_USER_DIR="$CONFIG_DIR/VSCodium/User"
 mkdir -p "$CODIUM_USER_DIR"
 
 for file in "$ROOT_DIR"/config/*; do
-    file="${file%/}"
     target="$CODIUM_USER_DIR/$(basename "$file")"
+    file="$symlink_dst/config/$(basename "$file")"
 
     if [ "$flag_force" = true ]; then
         rm -rf "$target"
@@ -45,7 +65,7 @@ echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌�
 
 echo "Setting up color themes..."
 
-COLOR_THEMES_DIR="$ROOT_DIR/themes/"
+COLOR_THEMES_DIR="$symlink_dst/themes/"
 mkdir -p "$COLOR_THEMES_DIR"
 
 THEME_SRC_DIR="$CONFIG_DIR/elysian_themes/themes/default"
@@ -63,7 +83,7 @@ echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌�
 
 echo "Creating color theme extension package file..."
 
-PACKAGE_FILE="$ROOT_DIR/package.json"
+PACKAGE_FILE="$symlink_dst/package.json"
 
 if [ "$flag_force" = true ]; then
     rm -rf "$PACKAGE_FILE"

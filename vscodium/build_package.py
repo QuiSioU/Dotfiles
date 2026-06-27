@@ -49,7 +49,7 @@ if __name__ == "__main__":
         "repository": {
             "type": "git",
             "url": "https://github.com/QuiSioU/Dotfiles.git",
-            "directory": "VSCodium"
+            "directory": "vscodium"
         }
     }
 
