@@ -1,4 +1,4 @@
-# VSCodium/build_themes.py
+# VSCodium/build_theme.py
 
 
 from sys import argv
@@ -9,9 +9,9 @@ from jinja2 import Environment, FileSystemLoader
 
 def print_usage():
     print("Usage:")
-    print("\tpython3 build_themes.py <toml-theme-file>\n")
+    print("\tpython3 build_theme.py <toml-theme-file> <destination-directory>\n")
     print("Example:")
-    print("\tpython3 build_themes.py ~/.config/elysian_themes/themes/default/TokyoCarbon.toml")
+    print("\tpython3 build_theme.py ~/.config/elysian_themes/themes/default/TokyoCarbon.toml ~/MyVSCodiumThemes/")
 
 
 def parse_toml(toml_path: Path) -> dict[str, dict[str, str]]:

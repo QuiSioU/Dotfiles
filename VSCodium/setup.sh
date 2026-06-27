@@ -52,7 +52,8 @@ THEME_SRC_DIR="$CONFIG_DIR/elysian_themes/themes/default"
 if [ -d "$THEME_SRC_DIR" ]; then
     for file in "$THEME_SRC_DIR"/*; do
         [ -e "$file" ] || continue
-        python3 "$ROOT_DIR/build_themes.py" "$file" "$COLOR_THEMES_DIR"
+        python3 "$ROOT_DIR/build_theme.py" "$file" "$COLOR_THEMES_DIR"
+        echo "    completed  $file"
     done
 else
     echo "    warning    Theme source directory missing: $THEME_SRC_DIR"
