@@ -242,8 +242,8 @@ Item {
                 }
 
                 border.color: {
-                    if (bubbleItem.selected)  return ActiveTheme.colors["ANSI_BLUE"]
-                    if (bubbleItem.hovered)   return ActiveTheme.colors["FG_DARK"]
+                    if (bubbleItem.selected)  return ActiveTheme.colors["FG_DARK"]
+                    if (bubbleItem.hovered)   return ActiveTheme.colors["FG"]
                     return ActiveTheme.colors["DARK3"]
                 }
                 border.width: bubbleItem.selected ? 1.5 : 0.5
