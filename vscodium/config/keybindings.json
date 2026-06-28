@@ -1,9 +1,0 @@
-[
-    {
-        "key": "ctrl+alt+z", 
-        "command": "workbench.action.terminal.newWithProfile",
-        "args": {
-            "profileName": "zsh"
-        }
-    }
-]

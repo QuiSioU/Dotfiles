@@ -43,6 +43,8 @@ echo "Setting up configuration files..."
 CODIUM_USER_DIR="$CONFIG_DIR/VSCodium/User"
 mkdir -p "$CODIUM_USER_DIR"
 
+python3 "$ROOT_DIR/build_config.py"
+
 for file in "$ROOT_DIR"/config/*; do
     target="$CODIUM_USER_DIR/$(basename "$file")"
     file="$symlink_dst/config/$(basename "$file")"
