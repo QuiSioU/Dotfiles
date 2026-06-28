@@ -3,12 +3,12 @@
 
 format = """
 ╭─\
-[](fg:{{ colors.ACCENT_LOW }})\
-[$os$username](bold bg:{{ colors.ACCENT_LOW }} fg:{{ colors.BG_DARK }})\
-[](fg:{{ colors.ACCENT_LOW }})\
-[ ](fg:{{ colors.ANSI_BLUE }})\
+[](fg:{{ colors.FG_LIGHT }})\
+[$os$username](bg:{{ colors.FG_LIGHT }} fg:{{ colors.BG_DARK }})\
+[](fg:{{ colors.FG_LIGHT }})\
+[ ](fg:{{ colors.FG_DISABLED }})\
 $directory\
-[](fg:{{ colors.ANSI_BLUE }})\
+[](fg:{{ colors.FG_DISABLED }})\
 $fill\
 $git_branch\
 $git_status\
@@ -17,15 +17,15 @@ $character"""
 
 [fill]
 symbol = "·"
-style = "fg:{{ colors.FG_GHOST }}"
+style = "fg:{{ colors.FG_DISABLED }}"
 
 [character]
-success_symbol = "[❯](bold fg:{{ colors.ANSI_BLUE }})"
-error_symbol = "[❯](bold fg:{{ colors.ANSI_RED }})"
+success_symbol = "[❯](bold fg:{{ colors.INFO }})"
+error_symbol = "[❯](bold fg:{{ colors.ERROR }})"
 
 [os]
 disabled = false
-style = "bold bg:{{ colors.ACCENT_LOW }} fg:{{ colors.BG_DARK }}"
+style = "bold bg:{{ colors.FG_LIGHT }} fg:{{ colors.BG_DARK }}"
 
 [os.symbols]
 Arch = " "
@@ -38,15 +38,15 @@ CachyOS = " "
 [hostname]
 ssh_only = false
 trim_at = "."
-style = "bold fg:{{ colors.BG_DARK }} bg:{{ colors.ACCENT_LOW }}"
+style = "bold fg:{{ colors.BG_DARK }} bg:{{ colors.FG_LIGHT }}"
 format = "[$hostname]($style)"
 
 [username]
 show_always = true
-format = "[$user](bold bg:{{ colors.ACCENT_LOW }} fg:{{ colors.BG_DARK }})"
+format = "[$user](bold bg:{{ colors.FG_LIGHT }} fg:{{ colors.BG_DARK }})"
 
 [directory]
-style = "bold fg:{{ colors.FG }} bg:{{ colors.ANSI_BLUE }}"
+style = "fg:{{ colors.FG }} bg:{{ colors.FG_DISABLED }}"
 format = "[󰉖 󱦰 $path]($style)"
 truncation_length = 5
 truncation_symbol = "../"
@@ -63,33 +63,33 @@ truncate_to_repo = false
 [git_branch]
 symbol = " "
 style = "bg:{{ colors.BG_HIGHLIGHT }}"
-format = '[](fg:{{ colors.ANSI_BLUE }})[[ $symbol$branch ](bold fg:{{ colors.FG }} bg:{{ colors.ANSI_BLUE }})]($style)'
+format = '[](fg:{{ colors.FG_DISABLED }})[[ $symbol$branch ](fg:{{ colors.FG }} bg:{{ colors.FG_DISABLED }})]($style)'
 
 [git_status]
-style = "bg:{{ colors.ANSI_BLUE }}"
-format = '[[($all_status$ahead_behind )](bold fg:{{ colors.FG }} bg:{{ colors.ANSI_BLUE }})]($style)[](fg:{{ colors.ANSI_BLUE }})'
+style = "bg:{{ colors.FG_DISABLED }}"
+format = '[[($all_status$ahead_behind )](fg:{{ colors.FG }} bg:{{ colors.FG_DISABLED }})]($style)[](fg:{{ colors.FG_DISABLED }})'
 
 [nodejs]
 symbol = " "
 style = "bg:{{ colors.BG_STRIPE }}"
-format = '[[ $symbol ($version) ](fg:{{ colors.ANSI_BLUE }} bg:{{ colors.BG_STRIPE }})]($style)'
+format = '[[ $symbol ($version) ](fg:{{ colors.FG_DISABLED }} bg:{{ colors.BG_STRIPE }})]($style)'
 
 [rust]
 symbol = " "
 style = "bg:{{ colors.BG_STRIPE }}"
-format = '[[ $symbol ($version) ](fg:{{ colors.ANSI_BLUE }} bg:{{ colors.BG_STRIPE }})]($style)'
+format = '[[ $symbol ($version) ](fg:{{ colors.FG_DISABLED }} bg:{{ colors.BG_STRIPE }})]($style)'
 
 [golang]
 symbol = " "
 style = "bg:{{ colors.BG_STRIPE }}"
-format = '[[ $symbol ($version) ](fg:{{ colors.ANSI_BLUE }} bg:{{ colors.BG_STRIPE }})]($style)'
+format = '[[ $symbol ($version) ](fg:{{ colors.FG_DISABLED }} bg:{{ colors.BG_STRIPE }})]($style)'
 
 [php]
 symbol = " "
 style = "bg:{{ colors.BG_STRIPE }}"
-format = '[[ $symbol ($version) ](fg:{{ colors.ANSI_BLUE }} bg:{{ colors.BG_STRIPE }})]($style)'
+format = '[[ $symbol ($version) ](fg:{{ colors.FG_DISABLED }} bg:{{ colors.BG_STRIPE }})]($style)'
 
 [python]
 symbol = " "
 style = "bg:{{ colors.BG_STRIPE }}"
-format = '[[ $symbol($version) ](bold fg:{{ colors.ANSI_BLUE }} bg:{{ colors.BG_STRIPE }})]($style)'
+format = '[[ $symbol($version) ](bold fg:{{ colors.FG_DISABLED }} bg:{{ colors.BG_STRIPE }})]($style)'
