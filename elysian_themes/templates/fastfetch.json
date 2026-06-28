@@ -1,6 +1,3 @@
-// fastfetch/config.json
-
-
 {
   "logo": {
     "type": "command-raw",
@@ -16,7 +13,7 @@
     {
       "type": "title",
       "key": "   System",
-      "color": "cyan",
+      "color": "{{ colors.ANSI_CYAN }}",
       "format": "{6} {7} {8}"
     },
     {
@@ -26,48 +23,48 @@
     {
       "type": "command",
       "key": "   OS",
-      "keyColor": "light_blue",
+      "keyColor": "{{ colors.ANSI_BLUE }}",
       "text": "echo \"$(grep PRETTY_NAME /etc/os-release | cut -d= -f2 | tr -d '\"') / $(uname -r)\""
     },
     {
       "type": "display",
       "key": "  󰍹 Display",
       "format": "{1}x{2} @ {3}Hz [{7}]",
-      "keyColor": "magenta"
+      "keyColor": "{{ colors.ANSI_MAGENTA }}"
     },
     {
       "type": "terminal",
       "key": "   Terminal",
-      "keyColor": "magenta"
+      "keyColor": "{{ colors.ANSI_MAGENTA }}"
     },
     {
       "type": "command",
       "key": "   Window Manager",
-      "keyColor": "magenta",
+      "keyColor": "{{ colors.ANSI_MAGENTA }}",
       "text": "printf '%s' \"${XDG_CURRENT_DESKTOP:-${DESKTOP_SESSION:-${WAYLAND_DISPLAY:-unknown}}}\""
     },
     {
       "type": "cpu",
       "format": "{1} @ {7}",
       "key": "   CPU",
-      "keyColor": "red"
+      "keyColor": "{{ colors.ANSI_RED }}"
     },
     {
       "type": "gpu",
       "format": "{1} {2}",
       "key": "  󰊴 GPU",
-      "keyColor": "red"
+      "keyColor": "{{ colors.ANSI_RED }}"
     },
     {
       "type": "gpu",
       "format": "{3}",
       "key": "   GPU Driver",
-      "keyColor": "dim_white"
+      "keyColor": "{{ colors.ANSI_WHITE }}"
     },
     {
       "type": "memory",
       "key": "   Memory",
-      "keyColor": "yellow",
+      "keyColor": "{{ colors.ANSI_YELLOW }}",
       "format": "{used} / {total} {percentage-bar}",
       "percent": {
           "type": 3,
@@ -78,7 +75,7 @@
     {
       "type": "disk",
       "key": "   Disk",
-      "keyColor": "yellow",
+      "keyColor": "{{ colors.ANSI_YELLOW }}",
       "format": "{size-used} / {size-total} {size-percentage-bar}",
       "percent": {
           "type": 3,
@@ -89,7 +86,7 @@
     {
       "type": "battery",
       "key": "  󰂄 Battery",
-      "keyColor": "green",
+      "keyColor": "{{ colors.ANSI_GREEN }}",
       "format": "{status} {capacity-bar}",
       "percent": {
           "type": 2,

@@ -84,3 +84,4 @@ if __name__ == "__main__":
     template_replace(config_dir, "kitty.conf",      theme, env)
     template_replace(config_dir, "yazi.toml",       theme, env)
     template_replace(config_dir, "starship.toml",   theme, env)
+    template_replace(config_dir, "fastfetch.json",  theme, env)
