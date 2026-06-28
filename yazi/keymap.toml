@@ -1,0 +1,8 @@
+# yazi/keymap.toml
+ 
+ 
+[mgr]
+append_keymap = [
+	{ on = [ "g", "l" ], run = "cd ~/.local", desc = "Go ~/.local" },
+	{ on = [ "g", "D" ], run = 'shell -- ya emit cd "$(readlink -f ~/.config/yazi)"/..', desc = "Go Dotfiles" }
+]
