@@ -49,14 +49,7 @@ def build_settings(config_dir: Path):
                     "*.qrc": "qt-core.qrcEditor",
                     "*.svg": "default"
                 },
-                "qt-qml.doNotAskForQmllsDownload": True,
-                "github.copilot.enable": {
-                    "*": False
-                },
-                "chat.editing.alwaysPromptForConfirmation": False,
-                "inlineChat.mode": "live",
-                "inlineChat.acceptedOrDiscardedBeforeNavigation": False,
-                "scm.experimental.showActionButtons": False
+                "qt-qml.doNotAskForQmllsDownload": True
             },
             indent=4
         ))
