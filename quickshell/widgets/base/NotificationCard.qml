@@ -1,7 +1,6 @@
 /* quickshell/widgets/base/notification/NotificationCard.qml */
 
 import QtQuick
-import QtQuick.Layouts
 import ElysianShell.Themes
 
 Item {
@@ -149,7 +148,7 @@ Item {
         height: card.d
         x:      (card.panelWidth - card.d) / 2
         anchors.verticalCenter: parent.verticalCenter
-        z: 1
+        z: card.z + 1
 
         // Track ring (background)
         Rectangle {

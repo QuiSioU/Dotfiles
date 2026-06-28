@@ -306,7 +306,7 @@ Item {
                 border.color: bubbleItem.selected ? ActiveTheme.colors["ANSI_BLUE"] : ActiveTheme.colors["DARK3"]
                 border.width: 1
                 radius: 6
-                z: 10
+                z: root.z + 1
 
                 Column {
                     id: tooltipCol

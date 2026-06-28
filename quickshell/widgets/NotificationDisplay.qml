@@ -50,6 +50,7 @@ Variants {
                     required property var modelData
                     entry:            modelData
                     Layout.fillWidth: true
+                    z: 300
                 }
             }
         }

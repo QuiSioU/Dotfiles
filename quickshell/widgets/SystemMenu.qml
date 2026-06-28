@@ -77,6 +77,7 @@ PanelWindow {
             root.visible = false
             root.menuClosed()
         }
+        z: 200
 
         // ── Entries ────────────────────────────────────────────────────────────
         sets: [

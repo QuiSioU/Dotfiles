@@ -231,7 +231,8 @@ PanelWindow {
         SearchView {
             id: searchView
 
-            anchors.fill: parent 
+            anchors.fill: parent
+            z: 100
 
             entries:      launcher_panwin._entries
             modes:        launcher_panwin._modes

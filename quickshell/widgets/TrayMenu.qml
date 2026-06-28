@@ -99,6 +99,7 @@ PanelWindow {
 
         fixedTooltip: true
         bubbleSize: 35
+        z: 200
         sets: []
 
         property bool fullClose: false
@@ -195,6 +196,7 @@ PanelWindow {
     // ── Menu ───────────────────────────────────────────────────────────────
     OrbitMenu {
         id: trayMenu
+        z: 200
         onCloseRequested: {
             root.visible = false
             root.menuClosed()
