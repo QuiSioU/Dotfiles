@@ -2,13 +2,23 @@
 
 
 from pathlib import Path
+from sys import argv
 import json
+
+
+def print_usage():
+    print("Usage:")
+    print("\tpython3 build_package.py [<json-files-location>]\n")
+    print("Example:")
+    print("\tpython3 build_package.py ~/MyVSCodiumThemes/themes/\n")
+    print("Default value for <json-files-location> is ~/.config/vscodium/themes/")
 
 
 def get_themes_info(theme_dir: Path, root_dir: Path) -> list[dict[str, str]]:
     themes: list[dict[str, str]] = []
-
+    print(str(theme_dir))
     for t in theme_dir.iterdir():
+        print(str(t))
         if not t.is_file():
             continue
 
@@ -29,7 +39,14 @@ def get_themes_info(theme_dir: Path, root_dir: Path) -> list[dict[str, str]]:
 
 
 if __name__ == "__main__":
+    argc: int = len(argv)
+    if argc < 1 or argc > 2:
+        print_usage()
+        exit(1)
+
     root_dir: Path = Path(__file__).resolve().parent
+
+    theme_dir: Path = root_dir / "themes" if argc == 1 else Path(argv[1]).resolve()
 
     package_json: dict = {
         "name": "elysian-color-themes",
@@ -44,7 +61,7 @@ if __name__ == "__main__":
             "Themes"
         ],
         "contributes": {
-            "themes": get_themes_info(root_dir / "themes", root_dir)
+            "themes": get_themes_info(theme_dir, root_dir)
         },
         "repository": {
             "type": "git",

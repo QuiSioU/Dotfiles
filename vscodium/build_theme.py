@@ -12,7 +12,7 @@ def print_usage():
     print("\tpython3 build_theme.py <toml-theme-file> [<destination-directory>]\n")
     print("Example:")
     print("\tpython3 build_theme.py ~/.config/elysian_themes/themes/default/TokyoCarbon.toml ~/MyVSCodiumThemes/\n")
-    print("Default value for <destination-directory> is repository-root/VSCodium/themes/")
+    print("Default value for <destination-directory> is ~/.config/vscodium/themes/")
 
 
 def parse_toml(toml_path: Path) -> dict[str, dict[str, str]]:

@@ -74,8 +74,20 @@ PanelWindow {
     }
 
     Process {
+        id: vscPackageProcess
+        running: false
+    }
+
+    Process {
+        id: vscProcess
+        running: false
+        onExited: vscPackageProcess.running = true
+    }
+
+    Process {
         id: ctProcess
         running: false
+        onExited: vscProcess.running = true
     }
 
     Connections {
@@ -159,6 +171,15 @@ PanelWindow {
                         icon:    Quickshell.shellDir + "/assets/images/preferences-desktop-color",
                         action:  (function(path) {
                             return () => {
+                                vscPackageProcess.command = [
+                                    "python3",
+                                    Quickshell.env("HOME") + "/.config/vscodium/build_package.py"
+                                ]
+                                vscProcess.command = [
+                                    "python3",
+                                    Quickshell.env("HOME") + "/.config/vscodium/build_theme.py",
+                                    path
+                                ]
                                 ctProcess.command = [
                                     "python3",
                                     Quickshell.env("HOME") + "/.config/elysian_themes/set_theme.py",
