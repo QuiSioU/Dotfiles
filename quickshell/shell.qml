@@ -44,6 +44,19 @@ ShellRoot {
     }
 
     Loader {
+        id: quickAppsMenuLoader
+        active: false
+        source: "widgets/QuickAppsMenu.qml"
+        visible: false
+
+        onItemChanged: {
+            if (item) item.menuClosed.connect(
+                () => quickAppsMenuLoader.active = false
+            )
+        }
+    }
+
+    Loader {
         active: true
         source: "widgets/NotificationDisplay.qml"
     }
@@ -85,6 +98,21 @@ ShellRoot {
             if (!trayMenuLoader.active)
                 trayMenuLoader.active = true
             var orbit = trayMenuLoader.item
+            if (!orbit) return
+            if (!orbit.visible)
+                orbit.openMenu()
+            else {
+                orbit.closeMenu()
+            }
+        }
+    }
+
+    IpcHandler {
+        target: "toggleQuickAppsMenu"
+        function handle(): void {
+            if (!quickAppsMenuLoader.active)
+                quickAppsMenuLoader.active = true
+            var orbit = quickAppsMenuLoader.item
             if (!orbit) return
             if (!orbit.visible)
                 orbit.openMenu()
