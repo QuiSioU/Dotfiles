@@ -330,7 +330,7 @@ ColumnLayout {
                                 Image {
                                     id: iconImage
                                     anchors.fill: parent
-                                    source: modelData.icon ? "image://icon/" + modelData.icon : ""
+                                    source: modelData.icon ?? ""
                                     fillMode: Image.PreserveAspectFit
                                     smooth: true
                                     visible: status === Image.Ready

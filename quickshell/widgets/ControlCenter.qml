@@ -111,7 +111,7 @@ PanelWindow {
             .filter(app => !app.noDisplay)
             .map(app => ({
                 name:    app.name,
-                icon:    app.icon ?? "",
+                icon:    app.icon ? "image://icon/" + app.icon : "",
                 comment: app.comment ?? "",
                 action:  (function(a) { return () => a.execute() })(app)
             }))
@@ -129,7 +129,7 @@ PanelWindow {
                 entries: function() {
                     return BluetoothDeviceModel.deviceList().map(dev => ({
                         name:    dev.alias || dev.name,
-                        icon:    dev.icon || "",
+                        icon:    dev.icon ? "image://icon/" + dev.icon : "",
                         comment: dev.address + " · " + (dev.connected ? "Connected ✓" : "Disconnected"),
                         action:  (function(p) {
                             return () => BluetoothDeviceModel.toggle(p)
