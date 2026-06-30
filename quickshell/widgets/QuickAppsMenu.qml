@@ -37,7 +37,7 @@ PanelWindow {
 
     FileView {
         id: appsFile
-        path: Quickshell.shellDir + "/widgets/user/quickapps.json"
+        path: Quickshell.shellDir + "/quickapps.json"
         watchChanges: true
         onFileChanged: reload()
         onTextChanged: root.rebuildSets()

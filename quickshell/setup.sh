@@ -53,18 +53,7 @@ echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌�
 
 echo "Creating default quick apps list..."
 
-userDir="widgets/user"
-
-if [ -L "$userDir" ]; then
-    echo "    skipped    $userDir: file already exists (symlink)"
-elif [ -e "$userDir" ]; then
-    echo "    skipped    $userDir: file already exists (not symlink)"
-else
-    mkdir -p "$userDir"
-    echo "    created    $userDir"
-fi
-
-quickAppsfile="$userDir/quickapps.json"
+quickAppsfile="quickapps.json"
 
 if [ -L "$quickAppsfile" ]; then
     echo "    skipped    $quickAppsfile: file already exists (symlink)"
