@@ -91,6 +91,7 @@ PanelWindow {
             root.visible = false
             root.menuClosed()
         }
+        onFullCloseRequested: orbitMenu.closeMenu()
         z: 200
         sets: root._sets
     }

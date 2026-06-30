@@ -41,8 +41,8 @@ PanelWindow {
 
     function closeMenu() {
         if (!visible) return
-        optionMenu.closeMenu()          // Close option menu (if open)
-        optionMenu.fullCloseRequested() // Makes it so the option menu closes tray menu too
+        // optionMenu.closeMenu()          // Close option menu (if open)
+        trayMenu.fullCloseRequested() // Makes it so the option menu closes tray menu too
     }
 
     WlrLayershell.keyboardFocus: visible ? WlrKeyboardFocus.Exclusive : WlrKeyboardFocus.None
@@ -115,7 +115,10 @@ PanelWindow {
             }
         }
 
-        onFullCloseRequested: fullClose = true
+        onFullCloseRequested: {
+            fullClose = true
+            optionMenu.closeMenu()
+        }
     }
 
     function buildOptionSets(entries) {
@@ -200,6 +203,11 @@ PanelWindow {
         onCloseRequested: {
             root.visible = false
             root.menuClosed()
+        }
+
+        onFullCloseRequested: {
+            if (optionMenu.sets.length > 0) optionMenu.fullCloseRequested()
+            else trayMenu.closeMenu()
         }
 
         // ── Entry sets ────────────────────────────────────────────────────────────
