@@ -2,11 +2,14 @@
 # zsh/default/functions.zsh
 
 
-# Import auto completions for personal functions
-if [ -f "$HOME/.config/zsh/default/completions.zsh" ]; then
-    . "$HOME/.config/zsh/default/completions.zsh"
-    compdef _bthdevs_auto_completions bthconn bthinfo
-fi
+_bthdevs_auto_completions() {
+    # Grab all MAC addresses of paired devices as an array, with that extra parenthesis (...)
+    _mac_addresses_paired=($(bluetoothctl devices Paired | awk '/^Device/{print $2}'))
+
+    # Tell zsh to use them as completion options
+    compadd -a _mac_addresses_paired
+}
+compdef _bthdevs_auto_completions bthconn bthinfo
 
 
 _ask_yes_or_no() {
