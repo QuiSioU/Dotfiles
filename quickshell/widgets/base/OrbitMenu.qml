@@ -284,8 +284,7 @@ Item {
                         }
                         else {
                             bubbleItem.entry.leftAction()
-                            // if (!bubbleItem.entry.stateful) root.closeMenu()
-                            root.fullCloseRequested()
+                            if (!bubbleItem.entry.stateful) root.fullCloseRequested()
                         }
                     }
                 }
