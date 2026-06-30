@@ -6,7 +6,6 @@ import Quickshell
 import Quickshell.Io
 import Quickshell.Wayland
 import "base"
-import "user"
 
 PanelWindow {
     id: root
@@ -36,6 +35,26 @@ PanelWindow {
         orbitMenu.closeMenu()
     }
 
+    FileView {
+        id: appsFile
+        path: Quickshell.shellDir + "/widgets/user/quickapps.json"
+        watchChanges: true
+        onFileChanged: reload()
+        onTextChanged: root.rebuildSets()
+    }
+
+    function appIds() {
+        var text = appsFile.text()
+        if (text === "") return []
+        try {
+            var data = JSON.parse(text)
+            return Array.isArray(data) ? data : []
+        } catch (e) {
+            console.warn("quickapps.json: parse failed", e)
+            return []
+        }
+    }
+
     function makeEntry(app) {
         var obj = Qt.createQmlObject(`import QtQuick; QtObject {
             property string name
@@ -57,13 +76,17 @@ PanelWindow {
     }
 
     function rebuildSets() {
+        var ids = appIds()
         var entries = DesktopEntries.applications.values
             .filter(app => !app.noDisplay)
-            .filter(app => QuickAppsList.apps.includes(app.id))
+            .filter(app => ids.includes(app.id))
             .map(app => makeEntry(app))
-            .sort((a, b) => QuickAppsList.apps.indexOf(a.id) - QuickAppsList.apps.indexOf(b.id))
+            .sort((a, b) => ids.indexOf(a.id) - ids.indexOf(b.id))
 
-        if (entries.length === 0) return
+        if (entries.length === 0) {
+            root._sets = []
+            return
+        }
 
         var sets = []
         for (var i = 0; i < entries.length; i += 8) {
@@ -78,10 +101,9 @@ PanelWindow {
     WlrLayershell.keyboardFocus: visible ? WlrKeyboardFocus.Exclusive : WlrKeyboardFocus.None
 
     // ── Hooks ─────────────────────────────────────────────────────────────────
-    Component.onCompleted: rebuildSets()
     Connections {
         target: DesktopEntries
-        function onApplicationsChanged() { if (root._sets.length === 0) root.rebuildSets() }
+        function onApplicationsChanged() { root.rebuildSets() }
     }
 
     // ── Menu ───────────────────────────────────────────────────────────────
