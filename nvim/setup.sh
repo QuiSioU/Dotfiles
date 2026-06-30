@@ -3,9 +3,10 @@
 
 
 flag_force=false
-while getopts "f" opt; do
+while getopts "fn" opt; do
     case "$opt" in
         f) flag_force=true ;;
+        n) ;;
         *) echo "Usage: $0 [-f]"; exit 1 ;;
     esac
 done

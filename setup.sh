@@ -6,10 +6,11 @@ DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
 CONFIG_DIR="$HOME/.config"
 
 set --
-while getopts "f" opt; do
+while getopts "fn" opt; do
     case "$opt" in
         f) set -- "$@" "-f" ;;
-        *) echo "Usage: $0 [-f]"; exit 1 ;;
+        n) set -- "$@" "-n" ;;
+        *) echo "Usage: $0 [-f] [-n]"; exit 1 ;;
     esac
 done
 

@@ -3,10 +3,12 @@
 
 
 flag_force=false
-while getopts "f" opt; do
+flag_no_main_link=false
+while getopts "fn" opt; do
     case "$opt" in
         f) flag_force=true ;;
-        *) echo "Usage: $0 [-f]"; exit 1 ;;
+        n) flag_no_main_link=true ;;
+        *) echo "Usage: $0 [-f] [-n]"; exit 1 ;;
     esac
 done
 
@@ -61,23 +63,27 @@ fi
 
 echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌"
 
-echo "Linking main scripts..."
+if [ "$flag_no_main_link" = true ]; then
+    echo "Skipping main scripts symlinks (make do on your own)"
+else
+    echo "Linking main scripts..."
 
-for zsh_file in "$ROOT_DIR"/*.zsh; do
-    [ -e "$zsh_file" ] || continue
+    for zsh_file in "$ROOT_DIR"/*.zsh; do
+        [ -e "$zsh_file" ] || continue
 
-    filename=$(basename "$zsh_file")
-    target="$HOME/.${filename%.zsh}"
+        filename=$(basename "$zsh_file")
+        target="$HOME/.${filename%.zsh}"
 
-    if [ -L "$target" ]; then
-        echo "    skipped    $target: file already exists (symlink)"
-    elif [ -e "$target" ]; then
-        echo "    skipped    $target: file already exists (not symlink)"
-    else
-        ln -s "$zsh_file" "$target"
-        echo "    linked     $zsh_file -> $target"
-    fi
-done
+        if [ -L "$target" ]; then
+            echo "    skipped    $target: file already exists (symlink)"
+        elif [ -e "$target" ]; then
+            echo "    skipped    $target: file already exists (not symlink)"
+        else
+            ln -s "$zsh_file" "$target"
+            echo "    linked     $zsh_file -> $target"
+        fi
+    done
+fi
 
 echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌"
 
