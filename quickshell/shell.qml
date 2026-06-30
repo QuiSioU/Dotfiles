@@ -6,6 +6,8 @@ import Quickshell
 import Quickshell.Io
 
 ShellRoot {
+    id: root
+
     Loader {
         source: "widgets/ThemeLoader.qml"
     }
@@ -61,6 +63,17 @@ ShellRoot {
         source: "widgets/NotificationDisplay.qml"
     }
 
+    function closeOtherMenus(exceptLoader) {
+        if (exceptLoader !== controlCenterLoader && controlCenterLoader.item?.visible)
+            controlCenterLoader.item.close()
+        if (exceptLoader !== systemMenuLoader && systemMenuLoader.item?.visible)
+            systemMenuLoader.item.closeMenu()
+        if (exceptLoader !== trayMenuLoader && trayMenuLoader.item?.visible)
+            trayMenuLoader.item.closeMenu()
+        if (exceptLoader !== quickAppsMenuLoader && quickAppsMenuLoader.item?.visible)
+            quickAppsMenuLoader.item.closeMenu()
+    }
+
     IpcHandler {
         target: "toggleControlCenter"
         function handle(): void {
@@ -70,8 +83,10 @@ ShellRoot {
             var launcher = controlCenterLoader.item
             if (!launcher) return
 
-            if (!launcher.visible)
+            if (!launcher.visible) {
+                root.closeOtherMenus(controlCenterLoader)
                 launcher.visible = true
+            }
             else
                 launcher.close()
         }
@@ -84,8 +99,10 @@ ShellRoot {
                 systemMenuLoader.active = true
             var orbit = systemMenuLoader.item
             if (!orbit) return
-            if (!orbit.visible)
+            if (!orbit.visible) {
+                root.closeOtherMenus(systemMenuLoader)
                 orbit.openMenu()
+            }
             else {
                 orbit.closeMenu()
             }
@@ -99,8 +116,10 @@ ShellRoot {
                 trayMenuLoader.active = true
             var orbit = trayMenuLoader.item
             if (!orbit) return
-            if (!orbit.visible)
+            if (!orbit.visible) {
+                root.closeOtherMenus(trayMenuLoader)
                 orbit.openMenu()
+            }
             else {
                 orbit.closeMenu()
             }
@@ -114,8 +133,10 @@ ShellRoot {
                 quickAppsMenuLoader.active = true
             var orbit = quickAppsMenuLoader.item
             if (!orbit) return
-            if (!orbit.visible)
+            if (!orbit.visible) {
+                root.closeOtherMenus(quickAppsMenuLoader)
                 orbit.openMenu()
+            }
             else {
                 orbit.closeMenu()
             }
