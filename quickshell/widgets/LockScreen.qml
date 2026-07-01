@@ -8,37 +8,56 @@ import Quickshell.Wayland
 import ElysianShell.Themes
 
 
-PanelWindow {
+WlSessionLock {
     id: root
-    visible: false
-    focusable: true
-    color: "#cc000000"
+    property string currentWallpaper: Quickshell.env("HOME") + "/.config/awww/default/Leshy.jpg"
     
-    anchors {
-        top: true
-        right: true
-        bottom: true
-        left: true
-    }
-
-    WlrLayershell.layer: WlrLayer.Overlay
-    WlrLayershell.keyboardFocus: visible ? WlrKeyboardFocus.Exclusive : WlrKeyboardFocus.None
-    WlrLayershell.namespace: "lock-screen"
-    exclusionMode: ExclusionMode.Ignore
-
     signal unlocked()
 
-    function lock()     { root.visible = true }
-    function unlock()   { root.visible = false; root.unlocked() }
+    function lock() { root.locked = true }
+    function unlock() { root.locked = false }
 
-    Item {
-        anchors.fill: parent
-        focus: true
+    // Detect when the lock state changes back to false to notify the shell loader
+    onLockedChanged: if (!locked) root.unlocked()
 
-        Keys.onPressed: (event) => {
-            if (event.key === Qt.Key_Escape) {
-                root.visible = false
-                event.accepted = true
+    Process {
+        id: swwwQueryProcess
+        // Run via bash to support the pipe '|' operator
+        command: [
+            "bash", "-c", 
+            "swww query | awk -F'image: ' '{print $2}'"
+        ]
+        
+        stdout: SplitParser {
+            onRead: function(line) {
+                if (line.trim() !== "") {
+                    root.currentWallpaper = "file://" + line.trim();
+                }
+            }
+        }
+    }
+
+    WlSessionLockSurface {
+        id: surface
+        color: "black"
+
+        Item {
+            anchors.fill: parent
+            focus: true
+
+            Image {
+                anchors.fill: parent
+                source: root.currentWallpaper // Path to your wallpaper
+                fillMode: Image.PreserveAspectCrop
+                opacity: 0.5 // Control the dimming here safely inside the surface
+            }
+
+            Keys.onPressed: (event) => {
+                // Pressing Escape triggers unlock (replace this with your actual authentication logic)
+                if (event.key === Qt.Key_Escape) {
+                    root.unlock()
+                    event.accepted = true
+                }
             }
         }
     }
