@@ -47,7 +47,16 @@ if [ "$flag_force" = true ]; then
 fi
 
 cmake -B .build -G Ninja -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+if [ $? -ne 0 ]; then
+    echo "cmake configure failed, aborting..."
+    exit 1
+fi
+
 cmake --build .build --parallel
+if [ $? -ne 0 ]; then
+    echo "cmake build failed, aborting..."
+    exit 1
+fi
 
 echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌"
 
@@ -70,6 +79,12 @@ else
 EOF
     echo "    created    $quickAppsfile"
 fi
+
+echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌"
+
+echo "Ensuring scripts are executable..."
+
+[ -d scripts ] && chmod +x scripts/*
 
 echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌"
 

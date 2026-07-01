@@ -50,17 +50,18 @@ PanelWindow {
     Process {
         id: colorThemeScanner
         command: [
-            "find",
-            Quickshell.env("HOME") + "/.config/elysian_themes/themes/",
-            "-type", "f",
-            "(",
-            "-iname", "*.toml",
-            ")"
+            Quickshell.shellDir + "/scripts/parse_color_themes.sh",
+            Quickshell.env("HOME") + "/.config/elysian_themes/themes"
         ]
         stdout: SplitParser {
             onRead: function(line) {
-                if (line.trim() !== "")
-                    launcher_panwin._colorThemeFiles.push(line.trim())  // ← _colorThemeFiles
+                if (line.trim() === "") return
+                const parts = line.split("\t")
+                const path = parts[0]
+                const name = (parts.length > 1 && parts[1].trim() !== "")
+                    ? parts[1]
+                    : path.replace(/.*\//, "").replace(/\.[^.]+$/, "")
+                launcher_panwin._colorThemeFiles.push({ path: path, name: name })
             }
         }
         onExited: {
@@ -165,9 +166,9 @@ PanelWindow {
                 placeholder: "Select a color theme",
                 icon:        Quickshell.shellDir + "/assets/images/color-palette.svg",
                 entries: function() {
-                    return _colorThemeFiles.map(f => ({
-                        name:    f.replace(/.*\//, "").replace(/\.[^.]+$/, ""), // filename without ext
-                        comment: f,
+                    return _colorThemeFiles.map(entry => ({
+                        name:    entry.name, // filename without ext
+                        comment: entry.path,
                         icon:    Quickshell.shellDir + "/assets/images/preferences-desktop-color",
                         action:  (function(path) {
                             return () => {
@@ -187,7 +188,7 @@ PanelWindow {
                                 ]
                                 ctProcess.running = true
                             }
-                        })(f)
+                        })(entry.path)
                     }))
                 }
             }
