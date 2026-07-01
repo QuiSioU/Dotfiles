@@ -1,4 +1,4 @@
-/* quickshell/widgets/base/orbit/OrbitMenu.qml */
+/* quickshell/widgets/base/OrbitMenu.qml */
 
 
 import QtQuick

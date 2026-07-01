@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="48"
+   height="48"
+   viewBox="0 0 48 48"
+   version="1.1"
+   id="svg1"
+   xml:space="preserve"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><defs
+     id="defs1"><style
+       id="current-color-scheme"
+       type="text/css">
+   .ColorScheme-Text { color:#444444; } .ColorScheme-Highlight { color:#4285f4; } .ColorScheme-NeutralText { color:#ff9800; } .ColorScheme-PositiveText { color:#4caf50; } .ColorScheme-NegativeText { color:#f44336; }
+  </style></defs><g
+     id="layer1"><path
+       style="fill:#dfdfdf;fill-opacity:1;stroke-width:2.79352"
+       class="ColorScheme-Text"
+       d="m 24.000001,4.4452844 c -6.190465,0 -11.174123,5.0886948 -11.174123,11.3487186 v 5.412467 h -2.793531 c -1.5476171,0 -2.7935313,1.245914 -2.7935313,2.79353 v 16.761185 c 0,1.547616 1.2459142,2.793531 2.7935313,2.793531 h 27.935307 c 1.547617,0 2.79353,-1.245915 2.79353,-2.793531 V 24 c 0,-1.547616 -1.245913,-2.79353 -2.79353,-2.79353 h -2.793531 v -5.412467 c 0,-6.2575095 -4.983658,-11.3487186 -11.174122,-11.3487186 z m 0,5.5870626 c 3.095231,0 5.587061,2.49183 5.587061,5.58706 V 21.20647 H 18.412938 v -5.587063 c 0,-3.09523 2.49183,-5.58706 5.587063,-5.58706 z"
+       id="path1" /></g></svg>

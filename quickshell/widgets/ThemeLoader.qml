@@ -1,4 +1,4 @@
-/* quickshell/themes/ThemeLoader.qml */
+/* quickshell/widgets/ThemeLoader.qml */
 
 
 import QtQuick

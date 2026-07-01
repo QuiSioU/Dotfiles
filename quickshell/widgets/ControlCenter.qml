@@ -217,7 +217,10 @@ PanelWindow {
             searchView.clearInput()
     }
 
+    WlrLayershell.layer: WlrLayer.Top
     WlrLayershell.keyboardFocus: visible ? WlrKeyboardFocus.Exclusive : WlrKeyboardFocus.None
+    WlrLayershell.namespace: "control-center"
+    exclusionMode: ExclusionMode.Ignore
 
     // ── Content ───────────────────────────────────────────────────────────────
     Rectangle {

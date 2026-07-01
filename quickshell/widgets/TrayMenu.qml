@@ -45,7 +45,10 @@ PanelWindow {
         trayMenu.fullCloseRequested() // Makes it so the option menu closes tray menu too
     }
 
+    WlrLayershell.layer: WlrLayer.Top
     WlrLayershell.keyboardFocus: visible ? WlrKeyboardFocus.Exclusive : WlrKeyboardFocus.None
+    WlrLayershell.namespace: "tray-menu"
+    exclusionMode: ExclusionMode.Ignore
 
     Timer {
         id: pendingOpenTimeout

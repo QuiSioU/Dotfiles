@@ -1,4 +1,4 @@
-/* quickshell/widgets/base/notification/NotificationCard.qml */
+/* quickshell/widgets/base/NotificationCard.qml */
 
 import QtQuick
 import ElysianShell.Themes

@@ -20,15 +20,35 @@ ShellRoot {
     }
 
     Loader {
+        id: lockScreenLoader
+        active: false
+        source: "widgets/LockScreen.qml"
+        visible: false
+
+        onItemChanged: {
+            if (item) item.unlocked.connect(
+                () => lockScreenLoader.active = false
+            )
+        }
+    }
+
+    Loader {
         id: systemMenuLoader
         active: false
         source: "widgets/SystemMenu.qml"
         visible: false
 
         onItemChanged: {
-            if (item) item.menuClosed.connect(
-                () => systemMenuLoader.active = false
-            )
+            if (item) {
+                item.menuClosed.connect(
+                    () => systemMenuLoader.active = false
+                )
+                item.lockRequested.connect(() => {
+                    if (!lockScreenLoader.active)
+                        lockScreenLoader.active = true
+                    lockScreenLoader.item.lock()
+                })
+            }
         }
     }
 

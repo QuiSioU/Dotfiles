@@ -23,7 +23,7 @@ Variants {
 
         WlrLayershell.layer:         WlrLayer.Overlay
         WlrLayershell.keyboardFocus: WlrKeyboardFocus.None
-        WlrLayershell.namespace:     "quickshell-notifications"
+        WlrLayershell.namespace:     "notification-display"
         exclusionMode:               ExclusionMode.Ignore
 
         anchors.top:   true

@@ -1,4 +1,4 @@
-/* quickshell/widgets/base/drawer/Drawer.qml */
+/* quickshell/widgets/base/Drawer.qml */
 
 
 import Quickshell

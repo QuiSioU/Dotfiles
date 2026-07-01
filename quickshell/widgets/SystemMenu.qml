@@ -24,6 +24,7 @@ PanelWindow {
     }
 
     signal menuClosed()
+    signal lockRequested()
 
     function openMenu(set_index, posX, posY) {
         if (visible) return
@@ -36,7 +37,10 @@ PanelWindow {
         orbitMenu.closeMenu()
     }
 
+    WlrLayershell.layer: WlrLayer.Top
     WlrLayershell.keyboardFocus: visible ? WlrKeyboardFocus.Exclusive : WlrKeyboardFocus.None
+    WlrLayershell.namespace: "system-menu"
+    exclusionMode: ExclusionMode.Ignore
 
     // ── Audio sink binding ─────────────────────────────────────────────────
     PwObjectTracker {
@@ -244,6 +248,16 @@ PanelWindow {
                         property bool selected:   true
                         property bool stateful:   false
                         property var leftAction:     () => logoutProcess.running = true
+                    },
+
+                    // Lock
+                    QtObject {
+                        property string name:       "Lock"
+                        property string icon:       Qt.resolvedUrl("../assets/icons/object-locked.svg")
+                        property string comment:    "Lock current session"
+                        property bool selected:     true
+                        property bool stateful:     false
+                        property var leftAction:    () => root.lockRequested()
                     }
                 ]
             }

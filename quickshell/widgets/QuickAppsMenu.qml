@@ -98,7 +98,10 @@ PanelWindow {
         root._sets = sets
     }
 
+    WlrLayershell.layer: WlrLayer.Top
     WlrLayershell.keyboardFocus: visible ? WlrKeyboardFocus.Exclusive : WlrKeyboardFocus.None
+    WlrLayershell.namespace: "quick-apps-menu"
+    exclusionMode: ExclusionMode.Ignore
 
     // ── Hooks ─────────────────────────────────────────────────────────────────
     Connections {
