@@ -162,4 +162,13 @@ ShellRoot {
             }
         }
     }
+
+    IpcHandler {
+        target: "lockScreen"
+        function handle(): void {
+            if (!lockScreenLoader.active)
+                lockScreenLoader.active = true
+            lockScreenLoader.item.lock()
+        }
+    }
 }

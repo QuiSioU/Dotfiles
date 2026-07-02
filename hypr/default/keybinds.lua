@@ -113,3 +113,7 @@ hl.bind(
     Config.mainMod .. " + A",
     hl.dsp.exec_cmd("qs ipc call toggleQuickAppsMenu handle")
 )
+hl.bind(
+    Config.mainMod .. " + L",
+    hl.dsp.exec_cmd("qs ipc call lockScreen handle")
+)
