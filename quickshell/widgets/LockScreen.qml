@@ -2,16 +2,21 @@
 
 
 import QtQuick
+import QtQuick.Layouts
 import QtQuick.Effects
 import Quickshell
 import Quickshell.Io
 import Quickshell.Wayland
+import Quickshell.Services.Pam
 import ElysianShell.Themes
 
 
 Item {
     id: root
     property string currentWallpaper: Quickshell.env("HOME") + "/.config/awww/default/Leshy.jpg"
+    property string passwordText: ""
+    property string errorMessage: ""
+    property bool errorVisible: false
     
     signal unlocked()
 
@@ -38,10 +43,42 @@ Item {
     }
     function unlock() { sessionLock.locked = false }
 
+    // --- PAM authentication ---
+    PamContext {
+        id: pam
+
+        onPamMessage: {
+            if (responseRequired) {
+                respond(root.passwordText)
+            }
+        }
+
+        onCompleted: (result) => {
+            root.passwordText = ""
+            if (result === PamResult.Success) {
+                root.unlock()
+            } else {
+                root.errorMessage = "Incorrect password"
+                root.errorVisible = true
+            }
+        }
+
+        onError: (error) => {
+            console.log("PAM error:", error)
+        }
+    }
+
+    function tryUnlock() {
+        if (root.passwordText.length === 0) return
+        root.errorVisible = false
+        if (!pam.start()) {
+            root.errorMessage = "Couldn't start authentication"
+            root.errorVisible = true
+        }
+    }
+
     WlSessionLock {
         id: sessionLock
-
-        // Detect when the lock state changes back to false to notify the shell loader
         onLockedChanged: if (!locked) root.unlocked()
 
         WlSessionLockSurface {
@@ -52,25 +89,21 @@ Item {
                 color: "black"
                 focus: true
 
-                // 1. The source image (keep opacity at 1.0, but dim it via color/overlay if needed)
                 Image {
                     id: bgImage
                     anchors.fill: parent
                     source: root.currentWallpaper
                     fillMode: Image.PreserveAspectCrop
-                    visible: false // Hide original so only the blurred effect shows
+                    opacity: 0
                 }
 
-                // 2. The Blur Effect
                 MultiEffect {
                     anchors.fill: parent
                     source: bgImage
-                    
                     blurEnabled: true
-                    blur: 1.0              // Maximum blur amount (0.0 to 1.0)
-                    blurMultiplier: 2.5    // Scales the blur radius/spread safely (Default is 1.0)
-                    
-                    brightness: -0.15      // Dimming for readability
+                    blur: 1.0
+                    blurMultiplier: 2.5
+                    brightness: -0.15
                 }
 
                 Text {
@@ -89,10 +122,43 @@ Item {
                     }
                 }
 
-                Keys.onPressed: (event) => {
-                    if (event.key === Qt.Key_Escape) {
-                        root.unlock()
-                        event.accepted = true
+                Column {
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.bottom: parent.bottom
+                    anchors.margins: 40
+                    spacing: 8
+
+                    Text {
+                        color: "#ff5f5f"
+                        font.pixelSize: 14
+                        text: root.errorMessage
+                        visible: root.errorVisible
+                    }
+
+                    Rectangle {
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        height: 50
+                        color: ActiveTheme.colors["BG_STRIPE"]
+                        radius: 12
+
+                        TextInput {
+                            id: passwdInput
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.margins: 16
+                            color: ActiveTheme.colors["FG"]
+                            font.pixelSize: 16
+                            echoMode: TextInput.Password
+                            focus: true
+                            enabled: !pam.active
+                            text: root.passwordText
+
+                            onTextChanged: root.passwordText = text
+                            onAccepted: root.tryUnlock()
+                        }
                     }
                 }
             }
