@@ -20,19 +20,6 @@ ShellRoot {
     }
 
     Loader {
-        id: lockScreenLoader
-        active: false
-        source: "widgets/LockScreen.qml"
-        visible: false
-
-        onItemChanged: {
-            if (item) item.unlocked.connect(
-                () => lockScreenLoader.active = false
-            )
-        }
-    }
-
-    Loader {
         id: systemMenuLoader
         active: false
         source: "widgets/SystemMenu.qml"
@@ -82,6 +69,12 @@ ShellRoot {
         active: true
         source: "widgets/NotificationDisplay.qml"
     }
+
+    Loader {
+        active: true
+        source: "widgets/TopBar.qml"
+    }
+
 
     function closeOtherMenus(exceptLoader) {
         if (exceptLoader !== controlCenterLoader && controlCenterLoader.item?.visible)
@@ -160,15 +153,6 @@ ShellRoot {
             else {
                 orbit.closeMenu()
             }
-        }
-    }
-
-    IpcHandler {
-        target: "lockScreen"
-        function handle(): void {
-            if (!lockScreenLoader.active)
-                lockScreenLoader.active = true
-            lockScreenLoader.item.lock()
         }
     }
 }

@@ -115,5 +115,5 @@ hl.bind(
 )
 hl.bind(
     Config.mainMod .. " + L",
-    hl.dsp.exec_cmd("qs ipc call lockScreen handle")
+    hl.dsp.exec_cmd("qs ipc call topbar lockSession")
 )
