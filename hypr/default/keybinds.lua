@@ -98,7 +98,7 @@ hl.bind(Config.mainMod .. " + mouse_down", hl.dsp.exec_cmd("~/.config/eww/script
 -- Quickshell binds
 hl.bind(
     Config.mainMod .. " + SUPER_L",
-    hl.dsp.exec_cmd("qs ipc call toggleControlCenter handle"),
+    hl.dsp.exec_cmd("qs ipc call topbar openLauncher"),
     { release = true }
 )
 hl.bind(

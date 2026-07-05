@@ -13,13 +13,6 @@ ShellRoot {
     }
 
     Loader {
-        id: controlCenterLoader
-        active: false
-        source: "widgets/ControlCenter.qml"
-        visible: false
-    }
-
-    Loader {
         id: systemMenuLoader
         active: false
         source: "widgets/SystemMenu.qml"
@@ -77,32 +70,12 @@ ShellRoot {
 
 
     function closeOtherMenus(exceptLoader) {
-        if (exceptLoader !== controlCenterLoader && controlCenterLoader.item?.visible)
-            controlCenterLoader.item.close()
         if (exceptLoader !== systemMenuLoader && systemMenuLoader.item?.visible)
             systemMenuLoader.item.closeMenu()
         if (exceptLoader !== trayMenuLoader && trayMenuLoader.item?.visible)
             trayMenuLoader.item.closeMenu()
         if (exceptLoader !== quickAppsMenuLoader && quickAppsMenuLoader.item?.visible)
             quickAppsMenuLoader.item.closeMenu()
-    }
-
-    IpcHandler {
-        target: "toggleControlCenter"
-        function handle(): void {
-            if (!controlCenterLoader.active)
-                controlCenterLoader.active = true
-
-            var launcher = controlCenterLoader.item
-            if (!launcher) return
-
-            if (!launcher.visible) {
-                root.closeOtherMenus(controlCenterLoader)
-                launcher.visible = true
-            }
-            else
-                launcher.close()
-        }
     }
 
     IpcHandler {

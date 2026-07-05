@@ -6,7 +6,7 @@ import QtQuick
 Rectangle {
     id: pill
 
-    readonly property int animDuration: 600
+    readonly property int animDuration: 250
 
     property Component content: null
     readonly property alias item: loader.item
