@@ -7,4 +7,5 @@ LockVisual 1.0 LockVisual.qml
 NotificationCard 1.0 NotificationCard.qml
 MorphingPill 1.0 MorphingPill.qml
 OrbitMenu 1.0 OrbitMenu.qml
-SearchView 1.0 SearchView.qml
+ResultView 1.0 ResultView.qml
+SearchBar 1.0 SearchBar.qml

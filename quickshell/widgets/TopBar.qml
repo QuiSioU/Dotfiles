@@ -4,6 +4,7 @@
 import Quickshell
 import Quickshell.Io
 import QtQuick
+import QtQuick.Layouts
 import Quickshell.Wayland
 import ElysianShell.Services
 import ElysianShell.Themes
@@ -12,6 +13,13 @@ import "base"
 PanelWindow {
     id: root
     readonly property int topbarHeight: 40
+
+    property string currentMode: "clock"
+
+    property var _entries: []
+    property var _modes:   []
+    property var _wallpaperFiles: []
+    property var _colorThemeFiles: []
 
     implicitWidth: screen.width
     implicitHeight: screen.height
@@ -26,9 +34,77 @@ PanelWindow {
 
     anchors { top: true; right: true; left: true }
     color: "transparent"
+    
     focusable: true
 
-    property string currentMode: "clock"
+    // ── Processes ─────────────────────────────────────────────────────────────
+    Process {
+        id: wallpaperScanner
+        command: [
+            "find",
+            Quickshell.env("HOME") + "/.config/awww/",
+            "-type", "f",
+            "(",
+            "-iname", "*.jpg", "-o",
+            "-iname", "*.jpeg", "-o",
+            "-iname", "*.png", "-o",
+            "-iname", "*.webp",
+            ")"
+        ]
+        stdout: SplitParser {
+            onRead: function(line) {
+                if (line.trim() !== "")
+                    root._wallpaperFiles.push(line.trim())  // ← _wallpaperFiles
+            }
+        }
+        onExited: {
+            root._wallpaperFiles = [...root._wallpaperFiles]
+        }
+    }
+
+    Process {
+        id: colorThemeScanner
+        command: [
+            Quickshell.shellDir + "/scripts/parse_color_themes.sh",
+            Quickshell.env("HOME") + "/.config/elysian_themes/themes"
+        ]
+        stdout: SplitParser {
+            onRead: function(line) {
+                if (line.trim() === "") return
+                const parts = line.split("\t")
+                const path = parts[0]
+                const name = (parts.length > 1 && parts[1].trim() !== "")
+                    ? parts[1]
+                    : path.replace(/.*\//, "").replace(/\.[^.]+$/, "")
+                root._colorThemeFiles.push({ path: path, name: name })
+            }
+        }
+        onExited: {
+            root._colorThemeFiles = [...root._colorThemeFiles]
+        }
+    }
+
+    Process {
+        id: wpProcess
+        running: false
+    }
+
+    Process {
+        id: vscPackageProcess
+        running: false
+    }
+
+    Process {
+        id: vscProcess
+        running: false
+        onExited: vscPackageProcess.running = true
+    }
+
+    Process {
+        id: ctProcess
+        running: false
+        onExited: vscProcess.running = true
+    }
 
     // ── Possible Menus ────────────────────────────────────────────────────────
     Component {
@@ -63,79 +139,6 @@ PanelWindow {
             implicitHeight: 500
             color: "transparent"
 
-            property var _entries: []
-            property var _modes:   []
-            property var _wallpaperFiles: []
-            property var _colorThemeFiles: []
-
-            Process {
-                id: wallpaperScanner
-                command: [
-                    "find",
-                    Quickshell.env("HOME") + "/.config/awww/",
-                    "-type", "f",
-                    "(",
-                    "-iname", "*.jpg", "-o",
-                    "-iname", "*.jpeg", "-o",
-                    "-iname", "*.png", "-o",
-                    "-iname", "*.webp",
-                    ")"
-                ]
-                stdout: SplitParser {
-                    onRead: function(line) {
-                        if (line.trim() !== "")
-                            controlRect._wallpaperFiles.push(line.trim())  // ← _wallpaperFiles
-                    }
-                }
-                onExited: {
-                    controlRect._wallpaperFiles = [...controlRect._wallpaperFiles]
-                }
-            }
-
-            Process {
-                id: colorThemeScanner
-                command: [
-                    Quickshell.shellDir + "/scripts/parse_color_themes.sh",
-                    Quickshell.env("HOME") + "/.config/elysian_themes/themes"
-                ]
-                stdout: SplitParser {
-                    onRead: function(line) {
-                        if (line.trim() === "") return
-                        const parts = line.split("\t")
-                        const path = parts[0]
-                        const name = (parts.length > 1 && parts[1].trim() !== "")
-                            ? parts[1]
-                            : path.replace(/.*\//, "").replace(/\.[^.]+$/, "")
-                        controlRect._colorThemeFiles.push({ path: path, name: name })
-                    }
-                }
-                onExited: {
-                    controlRect._colorThemeFiles = [...controlRect._colorThemeFiles]
-                }
-            }
-
-            Process {
-                id: wpProcess
-                running: false
-            }
-
-            Process {
-                id: vscPackageProcess
-                running: false
-            }
-
-            Process {
-                id: vscProcess
-                running: false
-                onExited: vscPackageProcess.running = true
-            }
-
-            Process {
-                id: ctProcess
-                running: false
-                onExited: vscProcess.running = true
-            }
-
             Connections {
                 target: DesktopEntries
                 function onApplicationsChanged() { controlRect.rebuildEntries() }
@@ -143,15 +146,15 @@ PanelWindow {
 
             Connections {
                 target: BluetoothDeviceModel
-                function onDataChanged() { searchView.refresh() }
-                function onModelReset()  { searchView.refresh() }
+                function onDataChanged() { searchBar.refresh() }
+                function onModelReset()  { searchBar.refresh() }
             }
 
             function close() { root.currentMode = "clock" }
 
             // ── App entries ───────────────────────────────────────────────────────────
             function rebuildEntries() {
-                _entries = DesktopEntries.applications.values
+                root._entries = DesktopEntries.applications.values
                     .filter(app => !app.noDisplay)
                     .map(app => ({
                         name:    app.name,
@@ -164,7 +167,7 @@ PanelWindow {
 
             // ── Command modes ─────────────────────────────────────────────────────────
             function rebuildModes() {
-                _modes = [
+                root._modes = [
                     {  /* Bluetooth */
                         prefix:      "bluetooth",
                         label:       "Bluetooth",
@@ -187,7 +190,7 @@ PanelWindow {
                         placeholder: "Select image to set as wallpaper",
                         icon:        Quickshell.shellDir + "/assets/images/preferences-desktop-wallpaper.svg",
                         entries: function() {
-                            return _wallpaperFiles.map(f => ({
+                            return root._wallpaperFiles.map(f => ({
                                 name:    f.replace(/.*\//, "").replace(/\.[^.]+$/, ""), // filename without ext
                                 comment: f,
                                 icon:    f,
@@ -209,7 +212,7 @@ PanelWindow {
                         placeholder: "Select a color theme",
                         icon:        Quickshell.shellDir + "/assets/images/color-palette.svg",
                         entries: function() {
-                            return _colorThemeFiles.map(entry => ({
+                            return root._colorThemeFiles.map(entry => ({
                                 name:    entry.name, // filename without ext
                                 comment: entry.path,
                                 icon:    Quickshell.shellDir + "/assets/images/preferences-desktop-color",
@@ -242,7 +245,13 @@ PanelWindow {
             Component.onCompleted: {
                 rebuildEntries()
                 rebuildModes()
-                searchView.forceInputFocus()
+                Qt.callLater(searchBar.forceInputFocus)
+
+                root._wallpaperFiles = []
+                wallpaperScanner.running = true
+
+                root._colorThemeFiles = []
+                colorThemeScanner.running = true
             }
 
             // ── Content ───────────────────────────────────────────────────────────────
@@ -255,16 +264,30 @@ PanelWindow {
                 border.width: 2
                 border.color: ActiveTheme.colors["FG_DARK"]
 
-                SearchView {
-                    id: searchView
-
+                ColumnLayout {
                     anchors.fill: parent
-                    z: 100
+                    anchors.margins: 20
+                    spacing: 20
 
-                    entries:      controlRect._entries
-                    modes:        controlRect._modes
+                    SearchBar {
+                        id: searchBar
+                        entries: root._entries
+                        modes:   root._modes
+                        onNavigated:      (index) => resultView.positionAt(index)
+                        onActivated:      (entry) => entry.action()
+                        onCloseRequested: controlRect.close()
+                    }
 
-                    onCloseRequested: controlRect.close()
+                    ResultView {
+                        id: resultView
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+                        model:        searchBar.filteredEntries
+                        currentIndex: searchBar.currentIndex
+                        mode:         searchBar.activeMode?.displayType ?? "items"
+                        onActivated:      (entry) => entry.action()
+                        onCloseRequested: controlRect.close()
+                    }
                 }
             }
         }
