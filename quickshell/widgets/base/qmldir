@@ -1,11 +1,10 @@
 # quickshell/widgets/base/qmldir
 
 
-Drawer 1.0 Drawer.qml
 LockScreen 1.0 LockScreen.qml
 LockVisual 1.0 LockVisual.qml
-NotificationCard 1.0 NotificationCard.qml
 MorphingPill 1.0 MorphingPill.qml
+NotificationCard 1.0 NotificationCard.qml
 OrbitMenu 1.0 OrbitMenu.qml
 ResultView 1.0 ResultView.qml
 SearchBar 1.0 SearchBar.qml

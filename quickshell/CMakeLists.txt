@@ -11,6 +11,5 @@ set(QT_QML_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/qml")
 
 find_package(Qt6 REQUIRED COMPONENTS Core Quick DBus ShaderTools)
 
-add_subdirectory(modules/Blobs)
 add_subdirectory(modules/Services)
 add_subdirectory(modules/Themes)
