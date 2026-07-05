@@ -322,7 +322,9 @@ PanelWindow {
 
     IpcHandler {
         target: "topbar"
-        function openLauncher(): void { root.currentMode = "launcher" }
+        function openLauncher(): void {
+            root.currentMode = root.currentMode === "launcher" ? "clock" : "launcher"
+        }
         function lockSession(): void { root.currentMode = "lock" }
         function reset(): void { root.currentMode = "clock" }
     }
