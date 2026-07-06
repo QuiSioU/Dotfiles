@@ -14,10 +14,10 @@ PanelWindow {
     id: root
     readonly property int topbarHeight: 40
 
-    property string currentMode: "clock"
+    property string mainPillWidget: "clock"
 
     property var _entries: []
-    property var _modes:   []
+    property var _launchModes:   []
     property var _wallpaperFiles: []
     property var _colorThemeFiles: []
 
@@ -27,7 +27,7 @@ PanelWindow {
     exclusiveZone: topbarHeight
 
     WlrLayershell.layer: WlrLayer.Top
-    WlrLayershell.keyboardFocus: currentMode === "clock" ? WlrKeyboardFocus.None : WlrKeyboardFocus.Exclusive
+    WlrLayershell.keyboardFocus: mainPillWidget === "clock" ? WlrKeyboardFocus.None : WlrKeyboardFocus.Exclusive
     WlrLayershell.namespace: "top-bar"
 
     mask: Region { item: mainPill }
@@ -150,7 +150,17 @@ PanelWindow {
                 function onModelReset()  { searchBar.refresh() }
             }
 
-            function close() { root.currentMode = "clock" }
+            Connections {
+                target: wallpaperScanner
+                function onExited() { searchBar.refresh() }
+            }
+
+            Connections {
+                target: colorThemeScanner
+                function onExited() { searchBar.refresh() }
+            }
+
+            function close() { root.mainPillWidget = "clock" }
 
             // ── App entries ───────────────────────────────────────────────────────────
             function rebuildEntries() {
@@ -166,13 +176,14 @@ PanelWindow {
             }
 
             // ── Command modes ─────────────────────────────────────────────────────────
-            function rebuildModes() {
-                root._modes = [
+            function rebuildLaunchModes() {
+                root._launchModes = [
                     {  /* Bluetooth */
                         prefix:      "bluetooth",
                         label:       "Bluetooth",
                         placeholder: "Select device to toggle connection",
                         icon:        Quickshell.shellDir + "/assets/icons/bluetooth-active.svg",
+                        displayMode: "items",
                         entries: function() {
                             return BluetoothDeviceModel.deviceList().map(dev => ({
                                 name:    dev.alias || dev.name,
@@ -189,6 +200,7 @@ PanelWindow {
                         label:       "Wallpaper",
                         placeholder: "Select image to set as wallpaper",
                         icon:        Quickshell.shellDir + "/assets/images/preferences-desktop-wallpaper.svg",
+                        displayMode: "items",
                         entries: function() {
                             return root._wallpaperFiles.map(f => ({
                                 name:    f.replace(/.*\//, "").replace(/\.[^.]+$/, ""), // filename without ext
@@ -211,6 +223,7 @@ PanelWindow {
                         label:       "Color Theme",
                         placeholder: "Select a color theme",
                         icon:        Quickshell.shellDir + "/assets/images/color-palette.svg",
+                        displayMode: "items",
                         entries: function() {
                             return root._colorThemeFiles.map(entry => ({
                                 name:    entry.name, // filename without ext
@@ -244,7 +257,7 @@ PanelWindow {
             // ── Hooks ─────────────────────────────────────────────────────────────────
             Component.onCompleted: {
                 rebuildEntries()
-                rebuildModes()
+                rebuildLaunchModes()
                 Qt.callLater(searchBar.forceInputFocus)
 
                 root._wallpaperFiles = []
@@ -272,7 +285,8 @@ PanelWindow {
                     SearchBar {
                         id: searchBar
                         entries: root._entries
-                        modes:   root._modes
+                        launchModes:   root._launchModes
+                        navHorizontal: true
                         onNavigated:      (index) => resultView.positionAt(index)
                         onActivated:      (entry) => entry.action()
                         onCloseRequested: controlRect.close()
@@ -284,7 +298,7 @@ PanelWindow {
                         Layout.fillHeight: true
                         model:        searchBar.filteredEntries
                         currentIndex: searchBar.currentIndex
-                        mode:         searchBar.activeMode?.displayType ?? "items"
+                        displayMode:         searchBar.activeMode?.displayMode ?? "items"
                         onActivated:      (entry) => entry.action()
                         onCloseRequested: controlRect.close()
                     }
@@ -302,8 +316,8 @@ PanelWindow {
     }
     LockScreen { id: lockScreen }
 
-    onCurrentModeChanged: {
-        switch (currentMode) {
+    onMainPillWidgetChanged: {
+        switch (mainPillWidget) {
             case "lock":        mainPill.content = lockDecoy; break
             case "launcher":    mainPill.content = controlCenter; break
             default:            mainPill.content = clockMenu; break
@@ -315,7 +329,7 @@ PanelWindow {
     Connections {
         target: mainPill
         function onMorphFinished() {
-            if (root.currentMode === "lock" && !lockScreen.isLocked) {
+            if (root.mainPillWidget === "lock" && !lockScreen.isLocked) {
                 mainPill.square = true
                 lockScreen.lock()   // decoy is fully fullscreen now — safe to hand off
             }
@@ -327,7 +341,7 @@ PanelWindow {
         function onReadyToUnlock() {
             mainPill.square = false
             lockScreen.unlock()      // decoy still fullscreen underneath — no flash
-            root.currentMode = "clock"    // now shrink back down
+            root.mainPillWidget = "clock"    // now shrink back down
         }
     }
 
@@ -346,9 +360,9 @@ PanelWindow {
     IpcHandler {
         target: "topbar"
         function openLauncher(): void {
-            root.currentMode = root.currentMode === "launcher" ? "clock" : "launcher"
+            root.mainPillWidget = root.mainPillWidget === "launcher" ? "clock" : "launcher"
         }
-        function lockSession(): void { root.currentMode = "lock" }
-        function reset(): void { root.currentMode = "clock" }
+        function lockSession(): void { root.mainPillWidget = "lock" }
+        function reset(): void { root.mainPillWidget = "clock" }
     }
 }

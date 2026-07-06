@@ -11,7 +11,7 @@ Item {
     // ── Public API ────────────────────────────────────────────────────
     property var    model:        []
     property int    currentIndex: 0
-    property string mode:         "items"   // "items" | "carousel" (later)
+    property string displayMode:         "items"   // "items" | "carousel" (later)
 
     signal closeRequested()
     signal activated(var entry)
@@ -25,7 +25,7 @@ Item {
         id: loader
         anchors.fill: parent
         sourceComponent: {
-            switch (root.mode) {
+            switch (root.displayMode) {
                 // case "carousel": return carouselDisplay   // added later
                 default: return itemsDisplay
             }

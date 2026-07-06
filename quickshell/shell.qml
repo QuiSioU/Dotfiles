@@ -24,9 +24,8 @@ ShellRoot {
                     () => systemMenuLoader.active = false
                 )
                 item.lockRequested.connect(() => {
-                    if (!lockScreenLoader.active)
-                        lockScreenLoader.active = true
-                    lockScreenLoader.item.lock()
+                    if (topBarLoader.item.currentMode !== "lock")
+                        topBarLoader.item.currentMode = "lock"
                 })
             }
         }
@@ -64,6 +63,7 @@ ShellRoot {
     }
 
     Loader {
+        id: topBarLoader
         active: true
         source: "widgets/TopBar.qml"
     }

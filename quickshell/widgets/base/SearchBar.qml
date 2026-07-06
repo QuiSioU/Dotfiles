@@ -14,8 +14,9 @@ Rectangle {
 
     // ── Public API — inputs ──────────────────────────────────────────
     property var    entries:      []
-    property var    modes:        []
+    property var    launchModes:        []
     property string actionPrefix: "/"
+    property bool   navHorizontal: false
 
     // ── Public API — outputs ─────────────────────────────────────────
     property var filteredEntries: []
@@ -25,7 +26,7 @@ Rectangle {
         const prefix = root.actionPrefix
         if (!text.startsWith(prefix)) return null
         const rest = text.slice(prefix.length)
-        return root.modes.find(
+        return root.launchModes.find(
             m => rest === m.prefix + " " || rest.startsWith(m.prefix + " ")) ?? null
     }
 
@@ -56,7 +57,7 @@ Rectangle {
 
         if (text.startsWith(prefix)) {
             const rest = text.slice(prefix.length).toLowerCase()
-            const matchedMode = root.modes.find(
+            const matchedMode = root.launchModes.find(
                 m => rest === "" || m.prefix.startsWith(rest) || rest.startsWith(m.prefix + " "))
 
             if (matchedMode) {
@@ -72,7 +73,7 @@ Rectangle {
                 }
             }
 
-            return root.modes
+            return root.launchModes
                 .filter(m => rest === "" || m.prefix.startsWith(rest) || m.label.toLowerCase().startsWith(rest))
                 .map(m => ({
                     name:         m.label,
@@ -94,12 +95,12 @@ Rectangle {
     }
 
     // ── Navigation ────────────────────────────────────────────────────
-    function _navigateUp() {
+    function _navigatePrev() {
         const next = Math.max(0, root.currentIndex - 1)
         root.currentIndex = next
         root.navigated(next)
     }
-    function _navigateDown() {
+    function _navigateNext() {
         const next = Math.min(root.filteredEntries.length - 1, root.currentIndex + 1)
         root.currentIndex = next
         root.navigated(next)
@@ -119,9 +120,32 @@ Rectangle {
     Item {
         id: keyHandler
         Keys.onReturnPressed: root._activateCurrent()
-        Keys.onUpPressed:     root._navigateUp()
-        Keys.onDownPressed:   root._navigateDown()
         Keys.onEscapePressed: root.closeRequested()
+
+        Keys.onUpPressed: function(event) {
+            if (!root.navHorizontal) {
+                root._navigatePrev()
+                event.accepted = true
+            }
+        }
+        Keys.onDownPressed: function(event) {
+            if (!root.navHorizontal) {
+                root._navigateNext()
+                event.accepted = true
+            }
+        }
+        Keys.onLeftPressed: function(event) {
+            if (root.navHorizontal) {
+                root._navigatePrev()
+                event.accepted = true
+            }
+        }
+        Keys.onRightPressed: function(event) {
+            if (root.navHorizontal) {
+                root._navigateNext()
+                event.accepted = true
+            }
+        }
     }
 
     // ── Layout ────────────────────────────────────────────────────────
