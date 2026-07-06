@@ -16,7 +16,6 @@ Rectangle {
     property var    entries:      []
     property var    launchModes:        []
     property string actionPrefix: "/"
-    property bool   navHorizontal: false
 
     // ── Public API — outputs ─────────────────────────────────────────
     property var filteredEntries: []
@@ -122,30 +121,35 @@ Rectangle {
         Keys.onReturnPressed: root._activateCurrent()
         Keys.onEscapePressed: root.closeRequested()
 
-        Keys.onUpPressed: function(event) {
-            if (!root.navHorizontal) {
-                root._navigatePrev()
-                event.accepted = true
-            }
-        }
-        Keys.onDownPressed: function(event) {
-            if (!root.navHorizontal) {
-                root._navigateNext()
-                event.accepted = true
-            }
-        }
-        Keys.onLeftPressed: function(event) {
-            if (root.navHorizontal) {
-                root._navigatePrev()
-                event.accepted = true
-            }
-        }
-        Keys.onRightPressed: function(event) {
-            if (root.navHorizontal) {
-                root._navigateNext()
-                event.accepted = true
-            }
-        }
+        Keys.onUpPressed: root._navigatePrev()
+        Keys.onDownPressed: root._navigateNext()
+        Keys.onLeftPressed: root._navigatePrev()
+        Keys.onRightPressed: root._navigateNext()
+
+        // Keys.onUpPressed: function(event) {
+        //     if (!root.navHorizontal) {
+        //         root._navigatePrev()
+        //         event.accepted = true
+        //     }
+        // }
+        // Keys.onDownPressed: function(event) {
+        //     if (!root.navHorizontal) {
+        //         root._navigateNext()
+        //         event.accepted = true
+        //     }
+        // }
+        // Keys.onLeftPressed: function(event) {
+        //     if (root.navHorizontal) {
+        //         root._navigatePrev()
+        //         event.accepted = true
+        //     }
+        // }
+        // Keys.onRightPressed: function(event) {
+        //     if (root.navHorizontal) {
+        //         root._navigateNext()
+        //         event.accepted = true
+        //     }
+        // }
     }
 
     // ── Layout ────────────────────────────────────────────────────────

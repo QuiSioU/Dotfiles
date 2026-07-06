@@ -286,7 +286,6 @@ PanelWindow {
                         id: searchBar
                         entries: root._entries
                         launchModes:   root._launchModes
-                        navHorizontal: true
                         onNavigated:      (index) => resultView.positionAt(index)
                         onActivated:      (entry) => entry.action()
                         onCloseRequested: controlRect.close()
