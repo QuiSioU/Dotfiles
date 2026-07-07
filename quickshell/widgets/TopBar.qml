@@ -212,7 +212,8 @@ PanelWindow {
                                     return () => {
                                         wpProcess.command = [
                                             "awww", "img", path,
-                                            "--transition-type", "center"
+                                            "--transition-type", "fade",
+                                            "--transition-duration", "1"
                                         ]
                                         wpProcess.running = true
                                     }

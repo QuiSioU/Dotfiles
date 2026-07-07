@@ -3,6 +3,8 @@
 
 import QtQuick
 import QtQuick.Layouts
+import QtQuick.Effects
+import Quickshell.Widgets
 import ElysianShell.Themes
 
 Item {
@@ -216,9 +218,18 @@ Item {
                     PathLine { x: pathView.width;      relativeY: 0 }
                 }
 
+                onCurrentIndexChanged: {
+                    if (model && model.length > currentIndex && currentIndex >= 0) {
+                        var activeData = model[currentIndex];
+                        root.activated(activeData)
+                    }
+                }
+
                 delegate: Item {
                     id: cell
                     required property var modelData
+
+                    property real aspectRatio: 16 / 9
 
                     scale: 0.5
                     opacity: 0
@@ -229,21 +240,21 @@ Item {
                         opacity = Qt.binding(() => PathView.onPath ? 1 : 0)
                     }
 
-                    implicitWidth:  180
-                    implicitHeight: 180
+                    implicitHeight: 135
+                    implicitWidth:  implicitHeight * aspectRatio
 
                     Behavior on scale   { NumberAnimation { duration: 220; easing.type: Easing.OutCubic } }
                     Behavior on opacity { NumberAnimation { duration: 220 } }
 
-                    Rectangle {
+                    ClippingRectangle {
+                        id: clipRect
                         anchors.fill: parent
                         radius: 12
-                        clip: true
-                        color: ActiveTheme.colors["BG_HIGHLIGHT"]
-                        border.width: cell.PathView.isCurrentItem ? 2 : 0
-                        border.color: ActiveTheme.colors["ACCENT_DIM"]
+                        color: "transparent"
+                        contentInsideBorder: true 
 
                         Image {
+                            id: carouselImg
                             anchors.fill: parent
                             source: cell.modelData.icon ?? ""
                             fillMode: Image.PreserveAspectCrop
@@ -252,12 +263,20 @@ Item {
                         }
                     }
 
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: {
-                            root.activated(cell.modelData)
-                            if (!(cell.modelData.stayOpen ?? false)) root.closeRequested()
-                        }
+                    MultiEffect {
+                        id: shadowEffect
+                        anchors.fill: clipRect
+                        source: clipRect
+                        
+                        shadowEnabled: true
+                        shadowColor: "#80000000" // Semi-transparent black
+                        shadowBlur: 1.0          // Softness of the shadow
+                        shadowHorizontalOffset: 0
+                        shadowVerticalOffset: 6  // Push it down slightly for depth
+                        
+                        // Only show the shadow on the active center item
+                        opacity: cell.PathView.isCurrentItem ? 1.0 : 0.0
+                        Behavior on opacity { NumberAnimation { duration: 220 } }
                     }
                 }
             }
