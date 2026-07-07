@@ -11,10 +11,13 @@ Item {
     // ── Public API ────────────────────────────────────────────────────
     property var    model:        []
     property int    currentIndex: 0
-    property string displayMode:         "items"   // "items" | "carousel" (later)
+    property string displayMode:         "items"   // "items" | "carousel" | (grid)
 
     signal closeRequested()
     signal activated(var entry)
+
+    implicitWidth:  loader.item ? loader.item.implicitWidth  : 0
+    implicitHeight: loader.item ? loader.item.implicitHeight : 0
 
     function positionAt(index) {
         if (loader.item && loader.item.positionAt)
@@ -26,7 +29,7 @@ Item {
         anchors.fill: parent
         sourceComponent: {
             switch (root.displayMode) {
-                // case "carousel": return carouselDisplay   // added later
+                case "carousel": return carouselDisplay
                 default: return itemsDisplay
             }
         }
@@ -50,6 +53,9 @@ Item {
             id: itemsRoot
             property var model:        []
             property int currentIndex: 0
+
+            implicitWidth:  600 // 480 before
+            implicitHeight: 360
 
             function positionAt(index) {
                 listView.positionViewAtIndex(index, ListView.Contain)
@@ -166,6 +172,91 @@ Item {
                                 if (!(modelData.stayOpen ?? false))
                                     root.closeRequested()
                             }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    Component {
+        id: carouselDisplay
+
+        Item {
+            id: carouselRoot
+            property var model:        []
+            property int currentIndex: 0
+
+            readonly property int itemSize: 180
+            implicitWidth:  itemSize * 3 + 60
+            implicitHeight: itemSize + 20
+
+            function positionAt(index) { /* no-op — currentIndex binding already drives PathView */ }
+
+            PathView {
+                id: pathView
+                anchors.fill: parent
+
+                model:        carouselRoot.model
+                currentIndex: carouselRoot.currentIndex
+                interactive:  false   // see note below
+
+                pathItemCount:  3
+                cacheItemCount: 2
+                snapMode: PathView.SnapToItem
+                preferredHighlightBegin: 0.5
+                preferredHighlightEnd:   0.5
+                highlightRangeMode: PathView.StrictlyEnforceRange
+
+                path: Path {
+                    startY: pathView.height / 2
+                    PathAttribute { name: "z"; value: 0 }
+                    PathLine { x: pathView.width / 2; relativeY: 0 }
+                    PathAttribute { name: "z"; value: 1 }
+                    PathLine { x: pathView.width;      relativeY: 0 }
+                }
+
+                delegate: Item {
+                    id: cell
+                    required property var modelData
+
+                    scale: 0.5
+                    opacity: 0
+                    z: PathView.z ?? 0
+
+                    Component.onCompleted: {
+                        scale   = Qt.binding(() => PathView.isCurrentItem ? 1 : PathView.onPath ? 0.7 : 0)
+                        opacity = Qt.binding(() => PathView.onPath ? 1 : 0)
+                    }
+
+                    implicitWidth:  180
+                    implicitHeight: 180
+
+                    Behavior on scale   { NumberAnimation { duration: 220; easing.type: Easing.OutCubic } }
+                    Behavior on opacity { NumberAnimation { duration: 220 } }
+
+                    Rectangle {
+                        anchors.fill: parent
+                        radius: 12
+                        clip: true
+                        color: ActiveTheme.colors["BG_HIGHLIGHT"]
+                        border.width: cell.PathView.isCurrentItem ? 2 : 0
+                        border.color: ActiveTheme.colors["ACCENT_DIM"]
+
+                        Image {
+                            anchors.fill: parent
+                            source: cell.modelData.icon ?? ""
+                            fillMode: Image.PreserveAspectCrop
+                            smooth: true
+                            asynchronous: true
+                        }
+                    }
+
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            root.activated(cell.modelData)
+                            if (!(cell.modelData.stayOpen ?? false)) root.closeRequested()
                         }
                     }
                 }

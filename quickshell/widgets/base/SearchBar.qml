@@ -7,7 +7,6 @@ import ElysianShell.Themes
 
 Rectangle {
     id: root
-    Layout.fillWidth: true
     Layout.preferredHeight: 50
     color: ActiveTheme.colors["BG_STRIPE"]
     radius: 12
@@ -16,6 +15,7 @@ Rectangle {
     property var    entries:      []
     property var    launchModes:        []
     property string actionPrefix: "/"
+    property bool   wrapNavigation: false
 
     // ── Public API — outputs ─────────────────────────────────────────
     property var filteredEntries: []
@@ -95,12 +95,20 @@ Rectangle {
 
     // ── Navigation ────────────────────────────────────────────────────
     function _navigatePrev() {
-        const next = Math.max(0, root.currentIndex - 1)
+        const count = root.filteredEntries.length
+        if (count === 0) return
+        const next = root.wrapNavigation
+            ? (root.currentIndex - 1 + count) % count
+            : Math.max(0, root.currentIndex - 1)
         root.currentIndex = next
         root.navigated(next)
     }
     function _navigateNext() {
-        const next = Math.min(root.filteredEntries.length - 1, root.currentIndex + 1)
+        const count = root.filteredEntries.length
+        if (count === 0) return
+        const next = root.wrapNavigation
+            ? (root.currentIndex + 1) % count
+            : Math.min(count - 1, root.currentIndex + 1)
         root.currentIndex = next
         root.navigated(next)
     }

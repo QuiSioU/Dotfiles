@@ -135,8 +135,10 @@ PanelWindow {
         Rectangle {
             id: controlRect
 
-            implicitWidth: 750
-            implicitHeight: 500
+            readonly property int padding: 20
+            implicitWidth:  contentColumn.implicitWidth  + padding * 2
+            implicitHeight: contentColumn.implicitHeight + padding * 2
+
             color: "transparent"
 
             Connections {
@@ -200,7 +202,7 @@ PanelWindow {
                         label:       "Wallpaper",
                         placeholder: "Select image to set as wallpaper",
                         icon:        Quickshell.shellDir + "/assets/images/preferences-desktop-wallpaper.svg",
-                        displayMode: "items",
+                        displayMode: "carousel",
                         entries: function() {
                             return root._wallpaperFiles.map(f => ({
                                 name:    f.replace(/.*\//, "").replace(/\.[^.]+$/, ""), // filename without ext
@@ -278,14 +280,17 @@ PanelWindow {
                 border.color: ActiveTheme.colors["FG_DARK"]
 
                 ColumnLayout {
-                    anchors.fill: parent
-                    anchors.margins: 20
+                    id: contentColumn
+                    anchors.centerIn: parent
                     spacing: 20
 
                     SearchBar {
                         id: searchBar
+                        Layout.alignment: Qt.AlignHCenter
+                        Layout.fillWidth: true
                         entries: root._entries
                         launchModes:   root._launchModes
+                        wrapNavigation: searchBar.activeMode?.displayMode === "carousel"
                         onNavigated:      (index) => resultView.positionAt(index)
                         onActivated:      (entry) => entry.action()
                         onCloseRequested: controlRect.close()
@@ -293,8 +298,7 @@ PanelWindow {
 
                     ResultView {
                         id: resultView
-                        Layout.fillWidth: true
-                        Layout.fillHeight: true
+                        Layout.alignment: Qt.AlignHCenter
                         model:        searchBar.filteredEntries
                         currentIndex: searchBar.currentIndex
                         displayMode:         searchBar.activeMode?.displayMode ?? "items"
