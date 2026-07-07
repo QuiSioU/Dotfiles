@@ -13,7 +13,10 @@ QtObject {
 
     property Process _queryProcess: Process {
         running: false
-        command: ["bash", "-c", "awww query | awk -F'image: ' '{print $2}'"]
+        command: [
+            "bash", "-c",
+            "awww query | awk -F'image: ' '{print $2}' | awk '{print $1}' | xargs realpath"
+        ]
         stdout: SplitParser {
             onRead: function(line) {
                 if (line.trim() !== "") {

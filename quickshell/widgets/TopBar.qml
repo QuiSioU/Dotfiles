@@ -41,15 +41,10 @@ PanelWindow {
     Process {
         id: wallpaperScanner
         command: [
-            "find",
-            Quickshell.env("HOME") + "/.config/awww/",
-            "-type", "f",
-            "(",
-            "-iname", "*.jpg", "-o",
-            "-iname", "*.jpeg", "-o",
-            "-iname", "*.png", "-o",
-            "-iname", "*.webp",
-            ")"
+            "bash", "-c",
+            "find " + Quickshell.env("HOME") + "/.config/awww/ -type f " +
+            "\\( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' \\) " +
+            "-exec realpath {} \\;"
         ]
         stdout: SplitParser {
             onRead: function(line) {
@@ -59,6 +54,7 @@ PanelWindow {
         }
         onExited: {
             root._wallpaperFiles = [...root._wallpaperFiles]
+            LockService.refreshWallpaper()
         }
     }
 
@@ -204,7 +200,13 @@ PanelWindow {
                         icon:        Quickshell.shellDir + "/assets/images/preferences-desktop-wallpaper.svg",
                         displayMode: "carousel",
                         entries: function() {
-                            return root._wallpaperFiles.map(f => ({
+                            const current = LockService.currentWallpaper.replace(/^file:\/\//, "")
+                            const idx = root._wallpaperFiles.indexOf(current)
+                            const files = idx > 0
+                                ? [...root._wallpaperFiles.slice(idx), ...root._wallpaperFiles.slice(0, idx)]
+                                : root._wallpaperFiles
+                            
+                            return files.map(f => ({
                                 name:    f.replace(/.*\//, "").replace(/\.[^.]+$/, ""), // filename without ext
                                 comment: f,
                                 icon:    f,
@@ -268,6 +270,8 @@ PanelWindow {
 
                 root._colorThemeFiles = []
                 colorThemeScanner.running = true
+
+                LockService.refreshWallpaper()
             }
 
             // ── Content ───────────────────────────────────────────────────────────────
