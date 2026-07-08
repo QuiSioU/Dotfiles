@@ -187,6 +187,7 @@ PanelWindow {
                                 name:    dev.alias || dev.name,
                                 icon:    dev.icon ? "image://icon/" + dev.icon : "",
                                 comment: dev.address + " · " + (dev.connected ? "Connected ✓" : "Disconnected"),
+                                stayOpen: true,
                                 action:  (function(p) {
                                     return () => BluetoothDeviceModel.toggle(p)
                                 })(dev.path)
