@@ -24,8 +24,8 @@ ShellRoot {
                     () => systemMenuLoader.active = false
                 )
                 item.lockRequested.connect(() => {
-                    if (topBarLoader.item.currentMode !== "lock")
-                        topBarLoader.item.currentMode = "lock"
+                    if (topBarLoader.item.mainPillWidget !== "lock")
+                        topBarLoader.item.mainPillWidget = "lock"
                 })
             }
         }
