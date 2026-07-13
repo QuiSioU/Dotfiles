@@ -98,22 +98,22 @@ hl.bind(Config.mainMod .. " + mouse_down", hl.dsp.exec_cmd("~/.config/eww/script
 -- Quickshell binds
 hl.bind(
     Config.mainMod .. " + SUPER_L",
-    hl.dsp.exec_cmd("qs ipc call topbar openLauncher"),
+    hl.dsp.exec_cmd("qs -c shell ipc call topbar openLauncher"),
     { release = true }
 )
 hl.bind(
     Config.mainMod .. " + Escape",
-    hl.dsp.exec_cmd("qs ipc call toggleSystemMenu handle")
+    hl.dsp.exec_cmd("qs -c shell ipc call toggleSystemMenu handle")
 )
 hl.bind(
     Config.mainMod .. " + Tab",
-    hl.dsp.exec_cmd("qs ipc call toggleTrayMenu handle")
+    hl.dsp.exec_cmd("qs -c shell ipc call toggleTrayMenu handle")
 )
 hl.bind(
     Config.mainMod .. " + A",
-    hl.dsp.exec_cmd("qs ipc call toggleQuickAppsMenu handle")
+    hl.dsp.exec_cmd("qs -c shell ipc call toggleQuickAppsMenu handle")
 )
 hl.bind(
     Config.mainMod .. " + L",
-    hl.dsp.exec_cmd("qs ipc call topbar lockSession")
+    hl.dsp.exec_cmd("qs -c shell ipc call topbar lockSession")
 )

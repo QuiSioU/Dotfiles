@@ -11,5 +11,5 @@ hl.on("hyprland.start", function()
     hl.exec_cmd("awww-daemon")
 
     -- Shell
-    hl.exec_cmd("quickshell")
+    hl.exec_cmd("quickshell -c shell")
 end)

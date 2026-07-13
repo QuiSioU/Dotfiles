@@ -1,5 +1,5 @@
 #!/bin/sh
-# quickshell/setup.sh
+# quickshell/shell/setup.sh
 
 
 flag_force=false
@@ -18,6 +18,8 @@ echo ""
 
 CONFIG_DIR="$HOME/.config"
 ROOT_DIR=$(cd "$(dirname "$0")" && pwd)
+SHELL_DIR="$ROOT_DIR/shell"
+VESKTOP_OVERLAY_DIR="$ROOT_DIR/vesktop-overlay"
 cd "$ROOT_DIR"
 
 echo "Creating symlink in $CONFIG_DIR..."
@@ -41,6 +43,8 @@ fi
 echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌"
 
 echo "Building resources and dependencies..."
+
+cd "$SHELL_DIR"
 
 if [ "$flag_force" = true ]; then
     rm -rf .build .cache
@@ -89,3 +93,5 @@ echo "Ensuring scripts are executable..."
 echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌"
 
 echo "Quickshell configured successfully!"
+
+cd "$ROOT_DIR"

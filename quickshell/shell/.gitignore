@@ -1,0 +1,7 @@
+# quickshell/shell/.gitignore
+
+
+.cache
+.clangd
+.build
+quickapps.json

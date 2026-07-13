@@ -1,8 +1,0 @@
-# quickshell/.gitignore
-
-
-.cache
-.clangd
-.build
-ElysianShell
-quickapps.json
