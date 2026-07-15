@@ -40,6 +40,17 @@ PanelWindow {
         cornerRadius: root.topbarHeight / 2
     }
 
+    WorkspacePill {
+        id: workspacePill
+        anchors {
+            top: parent.top
+            left: parent.left
+            leftMargin: screen.width / 10
+            topMargin: root.topbarHeight / 10
+        }
+        cornerRadius: root.topbarHeight / 2
+    }
+
     function toggleLauncher(): void { controlPill.toggleLauncher() }
     function lockSession(): void { controlPill.lockSession() }
     function reset(): void { controlPill.reset() }
