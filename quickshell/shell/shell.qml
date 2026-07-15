@@ -20,13 +20,8 @@ ShellRoot {
 
         onItemChanged: {
             if (item) {
-                item.menuClosed.connect(
-                    () => systemMenuLoader.active = false
-                )
-                item.lockRequested.connect(() => {
-                    if (topBarLoader.item.mainPillWidget !== "lock")
-                        topBarLoader.item.mainPillWidget = "lock"
-                })
+                item.menuClosed.connect(() => systemMenuLoader.active = false)
+                item.lockRequested.connect(() => { topBarLoader.item.lockSession() })
             }
         }
     }
@@ -37,11 +32,7 @@ ShellRoot {
         source: "widgets/TrayMenu.qml"
         visible: false
 
-        onItemChanged: {
-            if (item) item.menuClosed.connect(
-                () => trayMenuLoader.active = false
-            )
-        }
+        onItemChanged: if (item) item.menuClosed.connect(() => trayMenuLoader.active = false)
     }
 
     Loader {
@@ -50,11 +41,7 @@ ShellRoot {
         source: "widgets/QuickAppsMenu.qml"
         visible: false
 
-        onItemChanged: {
-            if (item) item.menuClosed.connect(
-                () => quickAppsMenuLoader.active = false
-            )
-        }
+        onItemChanged: if (item) item.menuClosed.connect(() => quickAppsMenuLoader.active = false)
     }
 
     Loader {
@@ -127,5 +114,12 @@ ShellRoot {
                 orbit.closeMenu()
             }
         }
+    }
+
+    IpcHandler {
+        target: "topbar"
+        function toggleLauncher(): void { topBarLoader.item.toggleLauncher() }
+        function lockSession(): void { topBarLoader.item.lockSession() }
+        function reset(): void { topBarLoader.item.reset() }
     }
 }

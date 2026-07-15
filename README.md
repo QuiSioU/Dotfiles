@@ -1,8 +1,11 @@
-# NVIDIA gpu environment variables
-env = LIBVA_DRIVER_NAME,nvidia
-env = GBM_BACKEND,nvidia-drm
-env = __GLX_VENDOR_LIBRARY_NAME,nvidia
-env = WLR_NO_HARDWARE_CURSORS,1
-
-# Other environment variables
-env = GTK_THEME,TokyoNight-Dark-Storm
+## TODO
+### Dotfiles
+- Make workspace topbar part.
+- Make connections and system topbar part.
+- Replace EWW's user menu with hardware usage (by adding stuff to main pill in topbar).
+- Fix visual bugs in launcher and carousel display.
+- Improve lock screen visuals.
+- Fix control center 1st app always opening on Workspace 1.
+- Implement secondary actions on launcher (right-click/shitf+Enter) and QuickApps, like desktop files provide.
+- Optmize code for speed and resource consumption.
+- Make vesktop overlay
