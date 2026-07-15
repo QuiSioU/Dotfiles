@@ -14,6 +14,8 @@ MorphingPill {
 
     property var targetScreen: null
     property string pillWidget: "clock"
+    property real clockHeight: 0
+
     property var _entries: []
     property var _launchModes:   []
     property var _wallpaperFiles: []
@@ -96,14 +98,18 @@ MorphingPill {
         id: clockMenu;
         Item {
             id: clockRoot
-            implicitWidth: clock.implicitWidth + 32
-            implicitHeight: clock.implicitHeight + 12
+
+            property real horizontalPadding: 10
+            property real verticalPadding: 4
+
+            implicitWidth: clock.implicitWidth + horizontalPadding * 2
+            implicitHeight: clock.implicitHeight + verticalPadding * 2
 
             Text {
                 id: clock
                 anchors.centerIn: parent
                 color: "white"
-                font.pixelSize: 20
+                font.pixelSize: 18
                 font.bold: true
                 text: Qt.formatTime(new Date(), "hh:mm")
                 Timer {
@@ -327,6 +333,7 @@ MorphingPill {
     Connections {
         target: root
         function onMorphFinished() {
+            if (root.pillWidget === "clock") root.clockHeight = root.height
             if (root.pillWidget === "lock" && !lockScreen.isLocked) {
                 root.square = true
                 lockScreen.lock()   // decoy is fully fullscreen now — safe to hand off
@@ -341,5 +348,10 @@ MorphingPill {
             lockScreen.unlock()      // decoy still fullscreen underneath — no flash
             root.pillWidget = "clock"    // now shrink back down
         }
+    }
+
+    MouseArea {
+        anchors.fill: parent
+        cursorShape: Qt.PointingHandCursor
     }
 }

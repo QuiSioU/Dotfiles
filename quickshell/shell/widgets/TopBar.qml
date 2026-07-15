@@ -21,7 +21,10 @@ PanelWindow {
         : WlrKeyboardFocus.Exclusive
     WlrLayershell.namespace: "top-bar"
 
-    mask: Region { item: controlPill }
+    mask: Region {
+        item: controlPill
+        Region { item: workspacePill }
+    }
 
     anchors { top: true; right: true; left: true }
     color: "transparent"
@@ -35,7 +38,7 @@ PanelWindow {
         anchors {
             top: parent.top
             horizontalCenter: parent.horizontalCenter
-            topMargin: root.topbarHeight / 10
+            topMargin: (root.topbarHeight - controlPill.clockHeight) / 2
         }
         cornerRadius: root.topbarHeight / 2
     }
@@ -46,7 +49,7 @@ PanelWindow {
             top: parent.top
             left: parent.left
             leftMargin: screen.width / 10
-            topMargin: root.topbarHeight / 10
+            topMargin: (root.topbarHeight - workspacePill.height) / 2
         }
         cornerRadius: root.topbarHeight / 2
     }

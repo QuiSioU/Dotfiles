@@ -5,32 +5,53 @@ import "base"
 
 MorphingPill {
     id: root
-    color: ActiveTheme.colors["BG"]
+    color: ActiveTheme.colors["FG"]
 
-    Row {
-        id: dots
-        spacing: 6
-        anchors.centerIn: parent
+    property int _radius: 15
 
-        Repeater {
-            model: 5
+    Component {
+        id: workspaceComponent
 
-            Rectangle {
-                id: dot
-                required property int index
+        Item {
+            id: contentRoot
+            property real horizontalPadding: 8
+            property real verticalPadding: 4
 
-                readonly property int workspaceId: index + 1
-                readonly property bool active: Hyprland.focusedWorkspace?.id === workspaceId
+            implicitWidth: row.implicitWidth + horizontalPadding * 2
+            implicitHeight: row.implicitHeight + verticalPadding * 2
 
-                width: 10
-                height: 10
-                radius: width / 2
-                color: active ? ActiveTheme.colors["ANSI_BLUE"] : ActiveTheme.colors["ANSI_RED"]
+            Row {
+                id: row
+                anchors.centerIn: parent
+                spacing: 6
 
-                Behavior on color { ColorAnimation { duration: 150 } }
+                Repeater {
+                    model: 5
+
+                    Rectangle {
+                        id: wsIndicator
+                        required property int index
+
+                        readonly property int workspaceId: index + 1
+                        readonly property bool active: Hyprland.focusedWorkspace?.id === workspaceId
+
+                        width: root._radius
+                        height: root._radius
+                        radius: width / 2
+                        color: active ? ActiveTheme.colors["ANSI_BLUE"] : ActiveTheme.colors["ANSI_RED"]
+
+                        Behavior on color { ColorAnimation { duration: 150 } }
+
+                        MouseArea {
+                            anchors.fill: parent
+                            cursorShape: Qt.PointingHandCursor
+                            onClicked: Hyprland.dispatch("hl.dsp.focus({ workspace = " + wsIndicator.workspaceId + " })")
+                        }
+                    }
+                }
             }
         }
     }
 
-    Component.onCompleted: root.content = dots
+    Component.onCompleted: root.content = workspaceComponent
 }
