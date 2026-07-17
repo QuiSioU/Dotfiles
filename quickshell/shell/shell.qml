@@ -57,6 +57,8 @@ ShellRoot {
 
 
     function closeOtherMenus(exceptLoader) {
+        if (exceptLoader !== topBarLoader)
+            topBarLoader.item.reset()
         if (exceptLoader !== systemMenuLoader && systemMenuLoader.item?.visible)
             systemMenuLoader.item.closeMenu()
         if (exceptLoader !== trayMenuLoader && trayMenuLoader.item?.visible)
@@ -118,8 +120,17 @@ ShellRoot {
 
     IpcHandler {
         target: "topbar"
-        function toggleLauncher(): void { topBarLoader.item.toggleLauncher() }
-        function lockSession(): void { topBarLoader.item.lockSession() }
-        function reset(): void { topBarLoader.item.reset() }
+        function toggleLauncher(): void {
+            root.closeOtherMenus(topBarLoader)
+            topBarLoader.item.toggleLauncher()
+        }
+        function lockSession(): void {
+            root.closeOtherMenus(topBarLoader)
+            topBarLoader.item.lockSession()
+        }
+        function reset(): void {
+            root.closeOtherMenus(topBarLoader)
+            topBarLoader.item.reset()
+        }
     }
 }
