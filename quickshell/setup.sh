@@ -1,15 +1,20 @@
 #!/bin/sh
-# quickshell/shell/setup.sh
+# quickshell/setup.sh
 
 
-flag_force=false
+set --
+flag_f=false
+flag_n=false
 while getopts "fn" opt; do
     case "$opt" in
-        f) flag_force=true ;;
-        n) ;;
-        *) echo "Usage: $0 [-f]"; exit 1 ;;
+        f) flag_f=true ;;
+        n) flag_n=true ;;
+        *) echo "Usage: $0 [-f] [-n]"; exit 1 ;;
     esac
 done
+
+[ "$flag_f" = true ] && set -- "$@" "-f"
+[ "$flag_n" = true ] && set -- "$@" "-n"
 
 echo "╔═════════════════════════════════════╗"
 echo "║ Setting up quickshell configuration ║"
@@ -18,8 +23,6 @@ echo ""
 
 CONFIG_DIR="$HOME/.config"
 ROOT_DIR=$(cd "$(dirname "$0")" && pwd)
-SHELL_DIR="$ROOT_DIR/shell"
-VESKTOP_OVERLAY_DIR="$ROOT_DIR/vesktop-overlay"
 cd "$ROOT_DIR"
 
 echo "Creating symlink in $CONFIG_DIR..."
@@ -27,7 +30,7 @@ echo "Creating symlink in $CONFIG_DIR..."
 symlink_src="${ROOT_DIR%/}"
 symlink_dst="$CONFIG_DIR/$(basename "$symlink_src")"
 
-if [ "$flag_force" = true ]; then
+if [ "$flag_f" = true ]; then
     rm -f "$symlink_dst"
 fi
 
@@ -40,77 +43,11 @@ else
     echo "    linked     $symlink_src -> $symlink_dst"
 fi
 
-echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌"
-
-echo "Building resources and dependencies..."
-
-cd "$SHELL_DIR"
-
-if [ "$flag_force" = true ]; then
-    rm -rf .build .cache
-fi
-
-cmake -B .build -G Ninja -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
-if [ $? -ne 0 ]; then
-    echo "cmake configure failed, aborting..."
-    exit 1
-fi
-
-cmake --build .build --parallel
-if [ $? -ne 0 ]; then
-    echo "cmake build failed, aborting..."
-    exit 1
-fi
-
-echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌"
-
-echo "Creating default quick apps list..."
-
-quickAppsfile="quickapps.json"
-
-if [ -L "$quickAppsfile" ]; then
-    echo "    skipped    $quickAppsfile: file already exists (symlink)"
-elif [ -e "$quickAppsfile" ]; then
-    echo "    skipped    $quickAppsfile: file already exists (not symlink)"
-else
-    cat > $quickAppsfile <<EOF
-[
-    "codium",
-    "firefox",
-    "vesktop",
-    "steam"
-]
-EOF
-    echo "    created    $quickAppsfile"
-fi
-
-echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌"
-
-echo "Creating default ignore apps' notifications list..."
-
-ignoreNotificationsFile="ignoreNotifications.json"
-
-if [ -L "$ignoreNotificationsFile" ]; then
-    echo "    skipped    $ignoreNotificationsFile: file already exists (symlink)"
-elif [ -e "$ignoreNotificationsFile" ]; then
-    echo "    skipped    $ignoreNotificationsFile: file already exists (not symlink)"
-else
-    cat > $ignoreNotificationsFile <<EOF
-[
-    "OpenRazer"
-]
-EOF
-    echo "    created    $ignoreNotificationsFile"
-fi
-
-echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌"
-
-echo "Ensuring scripts are executable..."
-
-[ -d scripts ] && chmod +x scripts/*
+for dir in "$ROOT_DIR"/*/; do
+    script="${dir}setup.sh"
+    [ -f "$script" ] && chmod +x "$script" && "$script" "$@"
+done
 
 echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌"
 
 echo "Quickshell configured successfully!"
-
-cd "$ROOT_DIR"
