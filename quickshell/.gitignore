@@ -1,0 +1,12 @@
+# quickshell/.gitignore
+
+
+*
+!.gitignore
+!setup.sh
+
+!shell
+!shell/**
+
+!vesktop-overlay
+!vesktop-overlay/**
