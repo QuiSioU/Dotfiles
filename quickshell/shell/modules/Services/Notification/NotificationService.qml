@@ -12,8 +12,29 @@ Singleton {
     id: root
 
     property list<var> notifications:   []
-    property int _seq: 0
+    property int _seq:                  0
     property bool showNotifications:    true
+    property list<string> _ignoredApps: []
+
+    // ── Apps to ignore ─────────────────────────────────────────────────────
+
+    FileView {
+        id: ignoreFile
+        path: Quickshell.shellDir + "/ignoreNotifications.json"
+        watchChanges: true
+        onFileChanged: reload()
+        onTextChanged: {
+            var text = ignoreFile.text()
+            if (text === "") return []
+            try {
+                var data = JSON.parse(text)
+                root._ignoredApps = Array.isArray(data) ? data : []
+            } catch (e) {
+                console.warn("ignoreNotifications.json: parse failed", e)
+                root._ignoredApps = []
+            }
+        }
+    }
 
     // ── JSON log ───────────────────────────────────────────────────────────
 
@@ -107,9 +128,12 @@ Singleton {
                 _notif:  notif
             });
 
-            if (root.showNotifications) {
+            // Show only if showNotifications is true and is not on IgnoreList
+            if (root.showNotifications && !root._ignoredApps.includes(notif.appName)) {
                 root.notifications = [entry, ...root.notifications];
             }
+
+            // Always log to file
             root._appendLog(notif.appName, notif.summary, notif.body);
         }
     }

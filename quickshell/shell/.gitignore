@@ -5,3 +5,4 @@
 .clangd
 .build
 quickapps.json
+ignoreNotifications.json

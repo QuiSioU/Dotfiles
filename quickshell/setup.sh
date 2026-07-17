@@ -86,6 +86,25 @@ fi
 
 echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌"
 
+echo "Creating default ignore apps' notifications list..."
+
+ignoreNotificationsFile="ignoreNotifications.json"
+
+if [ -L "$ignoreNotificationsFile" ]; then
+    echo "    skipped    $ignoreNotificationsFile: file already exists (symlink)"
+elif [ -e "$ignoreNotificationsFile" ]; then
+    echo "    skipped    $ignoreNotificationsFile: file already exists (not symlink)"
+else
+    cat > $ignoreNotificationsFile <<EOF
+[
+    "OpenRazer"
+]
+EOF
+    echo "    created    $ignoreNotificationsFile"
+fi
+
+echo "╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌"
+
 echo "Ensuring scripts are executable..."
 
 [ -d scripts ] && chmod +x scripts/*
