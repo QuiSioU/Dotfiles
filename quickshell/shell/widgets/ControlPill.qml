@@ -3,6 +3,7 @@
 
 import Quickshell
 import Quickshell.Io
+import Quickshell.Services.Pipewire
 import QtQuick
 import QtQuick.Layouts
 import ElysianShell.Services
@@ -20,6 +21,8 @@ MorphingPill {
     property var _launchModes:   []
     property var _wallpaperFiles: []
     property var _colorThemeFiles: []
+
+    property bool _sinkSeen: false
 
     color: ActiveTheme.colors["BG"]
 
@@ -93,6 +96,31 @@ MorphingPill {
         onExited: vscProcess.running = true
     }
 
+    PwObjectTracker {
+        objects: Pipewire.defaultAudioSink ? [Pipewire.defaultAudioSink] : []
+    }
+
+    Timer {
+        id: volumeOsdTimer
+        interval: 2000
+        onTriggered: if (root.pillWidget === "volume") root.pillWidget = "clock"
+    }
+
+    Connections {
+        target: Pipewire.defaultAudioSink?.audio ?? null
+
+        function onVolumeChanged() {
+            if (!root._sinkSeen) {
+                root._sinkSeen = true
+                return
+            }
+            if (root.pillWidget === "launcher" || root.pillWidget === "lock") return
+
+            root.pillWidget = "volume"
+            volumeOsdTimer.restart()
+        }
+    }
+
     // ── Possible Menus ────────────────────────────────────────────────────────
     Component {
         id: clockMenu;
@@ -108,7 +136,7 @@ MorphingPill {
             Text {
                 id: clock
                 anchors.centerIn: parent
-                color: "white"
+                color: ActiveTheme.colors["FG"]
                 font.pixelSize: 18
                 font.bold: true
                 text: Qt.formatTime(new Date(), "hh:mm")
@@ -117,6 +145,49 @@ MorphingPill {
                     running: true
                     repeat: true
                     onTriggered: clock.text = Qt.formatTime(new Date(), "hh:mm")
+                }
+            }
+        }
+    }
+    Component {
+        id: volumeOsd
+        Item {
+            id: volumeRoot
+
+            readonly property real padding: 10
+            property real iconSize: 16
+
+            implicitWidth:  volumeRow.implicitWidth  + padding * 2
+            implicitHeight: Math.max(volumeRow.implicitHeight, iconSize) + padding * 2
+
+            RowLayout {
+                id: volumeRow
+                anchors.centerIn: parent
+                spacing: 6
+
+                Image {
+                    id: volumeIcon
+                    Layout.alignment: Qt.AlignVCenter
+                    source: Quickshell.shellDir + "/assets/icons/audio-volume-high.svg"
+                    sourceSize.width:  volumeRoot.iconSize
+                    sourceSize.height: volumeRoot.iconSize
+                    width:  volumeRoot.iconSize
+                    height: volumeRoot.iconSize
+                    fillMode: Image.PreserveAspectFit
+                    smooth: true
+                }
+
+                SlideBar {
+                    id: slideBar
+                    Layout.alignment: Qt.AlignVCenter
+                    value: Pipewire.defaultAudioSink?.audio?.volume ?? 0
+                    onSetValue: (v) => {
+                        if (Pipewire.defaultAudioSink?.audio) Pipewire.defaultAudioSink.audio.volume = v
+                    }
+                    onPressedChanged: {
+                        if (pressed) volumeOsdTimer.stop()
+                        else volumeOsdTimer.restart()
+                    }
                 }
             }
         }
@@ -322,9 +393,10 @@ MorphingPill {
 
     onPillWidgetChanged: {
         switch (pillWidget) {
-            case "lock":        root.content = lockDecoy; break
-            case "launcher":    root.content = controlCenter; break
-            default:            root.content = clockMenu; break
+            case "volume":      root.content = volumeOsd;  break
+            case "lock":        root.content = lockDecoy;       break
+            case "launcher":    root.content = controlCenter;   break
+            default:            root.content = clockMenu;       break
         }
     }
     Component.onCompleted: root.content = clockMenu
@@ -348,10 +420,5 @@ MorphingPill {
             lockScreen.unlock()      // decoy still fullscreen underneath — no flash
             root.pillWidget = "clock"    // now shrink back down
         }
-    }
-
-    MouseArea {
-        anchors.fill: parent
-        cursorShape: Qt.PointingHandCursor
     }
 }

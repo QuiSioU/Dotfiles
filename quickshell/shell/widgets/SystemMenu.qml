@@ -47,11 +47,6 @@ PanelWindow {
         objects: Pipewire.defaultAudioSink ? [Pipewire.defaultAudioSink] : []
     }
 
-    // ── Audio source binding ───────────────────────────────────────────────
-    PwObjectTracker {
-        objects: Pipewire.defaultAudioSource ? [Pipewire.defaultAudioSource] : []
-    }
-
     // ── Processes ──────────────────────────────────────────────────────────
     Process {
         id: shutdownProcess

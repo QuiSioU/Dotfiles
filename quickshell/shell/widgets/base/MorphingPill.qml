@@ -6,7 +6,7 @@ import QtQuick
 Rectangle {
     id: pill
 
-    readonly property int animDuration: 250
+    readonly property int animDuration: 200
 
     property Component content: null
     readonly property alias item: loader.item
@@ -16,6 +16,8 @@ Rectangle {
     property real cornerRadius: 20
     property bool square: false
     radius: square ? 0 : cornerRadius
+
+    clip: true
 
     property bool _morphing: false
     onContentChanged: _morphing = true

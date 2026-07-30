@@ -16,7 +16,7 @@ PanelWindow {
     exclusiveZone: topbarHeight
 
     WlrLayershell.layer: WlrLayer.Top
-    WlrLayershell.keyboardFocus: controlPill.pillWidget === "clock"
+    WlrLayershell.keyboardFocus: controlPill.pillWidget === "clock" || controlPill.pillWidget === "volume"
         ? WlrKeyboardFocus.None
         : WlrKeyboardFocus.Exclusive
     WlrLayershell.namespace: "top-bar"
