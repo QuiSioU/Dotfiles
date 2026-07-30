@@ -395,9 +395,6 @@ MorphingPill {
                 radius: root.radius
                 clip: true
 
-                border.width: 2
-                border.color: ActiveTheme.colors["FG_DARK"]
-
                 ColumnLayout {
                     id: contentColumn
                     anchors.centerIn: parent

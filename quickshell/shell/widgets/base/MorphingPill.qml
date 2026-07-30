@@ -1,8 +1,10 @@
 /* quickshell/shell/widgets/base/MorphingPill.qml */
 
-import QtQuick
 
-Rectangle {
+import QtQuick
+import QtQuick.Effects
+
+Item {
     id: root
 
     readonly property int _animDuration: 200
@@ -16,9 +18,8 @@ Rectangle {
     // Non-animated shape toggle: false = pill (rounded), true = flat rectangle
     property real cornerRadius: 20
     property bool square: false
-    radius: square ? 0 : cornerRadius
-
-    clip: true
+    property var color: "#000000"
+    readonly property real radius: square ? 0 : cornerRadius 
 
     property bool _morphing: false
     property bool _loaderAActive: true
@@ -55,29 +56,52 @@ Rectangle {
     Connections { target: widthAnim;  function onRunningChanged() { root._checkFinished() } }
     Connections { target: heightAnim; function onRunningChanged() { root._checkFinished() } }
 
-    Loader {
-        id: loaderA
+    Rectangle {
+        id: background
         anchors.fill: parent
-        opacity: root._loaderAActive ? 1 : 0
-        Behavior on opacity {
-            NumberAnimation {
-                id: fadeAnimA
-                duration: root._fadeDuration
-                easing.type: root._easingType
-                onRunningChanged: if (!running && loaderA.opacity === 0) loaderA.sourceComponent = null
-            }
+        radius: root.radius
+        color: root.color
+
+        layer.enabled: true
+        layer.effect: MultiEffect {
+            shadowEnabled: true
+            shadowColor: "#80000000"
+            shadowBlur: 0.8
+            shadowHorizontalOffset: 0
+            shadowVerticalOffset: 5
+            autoPaddingEnabled: true
         }
     }
-    Loader {
-        id: loaderB
+
+    Item {
+        id: contentClip
         anchors.fill: parent
-        opacity: root._loaderAActive ? 0 : 1
-        Behavior on opacity {
-            NumberAnimation {
-                id: fadeAnimB
-                duration: root._fadeDuration
-                easing.type: root._easingType
-                onRunningChanged: if (!running && loaderB.opacity === 0) loaderB.sourceComponent = null
+        clip: true
+
+        Loader {
+            id: loaderA
+            anchors.fill: parent
+            opacity: root._loaderAActive ? 1 : 0
+            Behavior on opacity {
+                NumberAnimation {
+                    id: fadeAnimA
+                    duration: root._fadeDuration
+                    easing.type: root._easingType
+                    onRunningChanged: if (!running && loaderA.opacity === 0) loaderA.sourceComponent = null
+                }
+            }
+        }
+        Loader {
+            id: loaderB
+            anchors.fill: parent
+            opacity: root._loaderAActive ? 0 : 1
+            Behavior on opacity {
+                NumberAnimation {
+                    id: fadeAnimB
+                    duration: root._fadeDuration
+                    easing.type: root._easingType
+                    onRunningChanged: if (!running && loaderB.opacity === 0) loaderB.sourceComponent = null
+                }
             }
         }
     }
