@@ -645,34 +645,6 @@
                                  )
                             )
                         )
-                        (box :class "sliderctl"
-                             :orientation "v"
-                             :spacing 15
-                             (box :class "volume-slider"
-                                  :space-evenly false
-                                  :halign "center"
-                                  (label :text "${volume_data.icon}")
-                                  (scale :class "vol"
-                                         :value "${volume_data.volume}"
-                                         :max 101
-                                         :min 0
-                                         :round-digits 0
-                                         :onchange "eww update volume_data=\"$(./bin/set_volume -v {})\""
-                                  )
-                             )
-                             (box :class "light-slider"
-                                  :space-evenly false
-                                  :halign "center"
-                                  (label :text "")
-                                  (scale :value "${brightness_data.brightness}"
-                                         :class "lig"
-                                         :max 101
-                                         :min 1
-                                         :round-digits 0
-                                         :onchange "eww update brightness_data=\"$(./bin/set_brightness -v {})\""
-                                  )
-                             )
-                        )
                    )
               )
          )
