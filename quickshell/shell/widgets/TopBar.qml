@@ -2,7 +2,6 @@
 
 
 import Quickshell
-import Quickshell.Io
 import QtQuick
 import Quickshell.Wayland
 
@@ -16,9 +15,9 @@ PanelWindow {
     exclusiveZone: topbarHeight
 
     WlrLayershell.layer: WlrLayer.Top
-    WlrLayershell.keyboardFocus: controlPill.pillWidget === "clock" || controlPill.pillWidget === "volume"
-        ? WlrKeyboardFocus.None
-        : WlrKeyboardFocus.Exclusive
+    WlrLayershell.keyboardFocus: controlPill.pillWidget === "launcher" || controlPill.pillWidget === "lock"
+        ? WlrKeyboardFocus.Exclusive
+        : WlrKeyboardFocus.None
     WlrLayershell.namespace: "top-bar"
 
     mask: Region {

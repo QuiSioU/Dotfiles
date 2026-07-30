@@ -23,6 +23,7 @@ MorphingPill {
     property var _colorThemeFiles: []
 
     property bool _sinkSeen: false
+    property bool _brightnessSeen: false
 
     color: ActiveTheme.colors["BG"]
 
@@ -102,8 +103,14 @@ MorphingPill {
 
     Timer {
         id: volumeOsdTimer
-        interval: 1000
+        interval: 1500
         onTriggered: if (root.pillWidget === "volume") root.pillWidget = "clock"
+    }
+
+    Timer {
+        id: brightnessOsdTimer
+        interval: 1500
+        onTriggered: if (root.pillWidget === "brightness") root.pillWidget = "clock"
     }
 
     Connections {
@@ -119,6 +126,22 @@ MorphingPill {
             root.pillWidget = "volume"
             if (pillHoverHandler.hovered) volumeOsdTimer.stop()
             else volumeOsdTimer.restart()
+        }
+    }
+
+    Connections {
+        target: BrightnessService
+
+        function onBrightnessChanged() {
+            if (!root._brightnessSeen) {
+                root._brightnessSeen = true
+                return
+            }
+            if (root.pillWidget === "launcher" || root.pillWidget === "lock") return
+
+            root.pillWidget = "brightness"
+            if (pillHoverHandler.hovered) brightnessOsdTimer.stop()
+            else brightnessOsdTimer.restart()
         }
     }
 
@@ -185,6 +208,43 @@ MorphingPill {
                     onSetValue: (v) => {
                         if (Pipewire.defaultAudioSink?.audio) Pipewire.defaultAudioSink.audio.volume = v
                     }
+                }
+            }
+        }
+    }
+    Component {
+        id: brightnessOsd
+        Item {
+            id: brightnessRoot
+
+            readonly property real padding: 10
+            property real iconSize: 16
+
+            implicitWidth:  brightnessRow.implicitWidth  + padding * 2
+            implicitHeight: Math.max(brightnessRow.implicitHeight, iconSize) + padding * 2
+
+            RowLayout {
+                id: brightnessRow
+                anchors.centerIn: parent
+                spacing: 6
+
+                Image {
+                    id: brightnessIcon
+                    Layout.alignment: Qt.AlignVCenter
+                    source: Quickshell.shellDir + "/assets/icons/notification-active.svg"
+                    sourceSize.width:  brightnessRoot.iconSize
+                    sourceSize.height: brightnessRoot.iconSize
+                    width:  brightnessRoot.iconSize
+                    height: brightnessRoot.iconSize
+                    fillMode: Image.PreserveAspectFit
+                    smooth: true
+                }
+
+                SlideBar {
+                    id: slideBar
+                    Layout.alignment: Qt.AlignVCenter
+                    value: BrightnessService.value
+                    onSetValue: (v) => BrightnessService.setValue(v)
                 }
             }
         }
@@ -390,7 +450,8 @@ MorphingPill {
 
     onPillWidgetChanged: {
         switch (pillWidget) {
-            case "volume":      root.content = volumeOsd;  break
+            case "volume":      root.content = volumeOsd;       break
+            case "brightness":  root.content = brightnessOsd;   break
             case "lock":        root.content = lockDecoy;       break
             case "launcher":    root.content = controlCenter;   break
             default:            root.content = clockMenu;       break
@@ -403,9 +464,18 @@ MorphingPill {
         cursorShape: Qt.PointingHandCursor
 
         onHoveredChanged: {
-            if (root.pillWidget !== "volume") return
-            if (hovered) volumeOsdTimer.stop()
-            else volumeOsdTimer.restart()
+            switch (root.pillWidget) {
+                case "volume":
+                    if (hovered) volumeOsdTimer.stop()
+                    else volumeOsdTimer.restart()
+                    break
+                case "brightness":
+                    if (hovered) brightnessOsdTimer.stop()
+                    else brightnessOsdTimer.restart()
+                    break
+                default:
+                    break
+            }
         }
     }
 
