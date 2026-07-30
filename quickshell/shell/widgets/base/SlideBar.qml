@@ -7,6 +7,16 @@ import ElysianShell.Themes
 Item {
     id: root
     property real value: 0.5
+    property real minValue: 0
+    property real maxValue: 1
+
+    readonly property real progress: {
+        let range = maxValue - minValue
+        if (range <= 0) return 0
+        let norm = (value - minValue) / range
+        return Math.max(0, Math.min(1, norm))
+    }
+
     property bool pressed: mouseArea.pressed
     property bool growHorizontal: true
 
@@ -36,8 +46,8 @@ Item {
         anchors.bottom: parent.bottom
 
         radius: width > height ? height / 2 : width / 2
-        width:  root.growHorizontal ? track.width * root.value : parent.width
-        height: root.growHorizontal ? parent.height : track.height * root.value
+        width:  root.growHorizontal ? track.width * root.progress : parent.width
+        height: root.growHorizontal ? parent.height : track.height * root.progress
         color: ActiveTheme.colors["FG"]
 
         Behavior on width {
@@ -57,21 +67,29 @@ Item {
         preventStealing: true
 
         function updateValue(mouse) {
-            let v = root.growHorizontal
+            let fraction = root.growHorizontal
                 ? mouse.x / root.width
                 : 1 - (mouse.y / root.height)
-            root.value = Math.max(0, Math.min(1, v))
-            root.setValue(root.value)
+            
+            // Clamp fraction between 0 and 1
+            fraction = Math.max(0, Math.min(1, fraction))
+
+            // Map fraction back to range [minValue, maxValue]
+            let computedValue = root.minValue + fraction * (root.maxValue - root.minValue)
+            
+            root.value = computedValue
+            root.setValue(computedValue)
         }
 
         onPressed: (mouse) => updateValue(mouse)
-        onPositionChanged: (mouse) => {
-            if (pressed) updateValue(mouse)
-        }
+        onPositionChanged: (mouse) => { if (pressed) updateValue(mouse) }
         onWheel: (wheel) => {
-            let delta = wheel.angleDelta.y > 0 ? 0.02 : -0.02
-            root.value = Math.max(0, Math.min(1, root.value + delta))
-            root.setValue(root.value)
+            let step = (root.maxValue - root.minValue) * 0.02
+            let delta = wheel.angleDelta.y > 0 ? step : -step
+
+            let newValue = Math.max(root.minValue, Math.min(root.maxValue, root.value + delta))
+            root.value = newValue
+            root.setValue(newValue)
         }
     }
 }

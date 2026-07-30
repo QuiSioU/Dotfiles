@@ -192,7 +192,9 @@ MorphingPill {
                 Image {
                     id: volumeIcon
                     Layout.alignment: Qt.AlignVCenter
-                    source: Quickshell.shellDir + "/assets/icons/audio-volume-high.svg"
+                    source: (Pipewire.defaultAudioSink?.audio?.muted ?? false)
+                                ? Quickshell.shellDir + "/assets/icons/audio-volume-muted.svg"
+                                : Quickshell.shellDir + "/assets/icons/audio-volume-high.svg"
                     sourceSize.width:  volumeRoot.iconSize
                     sourceSize.height: volumeRoot.iconSize
                     width:  volumeRoot.iconSize
@@ -205,6 +207,8 @@ MorphingPill {
                     id: slideBar
                     Layout.alignment: Qt.AlignVCenter
                     value: Pipewire.defaultAudioSink?.audio?.volume ?? 0
+                    minValue: 0
+                    maxValue: 1
                     onSetValue: (v) => {
                         if (Pipewire.defaultAudioSink?.audio) Pipewire.defaultAudioSink.audio.volume = v
                     }
@@ -231,7 +235,7 @@ MorphingPill {
                 Image {
                     id: brightnessIcon
                     Layout.alignment: Qt.AlignVCenter
-                    source: Quickshell.shellDir + "/assets/icons/notification-active.svg"
+                    source: Quickshell.shellDir + "/assets/icons/brightness.svg"
                     sourceSize.width:  brightnessRoot.iconSize
                     sourceSize.height: brightnessRoot.iconSize
                     width:  brightnessRoot.iconSize
@@ -244,6 +248,8 @@ MorphingPill {
                     id: slideBar
                     Layout.alignment: Qt.AlignVCenter
                     value: BrightnessService.value
+                    minValue: 0.02  // This matches window manager's keybind min limit
+                    maxValue: 1
                     onSetValue: (v) => BrightnessService.setValue(v)
                 }
             }
