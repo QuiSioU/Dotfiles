@@ -14,7 +14,7 @@ PanelWindow {
     exclusionMode: ExclusionMode.Normal
     exclusiveZone: topbarHeight
 
-    WlrLayershell.layer: WlrLayer.Top
+    WlrLayershell.layer: controlPill.pillWidget !== "clock" ? WlrLayer.Overlay : WlrLayer.Top
     WlrLayershell.keyboardFocus: controlPill.pillWidget === "launcher" || controlPill.pillWidget === "lock"
         ? WlrKeyboardFocus.Exclusive
         : WlrKeyboardFocus.None
