@@ -102,7 +102,7 @@ MorphingPill {
 
     Timer {
         id: volumeOsdTimer
-        interval: 2000
+        interval: 1000
         onTriggered: if (root.pillWidget === "volume") root.pillWidget = "clock"
     }
 
@@ -117,7 +117,8 @@ MorphingPill {
             if (root.pillWidget === "launcher" || root.pillWidget === "lock") return
 
             root.pillWidget = "volume"
-            volumeOsdTimer.restart()
+            if (pillHoverHandler.hovered) volumeOsdTimer.stop()
+            else volumeOsdTimer.restart()
         }
     }
 
@@ -183,10 +184,6 @@ MorphingPill {
                     value: Pipewire.defaultAudioSink?.audio?.volume ?? 0
                     onSetValue: (v) => {
                         if (Pipewire.defaultAudioSink?.audio) Pipewire.defaultAudioSink.audio.volume = v
-                    }
-                    onPressedChanged: {
-                        if (pressed) volumeOsdTimer.stop()
-                        else volumeOsdTimer.restart()
                     }
                 }
             }
@@ -400,6 +397,17 @@ MorphingPill {
         }
     }
     Component.onCompleted: root.content = clockMenu
+
+    HoverHandler {
+        id: pillHoverHandler
+        cursorShape: Qt.PointingHandCursor
+
+        onHoveredChanged: {
+            if (root.pillWidget !== "volume") return
+            if (hovered) volumeOsdTimer.stop()
+            else volumeOsdTimer.restart()
+        }
+    }
 
     // ── Morph handoff ────────────────────────────────────────────────────
     Connections {

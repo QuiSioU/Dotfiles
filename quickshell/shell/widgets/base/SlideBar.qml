@@ -68,5 +68,10 @@ Item {
         onPositionChanged: (mouse) => {
             if (pressed) updateValue(mouse)
         }
+        onWheel: (wheel) => {
+            let delta = wheel.angleDelta.y > 0 ? 0.02 : -0.02
+            root.value = Math.max(0, Math.min(1, root.value + delta))
+            root.setValue(root.value)
+        }
     }
 }
