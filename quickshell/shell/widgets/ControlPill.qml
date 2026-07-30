@@ -3,7 +3,6 @@
 
 import Quickshell
 import Quickshell.Io
-import Quickshell.Services.Pipewire
 import QtQuick
 import QtQuick.Layouts
 import ElysianShell.Services
@@ -22,8 +21,7 @@ MorphingPill {
     property var _wallpaperFiles: []
     property var _colorThemeFiles: []
 
-    property bool _sinkSeen: false
-    property bool _brightnessSeen: false
+    readonly property int _sliderHideTimer: 1000
 
     color: ActiveTheme.colors["BG"]
 
@@ -97,30 +95,22 @@ MorphingPill {
         onExited: vscProcess.running = true
     }
 
-    PwObjectTracker {
-        objects: Pipewire.defaultAudioSink ? [Pipewire.defaultAudioSink] : []
-    }
-
     Timer {
         id: volumeOsdTimer
-        interval: 1500
+        interval: root._sliderHideTimer
         onTriggered: if (root.pillWidget === "volume") root.pillWidget = "clock"
     }
 
     Timer {
         id: brightnessOsdTimer
-        interval: 1500
+        interval: root._sliderHideTimer
         onTriggered: if (root.pillWidget === "brightness") root.pillWidget = "clock"
     }
 
     Connections {
-        target: Pipewire.defaultAudioSink?.audio ?? null
+        target: VolumeService
 
-        function onVolumeChanged() {
-            if (!root._sinkSeen) {
-                root._sinkSeen = true
-                return
-            }
+        function onOsdRequested() {
             if (root.pillWidget === "launcher" || root.pillWidget === "lock") return
 
             root.pillWidget = "volume"
@@ -133,10 +123,6 @@ MorphingPill {
         target: BrightnessService
 
         function onBrightnessChanged() {
-            if (!root._brightnessSeen) {
-                root._brightnessSeen = true
-                return
-            }
             if (root.pillWidget === "launcher" || root.pillWidget === "lock") return
 
             root.pillWidget = "brightness"
@@ -192,7 +178,7 @@ MorphingPill {
                 Image {
                     id: volumeIcon
                     Layout.alignment: Qt.AlignVCenter
-                    source: (Pipewire.defaultAudioSink?.audio?.muted ?? false)
+                    source: VolumeService.muted
                                 ? Quickshell.shellDir + "/assets/icons/audio-volume-muted.svg"
                                 : Quickshell.shellDir + "/assets/icons/audio-volume-high.svg"
                     sourceSize.width:  volumeRoot.iconSize
@@ -206,12 +192,10 @@ MorphingPill {
                 SlideBar {
                     id: slideBar
                     Layout.alignment: Qt.AlignVCenter
-                    value: Pipewire.defaultAudioSink?.audio?.volume ?? 0
+                    value: VolumeService.volume
                     minValue: 0
                     maxValue: 1
-                    onSetValue: (v) => {
-                        if (Pipewire.defaultAudioSink?.audio) Pipewire.defaultAudioSink.audio.volume = v
-                    }
+                    onSetValue: (v) => VolumeService.setVolume(v)
                 }
             }
         }

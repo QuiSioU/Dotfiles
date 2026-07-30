@@ -14,6 +14,7 @@ Singleton {
     property int maxBrightness: 1
     property real value: 0
     property bool _internalWrite: false
+    property bool _seen: false
 
     signal brightnessChanged()
 
@@ -70,6 +71,12 @@ Singleton {
 
         const wasInternal = root._internalWrite
         root._internalWrite = false
+
+        if (!root._seen) {
+            root._seen = true
+            root.value = v
+            return   // first load ever — establish baseline, no signal
+        }
 
         if (Math.abs(v - root.value) < 0.001) return
         root.value = v

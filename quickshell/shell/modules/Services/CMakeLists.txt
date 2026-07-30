@@ -13,6 +13,7 @@ add_subdirectory(Brightness)
 add_subdirectory(Lock)
 add_subdirectory(Network)
 add_subdirectory(Notification)
+add_subdirectory(Volume)
 
 target_link_libraries(elysianshell-services PRIVATE
     Qt6::Core

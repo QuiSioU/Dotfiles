@@ -6,7 +6,6 @@ import Quickshell
 import Quickshell.Io
 import Quickshell.Wayland
 import Quickshell.Bluetooth
-import Quickshell.Services.Pipewire
 import ElysianShell.Services
 import "base"
 
@@ -41,11 +40,6 @@ PanelWindow {
     WlrLayershell.keyboardFocus: visible ? WlrKeyboardFocus.Exclusive : WlrKeyboardFocus.None
     WlrLayershell.namespace: "system-menu"
     exclusionMode: ExclusionMode.Ignore
-
-    // ── Audio sink binding ─────────────────────────────────────────────────
-    PwObjectTracker {
-        objects: Pipewire.defaultAudioSink ? [Pipewire.defaultAudioSink] : []
-    }
 
     // ── Processes ──────────────────────────────────────────────────────────
     Process {
@@ -96,8 +90,8 @@ PanelWindow {
             
                     // Sound
                     QtObject {
-                        readonly property bool  muted:  Pipewire.defaultAudioSink?.audio?.muted  ?? false
-                        readonly property real  volume: Pipewire.defaultAudioSink?.audio?.volume ?? 0
+                        readonly property bool  muted:  VolumeService.muted
+                        readonly property real  volume: VolumeService.volume
                         readonly property int   pct:    Math.round(volume * 100)
 
                         property string name:     "Sound"
@@ -108,10 +102,7 @@ PanelWindow {
                         property string comment:  muted ? "Muted" : pct + "%"
                         property bool selected: !muted
                         property bool stateful: true
-                        property var leftAction:   function() {
-                            if (Pipewire.defaultAudioSink?.audio)
-                                Pipewire.defaultAudioSink.audio.muted = !muted
-                        }
+                        property var leftAction:   function() { VolumeService.toggleMute() }
                     },
 
                     // Bluetooth
