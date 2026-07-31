@@ -10,32 +10,50 @@ import QtQuick
 Singleton {
     id: root
 
-    // The sink itself, for anything that needs more than volume/muted
     readonly property var sink: Pipewire.defaultAudioSink
-
-    // Live, reactive state — no manual sync needed, Pipewire keeps these current
     readonly property real volume: sink?.audio?.volume ?? 0
     readonly property bool muted:  sink?.audio?.muted  ?? false
 
-    property bool _seen: false
+    property bool _settled: false
 
-    // Fired only on genuine external/user changes, never on first attach —
-    // this is what ControlPill uses to decide whether to pop the OSD
     signal osdRequested()
 
-    // Keeps the sink's audio node alive/tracked, same role it played in ControlPill
     PwObjectTracker { objects: root.sink ? [root.sink] : [] }
+
+    // Re-arm the guard whenever the sink itself changes (startup, device
+    // swap) — Pipewire.ready only means "initial sync is done", the sink's
+    // own node can still renegotiate volume/mute shortly after that.
+    onSinkChanged: {
+        root._settled = false
+        settleTimer.restart()
+    }
+
+    Connections {
+        target: Pipewire
+        function onReadyChanged() {
+            if (Pipewire.ready) {
+                root._settled = false
+                settleTimer.restart()
+            }
+        }
+    }
+
+    Timer {
+        id: settleTimer
+        interval: 250
+        onTriggered: root._settled = true
+    }
 
     Connections {
         target: root.sink?.audio ?? null
 
         function onVolumeChanged() {
-            if (!root._seen) { root._seen = true; return }
+            if (!Pipewire.ready || !root._settled) return
             root.osdRequested()
         }
 
         function onMutedChanged() {
-            if (!root._seen) return
+            if (!Pipewire.ready || !root._settled) return
             root.osdRequested()
         }
     }

@@ -21,7 +21,7 @@ ShellRoot {
         onItemChanged: {
             if (item) {
                 item.menuClosed.connect(() => systemMenuLoader.active = false)
-                item.lockRequested.connect(() => { topBarLoader.item.lockSession() })
+                item.lockRequested.connect(() => { controlMenuLoader.item.lockSession() })
             }
         }
     }
@@ -50,15 +50,15 @@ ShellRoot {
     }
 
     Loader {
-        id: topBarLoader
+        id: controlMenuLoader
         active: true
-        source: "widgets/TopBar.qml"
+        source: "widgets/ControlMenu.qml"
     }
 
 
     function closeOtherMenus(exceptLoader) {
-        if (exceptLoader !== topBarLoader)
-            topBarLoader.item.reset()
+        if (exceptLoader !== controlMenuLoader)
+            controlMenuLoader.item.reset()
         if (exceptLoader !== systemMenuLoader && systemMenuLoader.item?.visible)
             systemMenuLoader.item.closeMenu()
         if (exceptLoader !== trayMenuLoader && trayMenuLoader.item?.visible)
@@ -119,18 +119,18 @@ ShellRoot {
     }
 
     IpcHandler {
-        target: "topbar"
+        target: "controlMenu"
         function toggleLauncher(): void {
-            root.closeOtherMenus(topBarLoader)
-            topBarLoader.item.toggleLauncher()
+            root.closeOtherMenus(controlMenuLoader)
+            controlMenuLoader.item.toggleLauncher()
         }
         function lockSession(): void {
-            root.closeOtherMenus(topBarLoader)
-            topBarLoader.item.lockSession()
+            root.closeOtherMenus(controlMenuLoader)
+            controlMenuLoader.item.lockSession()
         }
         function reset(): void {
-            root.closeOtherMenus(topBarLoader)
-            topBarLoader.item.reset()
+            root.closeOtherMenus(controlMenuLoader)
+            controlMenuLoader.item.reset()
         }
     }
 }
