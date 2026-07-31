@@ -17,7 +17,7 @@ PanelWindow {
     implicitWidth: screen.width
     implicitHeight: screen.height
     exclusionMode: ExclusionMode.Normal
-    exclusiveZone: topbarHeight
+    exclusiveZone: topbarHeight - 15
 
     WlrLayershell.layer: controlPill.pillWidget !== "clock" ? WlrLayer.Overlay : WlrLayer.Top
     WlrLayershell.keyboardFocus: controlPill.pillWidget === "launcher" || controlPill.pillWidget === "lock"
@@ -33,7 +33,7 @@ PanelWindow {
     focusable: true
 
     // ── Content ───────────────────────────────────────────────────────────────
-    MorphingPill {
+    MorphingContainer {
         id: controlPill
 
         property var targetScreen: null
@@ -50,7 +50,6 @@ PanelWindow {
         anchors {
             top: parent.top
             horizontalCenter: parent.horizontalCenter
-            topMargin: (panwin.topbarHeight - controlPill.clockHeight) / 2
         }
         color: ActiveTheme.colors["BG"]
         cornerRadius: panwin.topbarHeight / 2
@@ -185,7 +184,7 @@ PanelWindow {
             Item {
                 id: clockcontrolPill
 
-                property real horizontalPadding: 10
+                property real horizontalPadding: 40
                 property real verticalPadding: 4
 
                 implicitWidth: clock.implicitWidth + horizontalPadding * 2
@@ -195,7 +194,7 @@ PanelWindow {
                     id: clock
                     anchors.centerIn: parent
                     color: ActiveTheme.colors["FG"]
-                    font.pixelSize: 18
+                    font.pixelSize: 16
                     font.bold: true
                     text: Qt.formatTime(new Date(), "hh:mm")
                     Timer {
@@ -212,20 +211,21 @@ PanelWindow {
             Item {
                 id: volumecontrolPill
 
-                readonly property real padding: 10
+                readonly property real horizontalPadding: 14
+                readonly property real verticalPadding: 7
                 property real iconSize: 16
 
-                implicitWidth:  volumeRow.implicitWidth  + padding * 2
-                implicitHeight: Math.max(volumeRow.implicitHeight, iconSize) + padding * 2
+                implicitWidth:  volumeRow.implicitWidth  + horizontalPadding * 2
+                implicitHeight: Math.max(volumeRow.implicitHeight, iconSize) + verticalPadding * 2
 
-                RowLayout {
+                Row {
                     id: volumeRow
                     anchors.centerIn: parent
                     spacing: 6
 
                     Image {
                         id: volumeIcon
-                        Layout.alignment: Qt.AlignVCenter
+                        anchors.verticalCenter: parent.verticalCenter
                         source: VolumeService.muted
                                     ? Quickshell.shellDir + "/assets/icons/audio-volume-muted.svg"
                                     : Quickshell.shellDir + "/assets/icons/audio-volume-high.svg"
@@ -239,7 +239,7 @@ PanelWindow {
 
                     SlideBar {
                         id: slideBar
-                        Layout.alignment: Qt.AlignVCenter
+                        anchors.verticalCenter: parent.verticalCenter
                         value: VolumeService.volume
                         minValue: 0
                         maxValue: 1
@@ -259,14 +259,14 @@ PanelWindow {
                 implicitWidth:  brightnessRow.implicitWidth  + padding * 2
                 implicitHeight: Math.max(brightnessRow.implicitHeight, iconSize) + padding * 2
 
-                RowLayout {
+                Row {
                     id: brightnessRow
                     anchors.centerIn: parent
                     spacing: 6
 
                     Image {
                         id: brightnessIcon
-                        Layout.alignment: Qt.AlignVCenter
+                        anchors.verticalCenter: parent.verticalCenter
                         source: Quickshell.shellDir + "/assets/icons/brightness.svg"
                         sourceSize.width:  brightnesscontrolPill.iconSize
                         sourceSize.height: brightnesscontrolPill.iconSize
@@ -278,7 +278,7 @@ PanelWindow {
 
                     SlideBar {
                         id: slideBar
-                        Layout.alignment: Qt.AlignVCenter
+                        anchors.verticalCenter: parent.verticalCenter
                         value: BrightnessService.value
                         minValue: 0.02  // This matches window manager's keybind min limit
                         maxValue: 1
@@ -478,7 +478,7 @@ PanelWindow {
 
             Item {
                 id: contentControlPill
-                property real horizontalPadding: 8
+                property real horizontalPadding: 20
                 property real verticalPadding: 7
 
                 readonly property int _radius: 15

@@ -3,7 +3,7 @@
 
 LockScreen 1.0 LockScreen.qml
 LockVisual 1.0 LockVisual.qml
-MorphingPill 1.0 MorphingPill.qml
+MorphingContainer 1.0 MorphingContainer.qml
 NotificationCard 1.0 NotificationCard.qml
 OrbitMenu 1.0 OrbitMenu.qml
 ResultView 1.0 ResultView.qml
