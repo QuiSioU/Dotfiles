@@ -2,10 +2,9 @@
 ### Dotfiles
 - Make connections and system topbar part.
 - Replace EWW's user menu with hardware usage (by adding stuff to main pill in topbar).
-- Fix visual bugs in launcher and carousel display.
+- Make changing between launcher and carousel not move the searchbar.
 - Make MainPill size consistent vertically between modes.
-- Edit morphing pill to transition between modes more smoothly.
-- Fix visual bugs in workspace pill.
+- Try to make workspace indicators when more than 5 not clip too much.
 - Fix slidebar widget not reaching min and max limits completely.
 - Clean up code related to relative paths and stuff.
 - Improve lock screen visuals.
