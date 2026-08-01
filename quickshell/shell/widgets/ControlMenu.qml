@@ -20,9 +20,11 @@ PanelWindow {
     exclusiveZone: topbarHeight - 15
 
     WlrLayershell.layer: controlPill.pillWidget !== "default" ? WlrLayer.Overlay : WlrLayer.Top
-    WlrLayershell.keyboardFocus: controlPill.pillWidget === "launcher" || controlPill.pillWidget === "lock"
-        ? WlrKeyboardFocus.Exclusive
-        : WlrKeyboardFocus.None
+    WlrLayershell.keyboardFocus: controlPill.pillWidget === "launcher"
+        || controlPill.pillWidget === "session"
+        || controlPill.pillWidget === "lock"
+            ? WlrKeyboardFocus.Exclusive
+            : WlrKeyboardFocus.None
     WlrLayershell.namespace: "top-bar"
 
     mask: Region { item: controlPill }
@@ -540,12 +542,23 @@ PanelWindow {
             Item {
                 id: sessionMenu
                 property real padding: 10
+                property int currentIndex: 0
 
                 readonly property int _radius: 15
                 readonly property int _animDuration: 100
 
                 implicitWidth: sessionRow.implicitWidth + padding * 2
                 implicitHeight: sessionRow.implicitHeight + padding * 2
+
+                Component.onCompleted: {
+                    sessionMenu.currentIndex = 0
+                    Qt.callLater(sessionMenu.forceActiveFocus)
+                }
+
+                Keys.onLeftPressed:  sessionMenu.currentIndex = Math.max(sessionMenu.currentIndex - 1, 0)
+                Keys.onRightPressed: sessionMenu.currentIndex = Math.min(sessionMenu.currentIndex + 1, sessionRow.sessionActions.length - 1)
+                Keys.onReturnPressed: sessionRow.sessionActions[sessionMenu.currentIndex].action()
+                Keys.onEscapePressed: controlPill.reset()
 
                 Row {
                     id: sessionRow
@@ -584,11 +597,20 @@ PanelWindow {
                         delegate: Rectangle {
                             id: btn
                             required property var modelData
+                            required property int index
+
+                            readonly property bool isCurrent: index === sessionMenu.currentIndex
 
                             width: 64
                             height: 64
                             radius: controlPill.cornerRadius - sessionMenu.padding
-                            color: mouseArea.containsMouse ? "#3a3a3a" : "#2a2a2a"
+                            color: isCurrent ? ActiveTheme.colors["BG_STRIPE"]
+                                : mouseArea.containsMouse ? "#3a3a3a" : "#2a2a2a"
+                            border.width: isCurrent ? 2 : 0
+                            border.color: ActiveTheme.colors["ACCENT_DIM"]
+
+                            Behavior on color { ColorAnimation { duration: sessionMenu._animDuration } }
+                            Behavior on border.width { NumberAnimation { duration: sessionMenu._animDuration } }
 
                             Column {
                                 anchors.centerIn: parent
@@ -596,23 +618,24 @@ PanelWindow {
 
                                 Image {
                                     source: Quickshell.shellDir + "/assets/icons/" + btn.modelData.icon
-                                    width: 24
-                                    height: 24
+                                    width: 36
+                                    height: 36
                                     anchors.horizontalCenter: parent.horizontalCenter
                                 }
 
-                                Text {
-                                    text: btn.modelData.title
-                                    color: "white"
-                                    font.pixelSize: 10
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                }
+                                // Text {
+                                //     text: btn.modelData.title
+                                //     color: "white"
+                                //     font.pixelSize: 15
+                                //     anchors.horizontalCenter: parent.horizontalCenter
+                                // }
                             }
 
                             MouseArea {
                                 id: mouseArea
                                 anchors.fill: parent
                                 hoverEnabled: true
+                                onEntered: sessionMenu.currentIndex = btn.index
                                 onClicked: btn.modelData.action()
                             }
                         }

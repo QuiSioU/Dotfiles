@@ -41,28 +41,6 @@ PanelWindow {
     WlrLayershell.namespace: "system-menu"
     exclusionMode: ExclusionMode.Ignore
 
-    // ── Processes ──────────────────────────────────────────────────────────
-    Process {
-        id: shutdownProcess
-        command: ["systemctl", "poweroff"]
-        running: false
-    }
-
-    Process {
-        id: rebootProcess
-        command: ["systemctl", "reboot"]
-        running: false
-    }
-
-    Process {
-        id: logoutProcess
-        command: [
-            "bash", "-c",
-            "loginctl terminate-session $(loginctl session-status | head -1 | awk '{print $1}')"
-        ]
-        running: false
-    }
-
     // ── Menu ───────────────────────────────────────────────────────────────
     OrbitMenu {
         id: orbitMenu
@@ -78,16 +56,6 @@ PanelWindow {
             QtObject {
                 property list<QtObject> entries: [
 
-                    // Switch to session bubbles
-                    QtObject {
-                        property string name:       "Session"
-                        property string icon:       Qt.resolvedUrl("../assets/images/color-palette.svg")
-                        property string comment:    "Switch to session options"
-                        property bool selected:   true
-                        property bool stateful:   false
-                        property var leftAction:     () => orbitMenu.switchSet(1)
-                    },
-            
                     // Sound
                     QtObject {
                         readonly property bool  muted:  VolumeService.muted
@@ -190,60 +158,6 @@ PanelWindow {
                         property var leftAction:   function() {
                             NotificationService.showNotifications = !NotificationService.showNotifications
                         }
-                    }
-                ]
-            },
-            QtObject {
-                property list<QtObject> entries: [
-
-                    // Switch to system bubbles
-                    QtObject {
-                        property string name:       "System"
-                        property string icon:       Qt.resolvedUrl("../assets/images/color-palette.svg")
-                        property string comment:    "Switch to system options"
-                        property bool selected:   true
-                        property bool stateful:   false
-                        property var leftAction:     () => orbitMenu.switchSet(0)
-                    },
-
-                    // Shutdown
-                    QtObject {
-                        property string name:       "Shutdown"
-                        property string icon:       Qt.resolvedUrl("../assets/icons/system-shutdown.svg")
-                        property string comment:    "Shutdown computer"
-                        property bool selected:   true
-                        property bool stateful:   false
-                        property var leftAction:     () => shutdownProcess.running = true
-                    },
-
-                    // Reboot
-                    QtObject {
-                        property string name:       "Reboot"
-                        property string icon:       Qt.resolvedUrl("../assets/icons/system-reboot.svg")
-                        property string comment:    "Reboot computer"
-                        property bool selected:   true
-                        property bool stateful:   false
-                        property var leftAction:     () => rebootProcess.running = true
-                    },
-
-                    // Logout
-                    QtObject {
-                        property string name:       "Logout"
-                        property string icon:       Qt.resolvedUrl("../assets/icons/system-log-out.svg")
-                        property string comment:    "Logout from current session"
-                        property bool selected:   true
-                        property bool stateful:   false
-                        property var leftAction:     () => logoutProcess.running = true
-                    },
-
-                    // Lock
-                    QtObject {
-                        property string name:       "Lock"
-                        property string icon:       Qt.resolvedUrl("../assets/icons/object-locked.svg")
-                        property string comment:    "Lock current session"
-                        property bool selected:     true
-                        property bool stateful:     false
-                        property var leftAction:    () => root.lockRequested()
                     }
                 ]
             }
