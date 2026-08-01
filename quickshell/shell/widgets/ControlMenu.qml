@@ -19,7 +19,7 @@ PanelWindow {
     exclusionMode: ExclusionMode.Normal
     exclusiveZone: topbarHeight - 15
 
-    WlrLayershell.layer: controlPill.pillWidget !== "clock" ? WlrLayer.Overlay : WlrLayer.Top
+    WlrLayershell.layer: controlPill.pillWidget !== "default" ? WlrLayer.Overlay : WlrLayer.Top
     WlrLayershell.keyboardFocus: controlPill.pillWidget === "launcher" || controlPill.pillWidget === "lock"
         ? WlrKeyboardFocus.Exclusive
         : WlrKeyboardFocus.None
@@ -37,7 +37,7 @@ PanelWindow {
         id: controlPill
 
         property var targetScreen: null
-        property string pillWidget: "clock"
+        property string pillWidget: "default"
         property real clockHeight: 0
 
         property var _entries: []
@@ -55,9 +55,10 @@ PanelWindow {
         cornerRadius: panwin.topbarHeight / 2
 
         // ── Public API ────────────────────────────────────────────────────────────
-        function toggleLauncher(): void { pillWidget = pillWidget === "launcher" ? "clock" : "launcher" }
+        function toggleLauncher(): void { pillWidget = pillWidget === "launcher" ? "default" : "launcher" }
+        function toggleSessionMenu(): void { pillWidget = pillWidget === "session" ? "default" : "session" }
         function lockSession(): void { pillWidget = "lock" }
-        function reset(): void { pillWidget = "clock" }
+        function reset(): void { pillWidget = "default" }
 
         // ── Processes ─────────────────────────────────────────────────────────────
         Process {
@@ -127,19 +128,19 @@ PanelWindow {
         Timer {
             id: volumeOsdTimer
             interval: controlPill._menuHideTimer
-            onTriggered: if (controlPill.pillWidget === "volume") controlPill.pillWidget = "clock"
+            onTriggered: if (controlPill.pillWidget === "volume") controlPill.pillWidget = "default"
         }
 
         Timer {
             id: brightnessOsdTimer
             interval: controlPill._menuHideTimer
-            onTriggered: if (controlPill.pillWidget === "brightness") controlPill.pillWidget = "clock"
+            onTriggered: if (controlPill.pillWidget === "brightness") controlPill.pillWidget = "default"
         }
 
         Timer {
             id: workspaceTimer
             interval: controlPill._menuHideTimer
-            onTriggered: if (controlPill.pillWidget === "workspace") controlPill.pillWidget = "clock"
+            onTriggered: if (controlPill.pillWidget === "workspace") controlPill.pillWidget = "default"
         }
 
         Connections {
@@ -180,10 +181,8 @@ PanelWindow {
 
         // ── Possible Menus ────────────────────────────────────────────────────────
         Component {
-            id: clockMenu;
+            id: defaultMenuComponent;
             Item {
-                id: clockcontrolPill
-
                 property real horizontalPadding: 40
                 property real verticalPadding: 4
 
@@ -207,9 +206,9 @@ PanelWindow {
             }
         }
         Component {
-            id: volumeOsd
+            id: volumeOsdComponent
             Item {
-                id: volumecontrolPill
+                id: volumeOsd
 
                 readonly property real horizontalPadding: 14
                 readonly property real verticalPadding: 7
@@ -229,10 +228,10 @@ PanelWindow {
                         source: VolumeService.muted
                                     ? Quickshell.shellDir + "/assets/icons/audio-volume-muted.svg"
                                     : Quickshell.shellDir + "/assets/icons/audio-volume-high.svg"
-                        sourceSize.width:  volumecontrolPill.iconSize
-                        sourceSize.height: volumecontrolPill.iconSize
-                        width:  volumecontrolPill.iconSize
-                        height: volumecontrolPill.iconSize
+                        sourceSize.width:  volumeOsd.iconSize
+                        sourceSize.height: volumeOsd.iconSize
+                        width:  volumeOsd.iconSize
+                        height: volumeOsd.iconSize
                         fillMode: Image.PreserveAspectFit
                         smooth: true
                     }
@@ -249,15 +248,16 @@ PanelWindow {
             }
         }
         Component {
-            id: brightnessOsd
+            id: brightnessOsdComponent
             Item {
-                id: brightnesscontrolPill
+                id: brightnessOsd
 
-                readonly property real padding: 10
+                readonly property real horizontalPadding: 14
+                readonly property real verticalPadding: 7
                 property real iconSize: 16
 
-                implicitWidth:  brightnessRow.implicitWidth  + padding * 2
-                implicitHeight: Math.max(brightnessRow.implicitHeight, iconSize) + padding * 2
+                implicitWidth:  brightnessRow.implicitWidth  + horizontalPadding * 2
+                implicitHeight: Math.max(brightnessRow.implicitHeight, iconSize) + verticalPadding * 2
 
                 Row {
                     id: brightnessRow
@@ -268,10 +268,10 @@ PanelWindow {
                         id: brightnessIcon
                         anchors.verticalCenter: parent.verticalCenter
                         source: Quickshell.shellDir + "/assets/icons/brightness.svg"
-                        sourceSize.width:  brightnesscontrolPill.iconSize
-                        sourceSize.height: brightnesscontrolPill.iconSize
-                        width:  brightnesscontrolPill.iconSize
-                        height: brightnesscontrolPill.iconSize
+                        sourceSize.width:  brightnessOsd.iconSize
+                        sourceSize.height: brightnessOsd.iconSize
+                        width:  brightnessOsd.iconSize
+                        height: brightnessOsd.iconSize
                         fillMode: Image.PreserveAspectFit
                         smooth: true
                     }
@@ -319,7 +319,7 @@ PanelWindow {
                     function onExited() { searchBar.refresh() }
                 }
 
-                function close() { controlPill.pillWidget = "clock" }
+                function close() { controlPill.pillWidget = "default" }
 
                 // ── App entries ───────────────────────────────────────────────────────────
                 function rebuildEntries() {
@@ -474,10 +474,9 @@ PanelWindow {
             }
         }
         Component {
-            id: workspaces
-
+            id: workspaceOsdComponent
             Item {
-                id: contentControlPill
+                id: workspaceOsd
                 property real horizontalPadding: 20
                 property real verticalPadding: 7
 
@@ -505,8 +504,8 @@ PanelWindow {
 
                             visible: modelData.visible
 
-                            width: active ? contentControlPill._radius * 3 : contentControlPill._radius
-                            height: contentControlPill._radius
+                            width: active ? workspaceOsd._radius * 3 : workspaceOsd._radius
+                            height: workspaceOsd._radius
                             radius: height / 2
                             color: WorkspaceService.colorFor(active, exists)
 
@@ -515,10 +514,10 @@ PanelWindow {
                                 color: ActiveTheme.colors["FG"]
                             }
 
-                            Behavior on color { ColorAnimation { duration: contentControlPill._animDuration } }
+                            Behavior on color { ColorAnimation { duration: workspaceOsd._animDuration } }
 
                             Behavior on width { NumberAnimation {
-                                duration: contentControlPill._animDuration
+                                duration: workspaceOsd._animDuration
                                 easing.type: Easing.InOutCubic
                             }}
 
@@ -537,7 +536,92 @@ PanelWindow {
             }
         }
         Component {
-            id: lockDecoy
+            id: sessionMenuComponent;
+            Item {
+                id: sessionMenu
+                property real padding: 10
+
+                readonly property int _radius: 15
+                readonly property int _animDuration: 100
+
+                implicitWidth: sessionRow.implicitWidth + padding * 2
+                implicitHeight: sessionRow.implicitHeight + padding * 2
+
+                Row {
+                    id: sessionRow
+                    anchors.centerIn: parent
+                    spacing: 10
+
+                    property var sessionActions: [
+                        {
+                            title: "Lock",
+                            icon: "object-locked.svg",
+                            action: () => controlPill.lockSession()
+                        },
+                        {
+                            title: "Logout",
+                            icon: "system-log-out.svg",
+                            action: () => Quickshell.execDetached([
+                                "bash", "-c",
+                                "loginctl terminate-session \"${XDG_SESSION_ID:-$(loginctl session-status | head -1 | awk '{print $1}')}\""
+                            ])
+                        },
+                        {
+                            title: "Reboot",
+                            icon: "system-reboot.svg",
+                            action: () => Quickshell.execDetached(["systemctl", "reboot"])
+                        },
+                        {
+                            title: "Shutdown",
+                            icon: "system-shutdown.svg",
+                            action: () => Quickshell.execDetached(["systemctl", "poweroff"])
+                        }
+                    ]
+
+                    Repeater {
+                        model: sessionRow.sessionActions
+
+                        delegate: Rectangle {
+                            id: btn
+                            required property var modelData
+
+                            width: 64
+                            height: 64
+                            radius: controlPill.cornerRadius - sessionMenu.padding
+                            color: mouseArea.containsMouse ? "#3a3a3a" : "#2a2a2a"
+
+                            Column {
+                                anchors.centerIn: parent
+                                spacing: 4
+
+                                Image {
+                                    source: Quickshell.shellDir + "/assets/icons/" + btn.modelData.icon
+                                    width: 24
+                                    height: 24
+                                    anchors.horizontalCenter: parent.horizontalCenter
+                                }
+
+                                Text {
+                                    text: btn.modelData.title
+                                    color: "white"
+                                    font.pixelSize: 10
+                                    anchors.horizontalCenter: parent.horizontalCenter
+                                }
+                            }
+
+                            MouseArea {
+                                id: mouseArea
+                                anchors.fill: parent
+                                hoverEnabled: true
+                                onClicked: btn.modelData.action()
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        Component {
+            id: lockComponent
             LockVisual {
                 implicitWidth:  panwin.screen ? panwin.screen.width  : 0
                 implicitHeight: panwin.screen ? panwin.screen.height : 0
@@ -548,15 +632,16 @@ PanelWindow {
 
         onPillWidgetChanged: {
             switch (pillWidget) {
-                case "volume":      controlPill.content = volumeOsd;        break
-                case "brightness":  controlPill.content = brightnessOsd;    break
-                case "lock":        controlPill.content = lockDecoy;        break
-                case "launcher":    controlPill.content = controlCenter;    break
-                case "workspace":   controlPill.content = workspaces;       break
-                default:            controlPill.content = clockMenu;        break
+                case "volume":      controlPill.content = volumeOsdComponent;       break
+                case "brightness":  controlPill.content = brightnessOsdComponent;   break
+                case "launcher":    controlPill.content = controlCenter;            break
+                case "workspace":   controlPill.content = workspaceOsdComponent;       break
+                case "lock":        controlPill.content = lockComponent;            break
+                case "session":     controlPill.content = sessionMenuComponent;     break
+                default:            controlPill.content = defaultMenuComponent;     break
             }
         }
-        Component.onCompleted: controlPill.content = clockMenu
+        Component.onCompleted: controlPill.content = defaultMenuComponent
 
         HoverHandler {
             id: pillHoverHandler
@@ -586,7 +671,7 @@ PanelWindow {
         Connections {
             target: controlPill
             function onMorphFinished() {
-                if (controlPill.pillWidget === "clock") controlPill.clockHeight = controlPill.height
+                if (controlPill.pillWidget === "default") controlPill.clockHeight = controlPill.height
                 if (controlPill.pillWidget === "lock" && !lockScreen.isLocked) {
                     controlPill.square = true
                     lockScreen.lock()   // decoy is fully fullscreen now — safe to hand off
@@ -599,12 +684,13 @@ PanelWindow {
             function onReadyToUnlock() {
                 controlPill.square = false
                 lockScreen.unlock()      // decoy still fullscreen underneath — no flash
-                controlPill.pillWidget = "clock"    // now shrink back down
+                controlPill.pillWidget = "default"    // now shrink back down
             }
         }
     }
 
     function toggleLauncher(): void { controlPill.toggleLauncher() }
+    function toggleSessionMenu(): void { controlPill.toggleSessionMenu() }
     function lockSession(): void { controlPill.lockSession() }
     function reset(): void { controlPill.reset() }
 }

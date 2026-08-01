@@ -102,7 +102,7 @@ hl.bind(
     { release = true }
 )
 hl.bind(
-    Config.mainMod .. " + Escape",
+    Config.mainMod .. " + C",
     hl.dsp.exec_cmd("qs -c shell ipc call toggleSystemMenu handle")
 )
 hl.bind(
@@ -112,6 +112,10 @@ hl.bind(
 hl.bind(
     Config.mainMod .. " + A",
     hl.dsp.exec_cmd("qs -c shell ipc call toggleQuickAppsMenu handle")
+)
+hl.bind(
+    Config.mainMod .. " + Escape",
+    hl.dsp.exec_cmd("qs -c shell ipc call controlMenu toggleSessionMenu")
 )
 hl.bind(
     Config.mainMod .. " + L",

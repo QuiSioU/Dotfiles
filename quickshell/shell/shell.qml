@@ -124,6 +124,10 @@ ShellRoot {
             root.closeOtherMenus(controlMenuLoader)
             controlMenuLoader.item.toggleLauncher()
         }
+        function toggleSessionMenu(): void {
+            root.closeOtherMenus(controlMenuLoader)
+            controlMenuLoader.item.toggleSessionMenu()
+        }
         function lockSession(): void {
             root.closeOtherMenus(controlMenuLoader)
             controlMenuLoader.item.lockSession()
