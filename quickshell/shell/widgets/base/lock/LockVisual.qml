@@ -3,10 +3,12 @@
 
 import QtQuick
 import QtQuick.Effects
+import ".."     // For Clock widget
 
 Item {
     id: root
     property string wallpaper: ""
+    property real clockPixelSize: 64
 
     Image {
         id: bg
@@ -27,18 +29,8 @@ Item {
         brightness: -0.15
     }
 
-    Text {
+    Clock {
         anchors.centerIn: parent
-        color: "white"
-        font.pixelSize: 64
-        font.bold: true
-        text: Qt.formatTime(new Date(), "hh:mm")
-
-        Timer {
-            interval: 1000
-            running: true
-            repeat: true
-            onTriggered: parent.text = Qt.formatTime(new Date(), "hh:mm")
-        }
+        pixelSize: root.clockPixelSize
     }
 }

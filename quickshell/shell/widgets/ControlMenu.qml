@@ -48,6 +48,24 @@ PanelWindow {
 
         readonly property int _menuHideTimer: 1000
 
+        readonly property int _defaultClockPixelSize: 16
+        Text {
+            id: _pillRefTextItem
+            visible: false
+            font.pixelSize: root._defaultClockPixelSize
+            font.bold: true
+            text: "00:00"
+        }
+
+        property alias _clockRefText: _pillRefTextItem
+        readonly property real _pillVerticalPadding: 4   // must match defaultMenuComponent's verticalPadding
+        readonly property real _pillHeight: _clockRefText.implicitHeight + _pillVerticalPadding * 2
+
+        readonly property real _fullHeight: panwin.screen ? panwin.screen.height : 1
+        readonly property real _lockProgress: Math.min(Math.max(
+            (root.height - _pillHeight) / (_fullHeight - _pillHeight), 0), 1)
+        readonly property real _clockPixelSize: root._defaultClockPixelSize + _lockProgress * (64 - 16)
+
         anchors {
             top: parent.top
             horizontalCenter: parent.horizontalCenter
@@ -125,24 +143,13 @@ PanelWindow {
             id: defaultMenuComponent;
             Item {
                 property real horizontalPadding: 40
-                property real verticalPadding: 4
 
-                implicitWidth: clock.implicitWidth + horizontalPadding * 2
-                implicitHeight: clock.implicitHeight + verticalPadding * 2
+                implicitWidth:  root._clockRefText.implicitWidth + horizontalPadding * 2
+                implicitHeight: root._pillHeight
 
-                Text {
-                    id: clock
+                Clock {
                     anchors.centerIn: parent
-                    color: ActiveTheme.colors["FG"]
-                    font.pixelSize: 16
-                    font.bold: true
-                    text: Qt.formatTime(new Date(), "hh:mm")
-                    Timer {
-                        interval: 1000
-                        running: true
-                        repeat: true
-                        onTriggered: clock.text = Qt.formatTime(new Date(), "hh:mm")
-                    }
+                    pixelSize: root._clockPixelSize
                 }
             }
         }
@@ -458,7 +465,8 @@ PanelWindow {
             LockVisual {
                 implicitWidth:  panwin.screen ? panwin.screen.width  : 0
                 implicitHeight: panwin.screen ? panwin.screen.height : 0
-                wallpaper: LockService.currentWallpaper   // shared source, see note below
+                wallpaper: LockService.currentWallpaper
+                clockPixelSize: root._clockPixelSize
             }
         }
         LockScreen { id: lockScreen }
