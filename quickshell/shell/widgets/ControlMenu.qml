@@ -21,15 +21,15 @@ PanelWindow {
     exclusionMode: ExclusionMode.Normal
     exclusiveZone: topbarHeight - 15
 
-    WlrLayershell.layer: controlPill.pillWidget !== "default" ? WlrLayer.Overlay : WlrLayer.Top
-    WlrLayershell.keyboardFocus: controlPill.pillWidget === "launcher"
-        || controlPill.pillWidget === "session"
-        || controlPill.pillWidget === "lock"
+    WlrLayershell.layer: root.pillWidget !== "default" ? WlrLayer.Overlay : WlrLayer.Top
+    WlrLayershell.keyboardFocus: root.pillWidget === "launcher"
+        || root.pillWidget === "session"
+        || root.pillWidget === "lock"
             ? WlrKeyboardFocus.Exclusive
             : WlrKeyboardFocus.None
     WlrLayershell.namespace: "top-bar"
 
-    mask: Region { item: controlPill }
+    mask: Region { item: root }
 
     anchors { top: true; right: true; left: true }
     color: "transparent"
@@ -38,7 +38,7 @@ PanelWindow {
 
     // ── Content ───────────────────────────────────────────────────────────────
     MorphingContainer {
-        id: controlPill
+        id: root
 
         property var targetScreen: null
         property string pillWidget: "default"
@@ -68,29 +68,29 @@ PanelWindow {
 
         Timer {
             id: volumeOsdTimer
-            interval: controlPill._menuHideTimer
-            onTriggered: if (controlPill.pillWidget === "volume") controlPill.pillWidget = "default"
+            interval: root._menuHideTimer
+            onTriggered: if (root.pillWidget === "volume") root.pillWidget = "default"
         }
 
         Timer {
             id: brightnessOsdTimer
-            interval: controlPill._menuHideTimer
-            onTriggered: if (controlPill.pillWidget === "brightness") controlPill.pillWidget = "default"
+            interval: root._menuHideTimer
+            onTriggered: if (root.pillWidget === "brightness") root.pillWidget = "default"
         }
 
         Timer {
             id: workspaceTimer
-            interval: controlPill._menuHideTimer
-            onTriggered: if (controlPill.pillWidget === "workspace") controlPill.pillWidget = "default"
+            interval: root._menuHideTimer
+            onTriggered: if (root.pillWidget === "workspace") root.pillWidget = "default"
         }
 
         Connections {
             target: VolumeService
 
             function onOsdRequested() {
-                if (controlPill.pillWidget === "launcher" || controlPill.pillWidget === "lock") return
+                if (root.pillWidget === "launcher" || root.pillWidget === "lock") return
 
-                controlPill.pillWidget = "volume"
+                root.pillWidget = "volume"
                 if (pillHoverHandler.hovered) volumeOsdTimer.stop()
                 else volumeOsdTimer.restart()
             }
@@ -100,9 +100,9 @@ PanelWindow {
             target: BrightnessService
 
             function onBrightnessChanged() {
-                if (controlPill.pillWidget === "launcher" || controlPill.pillWidget === "lock") return
+                if (root.pillWidget === "launcher" || root.pillWidget === "lock") return
 
-                controlPill.pillWidget = "brightness"
+                root.pillWidget = "brightness"
                 if (pillHoverHandler.hovered) brightnessOsdTimer.stop()
                 else brightnessOsdTimer.restart()
             }
@@ -112,9 +112,9 @@ PanelWindow {
             target: WorkspaceService
 
             function onSwitched() {
-                if (controlPill.pillWidget === "launcher" || controlPill.pillWidget === "lock") return
+                if (root.pillWidget === "launcher" || root.pillWidget === "lock") return
 
-                controlPill.pillWidget = "workspace"
+                root.pillWidget = "workspace"
                 if (pillHoverHandler.hovered) workspaceTimer.stop()
                 else workspaceTimer.restart()
             }
@@ -246,7 +246,7 @@ PanelWindow {
 
                 // ── App entries ───────────────────────────────────────────────────────────
                 function rebuildEntries() {
-                    controlPill._entries = DesktopEntries.applications.values
+                    root._entries = DesktopEntries.applications.values
                         .filter(app => !app.noDisplay)
                         .map(app => ({
                             id:      app.id ?? app.name,
@@ -271,16 +271,16 @@ PanelWindow {
                 Rectangle {
                     anchors.fill: parent
                     color: ActiveTheme.colors["BG"]
-                    radius: controlPill.radius
+                    radius: root.radius
                     clip: true
 
                     Launcher {
                         id: launcher
                         anchors.centerIn: parent
-                        entries:      controlPill._entries
-                        launchModes:  controlPill._launchModes
+                        entries:      root._entries
+                        launchModes:  root._launchModes
                         onActivated:      (entry) => entry.action()
-                        onCloseRequested: controlPill.pillWidget = "default"
+                        onCloseRequested: root.pillWidget = "default"
                     }
                 }
             }
@@ -368,7 +368,7 @@ PanelWindow {
                 Keys.onLeftPressed:  sessionMenu.currentIndex = Math.max(sessionMenu.currentIndex - 1, 0)
                 Keys.onRightPressed: sessionMenu.currentIndex = Math.min(sessionMenu.currentIndex + 1, sessionRow.sessionActions.length - 1)
                 Keys.onReturnPressed: sessionRow.sessionActions[sessionMenu.currentIndex].action()
-                Keys.onEscapePressed: controlPill.reset()
+                Keys.onEscapePressed: root.reset()
 
                 Row {
                     id: sessionRow
@@ -379,7 +379,7 @@ PanelWindow {
                         {
                             title: "Lock",
                             icon: "object-locked.svg",
-                            action: () => controlPill.lockSession()
+                            action: () => root.lockSession()
                         },
                         {
                             title: "Logout",
@@ -413,7 +413,7 @@ PanelWindow {
 
                             width: 64
                             height: 64
-                            radius: controlPill.cornerRadius - sessionMenu.padding
+                            radius: root.cornerRadius - sessionMenu.padding
                             color: isCurrent ? ActiveTheme.colors["BG_STRIPE"]
                                 : mouseArea.containsMouse ? "#3a3a3a" : "#2a2a2a"
                             border.width: isCurrent ? 2 : 0
@@ -465,23 +465,23 @@ PanelWindow {
 
         onPillWidgetChanged: {
             switch (pillWidget) {
-                case "volume":      controlPill.content = volumeOsdComponent;       break
-                case "brightness":  controlPill.content = brightnessOsdComponent;   break
-                case "launcher":    controlPill.content = controlCenter;            break
-                case "workspace":   controlPill.content = workspaceOsdComponent;       break
-                case "lock":        controlPill.content = lockComponent;            break
-                case "session":     controlPill.content = sessionMenuComponent;     break
-                default:            controlPill.content = defaultMenuComponent;     break
+                case "volume":      root.content = volumeOsdComponent;       break
+                case "brightness":  root.content = brightnessOsdComponent;   break
+                case "launcher":    root.content = controlCenter;            break
+                case "workspace":   root.content = workspaceOsdComponent;       break
+                case "lock":        root.content = lockComponent;            break
+                case "session":     root.content = sessionMenuComponent;     break
+                default:            root.content = defaultMenuComponent;     break
             }
         }
-        Component.onCompleted: controlPill.content = defaultMenuComponent
+        Component.onCompleted: root.content = defaultMenuComponent
 
         HoverHandler {
             id: pillHoverHandler
             cursorShape: Qt.PointingHandCursor
 
             onHoveredChanged: {
-                switch (controlPill.pillWidget) {
+                switch (root.pillWidget) {
                     case "volume":
                         if (hovered) volumeOsdTimer.stop()
                         else volumeOsdTimer.restart()
@@ -502,11 +502,11 @@ PanelWindow {
 
         // ── Morph handoff ────────────────────────────────────────────────────
         Connections {
-            target: controlPill
+            target: root
             function onMorphFinished() {
-                if (controlPill.pillWidget === "default") controlPill.clockHeight = controlPill.height
-                if (controlPill.pillWidget === "lock" && !lockScreen.isLocked) {
-                    controlPill.square = true
+                if (root.pillWidget === "default") root.clockHeight = root.height
+                if (root.pillWidget === "lock" && !lockScreen.isLocked) {
+                    root.square = true
                     lockScreen.lock()   // decoy is fully fullscreen now — safe to hand off
                 }
             }
@@ -515,15 +515,15 @@ PanelWindow {
         Connections {
             target: lockScreen
             function onReadyToUnlock() {
-                controlPill.square = false
+                root.square = false
                 lockScreen.unlock()      // decoy still fullscreen underneath — no flash
-                controlPill.pillWidget = "default"    // now shrink back down
+                root.pillWidget = "default"    // now shrink back down
             }
         }
     }
 
-    function toggleLauncher(): void { controlPill.toggleLauncher() }
-    function toggleSessionMenu(): void { controlPill.toggleSessionMenu() }
-    function lockSession(): void { controlPill.lockSession() }
-    function reset(): void { controlPill.reset() }
+    function toggleLauncher(): void { root.toggleLauncher() }
+    function toggleSessionMenu(): void { root.toggleSessionMenu() }
+    function lockSession(): void { root.lockSession() }
+    function reset(): void { root.reset() }
 }
