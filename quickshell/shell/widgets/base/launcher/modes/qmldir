@@ -1,0 +1,6 @@
+# quickshell/shell/widgets/base/launcher/modes/qmldir
+
+
+BluetoothMode 1.0 BluetoothMode.qml
+ColorThemeMode 1.0 ColorThemeMode.qml
+WallpaperMode 1.0 WallpaperMode.qml

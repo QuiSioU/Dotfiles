@@ -1,0 +1,5 @@
+# quickshell/shell/widgets/base/lock/qmldir
+
+
+LockScreen 1.0 LockScreen.qml
+LockVisual 1.0 LockVisual.qml

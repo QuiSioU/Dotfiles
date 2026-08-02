@@ -1,10 +1,11 @@
-/* quickshell/shell/widgets/base/Launcher.qml */
+/* quickshell/shell/widgets/base/launcher/Launcher.qml */
 
 
+import QtQml
 import QtQuick
 import QtQuick.Layouts
 import ElysianShell.Themes
-import "."
+import ".."     // Needed to use EntryView, which is one level above
 
 Item {
     id: root
@@ -52,6 +53,14 @@ Item {
         interval: 50
         repeat: false
         onTriggered: root._filteredEntries = root._computeFilteredEntries()
+    }
+
+    Instantiator {
+        model: root.launchModes
+        delegate: Connections {
+            target: modelData
+            function onEntriesChanged() { root.refresh() }
+        }
     }
 
     function _normalizeEntry(e) {

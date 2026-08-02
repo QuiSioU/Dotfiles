@@ -5,10 +5,12 @@ import Quickshell
 import Quickshell.Io
 import Quickshell.Wayland
 import QtQuick
-import QtQuick.Layouts
 import ElysianShell.Services
 import ElysianShell.Themes
 import "base"
+import "base/lock"
+import "base/launcher"
+import "base/launcher/modes"
 
 PanelWindow {
     id: panwin
@@ -43,9 +45,6 @@ PanelWindow {
         property real clockHeight: 0
 
         property var _entries: []
-        property var _launchModes:   []
-        property var _wallpaperFiles: []
-        property var _colorThemeFiles: []
 
         readonly property int _menuHideTimer: 1000
 
@@ -62,70 +61,10 @@ PanelWindow {
         function lockSession(): void { pillWidget = "lock" }
         function reset(): void { pillWidget = "default" }
 
-        // ── Processes ─────────────────────────────────────────────────────────────
-        Process {
-            id: wallpaperScanner
-            command: [
-                "bash", "-c",
-                "find " + Quickshell.env("HOME") + "/.config/awww/ -type f " +
-                "\\( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' \\) " +
-                "-exec realpath {} \\;"
-            ]
-            stdout: SplitParser {
-                onRead: function(line) {
-                    if (line.trim() !== "")
-                        controlPill._wallpaperFiles.push(line.trim())  // ← _wallpaperFiles
-                }
-            }
-            onExited: {
-                controlPill._wallpaperFiles = [...controlPill._wallpaperFiles]
-                LockService.refreshWallpaper()
-            }
-        }
-
-        Process {
-            id: colorThemeScanner
-            command: [
-                Quickshell.shellDir + "/scripts/parse_color_themes.sh",
-                Quickshell.env("HOME") + "/.config/elysian_themes/themes"
-            ]
-            stdout: SplitParser {
-                onRead: function(line) {
-                    if (line.trim() === "") return
-                    const parts = line.split("\t")
-                    const path = parts[0]
-                    const name = (parts.length > 1 && parts[1].trim() !== "")
-                        ? parts[1]
-                        : path.replace(/.*\//, "").replace(/\.[^.]+$/, "")
-                    controlPill._colorThemeFiles.push({ path: path, name: name })
-                }
-            }
-            onExited: {
-                controlPill._colorThemeFiles = [...controlPill._colorThemeFiles]
-            }
-        }
-
-        Process {
-            id: wpProcess
-            running: false
-        }
-
-        Process {
-            id: vscPackageProcess
-            running: false
-        }
-
-        Process {
-            id: vscProcess
-            running: false
-            onExited: vscPackageProcess.running = true
-        }
-
-        Process {
-            id: ctProcess
-            running: false
-            onExited: vscProcess.running = true
-        }
+        BluetoothMode  { id: bluetoothMode }
+        WallpaperMode  { id: wallpaperMode }
+        ColorThemeMode { id: colorThemeMode }
+        readonly property var _launchModes: [bluetoothMode, wallpaperMode, colorThemeMode]
 
         Timer {
             id: volumeOsdTimer
@@ -305,22 +244,6 @@ PanelWindow {
                     function onApplicationsChanged() { controlRect.rebuildEntries() }
                 }
 
-                Connections {
-                    target: BluetoothDeviceModel
-                    function onDataChanged() { launcher.refresh() }
-                    function onModelReset()  { launcher.refresh() }
-                }
-
-                Connections {
-                    target: wallpaperScanner
-                    function onExited() { launcher.refresh() }
-                }
-
-                Connections {
-                    target: colorThemeScanner
-                    function onExited() { launcher.refresh() }
-                }
-
                 // ── App entries ───────────────────────────────────────────────────────────
                 function rebuildEntries() {
                     controlPill._entries = DesktopEntries.applications.values
@@ -335,109 +258,13 @@ PanelWindow {
                         .sort((a, b) => a.name.localeCompare(b.name))
                 }
 
-                // ── Command modes ─────────────────────────────────────────────────────────
-                function rebuildLaunchModes() {
-                    controlPill._launchModes = [
-                        {  /* Bluetooth */
-                            prefix:      "bluetooth",
-                            label:       "Bluetooth",
-                            placeholder: "Select device to toggle connection",
-                            icon:        Quickshell.shellDir + "/assets/icons/bluetooth-active.svg",
-                            displayMode: "items",
-                            entries: function() {
-                                return BluetoothDeviceModel.deviceList().map(dev => ({
-                                    id:      "bt:" + dev.path,
-                                    name:    dev.alias || dev.name,
-                                    icon:    dev.icon ? "image://icon/" + dev.icon : "",
-                                    comment: dev.address + " · " + (dev.connected ? "Connected ✓" : "Disconnected"),
-                                    stayOpen: true,
-                                    action:  (function(p) {
-                                        return () => BluetoothDeviceModel.toggle(p)
-                                    })(dev.path)
-                                }))
-                            }
-                        },
-                        {  /* Wallpaper manager */
-                            prefix:      "wallpaper",
-                            label:       "Wallpaper",
-                            placeholder: "Select image to set as wallpaper",
-                            icon:        Quickshell.shellDir + "/assets/images/preferences-desktop-wallpaper.svg",
-                            displayMode: "carousel",
-                            entries: function() {
-                                const current = LockService.currentWallpaper.replace(/^file:\/\//, "")
-                                const idx = controlPill._wallpaperFiles.indexOf(current)
-                                const files = idx > 0
-                                    ? [...controlPill._wallpaperFiles.slice(idx), ...controlPill._wallpaperFiles.slice(0, idx)]
-                                    : controlPill._wallpaperFiles
-                                
-                                return files.map(f => ({
-                                    id:      "wp:" + f,
-                                    name:    f.replace(/.*\//, "").replace(/\.[^.]+$/, ""), // filename without ext
-                                    comment: f,
-                                    icon:    f,
-                                    action:  (function(path) {
-                                        return () => {
-                                            wpProcess.command = [
-                                                "awww", "img", path,
-                                                "--transition-type", "fade",
-                                                "--transition-duration", "1"
-                                            ]
-                                            wpProcess.running = true
-                                        }
-                                    })(f)
-                                }))
-                            }
-                        },
-                        {  /* Color theme manager */
-                            prefix:      "color-theme",
-                            label:       "Color Theme",
-                            placeholder: "Select a color theme",
-                            icon:        Quickshell.shellDir + "/assets/images/color-palette.svg",
-                            displayMode: "items",
-                            entries: function() {
-                                return controlPill._colorThemeFiles.map(entry => ({
-                                    id:      "ct:" + entry.path,
-                                    name:    entry.name, // filename without ext
-                                    comment: entry.path,
-                                    icon:    Quickshell.shellDir + "/assets/images/preferences-desktop-color",
-                                    action:  (function(path) {
-                                        return () => {
-                                            vscPackageProcess.command = [
-                                                "python3",
-                                                Quickshell.env("HOME") + "/.config/vscodium/build_package.py"
-                                            ]
-                                            vscProcess.command = [
-                                                "python3",
-                                                Quickshell.env("HOME") + "/.config/vscodium/build_theme.py",
-                                                path
-                                            ]
-                                            ctProcess.command = [
-                                                "python3",
-                                                Quickshell.env("HOME") + "/.config/elysian_themes/set_theme.py",
-                                                path
-                                            ]
-                                            ctProcess.running = true
-                                        }
-                                    })(entry.path)
-                                }))
-                            }
-                        }
-                    ]
-                }
-
                 // ── Hooks ─────────────────────────────────────────────────────────────────
                 Component.onCompleted: {
                     rebuildEntries()
-                    rebuildLaunchModes()
                     Qt.callLater(launcher.forceInputFocus)
 
-                    controlPill._wallpaperFiles = []
-                    wallpaperScanner.running = true
-
-                    controlPill._colorThemeFiles = []
-                    colorThemeScanner.running = true
-
-                    LockService.refreshWallpaper()
+                    wallpaperMode.rescan()
+                    colorThemeMode.rescan()
                 }
 
                 // ── Content ───────────────────────────────────────────────────────────────
