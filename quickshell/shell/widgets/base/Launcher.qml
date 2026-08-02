@@ -4,6 +4,7 @@
 import QtQuick
 import QtQuick.Layouts
 import ElysianShell.Themes
+import "."
 
 Item {
     id: root
@@ -53,47 +54,56 @@ Item {
         onTriggered: root._filteredEntries = root._computeFilteredEntries()
     }
 
+    function _normalizeEntry(e) {
+        return e.id !== undefined ? e : Object.assign({}, e, { id: e.name })
+    }
+
     function _computeFilteredEntries() {
         const text   = searchInput.text
         const prefix = root.actionPrefix
+        let result = []
 
         if (text.startsWith(prefix)) {
             const rest = text.slice(prefix.length).toLowerCase()
             const matchedMode = root.launchModes.find(
                 m => rest === "" || m.prefix.startsWith(rest) || rest.startsWith(m.prefix + " "))
 
-            if (matchedMode) {
-                const modePrefix = prefix + matchedMode.prefix + " "
-                if (text.startsWith(modePrefix)) {
-                    const q = text.slice(modePrefix.length).toLowerCase()
-                    const modeEntries = typeof matchedMode.entries === "function"
-                        ? matchedMode.entries() : matchedMode.entries
-                    if (!q) return modeEntries
-                    return modeEntries.filter(e =>
+            const modePrefix = matchedMode ? prefix + matchedMode.prefix + " " : null
+
+            if (matchedMode && text.startsWith(modePrefix)) {
+                const q = text.slice(modePrefix.length).toLowerCase()
+                const modeEntries = typeof matchedMode.entries === "function"
+                    ? matchedMode.entries() : matchedMode.entries
+                result = q
+                    ? modeEntries.filter(e =>
                         e.name.toLowerCase().includes(q) ||
                         (e.comment ?? "").toLowerCase().includes(q))
-                }
+                    : modeEntries
+            } else {
+                result = root.launchModes
+                    .filter(m => rest === "" || m.prefix.startsWith(rest) || m.label.toLowerCase().startsWith(rest))
+                    .map(m => ({
+                        id:           "mode:" + m.prefix,
+                        name:         m.label,
+                        icon:         m.icon,
+                        comment:      "Type " + prefix + m.prefix + " to browse",
+                        isModeEntry:  true,
+                        fallbackText: root.actionPrefix,
+                        modePrefix:   prefix + m.prefix + " ",
+                        stayOpen:     true,
+                        action:       () => { searchInput.text = prefix + m.prefix + " " }
+                    }))
             }
-
-            return root.launchModes
-                .filter(m => rest === "" || m.prefix.startsWith(rest) || m.label.toLowerCase().startsWith(rest))
-                .map(m => ({
-                    name:         m.label,
-                    icon:         m.icon,
-                    comment:      "Type " + prefix + m.prefix + " to browse",
-                    isModeEntry:  true,
-                    fallbackText: root.actionPrefix,
-                    modePrefix:   prefix + m.prefix + " ",
-                    stayOpen:     true,
-                    action:       () => { searchInput.text = prefix + m.prefix + " " }
-                }))
+        } else {
+            const q = text.toLowerCase()
+            result = q
+                ? root.entries.filter(e =>
+                    e.name.toLowerCase().includes(q) ||
+                    (e.comment ?? "").toLowerCase().includes(q))
+                : root.entries
         }
 
-        const q = text.toLowerCase()
-        if (!q) return root.entries
-        return root.entries.filter(e =>
-            e.name.toLowerCase().includes(q) ||
-            (e.comment ?? "").toLowerCase().includes(q))
+        return result.map(root._normalizeEntry)
     }
 
     // ── Navigation ────────────────────────────────────────────────────

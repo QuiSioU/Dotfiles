@@ -321,13 +321,12 @@ PanelWindow {
                     function onExited() { launcher.refresh() }
                 }
 
-                function close() { controlPill.pillWidget = "default" }
-
                 // ── App entries ───────────────────────────────────────────────────────────
                 function rebuildEntries() {
                     controlPill._entries = DesktopEntries.applications.values
                         .filter(app => !app.noDisplay)
                         .map(app => ({
+                            id:      app.id ?? app.name,
                             name:    app.name,
                             icon:    app.icon ? "image://icon/" + app.icon : "",
                             comment: app.comment ?? "",
@@ -347,6 +346,7 @@ PanelWindow {
                             displayMode: "items",
                             entries: function() {
                                 return BluetoothDeviceModel.deviceList().map(dev => ({
+                                    id:      "bt:" + dev.path,
                                     name:    dev.alias || dev.name,
                                     icon:    dev.icon ? "image://icon/" + dev.icon : "",
                                     comment: dev.address + " · " + (dev.connected ? "Connected ✓" : "Disconnected"),
@@ -371,6 +371,7 @@ PanelWindow {
                                     : controlPill._wallpaperFiles
                                 
                                 return files.map(f => ({
+                                    id:      "wp:" + f,
                                     name:    f.replace(/.*\//, "").replace(/\.[^.]+$/, ""), // filename without ext
                                     comment: f,
                                     icon:    f,
@@ -395,6 +396,7 @@ PanelWindow {
                             displayMode: "items",
                             entries: function() {
                                 return controlPill._colorThemeFiles.map(entry => ({
+                                    id:      "ct:" + entry.path,
                                     name:    entry.name, // filename without ext
                                     comment: entry.path,
                                     icon:    Quickshell.shellDir + "/assets/images/preferences-desktop-color",
@@ -451,7 +453,7 @@ PanelWindow {
                         entries:      controlPill._entries
                         launchModes:  controlPill._launchModes
                         onActivated:      (entry) => entry.action()
-                        onCloseRequested: controlRect.close()
+                        onCloseRequested: controlPill.pillWidget = "default"
                     }
                 }
             }

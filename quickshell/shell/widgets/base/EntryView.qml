@@ -4,6 +4,7 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Effects
+import Quickshell
 import Quickshell.Widgets
 import ElysianShell.Themes
 
@@ -69,8 +70,47 @@ Item {
                 anchors.margins: 8
                 spacing: 8
                 clip: true
-                model: itemsRoot.model
+
+                readonly property int _animDuration: 200
+
+                model: ScriptModel {
+                    values: itemsRoot.model
+                    objectProp: "id"
+                }
+                
                 currentIndex: itemsRoot.currentIndex
+
+                add:            Transition { NumberAnimation {
+                    duration: listView._animDuration
+                    easing.type: Easing.OutCubic
+                    properties: "y"
+                } }
+                remove:         Transition { NumberAnimation {
+                    duration: listView._animDuration
+                    properties: "opacity"
+                    from: 1
+                    to: 0
+                } }
+                displaced:      Transition { NumberAnimation {
+                    duration: listView._animDuration
+                    easing.type: Easing.OutCubic
+                    properties: "y"
+                } }
+                move:           Transition { NumberAnimation {
+                    duration: listView._animDuration
+                    easing.type: Easing.OutCubic
+                    properties: "y"
+                } }
+                moveDisplaced:  Transition { NumberAnimation {
+                    duration: listView._animDuration
+                    easing.type: Easing.OutCubic
+                    properties: "y"
+                } }
+                populate:       Transition { NumberAnimation {
+                    duration: listView._animDuration
+                    easing.type: Easing.OutCubic
+                    properties: "y"
+                } }
 
                 delegate: Item {
                     required property var modelData
