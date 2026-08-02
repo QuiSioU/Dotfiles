@@ -1,4 +1,4 @@
-/* quickshell/shell/widgets/base/ResultView.qml */
+/* quickshell/shell/widgets/base/EntryView.qml */
 
 
 import QtQuick

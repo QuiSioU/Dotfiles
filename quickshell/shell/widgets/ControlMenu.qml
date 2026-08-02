@@ -295,8 +295,8 @@ PanelWindow {
                 id: controlRect
 
                 readonly property int padding: 20
-                implicitWidth:  contentColumn.implicitWidth  + padding * 2
-                implicitHeight: contentColumn.implicitHeight + padding * 2
+                implicitWidth:  launcher.implicitWidth  + padding * 2
+                implicitHeight: launcher.implicitHeight + padding * 2
 
                 color: "transparent"
 
@@ -307,18 +307,18 @@ PanelWindow {
 
                 Connections {
                     target: BluetoothDeviceModel
-                    function onDataChanged() { searchBar.refresh() }
-                    function onModelReset()  { searchBar.refresh() }
+                    function onDataChanged() { launcher.refresh() }
+                    function onModelReset()  { launcher.refresh() }
                 }
 
                 Connections {
                     target: wallpaperScanner
-                    function onExited() { searchBar.refresh() }
+                    function onExited() { launcher.refresh() }
                 }
 
                 Connections {
                     target: colorThemeScanner
-                    function onExited() { searchBar.refresh() }
+                    function onExited() { launcher.refresh() }
                 }
 
                 function close() { controlPill.pillWidget = "default" }
@@ -427,7 +427,7 @@ PanelWindow {
                 Component.onCompleted: {
                     rebuildEntries()
                     rebuildLaunchModes()
-                    Qt.callLater(searchBar.forceInputFocus)
+                    Qt.callLater(launcher.forceInputFocus)
 
                     controlPill._wallpaperFiles = []
                     wallpaperScanner.running = true
@@ -445,32 +445,13 @@ PanelWindow {
                     radius: controlPill.radius
                     clip: true
 
-                    ColumnLayout {
-                        id: contentColumn
+                    Launcher {
+                        id: launcher
                         anchors.centerIn: parent
-                        spacing: 20
-
-                        SearchBar {
-                            id: searchBar
-                            Layout.alignment: Qt.AlignHCenter
-                            Layout.fillWidth: true
-                            entries: controlPill._entries
-                            launchModes:   controlPill._launchModes
-                            wrapNavigation: searchBar.activeMode?.displayMode === "carousel"
-                            onNavigated:      (index) => resultView.positionAt(index)
-                            onActivated:      (entry) => entry.action()
-                            onCloseRequested: controlRect.close()
-                        }
-
-                        ResultView {
-                            id: resultView
-                            Layout.alignment: Qt.AlignHCenter
-                            model:        searchBar.filteredEntries
-                            currentIndex: searchBar.currentIndex
-                            displayMode:         searchBar.activeMode?.displayMode ?? "items"
-                            onActivated:      (entry) => entry.action()
-                            onCloseRequested: controlRect.close()
-                        }
+                        entries:      controlPill._entries
+                        launchModes:  controlPill._launchModes
+                        onActivated:      (entry) => entry.action()
+                        onCloseRequested: controlRect.close()
                     }
                 }
             }
