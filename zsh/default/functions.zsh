@@ -223,8 +223,8 @@ CC = ${_mc_compiler}
 FLAGS = -Wall -Wextra -std=c${_mc_version} -g -fsanitize=address -fPIC -O2
 
 LOCAL_INCLUDE = ./include
-SYSTEM_INCLUDE = /home/QuiSioU/.local/include
-SYSTEM_LIB = /home/QuiSioU/.local/lib
+SYSTEM_INCLUDE = /home/quisiou/.local/include
+SYSTEM_LIB = /home/quisiou/.local/lib
 
 INCLUDE = -I\$(LOCAL_INCLUDE) -I\$(SYSTEM_INCLUDE)
 SRC = ./src
@@ -606,7 +606,7 @@ EOF
                 -m 4096 \
                 -smp 4 \
                 -cpu host \
-                -drive file=/home/QuiSioU/VirtualMachine/kali.qcow2,format=qcow2,if=virtio,aio=io_uring,cache=writeback \
+                -drive file=/home/quisiou/VirtualMachine/kali.qcow2,format=qcow2,if=virtio,aio=io_uring,cache=writeback \
                 -netdev user,id=net0,hostfwd=tcp::"$_htb_port_number"-:22 \
                 -device virtio-net-pci,netdev=net0 \
                 -device virtio-vga \

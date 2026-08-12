@@ -14,7 +14,6 @@ alias discord='__NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia vesk
 alias code='codium'
 alias rmhist='history -c && history -w && rm ~/.zsh_history'
 alias list-wifi='nmcli -f IN-USE,BSSID,SSID,SIGNAL,RATE,BARS device wifi'
-alias gsr-replay-rl='gpu-screen-recorder -w eDP-1 -a default_output -ac opus -q very_high -k av1_10bit -cr limited -f 120 -fm cfr -o /home/QuiSioU/Videos/RocketLeague/ -c mp4 -r 30'
 alias cdl='cd -P'
 alias ll='ls -lahF'
 alias la='ls -A'
