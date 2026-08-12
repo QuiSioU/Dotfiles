@@ -9,7 +9,6 @@
 - Clean up code related to relative paths and stuff.
 - Improve lock screen visuals.
 - When adding/removing bluetooth devices, make the launcher update its entries.
-- Fix control center 1st app always opening on Workspace 1.
 - Implement secondary actions on launcher (right-click/shitf+Enter) and QuickApps, like desktop files provide.
 - Optmize code for speed and resource consumption.
 - Make vesktop overlay

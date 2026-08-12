@@ -52,6 +52,7 @@ if __name__ == "__main__":
         "name": "elysian-color-themes",
         "displayName": "Elysian Themes",
         "description": "Color themes for my dotfiles",
+        "publisher": "quisiou",
         "version": "0.1.0",
         "private": True,
         "engines": {
