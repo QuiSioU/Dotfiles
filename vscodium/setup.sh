@@ -1,5 +1,5 @@
 #!/bin/sh
-# VSCodium/setup.sh
+# vscodium/setup.sh
 
 
 flag_force=false
