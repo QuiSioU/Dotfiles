@@ -1,5 +1,5 @@
 import definePlugin from "@utils/types";
-import { UserStore, GuildMemberStore } from "@webpack/common";
+import { UserStore, GuildMemberStore, IconUtils } from "@webpack/common";
 
 let myChannelId: string | null = null;
 let myGuildId: string | null = null;
@@ -16,7 +16,6 @@ const trackedFields: TrackedField[] = [
     { key: "selfStream", onTrue: "stream_start", onFalse: "stream_stop" },
 ];
 
-// One Map<userId, boolean> per tracked field, e.g. fieldStates.get("selfMute").get(userId)
 const fieldStates = new Map<string, Map<string, boolean>>();
 for (const f of trackedFields) fieldStates.set(f.key, new Map());
 
@@ -40,14 +39,31 @@ function usernameFor(userId: string, guildId?: string | null): string {
     const user = UserStore.getUser(userId);
     if (!user) return userId;
 
-    // Prefer server nickname if we know the guild
     if (guildId) {
         const nick = GuildMemberStore.getMember(guildId, userId)?.nick;
         if (nick) return nick;
     }
 
-    // Fall back to the user's display name, then their handle
     return user.globalName ?? user.username;
+}
+
+function avatarFor(userId: string, guildId?: string | null): string | null {
+    const user = UserStore.getUser(userId);
+    if (!user) return null;
+
+    if (guildId) {
+        const member = GuildMemberStore.getMember(guildId, userId);
+        if (member?.avatar) {
+            return IconUtils.getGuildMemberAvatarURLSimple({
+                userId,
+                guildId,
+                avatar: member.avatar,
+                canAnimate: true
+            });
+        }
+    }
+
+    return IconUtils.getUserAvatarURL(user, true, 128);
 }
 
 function checkUserState(state: any, guildId: string | null) {
@@ -60,8 +76,11 @@ function checkUserState(state: any, guildId: string | null) {
 
         if (prev !== current) {
             map.set(userId, current);
-            if (prev !== undefined) { // skip the initial snapshot on join
-                emit(current ? field.onTrue : field.onFalse, { userId, username: usernameFor(userId, guildId) });
+            if (prev !== undefined) {
+                emit(current ? field.onTrue : field.onFalse, {
+                    userId,
+                    username: usernameFor(userId, guildId)
+                });
             }
         }
     }
@@ -69,7 +88,7 @@ function checkUserState(state: any, guildId: string | null) {
 
 export default definePlugin({
     name: "CallStatusBridge",
-    description: "Streams voice call activity to a local socket for external tools",
+    description: "Streams your voice call activity to a local socket for external tools.",
     authors: [],
     enabledByDefault: true,
 
@@ -81,9 +100,16 @@ export default definePlugin({
                 if (state.userId === me) {
                     if (state.channelId !== myChannelId) {
                         if (state.channelId) {
-                            emit("you_joined", { channelId: state.channelId, username: usernameFor(me, state.guildId) });
+                            emit("you_joined", {
+                                channelId: state.channelId,
+                                username: usernameFor(me, state.guildId),
+                                avatarUrl: avatarFor(me, state.guildId)
+                            });
                         } else {
-                            emit("you_left", { channelId: myChannelId, username: usernameFor(me, myGuildId) });
+                            emit("you_left", {
+                                channelId: myChannelId,
+                                username: usernameFor(me, myGuildId)
+                            });
                         }
                         knownMembers.clear();
                         clearFieldStates();
@@ -99,11 +125,20 @@ export default definePlugin({
 
                 if (state.channelId === myChannelId && !knownMembers.has(state.userId)) {
                     knownMembers.add(state.userId);
-                    emit("join", { userId: state.userId, username: usernameFor(state.userId, myGuildId), channelId: myChannelId });
+                    emit("join", {
+                        userId: state.userId,
+                        username: usernameFor(state.userId, myGuildId),
+                        avatarUrl: avatarFor(state.userId, myGuildId),
+                        channelId: myChannelId
+                    });
                 } else if (state.channelId !== myChannelId && knownMembers.has(state.userId)) {
                     knownMembers.delete(state.userId);
                     deleteFieldStates(state.userId);
-                    emit("leave", { userId: state.userId, username: usernameFor(state.userId, myGuildId), channelId: myChannelId });
+                    emit("leave", {
+                        userId: state.userId,
+                        username: usernameFor(state.userId, myGuildId),
+                        channelId: myChannelId
+                    });
                 }
 
                 if (state.channelId === myChannelId) checkUserState(state, myGuildId);
@@ -114,7 +149,10 @@ export default definePlugin({
             if (context !== "default") return;
             if (!knownMembers.has(userId) && userId !== UserStore.getCurrentUser()?.id) return;
 
-            emit(speakingFlags ? "speaking_start" : "speaking_stop", { userId, username: usernameFor(userId, myGuildId) });
+            emit(speakingFlags ? "speaking_start" : "speaking_stop", {
+                userId,
+                username: usernameFor(userId, myGuildId)
+            });
         }
     },
 
