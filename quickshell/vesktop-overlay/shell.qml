@@ -6,4 +6,6 @@ import Quickshell
 
 ShellRoot {
     id: root
+
+    Loader { source: "widgets/CallOSD.qml" }
 }
