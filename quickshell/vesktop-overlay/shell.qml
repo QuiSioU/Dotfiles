@@ -1,6 +1,8 @@
 /* quickshell/shell/vesktop-overlay/shell.qml */
 
 
+//@ pragma ShellId vesktop-overlay
+
 import QtQuick
 import Quickshell
 

@@ -40,6 +40,7 @@ PanelWindow {
 
         // tiles[channelId][userId] = UserTile instance (the source of truth for "who's on screen")
         property var tiles: ({})
+        readonly property string imgCacheDir: Quickshell.cacheDir + "/pfp"
 
         // Where tiles get parented once created — swap Column for whatever layout you want later
         Column {
@@ -187,6 +188,14 @@ PanelWindow {
             if (tile) tile[key] = value
         }
 
+        // Handle avatar download if not cached
+        function downloadAvatar(avatarURL, userID, username) {
+            let imgExt = avatarURL.split("?")[0].split(".").pop()
+            checkImgCached.imgSrc = avatarURL
+            checkImgCached.imgDst = Quickshell.cacheDir + "/pfp/" + userID + "-" + username + "." + imgExt
+            checkImgCached.running = true
+        }
+
         function handleData(data) {
             var msg
             try {
@@ -201,6 +210,7 @@ PanelWindow {
                 var tile = getOrCreateTile(msg.channelId, msg.userId)
                 tile.username = msg.username
                 tile.avatarUrl = msg.avatarUrl
+                downloadAvatar(msg.avatarUrl, msg.userId, msg.username)
                 break
             }
 
@@ -259,6 +269,34 @@ PanelWindow {
                 console.log("CallOSD: bridge socket file appeared, connecting")
                 sock.connected = true
             }
+        }
+
+        Process {
+            id: checkImgCached
+            running: false
+            property string imgSrc: ""
+            property string imgDst: ""
+            command: [ "test", "-f", imgDst ]
+            onExited: (exitCode) => {
+                if (exitCode === 0) console.log("Profile picture already cached!")
+                else {
+                    console.log("Downloading profile picture from " + imgSrc + " to " + imgDst + "...")
+                    imgDownload.imgSrc = imgSrc
+                    imgDownload.imgDst = imgDst
+                    imgDownload.running = true
+                }
+            }
+        }
+
+        Process {
+            id: imgDownload
+            running: false
+            property string imgSrc: ""
+            property string imgDst: ""
+            command: [
+                "sh", "-c",
+                `mkdir -p "$(dirname '${imgDst}')" && curl -sL -o '${imgDst}' '${imgSrc}'`
+            ]
         }
     }
 }
