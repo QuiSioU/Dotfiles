@@ -7,5 +7,8 @@ import Quickshell
 ShellRoot {
     id: root
 
-    Loader { source: "widgets/CallOSD.qml" }
+    Loader {
+        anchors.fill: parent
+        source: "widgets/CallOSD.qml"
+    }
 }
