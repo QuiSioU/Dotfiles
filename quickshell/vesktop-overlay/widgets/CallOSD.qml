@@ -5,6 +5,7 @@ import QtQuick
 import Quickshell
 import Quickshell.Io
 import Quickshell.Wayland
+import ElysianShell.Themes
 
 PanelWindow {
     id: panwin
@@ -61,15 +62,35 @@ PanelWindow {
                 property bool screen: false
                 property bool speak: false
 
-                width: 400
-                height: 32
-                color: "#ffffff"
+                readonly property int wPadding: 15
+                readonly property int hPadding: 10
 
-                // Placeholder visual — replace later
-                Text {
-                    anchors.verticalCenter: parent.verticalCenter
-                    text: tile.username+"[M:"+tile.micro+" A:"+ tile.audio+" V:"+tile.video+" SS:"+tile.screen+" S:"+tile.speak+"]"
+                width: osdRow.width + wPadding
+                height: osdRow.height + hPadding
+                color: tile.speak ? ActiveTheme.colors["BG"].replace("#", "#C0") : ActiveTheme.colors["BG"].replace("#", "#80")
+                radius: height / 2
+
+                Row {
+                    id: osdRow
+                    anchors.centerIn: parent
+                    spacing: 5
+
+                    // Username
+                    Text {
+                        id: nameText
+                        // anchors {
+                        //     horizontalCenter: parent.horizontalCenter
+                        //     verticalCenter: parent.verticalCenter
+                        // }
+                        text: tile.username
+                        color: tile.speak ? ActiveTheme.colors["FG"] : ActiveTheme.colors["FG"].replace("#", "#80")
+                        font.bold: true
+                    }
+
+                    
                 }
+
+                
             }
         }
 
