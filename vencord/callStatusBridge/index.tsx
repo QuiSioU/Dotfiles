@@ -152,6 +152,12 @@ export default definePlugin({
                 if (state.userId === me) {
                     if (state.channelId !== myChannelId) {
                         if (!state.channelId) {
+                            // Emit that everyone left (just to empty the cache)
+                            for (const userId of knownMembers) {
+                                emit("left", { channelId: myChannelId, userId });
+                            }
+
+                            // Finally, emit you left
                             emit("left", { channelId: myChannelId, userId: me });
                         }
 
