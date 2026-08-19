@@ -5,6 +5,7 @@ import QtQuick
 import Quickshell
 import Quickshell.Io
 import Quickshell.Wayland
+import Quickshell.Widgets
 import ElysianShell.Themes
 
 PanelWindow {
@@ -39,8 +40,13 @@ PanelWindow {
         id: root
 
         // tiles[channelId][userId] = UserTile instance (the source of truth for "who's on screen")
+        readonly property string imgCacheDir: Quickshell.cacheDir
+        readonly property int animDuration: 150
+        readonly property real noSpeakDarken: 0.4
+        readonly property real noSpeakOpacity: 0.75
         property var tiles: ({})
-        readonly property string imgCacheDir: Quickshell.cacheDir + "/pfp"
+        property var downloadQueue: []
+        property bool downloading: false
 
         // Where tiles get parented once created — swap Column for whatever layout you want later
         Column {
@@ -58,11 +64,14 @@ PanelWindow {
                 property string channelId: ""
                 property string username: ""
                 property string avatarUrl: ""
+                property string avatarExt: ""
                 property bool micro: false
                 property bool audio: false
                 property bool video: false
                 property bool screen: false
                 property bool speak: false
+
+                property bool avatarReady: false
 
                 implicitWidth: tileRow.implicitWidth
                 implicitHeight: tileRow.implicitHeight
@@ -74,15 +83,47 @@ PanelWindow {
                     anchors.centerIn: parent
                     spacing: 5
 
+                    ClippingRectangle {
+                        id: avatarRect
+                        width: avatarImg.width
+                        height: avatarImg.height
+                        radius: height / 2
+                        anchors.verticalCenter: parent.verticalCenter
+
+                        // Avatar
+                        Image {
+                            id: avatarImg
+                            anchors.verticalCenter: parent.verticalCenter
+                            width: 28; height: 28
+                            source: tile.avatarReady
+                                ? (root.imgCacheDir + "/" + tile.userId + "-" + tile.username + "." + tile.avatarExt)
+                                : ""
+                            fillMode: Image.PreserveAspectFit
+                            smooth: true
+                        }
+
+                        // Darken (not fade) when not speaking, Discord-style
+                        Rectangle {
+                            anchors.fill: avatarImg
+                            color: "black"
+                            opacity: tile.speak ? 0.0 : root.noSpeakDarken
+                            Behavior on opacity { NumberAnimation { duration: root.animDuration } }
+                        }
+                    }
+
                     Rectangle {
                         readonly property int wPadding: 15
                         readonly property int hPadding: 10
 
                         width: nameRow.width + wPadding
                         height: nameRow.height + hPadding
-                        color: tile.speak ? ActiveTheme.colors["BG"].replace("#", "#C0") : ActiveTheme.colors["BG"].replace("#", "#80")
+                        color: ActiveTheme.colors["BG"].replace("#", "#C0")   // fixed, no more speak-based blending
                         radius: height / 2
                         anchors.verticalCenter: parent.verticalCenter
+
+                        layer.enabled: true
+                        opacity: tile.speak ? 1.0 : root.noSpeakOpacity
+                        Behavior on opacity { NumberAnimation { duration: root.animDuration } }
 
                         Row {
                             id: nameRow
@@ -94,7 +135,7 @@ PanelWindow {
                                 id: nameText
                                 anchors.verticalCenter: parent.verticalCenter
                                 text: tile.username
-                                color: tile.speak ? ActiveTheme.colors["FG"] : ActiveTheme.colors["FG"].replace("#", "#80")
+                                color: ActiveTheme.colors["FG"]   // full color, no more fade
                                 font.bold: true
                             }
 
@@ -107,7 +148,6 @@ PanelWindow {
                                 fillMode: Image.PreserveAspectFit
                                 smooth: true
                                 visible: status === Image.Ready && !tile.micro
-                                opacity: 0.5
                             }
 
                             // Audio deafen OSD
@@ -119,8 +159,15 @@ PanelWindow {
                                 fillMode: Image.PreserveAspectFit
                                 smooth: true
                                 visible: status === Image.Ready && !tile.audio
-                                opacity: tile.speak ? 1.0 : 0.5
                             }
+                        }
+
+                        // Darken the whole pill (bg + text + icons) at once when not speaking
+                        Rectangle {
+                            anchors.fill: parent
+                            radius: parent.radius
+                            color: "black"
+                            opacity: tile.speak ? 0.0 : root.noSpeakDarken
                         }
                     }
 
@@ -133,8 +180,11 @@ PanelWindow {
                         color: "#ff0000"
                         radius: height / 2
                         anchors.verticalCenter: parent.verticalCenter
-                        opacity: tile.speak ? 1.0 : 0.5
                         visible: tile.video || tile.screen
+                        
+                        layer.enabled: true
+                        opacity: tile.speak ? 1.0 : root.noSpeakOpacity
+                        Behavior on opacity { NumberAnimation { duration: root.animDuration } }
 
                         Text {
                             id: videoScreenText
@@ -146,22 +196,30 @@ PanelWindow {
                                 pixelSize: 12
                             }
                         }
+
+                        // Darken instead of fade when not speaking
+                        Rectangle {
+                            anchors.fill: parent
+                            radius: parent.radius
+                            color: "black"
+                            opacity: tile.speak ? 0.0 : root.noSpeakDarken
+                        }
                     }
                 }
             }
         }
 
         // Called on "joined": creates the tile if it doesn't exist yet, returns it either way
-        function getOrCreateTile(channelId, userId) {
+        function getOrCreateTile(channelId, userId, initialProps) {
             if (!root.tiles[channelId]) root.tiles[channelId] = {}
 
             var tile = root.tiles[channelId][userId]
             if (!tile) {
-                tile = userTileComponent.createObject(userContainer, {
-                    channelId: channelId,
-                    userId: userId
-                })
+                var props = Object.assign({ channelId: channelId, userId: userId }, initialProps || {})
+                tile = userTileComponent.createObject(userContainer, props)
                 root.tiles[channelId][userId] = tile
+            } else if (initialProps) {
+                for (var key in initialProps) tile[key] = initialProps[key]
             }
             return tile
         }
@@ -189,11 +247,30 @@ PanelWindow {
         }
 
         // Handle avatar download if not cached
-        function downloadAvatar(avatarURL, userID, username) {
-            let imgExt = avatarURL.split("?")[0].split(".").pop()
-            checkImgCached.imgSrc = avatarURL
-            checkImgCached.imgDst = Quickshell.cacheDir + "/pfp/" + userID + "-" + username + "." + imgExt
+        function processQueue() {
+            if (downloading || downloadQueue.length === 0) return
+            downloading = true
+            var job = downloadQueue.shift()
+            checkImgCached.currentJob = job
+            checkImgCached.imgDst = job.imgDst
             checkImgCached.running = true
+        }
+
+        function markAvatarReady(userId) {
+            for (var chId in root.tiles) {
+                var t = root.tiles[chId][userId]
+                if (t) t.avatarReady = true
+            }
+        }
+
+        function downloadAvatar(avatarURL, avatarExt, userID, username) {
+            var base = avatarURL.split("?")[0]
+            var query = avatarURL.indexOf("?") !== -1 ? avatarURL.substring(avatarURL.indexOf("?")) : ""
+            var rewrittenUrl = base.replace(/\.[a-zA-Z0-9]+$/, "." + avatarExt) + query
+
+            var dst = root.imgCacheDir + "/" + userID + "-" + username + "." + avatarExt
+            downloadQueue.push({ imgSrc: rewrittenUrl, imgDst: dst, userId: userID })
+            processQueue()
         }
 
         function handleData(data) {
@@ -207,10 +284,16 @@ PanelWindow {
 
             switch (msg.type) {
             case "joined": {
-                var tile = getOrCreateTile(msg.channelId, msg.userId)
-                tile.username = msg.username
-                tile.avatarUrl = msg.avatarUrl
-                downloadAvatar(msg.avatarUrl, msg.userId, msg.username)
+                var rawExt = msg.avatarUrl.split("?")[0].split(".").pop()
+                var isAnimated = msg.avatarUrl.indexOf("/a_") !== -1
+                var avatarExt = isAnimated ? "gif" : "png"
+
+                var tile = getOrCreateTile(msg.channelId, msg.userId, {
+                    username: msg.username,
+                    avatarUrl: msg.avatarUrl,
+                    avatarExt: avatarExt
+                })
+                downloadAvatar(msg.avatarUrl, avatarExt, msg.userId, msg.username)
                 break
             }
 
@@ -274,15 +357,20 @@ PanelWindow {
         Process {
             id: checkImgCached
             running: false
-            property string imgSrc: ""
             property string imgDst: ""
+            property var currentJob: null
             command: [ "test", "-f", imgDst ]
             onExited: (exitCode) => {
-                if (exitCode === 0) console.log("Profile picture already cached!")
-                else {
-                    console.log("Downloading profile picture from " + imgSrc + " to " + imgDst + "...")
-                    imgDownload.imgSrc = imgSrc
-                    imgDownload.imgDst = imgDst
+                if (exitCode === 0) {
+                    console.log("Profile picture already cached!")
+                    root.markAvatarReady(currentJob.userId)
+                    root.downloading = false
+                    root.processQueue()
+                } else {
+                    console.log("Downloading profile picture from " + currentJob.imgSrc + " to " + currentJob.imgDst + "...")
+                    imgDownload.currentJob = currentJob
+                    imgDownload.imgSrc = currentJob.imgSrc
+                    imgDownload.imgDst = currentJob.imgDst
                     imgDownload.running = true
                 }
             }
@@ -293,10 +381,17 @@ PanelWindow {
             running: false
             property string imgSrc: ""
             property string imgDst: ""
-            command: [
-                "sh", "-c",
-                `mkdir -p "$(dirname '${imgDst}')" && curl -sL -o '${imgDst}' '${imgSrc}'`
-            ]
+            property var currentJob: null
+            command: ["curl", "-fsSL", "-o", imgDst, imgSrc]
+            onExited: (exitCode) => {
+                if (exitCode === 0) {
+                    root.markAvatarReady(currentJob.userId)
+                } else {
+                    console.warn("CallOSD: avatar download failed for " + currentJob.userId + " (exit " + exitCode + ")")
+                }
+                root.downloading = false
+                root.processQueue()
+            }
         }
     }
 }
