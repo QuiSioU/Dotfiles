@@ -86,7 +86,7 @@ PanelWindow {
 
                     // Microphone muted OSD
                     Image {
-                        id: bmicroOffImage
+                        id: microOffImage
                         anchors.verticalCenter: parent.verticalCenter
                         width: 14; height: 14
                         source: Quickshell.shellDir + "/assets/icons/microphone-sensitivity-muted.svg"
@@ -94,6 +94,18 @@ PanelWindow {
                         smooth: true
                         visible: status === Image.Ready && !tile.micro
                         opacity: 0.5
+                    }
+
+                    // Audio deafen OSD
+                    Image {
+                        id: audioOffImage
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: 14; height: 14
+                        source: Quickshell.shellDir + "/assets/icons/audio-volume-muted_noalpha.svg"
+                        fillMode: Image.PreserveAspectFit
+                        smooth: true
+                        visible: status === Image.Ready && !tile.audio
+                        opacity: tile.speak ? 1.0 : 0.5
                     }
                 }
 
