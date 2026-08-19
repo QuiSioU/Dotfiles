@@ -83,31 +83,52 @@ PanelWindow {
                     anchors.centerIn: parent
                     spacing: 5
 
-                    ClippingRectangle {
-                        id: avatarRect
-                        width: avatarImg.width
-                        height: avatarImg.height
-                        radius: height / 2
+                    Item {
+                        id: avatarWrap
+                        readonly property int borderWidth: 3
+                        width: avatarImg.width + borderWidth * 2
+                        height: avatarImg.height + borderWidth * 2
                         anchors.verticalCenter: parent.verticalCenter
 
-                        // Avatar
-                        Image {
-                            id: avatarImg
-                            anchors.verticalCenter: parent.verticalCenter
-                            width: 28; height: 28
-                            source: tile.avatarReady
-                                ? (root.imgCacheDir + "/" + tile.userId + "-" + tile.username + "." + tile.avatarExt)
-                                : ""
-                            fillMode: Image.PreserveAspectFit
-                            smooth: true
+                        ClippingRectangle {
+                            id: avatarRect
+                            width: avatarImg.width
+                            height: avatarImg.height
+                            radius: height / 2
+                            anchors.centerIn: parent
+
+                            // Avatar
+                            Image {
+                                id: avatarImg
+                                anchors.verticalCenter: parent.verticalCenter
+                                width: 32; height: 32
+                                source: tile.avatarReady
+                                    ? (root.imgCacheDir + "/" + tile.userId + "-" + tile.username + "." + tile.avatarExt)
+                                    : ""
+                                fillMode: Image.PreserveAspectFit
+                                smooth: true
+                            }
+
+                            // Darken (not fade) when not speaking, Discord-style
+                            Rectangle {
+                                anchors.fill: avatarImg
+                                color: "black"
+                                opacity: tile.speak ? 0.0 : root.noSpeakDarken
+                                Behavior on opacity { NumberAnimation { duration: root.animDuration } }
+                            }
                         }
 
-                        // Darken (not fade) when not speaking, Discord-style
+                        // Outward speaking ring — grows inward from the container's fixed outer edge,
+                        // so it never displaces the avatar or its siblings
                         Rectangle {
-                            anchors.fill: avatarImg
-                            color: "black"
-                            opacity: tile.speak ? 0.0 : root.noSpeakDarken
-                            Behavior on opacity { NumberAnimation { duration: root.animDuration } }
+                            anchors.centerIn: parent
+                            width: avatarWrap.width
+                            height: avatarWrap.height
+                            radius: width / 2
+                            color: "transparent"
+                            border.color: "green"
+                            border.width: tile.speak ? avatarWrap.borderWidth : 0
+                            Behavior on border.width { NumberAnimation { duration: root.animDuration } }
                         }
                     }
 
