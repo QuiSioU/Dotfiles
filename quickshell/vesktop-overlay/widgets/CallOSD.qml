@@ -81,6 +81,7 @@ PanelWindow {
                         height: nameRow.height + hPadding
                         color: tile.speak ? ActiveTheme.colors["BG"].replace("#", "#C0") : ActiveTheme.colors["BG"].replace("#", "#80")
                         radius: height / 2
+                        anchors.verticalCenter: parent.verticalCenter
 
                         Row {
                             id: nameRow
@@ -130,6 +131,7 @@ PanelWindow {
                         height: videoScreenText.height + hPadding
                         color: "#ff0000"
                         radius: height / 2
+                        anchors.verticalCenter: parent.verticalCenter
                         opacity: tile.speak ? 1.0 : 0.5
                         visible: tile.video || tile.screen
 
