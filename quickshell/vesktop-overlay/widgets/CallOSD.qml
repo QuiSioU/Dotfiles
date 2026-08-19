@@ -49,7 +49,8 @@ PanelWindow {
 
         Component {
             id: userTileComponent
-            Rectangle {
+
+            Item {
                 id: tile
 
                 property string userId: ""
@@ -62,54 +63,88 @@ PanelWindow {
                 property bool screen: false
                 property bool speak: false
 
-                readonly property int wPadding: 15
-                readonly property int hPadding: 10
-
-                width: osdRow.width + wPadding
-                height: osdRow.height + hPadding
-                color: tile.speak ? ActiveTheme.colors["BG"].replace("#", "#C0") : ActiveTheme.colors["BG"].replace("#", "#80")
-                radius: height / 2
+                implicitWidth: tileRow.implicitWidth
+                implicitHeight: tileRow.implicitHeight
+                width: implicitWidth
+                height: implicitHeight
 
                 Row {
-                    id: osdRow
+                    id: tileRow
                     anchors.centerIn: parent
                     spacing: 5
 
-                    // Username
-                    Text {
-                        id: nameText
-                        anchors.verticalCenter: parent.verticalCenter
-                        text: tile.username
-                        color: tile.speak ? ActiveTheme.colors["FG"] : ActiveTheme.colors["FG"].replace("#", "#80")
-                        font.bold: true
+                    Rectangle {
+                        readonly property int wPadding: 15
+                        readonly property int hPadding: 10
+
+                        width: nameRow.width + wPadding
+                        height: nameRow.height + hPadding
+                        color: tile.speak ? ActiveTheme.colors["BG"].replace("#", "#C0") : ActiveTheme.colors["BG"].replace("#", "#80")
+                        radius: height / 2
+
+                        Row {
+                            id: nameRow
+                            anchors.centerIn: parent
+                            spacing: 5
+
+                            // Username
+                            Text {
+                                id: nameText
+                                anchors.verticalCenter: parent.verticalCenter
+                                text: tile.username
+                                color: tile.speak ? ActiveTheme.colors["FG"] : ActiveTheme.colors["FG"].replace("#", "#80")
+                                font.bold: true
+                            }
+
+                            // Microphone muted OSD
+                            Image {
+                                id: microOffImage
+                                anchors.verticalCenter: parent.verticalCenter
+                                width: 14; height: 14
+                                source: Quickshell.shellDir + "/assets/icons/microphone-sensitivity-muted.svg"
+                                fillMode: Image.PreserveAspectFit
+                                smooth: true
+                                visible: status === Image.Ready && !tile.micro
+                                opacity: 0.5
+                            }
+
+                            // Audio deafen OSD
+                            Image {
+                                id: audioOffImage
+                                anchors.verticalCenter: parent.verticalCenter
+                                width: 14; height: 14
+                                source: Quickshell.shellDir + "/assets/icons/audio-volume-muted_noalpha.svg"
+                                fillMode: Image.PreserveAspectFit
+                                smooth: true
+                                visible: status === Image.Ready && !tile.audio
+                                opacity: tile.speak ? 1.0 : 0.5
+                            }
+                        }
                     }
 
-                    // Microphone muted OSD
-                    Image {
-                        id: microOffImage
-                        anchors.verticalCenter: parent.verticalCenter
-                        width: 14; height: 14
-                        source: Quickshell.shellDir + "/assets/icons/microphone-sensitivity-muted.svg"
-                        fillMode: Image.PreserveAspectFit
-                        smooth: true
-                        visible: status === Image.Ready && !tile.micro
-                        opacity: 0.5
-                    }
+                    Rectangle {
+                        readonly property int wPadding: 15
+                        readonly property int hPadding: 5
 
-                    // Audio deafen OSD
-                    Image {
-                        id: audioOffImage
-                        anchors.verticalCenter: parent.verticalCenter
-                        width: 14; height: 14
-                        source: Quickshell.shellDir + "/assets/icons/audio-volume-muted_noalpha.svg"
-                        fillMode: Image.PreserveAspectFit
-                        smooth: true
-                        visible: status === Image.Ready && !tile.audio
+                        width: videoScreenText.width + wPadding
+                        height: videoScreenText.height + hPadding
+                        color: "#ff0000"
+                        radius: height / 2
                         opacity: tile.speak ? 1.0 : 0.5
+                        visible: tile.video || tile.screen
+
+                        Text {
+                            id: videoScreenText
+                            anchors.centerIn: parent
+                            text: "LIVE"
+                            color: ActiveTheme.colors["FG"]
+                            font {
+                                bold: true
+                                pixelSize: 12
+                            }
+                        }
                     }
                 }
-
-                
             }
         }
 
