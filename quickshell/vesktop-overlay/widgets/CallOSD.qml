@@ -147,11 +147,40 @@ PanelWindow {
         Socket {
             id: sock
             path: "/tmp/callstatusbridge.sock"
-            connected: true
+            connected: false
 
             parser: SplitParser {
                 splitMarker: "\n"
                 onRead: data => { root.handleData(data) }
+            }
+
+            onConnectedChanged: {
+                if (connected) {
+                    console.log("CallOSD: connected to bridge socket")
+                } else {
+                    console.log("CallOSD: lost connection to bridge socket, waiting for it to reappear")
+                    sockWaiter.running = true
+                }
+            }
+
+            onError: error => {
+                console.warn("CallOSD: socket error:", error)
+            }
+        }
+
+        Process {
+            id: sockWaiter
+            running: true
+            command: [
+                "bash", "-c",
+                "until [ -S '" + sock.path + "' ]; do " +
+                "inotifywait -qq -e create,moved_to '" + sock.path.substring(0, sock.path.lastIndexOf('/')) + "'; " +
+                "done"
+            ]
+
+            onExited: (exitCode, exitStatus) => {
+                console.log("CallOSD: bridge socket file appeared, connecting")
+                sock.connected = true
             }
         }
     }
