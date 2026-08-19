@@ -78,16 +78,23 @@ PanelWindow {
                     // Username
                     Text {
                         id: nameText
-                        // anchors {
-                        //     horizontalCenter: parent.horizontalCenter
-                        //     verticalCenter: parent.verticalCenter
-                        // }
+                        anchors.verticalCenter: parent.verticalCenter
                         text: tile.username
                         color: tile.speak ? ActiveTheme.colors["FG"] : ActiveTheme.colors["FG"].replace("#", "#80")
                         font.bold: true
                     }
 
-                    
+                    // Microphone muted OSD
+                    Image {
+                        id: bmicroOffImage
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: 14; height: 14
+                        source: Quickshell.shellDir + "/assets/icons/microphone-sensitivity-muted.svg"
+                        fillMode: Image.PreserveAspectFit
+                        smooth: true
+                        visible: status === Image.Ready && !tile.micro
+                        opacity: 0.5
+                    }
                 }
 
                 
