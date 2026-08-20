@@ -4,6 +4,7 @@
 *
 !.gitignore
 !setup.sh
+!build.sh
 
 !shell
 !shell/**
