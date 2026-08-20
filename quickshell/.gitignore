@@ -5,6 +5,7 @@
 !.gitignore
 !setup.sh
 !build.sh
+!CMakeLists.txt
 
 !shell
 !shell/**
@@ -14,3 +15,6 @@
 
 !assets
 !assets/**
+
+!modules
+!modules/**
