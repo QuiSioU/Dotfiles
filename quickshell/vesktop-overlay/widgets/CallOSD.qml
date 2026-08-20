@@ -42,8 +42,7 @@ PanelWindow {
         // tiles[channelId][userId] = UserTile instance (the source of truth for "who's on screen")
         readonly property string imgCacheDir: Quickshell.cacheDir
         readonly property int animDuration: 150
-        readonly property real noSpeakDarken: 0.4
-        readonly property real noSpeakOpacity: 0.75
+        readonly property real noSpeakOpacity: 0.5
         property var tiles: ({})
         property var downloadQueue: []
         property bool downloading: false
@@ -83,52 +82,35 @@ PanelWindow {
                     anchors.centerIn: parent
                     spacing: 5
 
-                    Item {
-                        id: avatarWrap
-                        readonly property int borderWidth: 3
-                        width: avatarImg.width + borderWidth * 2
-                        height: avatarImg.height + borderWidth * 2
+                    ClippingRectangle {
+                        id: avatarRect
+                        width: avatarImg.width
+                        height: avatarImg.height
+                        radius: height / 2
                         anchors.verticalCenter: parent.verticalCenter
 
-                        ClippingRectangle {
-                            id: avatarRect
-                            width: avatarImg.width
-                            height: avatarImg.height
-                            radius: height / 2
-                            anchors.centerIn: parent
+                        layer.enabled: true
+                        opacity: tile.speak ? 1.0 : root.noSpeakOpacity
+                        Behavior on opacity { NumberAnimation { duration: root.animDuration } }
 
-                            // Avatar
-                            Image {
-                                id: avatarImg
-                                anchors.verticalCenter: parent.verticalCenter
-                                width: 32; height: 32
-                                source: tile.avatarReady
-                                    ? (root.imgCacheDir + "/" + tile.userId + "-" + tile.username + "." + tile.avatarExt)
-                                    : ""
-                                fillMode: Image.PreserveAspectFit
-                                smooth: true
-                            }
-
-                            // Darken (not fade) when not speaking, Discord-style
-                            Rectangle {
-                                anchors.fill: avatarImg
-                                color: "black"
-                                opacity: tile.speak ? 0.0 : root.noSpeakDarken
-                                Behavior on opacity { NumberAnimation { duration: root.animDuration } }
-                            }
+                        // Avatar
+                        Image {
+                            id: avatarImg
+                            anchors.verticalCenter: parent.verticalCenter
+                            width: 32; height: 32
+                            source: tile.avatarReady
+                                ? (root.imgCacheDir + "/" + tile.userId + "-" + tile.username + "." + tile.avatarExt)
+                                : ""
+                            fillMode: Image.PreserveAspectFit
+                            smooth: true
                         }
 
-                        // Outward speaking ring — grows inward from the container's fixed outer edge,
-                        // so it never displaces the avatar or its siblings
+                        // Darken (not fade) when not speaking, Discord-style
                         Rectangle {
-                            anchors.centerIn: parent
-                            width: avatarWrap.width
-                            height: avatarWrap.height
-                            radius: width / 2
-                            color: "transparent"
-                            border.color: "green"
-                            border.width: tile.speak ? avatarWrap.borderWidth : 0
-                            Behavior on border.width { NumberAnimation { duration: root.animDuration } }
+                            anchors.fill: avatarImg
+                            color: "black"
+                            opacity: tile.speak ? 0.0 : root.noSpeakOpacity / 2
+                            Behavior on opacity { NumberAnimation { duration: root.animDuration } }
                         }
                     }
 
@@ -157,7 +139,10 @@ PanelWindow {
                                 anchors.verticalCenter: parent.verticalCenter
                                 text: tile.username
                                 color: ActiveTheme.colors["FG"]   // full color, no more fade
-                                font.bold: true
+                                font {
+                                    bold: true
+                                    pixelSize: 12
+                                }
                             }
 
                             // Microphone muted OSD
@@ -188,13 +173,14 @@ PanelWindow {
                             anchors.fill: parent
                             radius: parent.radius
                             color: "black"
-                            opacity: tile.speak ? 0.0 : root.noSpeakDarken
+                            opacity: tile.speak ? 0.0 : root.noSpeakOpacity / 2
+                            Behavior on opacity { NumberAnimation { duration: root.animDuration } }
                         }
                     }
 
                     Rectangle {
-                        readonly property int wPadding: 15
-                        readonly property int hPadding: 5
+                        readonly property int wPadding: 9
+                        readonly property int hPadding: 3
 
                         width: videoScreenText.width + wPadding
                         height: videoScreenText.height + hPadding
@@ -214,7 +200,7 @@ PanelWindow {
                             color: ActiveTheme.colors["FG"]
                             font {
                                 bold: true
-                                pixelSize: 12
+                                pixelSize: 8
                             }
                         }
 
@@ -223,7 +209,8 @@ PanelWindow {
                             anchors.fill: parent
                             radius: parent.radius
                             color: "black"
-                            opacity: tile.speak ? 0.0 : root.noSpeakDarken
+                            opacity: tile.speak ? 0.0 : root.noSpeakOpacity / 2
+                            Behavior on opacity { NumberAnimation { duration: root.animDuration } }
                         }
                     }
                 }
