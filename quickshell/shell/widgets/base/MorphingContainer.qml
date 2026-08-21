@@ -93,7 +93,7 @@ Item {
             fillColor: root.color
             strokeWidth: 0
 
-            startX: root._tr
+            startX: -root._tr
             startY: 0
 
             // top edge
@@ -137,15 +137,15 @@ Item {
             }
         }
 
-        layer.enabled: true
-        layer.effect: MultiEffect {
-            shadowEnabled: true
-            shadowColor: "#80000000"
-            shadowBlur: 0.8
-            shadowHorizontalOffset: 0
-            shadowVerticalOffset: 3
-            autoPaddingEnabled: true
-        }
+        layer.enabled: false
+        // layer.effect: MultiEffect {
+        //     shadowEnabled: true
+        //     shadowColor: "#80000000"
+        //     shadowBlur: 0.8
+        //     shadowHorizontalOffset: 0
+        //     shadowVerticalOffset: 3
+        //     autoPaddingEnabled: true
+        // }
     }
 
     Item {

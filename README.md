@@ -11,4 +11,3 @@
 - When adding/removing bluetooth devices, make the launcher update its entries.
 - Implement secondary actions on launcher (right-click/shitf+Enter) and QuickApps, like desktop files provide.
 - Optmize code for speed and resource consumption.
-- Make vesktop overlay
