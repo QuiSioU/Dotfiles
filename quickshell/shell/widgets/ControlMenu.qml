@@ -41,31 +41,100 @@ PanelWindow {
     MorphingContainer {
         id: root
 
-        property var targetScreen: null
-        property string pillWidget: "default"
-        property real clockHeight: 0
-
-        property var _entries: []
-
-        readonly property int _menuHideTimer: 1000
-
         readonly property int _defaultClockPixelSize: 16
-        Text {
-            id: _pillRefTextItem
-            visible: false
-            font.pixelSize: root._defaultClockPixelSize
-            font.bold: true
-            text: "00:00"
+
+        Item {
+            id: defaultMenu
+            anchors.fill: parent
+
+            property real horizontalPadding: 20
+            property real verticalPadding: 4
+            
+            implicitWidth:  (clock.implicitWidth  + horizontalPadding * 2) * (root.defaultExpanded ? 2 : 1)
+            implicitHeight: (clock.implicitHeight + verticalPadding   * 2) * (root.defaultExpanded ? 2 : 1)
+
+            readonly property real basePillHeight: clock.implicitHeight + verticalPadding * 2
+
+            Clock {
+                id: clock
+                anchors {
+                    top: parent.top
+                    topMargin: 3
+                    horizontalCenter: parent.horizontalCenter
+                }
+                pixelSize: root._defaultClockPixelSize
+            }
+
+            Row {
+                id: batteryIcon
+                visible: root.defaultExpanded
+                anchors {
+                    verticalCenter: parent.verticalCenter
+                    right: parent.right
+                    rightMargin: 5
+                }
+                spacing: 1
+
+                Rectangle {
+                    id: batteryBody
+                    implicitWidth: 25
+                    implicitHeight: 15
+                    anchors.verticalCenter: parent.verticalCenter
+                    radius: 5
+                    color: "transparent"
+                    border {
+                        width: 1.5
+                        color: ActiveTheme.colors["FG"]
+                    }
+                    clip: true
+
+                    Rectangle {
+                        id: batteryFill
+                        anchors {
+                            left: parent.left
+                            top: parent.top
+                            bottom: parent.bottom
+                            margins: 2.5
+                        }
+                        width: (parent.width - anchors.margins * 2) * root._batteryPercentage
+                        radius: 3
+                        color: ActiveTheme.colors["ACCENT_LOW"]
+
+                        Behavior on width {
+                            NumberAnimation { duration: 200; easing.type: Easing.OutCubic }
+                        }
+                    }
+
+                    Text {
+                        anchors.centerIn: parent
+                        z: 1
+                        text: Math.round(root._batteryPercentage * 100)
+                        font.pixelSize: 8
+                        font.bold: true
+                        color: ActiveTheme.colors["BG"]
+                    }
+                }
+
+                Rectangle {
+                    implicitWidth: 1.5
+                    implicitHeight: 6
+                    anchors.verticalCenter: parent.verticalCenter
+                    radius: height / 2
+                    color: ActiveTheme.colors["FG"]
+                }
+            }
         }
 
-        property alias _clockRefText: _pillRefTextItem
-        readonly property real _pillVerticalPadding: 4   // must match defaultMenuComponent's verticalPadding
-        readonly property real _pillHeight: _clockRefText.implicitHeight + _pillVerticalPadding * 2
+        defaultItem: defaultMenu
 
+        readonly property int _menuHideTimer: 1000
         readonly property real _fullHeight: panwin.screen ? panwin.screen.height : 1
         readonly property real _lockProgress: Math.min(Math.max(
-            (root.height - _pillHeight) / (_fullHeight - _pillHeight), 0), 1)
-        readonly property real _clockPixelSize: root._defaultClockPixelSize + _lockProgress * (64 - 16)
+            (root.height - defaultMenu.basePillHeight) / (_fullHeight - defaultMenu.basePillHeight), 0), 1)
+
+        property string pillWidget: "default"
+        property bool defaultExpanded: false
+        property var _entries: []
 
         property var _batteryDevice: UPower.displayDevice
         property real _batteryPercentage: _batteryDevice.percentage
@@ -80,8 +149,6 @@ PanelWindow {
                 default:                                    return "Unknown"
             }
         }
-
-        property bool defaultExpanded: false
         
         anchors {
             top: parent.top
@@ -156,83 +223,6 @@ PanelWindow {
         }
 
         // ── Possible Menus ────────────────────────────────────────────────────────
-        Component {
-            id: defaultMenuComponent;
-            Item {
-                property real horizontalPadding: 20
-
-                implicitWidth: (root._clockRefText.implicitWidth + horizontalPadding * 2) * (root.defaultExpanded ? 2 : 1)
-                implicitHeight: root._pillHeight * (root.defaultExpanded ? 2 : 1)
-
-                Clock {
-                    anchors {
-                        top: parent.top
-                        topMargin: 3
-                        horizontalCenter: parent.horizontalCenter
-                    }
-                    pixelSize: root._clockPixelSize
-                }
-
-                Row {
-                    id: batteryIcon
-                    visible: root.defaultExpanded
-                    anchors {
-                        verticalCenter: parent.verticalCenter
-                        right: parent.right
-                        rightMargin: 5
-                    }
-                    spacing: 1
-
-                    Rectangle {
-                        id: batteryBody
-                        implicitWidth: 25
-                        implicitHeight: 15
-                        anchors.verticalCenter: parent.verticalCenter
-                        radius: 5
-                        color: "transparent"
-                        border {
-                            width: 1.5
-                            color: ActiveTheme.colors["FG"]
-                        }
-                        clip: true
-
-                        Rectangle {
-                            id: batteryFill
-                            anchors {
-                                left: parent.left
-                                top: parent.top
-                                bottom: parent.bottom
-                                margins: 2.5
-                            }
-                            width: (parent.width - anchors.margins * 2) * root._batteryPercentage
-                            radius: 3
-                            color: ActiveTheme.colors["ACCENT_LOW"]
-
-                            Behavior on width {
-                                NumberAnimation { duration: 200; easing.type: Easing.OutCubic }
-                            }
-                        }
-
-                        Text {
-                            anchors.centerIn: parent
-                            z: 1
-                            text: Math.round(root._batteryPercentage * 100)
-                            font.pixelSize: 8
-                            font.bold: true
-                            color: ActiveTheme.colors["BG"]
-                        }
-                    }
-
-                    Rectangle {
-                        implicitWidth: 1.5
-                        implicitHeight: 6
-                        anchors.verticalCenter: parent.verticalCenter
-                        radius: height / 2
-                        color: ActiveTheme.colors["FG"]
-                    }
-                }
-            }
-        }
         Component {
             id: volumeOsdComponent
             Item {
@@ -546,13 +536,13 @@ PanelWindow {
                 implicitWidth:  panwin.screen ? panwin.screen.width  : 0
                 implicitHeight: panwin.screen ? panwin.screen.height : 0
                 wallpaper: LockService.currentWallpaper
-                clockPixelSize: root._clockPixelSize
+                clockPixelSize: root._defaultClockPixelSize + _lockProgress * (64 - 16)
             }
         }
         LockScreen { id: lockScreen }
 
         onPillWidgetChanged: {
-            if (pillWidget === "default") root.content = defaultMenuComponent
+            if (pillWidget === "default") root.content = null
             else {
                 root.defaultExpanded = false
                 switch (pillWidget) {
@@ -565,7 +555,7 @@ PanelWindow {
                 }
             }
         }
-        Component.onCompleted: root.content = defaultMenuComponent
+        Component.onCompleted: root.content = null
 
         HoverHandler {
             id: pillHoverHandler
@@ -598,7 +588,6 @@ PanelWindow {
         Connections {
             target: root
             function onMorphFinished() {
-                if (root.pillWidget === "default") root.clockHeight = root.height
                 if (root.pillWidget === "lock" && !lockScreen.isLocked) {
                     root.square = true
                     lockScreen.lock()   // decoy is fully fullscreen now — safe to hand off

@@ -13,7 +13,19 @@ Item {
     readonly property var _easingType: Easing.InOutCubic
 
     property Component content: null
-    readonly property var item: _loaderAActive ? loaderA.item : loaderB.item
+    property Item defaultItem: null
+
+    property string _activeSlot: "default"   // "A" | "B" | "default"
+    property bool _lastHeapWasA: true
+
+    readonly property Item item: {
+        switch (_activeSlot) {
+            case "A": return loaderA.item
+            case "B": return loaderB.item
+            default:  return defaultItem
+        }
+    }
+
     signal morphFinished()
 
     // Non-animated shape toggle: false = rounded, true = flat rectangle
@@ -27,14 +39,24 @@ Item {
     readonly property real _tr: square ? 0 : Math.min(cornerRadius, width / 2, Math.max(height - _br, 0))
 
     property bool _morphing: false
-    property bool _loaderAActive: true
-    readonly property Loader _incomingLoader: _loaderAActive ? loaderB : loaderA
-    readonly property Loader _outgoingLoader: _loaderAActive ? loaderA : loaderB
 
     onContentChanged: {
         _morphing = true
-        _incomingLoader.sourceComponent = root.content
-        _loaderAActive = !_loaderAActive
+        if (content === null) {
+            _activeSlot = "default"
+        } else {
+            const incoming = _lastHeapWasA ? loaderB : loaderA
+            incoming.sourceComponent = content
+            _activeSlot = _lastHeapWasA ? "B" : "A"   // moved up, same value as `incoming`
+            _lastHeapWasA = !_lastHeapWasA            // toggle last
+        }
+    }
+
+    onDefaultItemChanged: {
+        if (defaultItem) {
+            defaultItem.parent = contentClip
+            defaultItem.opacity = Qt.binding(() => root._activeSlot === "default" ? 1 : 0)
+        }
     }
 
     width:  item ? item.implicitWidth  : width
@@ -134,7 +156,7 @@ Item {
         Loader {
             id: loaderA
             anchors.fill: parent
-            opacity: root._loaderAActive ? 1 : 0
+            opacity: root._activeSlot === "A" ? 1 : 0
             Behavior on opacity {
                 NumberAnimation {
                     id: fadeAnimA
@@ -147,7 +169,7 @@ Item {
         Loader {
             id: loaderB
             anchors.fill: parent
-            opacity: root._loaderAActive ? 0 : 1
+            opacity: root._activeSlot === "B" ? 1 : 0
             Behavior on opacity {
                 NumberAnimation {
                     id: fadeAnimB
