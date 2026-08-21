@@ -4,6 +4,7 @@
 import Quickshell
 import Quickshell.Io
 import Quickshell.Wayland
+import Quickshell.Services.UPower 
 import QtQuick
 import ElysianShell.Services
 import ElysianShell.Themes
@@ -66,6 +67,22 @@ PanelWindow {
             (root.height - _pillHeight) / (_fullHeight - _pillHeight), 0), 1)
         readonly property real _clockPixelSize: root._defaultClockPixelSize + _lockProgress * (64 - 16)
 
+        property var _batteryDevice: UPower.displayDevice
+        property real _batteryPercentage: _batteryDevice.percentage
+        property string _batteryStatusText: {
+            switch (_batteryDevice.state) {
+                case UPowerDeviceState.Charging:            return "Charging"
+                case UPowerDeviceState.Discharging:         return "Discharging"
+                case UPowerDeviceState.Empty:               return "Empty"
+                case UPowerDeviceState.FullyCharged:        return "Fully charged"
+                case UPowerDeviceState.PendingCharge:       return "Not drawing power"
+                case UPowerDeviceState.PendingDischarge:    return "Pending discharge"
+                default:                                    return "Unknown"
+            }
+        }
+
+        property bool defaultExpanded: false
+        
         anchors {
             top: parent.top
             horizontalCenter: parent.horizontalCenter
@@ -142,14 +159,77 @@ PanelWindow {
         Component {
             id: defaultMenuComponent;
             Item {
-                property real horizontalPadding: 40
+                property real horizontalPadding: 20
 
-                implicitWidth:  root._clockRefText.implicitWidth + horizontalPadding * 2
-                implicitHeight: root._pillHeight
+                implicitWidth: (root._clockRefText.implicitWidth + horizontalPadding * 2) * (root.defaultExpanded ? 2 : 1)
+                implicitHeight: root._pillHeight * (root.defaultExpanded ? 2 : 1)
 
                 Clock {
-                    anchors.centerIn: parent
+                    anchors {
+                        top: parent.top
+                        topMargin: 3
+                        horizontalCenter: parent.horizontalCenter
+                    }
                     pixelSize: root._clockPixelSize
+                }
+
+                Row {
+                    id: batteryIcon
+                    visible: root.defaultExpanded
+                    anchors {
+                        verticalCenter: parent.verticalCenter
+                        right: parent.right
+                        rightMargin: 5
+                    }
+                    spacing: 1
+
+                    Rectangle {
+                        id: batteryBody
+                        implicitWidth: 25
+                        implicitHeight: 15
+                        anchors.verticalCenter: parent.verticalCenter
+                        radius: 5
+                        color: "transparent"
+                        border {
+                            width: 1.5
+                            color: ActiveTheme.colors["FG"]
+                        }
+                        clip: true
+
+                        Rectangle {
+                            id: batteryFill
+                            anchors {
+                                left: parent.left
+                                top: parent.top
+                                bottom: parent.bottom
+                                margins: 2.5
+                            }
+                            width: (parent.width - anchors.margins * 2) * root._batteryPercentage
+                            radius: 3
+                            color: ActiveTheme.colors["ACCENT_LOW"]
+
+                            Behavior on width {
+                                NumberAnimation { duration: 200; easing.type: Easing.OutCubic }
+                            }
+                        }
+
+                        Text {
+                            anchors.centerIn: parent
+                            z: 1
+                            text: Math.round(root._batteryPercentage * 100)
+                            font.pixelSize: 8
+                            font.bold: true
+                            color: ActiveTheme.colors["BG"]
+                        }
+                    }
+
+                    Rectangle {
+                        implicitWidth: 1.5
+                        implicitHeight: 6
+                        anchors.verticalCenter: parent.verticalCenter
+                        radius: height / 2
+                        color: ActiveTheme.colors["FG"]
+                    }
                 }
             }
         }
@@ -472,14 +552,17 @@ PanelWindow {
         LockScreen { id: lockScreen }
 
         onPillWidgetChanged: {
-            switch (pillWidget) {
-                case "volume":      root.content = volumeOsdComponent;       break
-                case "brightness":  root.content = brightnessOsdComponent;   break
-                case "launcher":    root.content = controlCenter;            break
-                case "workspace":   root.content = workspaceOsdComponent;       break
-                case "lock":        root.content = lockComponent;            break
-                case "session":     root.content = sessionMenuComponent;     break
-                default:            root.content = defaultMenuComponent;     break
+            if (pillWidget === "default") root.content = defaultMenuComponent
+            else {
+                root.defaultExpanded = false
+                switch (pillWidget) {
+                    case "volume":      root.content = volumeOsdComponent;      break
+                    case "brightness":  root.content = brightnessOsdComponent;  break
+                    case "launcher":    root.content = controlCenter;           break
+                    case "workspace":   root.content = workspaceOsdComponent;   break
+                    case "lock":        root.content = lockComponent;           break
+                    case "session":     root.content = sessionMenuComponent;    break
+                }
             }
         }
         Component.onCompleted: root.content = defaultMenuComponent
@@ -501,6 +584,9 @@ PanelWindow {
                     case "workspace":
                         if (hovered) workspaceTimer.stop()
                         else workspaceTimer.restart()
+                        break
+                    case "default":
+                        root.defaultExpanded = hovered
                         break
                     default:
                         break
